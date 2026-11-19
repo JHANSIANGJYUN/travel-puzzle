@@ -1,231 +1,1085 @@
 {
-  "updated_at": "2026-11-19 20:20",
-  "flights": {},
+  "updated_at": "2026-11-19 20:49",
+  "jr_passes": [
+    {
+      "id": "jr-kansai-mini-3",
+      "name": "JR 關西迷你周遊券 (3日)",
+      "priceJpy": 3000,
+      "days": 3,
+      "regions": [
+        "kansai"
+      ],
+      "airportCovered": false,
+      "note": "涵蓋大阪・京都・神戶・奈良普通/快速（不含關西機場段）"
+    },
+    {
+      "id": "jr-kansai-area-1",
+      "name": "JR 關西地區鐵路周遊券 (1日)",
+      "priceJpy": 2800,
+      "days": 1,
+      "regions": [
+        "kansai"
+      ],
+      "airportCovered": true,
+      "note": "含關空特快 HARUKA 自由席＋京阪神奈良 JR"
+    },
+    {
+      "id": "jr-kansai-area-3",
+      "name": "JR 關西地區鐵路周遊券 (3日)",
+      "priceJpy": 5800,
+      "days": 3,
+      "regions": [
+        "kansai"
+      ],
+      "airportCovered": true,
+      "note": "含關空特快 HARUKA 自由席＋京阪神奈良姬路"
+    },
+    {
+      "id": "jr-kansai-wide-5",
+      "name": "JR 關西廣域鐵路周遊券 (5日)",
+      "priceJpy": 12000,
+      "days": 5,
+      "regions": [
+        "kansai",
+        "sanyo"
+      ],
+      "airportCovered": true,
+      "note": "含新幹線新大阪-岡山＋HARUKA＋天橋立・城崎・和歌山"
+    },
+    {
+      "id": "jr-kansai-hiroshima-5",
+      "name": "JR 關西＆廣島地區周遊券 (5日)",
+      "priceJpy": 17000,
+      "days": 5,
+      "regions": [
+        "kansai",
+        "sanyo"
+      ],
+      "airportCovered": true,
+      "note": "含山陽新幹線（新大阪-廣島）＋宮島渡輪＋HARUKA"
+    },
+    {
+      "id": "jr-sanyo-sanin-7",
+      "name": "JR 山陽＆山陰地區鐵路周遊券 (7日)",
+      "priceJpy": 23000,
+      "days": 7,
+      "regions": [
+        "kansai",
+        "sanyo"
+      ],
+      "airportCovered": true,
+      "note": "含山陽新幹線全線（新大阪-博多）＋出雲・鳥取・宮島"
+    },
+    {
+      "id": "jr-hokuriku-arch-7",
+      "name": "JR 北陸拱型鐵路周遊券 (7日)",
+      "priceJpy": 30000,
+      "days": 7,
+      "regions": [
+        "kansai",
+        "kanto",
+        "chubu"
+      ],
+      "airportCovered": true,
+      "note": "串聯關西機場・大阪・京都・金澤・長野與東京成田/羽田"
+    },
+    {
+      "id": "jr-tokyo-wide-3",
+      "name": "JR 東京廣域周遊券 (3日)",
+      "priceJpy": 15000,
+      "days": 3,
+      "regions": [
+        "kanto"
+      ],
+      "airportCovered": true,
+      "note": "含成田特快 N’EX＋富士回遊＋輕井澤・日光・越後湯澤新幹線"
+    },
+    {
+      "id": "jr-east-tohoku-5",
+      "name": "JR 東日本鐵路周遊券・東北地區 (5日)",
+      "priceJpy": 30000,
+      "days": 5,
+      "regions": [
+        "kanto",
+        "tohoku"
+      ],
+      "airportCovered": true,
+      "note": "含東京圈與東北新幹線全線（仙台・青森・秋田・盛岡）"
+    },
+    {
+      "id": "jr-hokkaido-5",
+      "name": "JR 北海道鐵路周遊券 (5日)",
+      "priceJpy": 21000,
+      "days": 5,
+      "regions": [
+        "hokkaido"
+      ],
+      "airportCovered": true,
+      "note": "含新千歲機場快速＋札幌・函館・旭川・富良野・釧路特急"
+    },
+    {
+      "id": "jr-hokkaido-7",
+      "name": "JR 北海道鐵路周遊券 (7日)",
+      "priceJpy": 27000,
+      "days": 7,
+      "regions": [
+        "hokkaido"
+      ],
+      "airportCovered": true,
+      "note": "北海道全線特急列車 7 日無限搭乘"
+    },
+    {
+      "id": "jr-north-kyushu-3",
+      "name": "JR 北九州鐵路周遊券 (3日)",
+      "priceJpy": 12000,
+      "days": 3,
+      "regions": [
+        "kyushu"
+      ],
+      "airportCovered": true,
+      "note": "含由布院之森＋博多・熊本・阿蘇・長崎・別府特急"
+    },
+    {
+      "id": "jr-north-kyushu-5",
+      "name": "JR 北九州鐵路周遊券 (5日)",
+      "priceJpy": 15000,
+      "days": 5,
+      "regions": [
+        "kyushu"
+      ],
+      "airportCovered": true,
+      "note": "含由布院之森・九州新幹線（博多-熊本）5 日暢遊"
+    },
+    {
+      "id": "jr-all-kyushu-5",
+      "name": "JR 全九州鐵路周遊券 (5日)",
+      "priceJpy": 22500,
+      "days": 5,
+      "regions": [
+        "kyushu"
+      ],
+      "airportCovered": true,
+      "note": "含鹿兒島・指宿玉手箱・宮崎與全九州新幹線"
+    },
+    {
+      "id": "jr-takayama-hokuriku-5",
+      "name": "JR 高山・北陸地區周遊券 (5日)",
+      "priceJpy": 19800,
+      "days": 5,
+      "regions": [
+        "kansai",
+        "chubu"
+      ],
+      "airportCovered": true,
+      "note": "含名古屋・高山・白川鄉濃飛巴士・金澤・京都・關西機場"
+    },
+    {
+      "id": "jr-all-shikoku-5",
+      "name": "JR 四國鐵路周遊券 (5日)",
+      "priceJpy": 20000,
+      "days": 5,
+      "regions": [
+        "sanyo"
+      ],
+      "airportCovered": false,
+      "note": "四國全線特急自由席無限搭乘，2024售價調漲更新"
+    },
+    {
+      "id": "jr-whole-japan-7",
+      "name": "JR 全日本鐵路通票 (7日普通車)",
+      "priceJpy": 50000,
+      "days": 7,
+      "regions": [
+        "kansai",
+        "kanto",
+        "hokkaido",
+        "kyushu",
+        "chubu",
+        "tohoku",
+        "sanyo"
+      ],
+      "airportCovered": true,
+      "note": "全國 JR 幹線與新幹線（除 Nozomi/Mizuho 外）7 日無限搭乘"
+    }
+  ],
+  "flights": {
+    "AK176": {
+      "airline": "AirAsia 亞洲航空",
+      "airport": "關西國際機場 (KIX)",
+      "terminal": "T1",
+      "time": "14:30",
+      "aircraft": "A330-300",
+      "region": "kansai"
+    },
+    "AK177": {
+      "airline": "AirAsia 亞洲航空",
+      "airport": "關西國際機場 (KIX)",
+      "terminal": "T1",
+      "time": "15:45",
+      "aircraft": "A330-300",
+      "region": "kansai"
+    },
+    "D7378": {
+      "airline": "AirAsia X 亞航長程",
+      "airport": "關西國際機場 (KIX)",
+      "terminal": "T1",
+      "time": "22:05",
+      "aircraft": "A330-300",
+      "region": "kansai"
+    },
+    "D7379": {
+      "airline": "AirAsia X 亞航長程",
+      "airport": "關西國際機場 (KIX)",
+      "terminal": "T1",
+      "time": "23:25",
+      "aircraft": "A330-300",
+      "region": "kansai"
+    },
+    "IT210": {
+      "airline": "台灣虎航 Tigerair",
+      "airport": "福岡機場 (FUK)",
+      "terminal": "I",
+      "time": "06:45",
+      "aircraft": "A320neo",
+      "region": "kyushu"
+    },
+    "IT211": {
+      "airline": "台灣虎航 Tigerair",
+      "airport": "關西國際機場 (KIX)",
+      "terminal": "T1",
+      "time": "11:15",
+      "aircraft": "A320neo",
+      "region": "kansai"
+    },
+    "IT212": {
+      "airline": "台灣虎航 Tigerair",
+      "airport": "關西國際機場 (KIX)",
+      "terminal": "T1",
+      "time": "18:05",
+      "aircraft": "A320",
+      "region": "kansai"
+    },
+    "IT213": {
+      "airline": "台灣虎航 Tigerair",
+      "airport": "關西國際機場 (KIX)",
+      "terminal": "T1",
+      "time": "19:05",
+      "aircraft": "A320",
+      "region": "kansai"
+    },
+    "IT284": {
+      "airline": "台灣虎航 Tigerair (高雄出發)",
+      "airport": "關西國際機場 (KIX)",
+      "terminal": "T1",
+      "time": "10:40",
+      "aircraft": "A320",
+      "region": "kansai"
+    },
+    "IT285": {
+      "airline": "台灣虎航 Tigerair (飛往高雄)",
+      "airport": "關西國際機場 (KIX)",
+      "terminal": "T1",
+      "time": "11:40",
+      "aircraft": "A320",
+      "region": "kansai"
+    },
+    "MM24": {
+      "airline": "樂桃航空 Peach",
+      "airport": "關西國際機場 (KIX)",
+      "terminal": "T2",
+      "time": "13:15",
+      "aircraft": "A320neo",
+      "region": "kansai"
+    },
+    "MM27": {
+      "airline": "樂桃航空 Peach",
+      "airport": "關西國際機場 (KIX)",
+      "terminal": "T2",
+      "time": "15:55",
+      "aircraft": "A320neo",
+      "region": "kansai"
+    },
+    "MM28": {
+      "airline": "樂桃航空 Peach",
+      "airport": "關西國際機場 (KIX)",
+      "terminal": "T2",
+      "time": "22:25",
+      "aircraft": "A321LR",
+      "region": "kansai"
+    },
+    "MM29": {
+      "airline": "樂桃航空 Peach",
+      "airport": "關西國際機場 (KIX)",
+      "terminal": "T2",
+      "time": "23:20",
+      "aircraft": "A321LR",
+      "region": "kansai"
+    },
+    "JX820": {
+      "airline": "星宇航空 STARLUX",
+      "airport": "關西國際機場 (KIX)",
+      "terminal": "T1",
+      "time": "11:10",
+      "aircraft": "A330-900neo",
+      "region": "kansai"
+    },
+    "JX821": {
+      "airline": "星宇航空 STARLUX",
+      "airport": "關西國際機場 (KIX)",
+      "terminal": "T1",
+      "time": "12:20",
+      "aircraft": "A330-900neo",
+      "region": "kansai"
+    },
+    "JX822": {
+      "airline": "星宇航空 STARLUX",
+      "airport": "關西國際機場 (KIX)",
+      "terminal": "T1",
+      "time": "13:55",
+      "aircraft": "A321neo",
+      "region": "kansai"
+    },
+    "JX823": {
+      "airline": "星宇航空 STARLUX",
+      "airport": "關西國際機場 (KIX)",
+      "terminal": "T1",
+      "time": "15:05",
+      "aircraft": "A321neo",
+      "region": "kansai"
+    },
+    "BR132": {
+      "airline": "長榮航空 EVA Air",
+      "airport": "關西國際機場 (KIX)",
+      "terminal": "T1",
+      "time": "08:30",
+      "aircraft": "B787-10",
+      "region": "kansai"
+    },
+    "BR131": {
+      "airline": "長榮航空 EVA Air",
+      "airport": "關西國際機場 (KIX)",
+      "terminal": "T1",
+      "time": "12:55",
+      "aircraft": "B787-10",
+      "region": "kansai"
+    },
+    "BR178": {
+      "airline": "長榮航空 EVA Air",
+      "airport": "關西國際機場 (KIX)",
+      "terminal": "T1",
+      "time": "10:10",
+      "aircraft": "B787-9",
+      "region": "kansai"
+    },
+    "BR177": {
+      "airline": "長榮航空 EVA Air",
+      "airport": "關西國際機場 (KIX)",
+      "terminal": "T1",
+      "time": "11:10",
+      "aircraft": "B787-9",
+      "region": "kansai"
+    },
+    "CI156": {
+      "airline": "中華航空 China Airlines",
+      "airport": "關西國際機場 (KIX)",
+      "terminal": "T1",
+      "time": "08:20",
+      "aircraft": "A350-900",
+      "region": "kansai"
+    },
+    "CI157": {
+      "airline": "中華航空 China Airlines",
+      "airport": "關西國際機場 (KIX)",
+      "terminal": "T1",
+      "time": "12:50",
+      "aircraft": "A350-900",
+      "region": "kansai"
+    },
+    "CI172": {
+      "airline": "中華航空 China Airlines",
+      "airport": "關西國際機場 (KIX)",
+      "terminal": "T1",
+      "time": "17:50",
+      "aircraft": "A330-300",
+      "region": "kansai"
+    },
+    "CI173": {
+      "airline": "中華航空 China Airlines",
+      "airport": "關西國際機場 (KIX)",
+      "terminal": "T1",
+      "time": "19:00",
+      "aircraft": "A330-300",
+      "region": "kansai"
+    },
+    "IT200": {
+      "airline": "台灣虎航 Tigerair",
+      "airport": "成田國際機場 (NRT)",
+      "terminal": "T2",
+      "time": "10:35",
+      "aircraft": "A320neo",
+      "region": "kanto"
+    },
+    "IT201": {
+      "airline": "台灣虎航 Tigerair",
+      "airport": "成田國際機場 (NRT)",
+      "terminal": "T2",
+      "time": "11:50",
+      "aircraft": "A320neo",
+      "region": "kanto"
+    },
+    "IT202": {
+      "airline": "台灣虎航 Tigerair",
+      "airport": "成田國際機場 (NRT)",
+      "terminal": "T2",
+      "time": "17:45",
+      "aircraft": "A320",
+      "region": "kanto"
+    },
+    "IT203": {
+      "airline": "台灣虎航 Tigerair",
+      "airport": "成田國際機場 (NRT)",
+      "terminal": "T2",
+      "time": "18:50",
+      "aircraft": "A320",
+      "region": "kanto"
+    },
+    "IT216": {
+      "airline": "台灣虎航 Tigerair",
+      "airport": "東京羽田機場 (HND)",
+      "terminal": "T3",
+      "time": "04:25",
+      "aircraft": "A320neo",
+      "region": "kanto"
+    },
+    "IT217": {
+      "airline": "台灣虎航 Tigerair",
+      "airport": "東京羽田機場 (HND)",
+      "terminal": "T3",
+      "time": "05:25",
+      "aircraft": "A320neo",
+      "region": "kanto"
+    },
+    "JX800": {
+      "airline": "星宇航空 Starlux",
+      "airport": "成田國際機場 (NRT)",
+      "terminal": "T2",
+      "time": "08:30",
+      "aircraft": "A350-900",
+      "region": "kanto"
+    },
+    "JX801": {
+      "airline": "星宇航空 STARLUX",
+      "airport": "成田國際機場 (NRT)",
+      "terminal": "T2",
+      "time": "13:40",
+      "aircraft": "A350-900",
+      "region": "kanto"
+    },
+    "JX802": {
+      "airline": "星宇航空 STARLUX",
+      "airport": "成田國際機場 (NRT)",
+      "terminal": "T2",
+      "time": "14:45",
+      "aircraft": "A330-900neo",
+      "region": "kanto"
+    },
+    "JX803": {
+      "airline": "星宇航空 STARLUX",
+      "airport": "成田國際機場 (NRT)",
+      "terminal": "T2",
+      "time": "16:10",
+      "aircraft": "A330-900neo",
+      "region": "kanto"
+    },
+    "BR198": {
+      "airline": "長榮航空 EVA Air",
+      "airport": "成田國際機場 (NRT)",
+      "terminal": "T1",
+      "time": "12:55",
+      "aircraft": "B787-10",
+      "region": "kanto"
+    },
+    "BR197": {
+      "airline": "長榮航空 EVA Air",
+      "airport": "成田國際機場 (NRT)",
+      "terminal": "T1",
+      "time": "14:00",
+      "aircraft": "B787-10",
+      "region": "kanto"
+    },
+    "BR192": {
+      "airline": "長榮航空 EVA Air (松山出發)",
+      "airport": "東京羽田機場 (HND)",
+      "terminal": "T3",
+      "time": "11:15",
+      "aircraft": "B787-10",
+      "region": "kanto"
+    },
+    "BR191": {
+      "airline": "長榮航空 EVA Air (飛往松山)",
+      "airport": "東京羽田機場 (HND)",
+      "terminal": "T3",
+      "time": "12:15",
+      "aircraft": "B787-10",
+      "region": "kanto"
+    },
+    "CI100": {
+      "airline": "中華航空 China Airlines",
+      "airport": "成田國際機場 (NRT)",
+      "terminal": "T2",
+      "time": "13:15",
+      "aircraft": "B777-300ER",
+      "region": "kanto"
+    },
+    "CI101": {
+      "airline": "中華航空 China Airlines",
+      "airport": "成田國際機場 (NRT)",
+      "terminal": "T2",
+      "time": "14:35",
+      "aircraft": "B777-300ER",
+      "region": "kanto"
+    },
+    "CI220": {
+      "airline": "中華航空 China Airlines (松山出發)",
+      "airport": "東京羽田機場 (HND)",
+      "terminal": "T3",
+      "time": "12:55",
+      "aircraft": "A330-300",
+      "region": "kanto"
+    },
+    "CI221": {
+      "airline": "中華航空 China Airlines (飛往松山)",
+      "airport": "東京羽田機場 (HND)",
+      "terminal": "T3",
+      "time": "14:15",
+      "aircraft": "A330-300",
+      "region": "kanto"
+    },
+    "TR898": {
+      "airline": "酷航 Scoot",
+      "airport": "成田國際機場 (NRT)",
+      "terminal": "T1",
+      "time": "10:45",
+      "aircraft": "B787-9",
+      "region": "kanto"
+    },
+    "TR899": {
+      "airline": "酷航 Scoot",
+      "airport": "成田國際機場 (NRT)",
+      "terminal": "T1",
+      "time": "11:45",
+      "aircraft": "B787-9",
+      "region": "kanto"
+    },
+    "IT234": {
+      "airline": "台灣虎航 Tigerair",
+      "airport": "新千歲機場 (CTS)",
+      "terminal": "國際線",
+      "time": "11:25",
+      "aircraft": "A320",
+      "region": "hokkaido"
+    },
+    "IT235": {
+      "airline": "台灣虎航 Tigerair",
+      "airport": "新千歲機場 (CTS)",
+      "terminal": "國際線",
+      "time": "12:25",
+      "aircraft": "A320",
+      "region": "hokkaido"
+    },
+    "IT236": {
+      "airline": "台灣虎航 Tigerair",
+      "airport": "函館機場 (HKD)",
+      "terminal": "國際線",
+      "time": "11:10",
+      "aircraft": "A320",
+      "region": "hokkaido"
+    },
+    "IT237": {
+      "airline": "台灣虎航 Tigerair",
+      "airport": "函館機場 (HKD)",
+      "terminal": "國際線",
+      "time": "12:20",
+      "aircraft": "A320",
+      "region": "hokkaido"
+    },
+    "BR116": {
+      "airline": "長榮航空 EVA Air",
+      "airport": "新千歲機場 (CTS)",
+      "terminal": "國際線",
+      "time": "14:05",
+      "aircraft": "B787-10",
+      "region": "hokkaido"
+    },
+    "BR115": {
+      "airline": "長榮航空 EVA Air",
+      "airport": "新千歲機場 (CTS)",
+      "terminal": "國際線",
+      "time": "15:20",
+      "aircraft": "B787-10",
+      "region": "hokkaido"
+    },
+    "CI130": {
+      "airline": "中華航空 China Airlines",
+      "airport": "新千歲機場 (CTS)",
+      "terminal": "國際線",
+      "time": "13:15",
+      "aircraft": "A330-300",
+      "region": "hokkaido"
+    },
+    "CI131": {
+      "airline": "中華航空 China Airlines",
+      "airport": "新千歲機場 (CTS)",
+      "terminal": "國際線",
+      "time": "14:40",
+      "aircraft": "A330-300",
+      "region": "hokkaido"
+    },
+    "JX850": {
+      "airline": "星宇航空 STARLUX",
+      "airport": "新千歲機場 (CTS)",
+      "terminal": "國際線",
+      "time": "14:00",
+      "aircraft": "A330-900neo",
+      "region": "hokkaido"
+    },
+    "JX851": {
+      "airline": "星宇航空 STARLUX",
+      "airport": "新千歲機場 (CTS)",
+      "terminal": "國際線",
+      "time": "15:15",
+      "aircraft": "A330-900neo",
+      "region": "hokkaido"
+    },
+    "IT240": {
+      "airline": "台灣虎航 Tigerair",
+      "airport": "福岡機場 (FUK)",
+      "terminal": "國際線",
+      "time": "10:00",
+      "aircraft": "A320neo",
+      "region": "kyushu"
+    },
+    "IT241": {
+      "airline": "台灣虎航 Tigerair",
+      "airport": "福岡機場 (FUK)",
+      "terminal": "國際線",
+      "time": "10:55",
+      "aircraft": "A320neo",
+      "region": "kyushu"
+    },
+    "JX840": {
+      "airline": "星宇航空 Starlux",
+      "airport": "熊本機場 (KMJ)",
+      "terminal": "I",
+      "time": "07:45",
+      "aircraft": "A321neo",
+      "region": "kyushu"
+    },
+    "JX841": {
+      "airline": "星宇航空 STARLUX",
+      "airport": "福岡機場 (FUK)",
+      "terminal": "國際線",
+      "time": "14:45",
+      "aircraft": "A321neo",
+      "region": "kyushu"
+    },
+    "JX846": {
+      "airline": "星宇航空 STARLUX",
+      "airport": "阿蘇熊本機場 (KMJ)",
+      "terminal": "國際線",
+      "time": "12:00",
+      "aircraft": "A321neo",
+      "region": "kyushu"
+    },
+    "JX847": {
+      "airline": "星宇航空 STARLUX",
+      "airport": "阿蘇熊本機場 (KMJ)",
+      "terminal": "國際線",
+      "time": "13:00",
+      "aircraft": "A321neo",
+      "region": "kyushu"
+    },
+    "BR106": {
+      "airline": "長榮航空 EVA Air",
+      "airport": "福岡機場 (FUK)",
+      "terminal": "國際線",
+      "time": "11:15",
+      "aircraft": "B787-9",
+      "region": "kyushu"
+    },
+    "BR105": {
+      "airline": "長榮航空 EVA Air",
+      "airport": "福岡機場 (FUK)",
+      "terminal": "國際線",
+      "time": "12:15",
+      "aircraft": "B787-9",
+      "region": "kyushu"
+    },
+    "CI110": {
+      "airline": "中華航空 China Airlines",
+      "airport": "福岡機場 (FUK)",
+      "terminal": "國際線",
+      "time": "09:55",
+      "aircraft": "A350-900",
+      "region": "kyushu"
+    },
+    "CI111": {
+      "airline": "中華航空 China Airlines",
+      "airport": "福岡機場 (FUK)",
+      "terminal": "國際線",
+      "time": "11:00",
+      "aircraft": "A350-900",
+      "region": "kyushu"
+    },
+    "IT206": {
+      "airline": "台灣虎航 Tigerair",
+      "airport": "中部國際機場 (NGO)",
+      "terminal": "T1",
+      "time": "12:50",
+      "aircraft": "A320",
+      "region": "chubu"
+    },
+    "IT207": {
+      "airline": "台灣虎航 Tigerair",
+      "airport": "中部國際機場 (NGO)",
+      "terminal": "T1",
+      "time": "13:45",
+      "aircraft": "A320",
+      "region": "chubu"
+    },
+    "JX838": {
+      "airline": "星宇航空 STARLUX",
+      "airport": "中部國際機場 (NGO)",
+      "terminal": "T1",
+      "time": "18:15",
+      "aircraft": "A321neo",
+      "region": "chubu"
+    },
+    "JX839": {
+      "airline": "星宇航空 STARLUX",
+      "airport": "中部國際機場 (NGO)",
+      "terminal": "T1",
+      "time": "19:15",
+      "aircraft": "A321neo",
+      "region": "chubu"
+    },
+    "BR158": {
+      "airline": "長榮航空 EVA Air",
+      "airport": "小松機場 (KMQ)",
+      "terminal": "航廈",
+      "time": "10:25",
+      "aircraft": "A321",
+      "region": "chubu"
+    },
+    "BR157": {
+      "airline": "長榮航空 EVA Air",
+      "airport": "小松機場 (KMQ)",
+      "terminal": "航廈",
+      "time": "11:45",
+      "aircraft": "A321",
+      "region": "chubu"
+    },
+    "IT254": {
+      "airline": "台灣虎航 Tigerair",
+      "airport": "仙台機場 (SDJ)",
+      "terminal": "I",
+      "time": "13:45",
+      "aircraft": "A320",
+      "region": "tohoku"
+    },
+    "IT255": {
+      "airline": "台灣虎航 Tigerair",
+      "airport": "仙台機場 (SDJ)",
+      "terminal": "航廈",
+      "time": "19:00",
+      "aircraft": "A320",
+      "region": "tohoku"
+    },
+    "JX862": {
+      "airline": "星宇航空 STARLUX",
+      "airport": "仙台機場 (SDJ)",
+      "terminal": "航廈",
+      "time": "16:00",
+      "aircraft": "A321neo",
+      "region": "tohoku"
+    },
+    "JX863": {
+      "airline": "星宇航空 STARLUX",
+      "airport": "仙台機場 (SDJ)",
+      "terminal": "航廈",
+      "time": "17:15",
+      "aircraft": "A321neo",
+      "region": "tohoku"
+    },
+    "IT214": {
+      "airline": "台灣虎航 Tigerair",
+      "airport": "岡山桃太郎機場 (OKJ)",
+      "terminal": "航廈",
+      "time": "14:35",
+      "aircraft": "A320",
+      "region": "sanyo"
+    },
+    "IT215": {
+      "airline": "台灣虎航 Tigerair",
+      "airport": "岡山桃太郎機場 (OKJ)",
+      "terminal": "航廈",
+      "time": "15:25",
+      "aircraft": "A320",
+      "region": "sanyo"
+    },
+    "CI178": {
+      "airline": "中華航空 China Airlines",
+      "airport": "高松機場 (TAK)",
+      "terminal": "航廈",
+      "time": "17:55",
+      "aircraft": "A321neo",
+      "region": "sanyo"
+    },
+    "CI179": {
+      "airline": "中華航空 China Airlines",
+      "airport": "高松機場 (TAK)",
+      "terminal": "航廈",
+      "time": "18:55",
+      "aircraft": "A321neo",
+      "region": "sanyo"
+    },
+    "NH852": {
+      "airline": "全日空 ANA",
+      "airport": "羽田國際機場 (HND)",
+      "terminal": "T3",
+      "time": "13:30",
+      "aircraft": "B787-9",
+      "region": "kanto"
+    },
+    "JL812": {
+      "airline": "日本航空 JAL",
+      "airport": "關西國際機場 (KIX)",
+      "terminal": "T1",
+      "time": "09:10",
+      "aircraft": "B787-8",
+      "region": "kansai"
+    },
+    "BR128": {
+      "airline": "長榮航空 EVA Air",
+      "airport": "新千歲機場 (CTS)",
+      "terminal": "I",
+      "time": "09:30",
+      "aircraft": "B777-300ER",
+      "region": "hokkaido"
+    },
+    "CI108": {
+      "airline": "中華航空 China Airlines",
+      "airport": "成田國際機場 (NRT)",
+      "terminal": "T2",
+      "time": "09:10",
+      "aircraft": "A330-300",
+      "region": "kanto"
+    }
+  },
   "events": [
     {
-      "id": "event-001",
+      "id": "e-1",
       "region": "kansai",
       "months": [
         12
       ],
       "category": "光影花火",
       "title": "大阪光之文藝復興",
-      "location": "大阪市役所至中之島公園 (淀屋橋站)",
+      "location": "大阪市役所周邊/中之島公園",
       "dateLabel": "12月中下旬",
-      "duration": 60,
-      "isIndoor": false,
-      "desc": "水都大阪地標光雕投影，極具視覺震撼，建議順遊梅田藍天大廈。"
-    },
-    {
-      "id": "event-002",
-      "region": "kansai",
-      "months": [
-        2
-      ],
-      "category": "祭典",
-      "title": "春日大社節分萬燈籠",
-      "location": "奈良春日大社 (近鐵奈良站轉巴士)",
-      "dateLabel": "2月3日節分當日",
       "duration": 120,
       "isIndoor": false,
-      "desc": "三千盞燈籠點亮古都冬夜，神秘而莊嚴，建議順遊奈良公園餵鹿。"
+      "desc": "中之島藝術牆面投影極具震撼，建議搭配周遊券搭乘地鐵至淀屋橋站。"
     },
     {
-      "id": "event-003",
+      "id": "e-2",
       "region": "kanto",
       "months": [
-        10,
-        11,
-        12,
         1,
         2
       ],
       "category": "光影花火",
-      "title": "足利花卉公園光之花庭",
-      "location": "栃木縣足利花卉公園站",
-      "dateLabel": "10月中至2月中",
+      "title": "江之島湘南之寶石",
+      "location": "神奈川江之島海蠟燭",
+      "dateLabel": "11月至隔年2月",
       "duration": 150,
       "isIndoor": false,
-      "desc": "日本三大燈節，500萬顆燈泡妝點花海，順遊佐野Outlet。"
+      "desc": "關東三大點燈之一，搭乘江之電順遊鎌倉高校前，欣賞海邊夢幻紫色燈飾。"
     },
     {
-      "id": "event-004",
-      "region": "kanto",
-      "months": [
-        11,
-        12,
-        1,
-        2
-      ],
-      "category": "光影花火",
-      "title": "丸之內香檳金燈飾",
-      "location": "東京丸之內仲通 (東京站)",
-      "dateLabel": "11月至隔年2月",
-      "duration": 60,
-      "isIndoor": false,
-      "desc": "1.2公里精品街滿布香檳色燈飾，極致浪漫，適合晚餐後散步。"
-    },
-    {
-      "id": "event-005",
-      "region": "hokkaido",
-      "months": [
-        11,
-        12,
-        1,
-        2,
-        3
-      ],
-      "category": "光影花火",
-      "title": "札幌白色燈樹節",
-      "location": "大通公園 (地下鐵大通站)",
-      "dateLabel": "11月下旬開跑",
-      "duration": 90,
-      "isIndoor": false,
-      "desc": "北海道最具代表性燈節，雪中燈海夢幻，建議順遊札幌電視塔。"
-    },
-    {
-      "id": "event-006",
+      "id": "e-3",
       "region": "hokkaido",
       "months": [
         2
       ],
-      "category": "祭典",
-      "title": "小樽雪燈之路",
-      "location": "小樽運河與手宮線廢線跡 (JR小樽站)",
-      "dateLabel": "2月中旬限定",
+      "category": "傳統祭典",
+      "title": "札幌雪祭",
+      "location": "札幌大通公園/薄野",
+      "dateLabel": "2月上旬",
+      "duration": 180,
+      "isIndoor": false,
+      "desc": "世界級冰雕盛會，建議入住大通站周邊，順便品嚐札幌味增拉麵。"
+    },
+    {
+      "id": "e-4",
+      "region": "kyushu",
+      "months": [
+        11
+      ],
+      "category": "傳統祭典",
+      "title": "佐賀國際熱氣球節",
+      "location": "佐賀市嘉瀨川河濱",
+      "dateLabel": "11月上旬",
+      "duration": 240,
+      "isIndoor": false,
+      "desc": "亞洲最大規模熱氣球賽，JR會增設臨時站，可從福岡搭特急直達。"
+    },
+    {
+      "id": "e-5",
+      "region": "chubu",
+      "months": [
+        1,
+        2
+      ],
+      "category": "光影花火",
+      "title": "白川鄉合掌造點燈",
+      "location": "岐阜縣大白川",
+      "dateLabel": "1月至2月特定日",
       "duration": 120,
       "isIndoor": false,
-      "desc": "運河浮球與雪雕點亮燭火，氛圍溫馨，建議品嚐當地新鮮壽司。"
+      "desc": "世界遺產雪地童話感點燈，需預約接駁巴士，建議由高山搭濃飛巴士前往。"
     },
     {
-      "id": "event-007",
-      "region": "kyushu",
+      "id": "e-6",
+      "region": "tohoku",
       "months": [
-        1,
-        2
+        8
       ],
-      "category": "祭典",
-      "title": "長崎燈會",
-      "location": "新地中華街與眼鏡橋 (路面電車新地中華街站)",
-      "dateLabel": "農曆新年期間",
+      "category": "傳統祭典",
+      "title": "青森睡魔祭",
+      "location": "青森市內中心街道",
+      "dateLabel": "8月上旬",
       "duration": 180,
       "isIndoor": false,
-      "desc": "萬盞中式紅燈籠照亮夜空，充滿異國色彩，推薦順遊稻佐山夜景。"
+      "desc": "日本代表性夏季祭典，巨大的燈籠遊行極其震撼，建議提早半年預訂住宿。"
     },
     {
-      "id": "event-008",
-      "region": "kyushu",
-      "months": [
-        11,
-        12,
-        1
-      ],
-      "category": "光影花火",
-      "title": "博多光之街道",
-      "location": "JR博多站站前廣場",
-      "dateLabel": "11月至1月上旬",
-      "duration": 40,
-      "isIndoor": false,
-      "desc": "星空意象燈海壯觀，交通極方便，建議搭配站內屋台美食饗宴。"
-    },
-    {
-      "id": "event-009",
-      "region": "chubu",
-      "months": [
-        1,
-        2
-      ],
-      "category": "光影花火",
-      "title": "白川鄉合掌造夜間點燈",
-      "location": "岐阜縣白川村 (預約制巴士前往)",
-      "dateLabel": "1至2月週日限定",
-      "duration": 180,
-      "isIndoor": false,
-      "desc": "宛如置身童話薑餅屋世界，名額稀少需預約，建議順遊高山老街。"
-    },
-    {
-      "id": "event-010",
-      "region": "chubu",
+      "id": "e-7",
+      "region": "sanyo",
       "months": [
         10,
-        11,
-        12,
+        11
+      ],
+      "category": "賞花紅葉",
+      "title": "宮島紅葉谷公園",
+      "location": "廣島縣宮島",
+      "dateLabel": "11月中旬",
+      "duration": 120,
+      "isIndoor": false,
+      "desc": "搭配嚴島神社海上大鳥居賞楓，可使用廣島地區周遊券免費搭乘渡輪。"
+    },
+    {
+      "id": "e-8",
+      "region": "kansai",
+      "months": [
+        7
+      ],
+      "category": "傳統祭典",
+      "title": "京都祇園祭",
+      "location": "京都市四条通/八坂神社",
+      "dateLabel": "7月整月",
+      "duration": 200,
+      "isIndoor": false,
+      "desc": "千年歷史祭典，山鉾巡行為看點，建議避開最熱的中午，早晚觀賞宵山活動。"
+    },
+    {
+      "id": "e-9",
+      "region": "kanto",
+      "months": [
+        4
+      ],
+      "category": "賞花紅葉",
+      "title": "國營常陸海濱公園粉蝶花",
+      "location": "茨城縣勝田站轉巴士",
+      "dateLabel": "4月下旬至5月上旬",
+      "duration": 180,
+      "isIndoor": false,
+      "desc": "湛藍花海與天空連成一線，可用東京廣域周遊券搭特急常陸號前往。"
+    },
+    {
+      "id": "e-10",
+      "region": "kyushu",
+      "months": [
         1,
-        2,
-        3,
+        2
+      ],
+      "category": "季節美食",
+      "title": "糸島牡蠣小屋",
+      "location": "福岡縣糸島市各漁港",
+      "dateLabel": "冬季限定",
+      "duration": 90,
+      "isIndoor": true,
+      "desc": "現烤牡蠣肥美超值，由筑前前原站轉乘巴士可達，是福岡冬季限定美味。"
+    },
+    {
+      "id": "e-11",
+      "region": "tohoku",
+      "months": [
+        1,
+        2
+      ],
+      "category": "周邊順遊",
+      "title": "藏王樹冰",
+      "location": "山形藏王溫泉纜車",
+      "dateLabel": "2月最盛期",
+      "duration": 150,
+      "isIndoor": false,
+      "desc": "震撼的雪怪景觀，夜間有點燈活動，適合搭配銀山溫泉兩天一夜行程。"
+    },
+    {
+      "id": "e-12",
+      "region": "chubu",
+      "months": [
         4,
         5,
         6
       ],
-      "category": "光影花火",
-      "title": "名花之里冬華共演",
-      "location": "三重縣名花之里 (近鐵長島站巴士)",
-      "dateLabel": "10月至隔年5月",
-      "duration": 150,
+      "category": "周邊順遊",
+      "title": "立山黑部雪之大谷",
+      "location": "富山縣室堂平",
+      "dateLabel": "4月中開山",
+      "duration": 300,
       "isIndoor": false,
-      "desc": "日本規模最大水上燈海與光之隧道，順遊爵士之夢長島Outlet。"
+      "desc": "高達20公尺的巨型雪牆，建議使用立山黑部周遊券由信濃大町或富山進入。"
     },
     {
-      "id": "event-011",
-      "region": "tohoku",
-      "months": [
-        12,
-        1,
-        2
-      ],
-      "category": "光影花火",
-      "title": "藏王樹冰夜間點燈",
-      "location": "山形藏王溫泉滑雪場 (JR山形站巴士)",
-      "dateLabel": "12月下旬至2月",
-      "duration": 90,
-      "isIndoor": false,
-      "desc": "魔幻五彩燈光照射巨大「雪怪」，景色驚世，建議順遊藏王溫泉。"
-    },
-    {
-      "id": "event-012",
-      "region": "tohoku",
-      "months": [
-        12,
-        1,
-        2
-      ],
-      "category": "光影花火",
-      "title": "弘前城冬櫻點燈",
-      "location": "青森縣弘前公園 (JR弘前站巴士)",
-      "dateLabel": "12月至2月",
-      "duration": 60,
-      "isIndoor": false,
-      "desc": "護城河積雪被粉紅燈光染成冬日櫻花瓣，極美，順遊星巴克弘前店。"
-    },
-    {
-      "id": "event-013",
+      "id": "e-13",
       "region": "sanyo",
       "months": [
-        11,
-        12,
-        1
+        8
       ],
-      "category": "光影花火",
-      "title": "廣島夢幻點燈",
-      "location": "廣島市平和大通 (廣電袋町站)",
-      "dateLabel": "11月中至1月上旬",
-      "duration": 90,
+      "category": "傳統祭典",
+      "title": "德島阿波舞",
+      "location": "德島市中心",
+      "dateLabel": "8月中旬",
+      "duration": 180,
       "isIndoor": false,
-      "desc": "以童話故事為主題的裝置燈飾，市中心散步首選，順遊原爆圓頂。"
+      "desc": "四國最大規模舞祭，節奏感強烈，持四國周遊券可搭特急由高松抵達。"
     },
     {
-      "id": "event-014",
-      "region": "sanyo",
+      "id": "e-14",
+      "region": "hokkaido",
       "months": [
-        11
+        7,
+        8
       ],
-      "category": "景點",
-      "title": "栗林公園秋季點燈",
-      "location": "香川縣栗林公園 (JR栗林公園北口)",
-      "dateLabel": "11月下旬紅葉期",
+      "category": "賞花紅葉",
+      "title": "富良野薰衣草",
+      "location": "中富良野富田農場",
+      "dateLabel": "7月中旬",
       "duration": 120,
       "isIndoor": false,
-      "desc": "日式庭園與楓紅倒映湖面極其優雅，建議順遊高松市區品嚐烏龍麵。"
+      "desc": "紫色花田美不勝收，可搭乘期間限定的富良野美瑛慢車號火車欣賞。"
     }
   ]
 }
