@@ -21,7 +21,7 @@ prompt = """請針對日本熱門旅遊地區（kansai 關西、kanto 關東、h
   ]
 }"""
 
-url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent?key={API_KEY}"
+url = f"[https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent?key=](https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent?key=){API_KEY}"
 req = urllib.request.Request(
     url,
     data=json.dumps({"contents": [{"parts": [{"text": prompt}]}]}).encode("utf-8"),
@@ -32,10 +32,15 @@ req = urllib.request.Request(
 with urllib.request.urlopen(req, timeout=60) as resp:
     res_data = json.loads(resp.read().decode("utf-8"))
 
-raw_text = res_data["candidates"][0]["content"]["parts"][0]["text"]
-clean_json = raw_text.replace("
-```json", "").replace("```", "").strip()
-parsed = json.loads(clean_json)
+raw_text = res_data["candidates"][0]["content"]["parts"][0]["text"].strip()
+if raw_text.startswith("
+```"):
+    raw_text = raw_text.split("\n", 1)[-1]
+if raw_text.endswith("
+```"):
+    raw_text = raw_text.rsplit("
+```", 1)[0]
+parsed = json.loads(raw_text.strip())
 
 tw_time = (datetime.datetime.utcnow() + datetime.timedelta(hours=8)).strftime("%Y-%m-%d %H:%M")
 output = {
