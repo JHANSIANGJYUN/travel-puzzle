@@ -11,12 +11,30 @@ def log(msg: str) -> None:
     print(msg, flush=True)
 
 
+BASE_JR_PASSES = [
+    {"id": "jr-kansai-1", "name": "JR 關西地區鐵路周遊券 (1日)", "price": 2800, "days": 1, "regions": ["kansai"]},
+    {"id": "jr-kansai-2", "name": "JR 關西地區鐵路周遊券 (2日)", "price": 4800, "days": 2, "regions": ["kansai"]},
+    {"id": "jr-kansai-3", "name": "JR 關西地區鐵路周遊券 (3日)", "price": 5800, "days": 3, "regions": ["kansai"]},
+    {"id": "jr-kansai-4", "name": "JR 關西地區鐵路周遊券 (4日)", "price": 7000, "days": 4, "regions": ["kansai"]},
+    {"id": "jr-kansai-wide-5", "name": "JR 關西廣域鐵路周遊券 (5日)", "price": 12000, "days": 5, "regions": ["kansai", "sanyo"]},
+    {"id": "jr-kansai-hiroshima-5", "name": "JR 關西＆廣島地區鐵路周遊券 (5日)", "price": 17000, "days": 5, "regions": ["kansai", "sanyo"]},
+    {"id": "jr-kansai-hokuriku-7", "name": "JR 關西＆北陸地區鐵路周遊券 (7日)", "price": 19000, "days": 7, "regions": ["kansai", "chubu"]},
+    {"id": "jr-sanyo-sanin-7", "name": "JR 山陽＆山陰地區鐵路周遊券 (7日)", "price": 23000, "days": 7, "regions": ["kansai", "sanyo"]},
+    {"id": "jr-tokyo-wide-3", "name": "JR 東京廣域周遊券 (3日)", "price": 15000, "days": 3, "regions": ["kanto"]},
+    {"id": "jr-east-tohoku-5", "name": "JR 東日本鐵路周遊券・東北地區 (5日)", "price": 30000, "days": 5, "regions": ["kanto", "tohoku"]},
+    {"id": "jr-east-nagano-niigata-5", "name": "JR 東日本鐵路周遊券・長野新潟 (5日)", "price": 27000, "days": 5, "regions": ["kanto", "chubu"]},
+    {"id": "jr-hokkaido-5", "name": "JR 北海道鐵路周遊券 (5日)", "price": 20000, "days": 5, "regions": ["hokkaido"]},
+    {"id": "jr-hokkaido-7", "name": "JR 北海道鐵路周遊券 (7日)", "price": 26000, "days": 7, "regions": ["hokkaido"]},
+    {"id": "jr-kyushu-north-3", "name": "JR 九州鐵路周遊券・北部九州 (3日)", "price": 12000, "days": 3, "regions": ["kyushu"]},
+    {"id": "jr-kyushu-all-5", "name": "JR 九州鐵路周遊券・全九州 (5日)", "price": 22000, "days": 5, "regions": ["kyushu"]},
+    {"id": "jr-takayama-hokuriku-5", "name": "JR 高山＆北陸地區周遊券 (5日)", "price": 19800, "days": 5, "regions": ["kansai", "chubu"]},
+    {"id": "jr-all-japan-7", "name": "全日本鐵路通票 JR PASS (7日)", "price": 50000, "days": 7, "regions": ["all"]},
+]
+
 BASE_FLIGHTS = {
     # ================= 關西 Kansai (KIX) =================
     "AK176": {"airline": "AirAsia 亞洲航空", "airport": "關西國際機場 (KIX)", "terminal": "T1", "time": "19:30", "aircraft": "A321neo", "region": "kansai"},
     "AK177": {"airline": "AirAsia 亞洲航空", "airport": "關西國際機場 (KIX)", "terminal": "T1", "time": "20:45", "aircraft": "A321neo", "region": "kansai"},
-    "IT210": {"airline": "台灣虎航 Tigerair Taiwan", "airport": "東京成田機場 (NRT)", "terminal": "T2", "time": "10:40", "aircraft": "A320neo", "region": "kanto"},
-    "IT211": {"airline": "台灣虎航 Tigerair Taiwan", "airport": "東京成田機場 (NRT)", "terminal": "T2", "time": "11:40", "aircraft": "A320neo", "region": "kanto"},
     "IT252": {"airline": "台灣虎航 Tigerair Taiwan", "airport": "大阪關西機場 (KIX)", "terminal": "T1", "time": "14:55", "aircraft": "A320neo", "region": "kansai"},
     "IT253": {"airline": "台灣虎航 Tigerair Taiwan", "airport": "大阪關西機場 (KIX)", "terminal": "T1", "time": "15:55", "aircraft": "A320neo", "region": "kansai"},
     "IT284": {"airline": "台灣虎航 Tigerair Taiwan", "airport": "大阪關西機場 (KIX)", "terminal": "T1", "time": "18:20", "aircraft": "A320neo", "region": "kansai"},
@@ -38,6 +56,8 @@ BASE_FLIGHTS = {
     # ================= 關東 Kanto (NRT / HND) =================
     "IT200": {"airline": "台灣虎航 Tigerair Taiwan", "airport": "東京成田機場 (NRT)", "terminal": "T2", "time": "10:10", "aircraft": "A320neo", "region": "kanto"},
     "IT202": {"airline": "台灣虎航 Tigerair Taiwan", "airport": "東京成田機場 (NRT)", "terminal": "T2", "time": "13:15", "aircraft": "A320neo", "region": "kanto"},
+    "IT210": {"airline": "台灣虎航 Tigerair Taiwan", "airport": "東京成田機場 (NRT)", "terminal": "T2", "time": "10:40", "aircraft": "A320neo", "region": "kanto"},
+    "IT211": {"airline": "台灣虎航 Tigerair Taiwan", "airport": "東京成田機場 (NRT)", "terminal": "T2", "time": "11:40", "aircraft": "A320neo", "region": "kanto"},
     "MM622": {"airline": "樂桃航空 Peach Aviation", "airport": "東京成田機場 (NRT)", "terminal": "T1", "time": "11:25", "aircraft": "A320neo", "region": "kanto"},
     "BR196": {"airline": "長榮航空 EVA Air", "airport": "東京成田機場 (NRT)", "terminal": "T1", "time": "12:50", "aircraft": "B787-9", "region": "kanto"},
     "BR184": {"airline": "長榮航空 EVA Air", "airport": "東京成田機場 (NRT)", "terminal": "T1", "time": "19:15", "aircraft": "B787-10", "region": "kanto"},
@@ -199,7 +219,7 @@ def load_existing_db(path: str = "db.json") -> dict:
         return {}
 
 
-def call_gemini_fast(api_key: str, prompt: str, models: list[str], timeout_sec: int = 25, max_retries: int = 1) -> tuple[dict | None, str, str]:
+def call_gemini_delta(api_key: str, prompt: str, models: list[str], timeout_sec: int = 25) -> tuple[dict | None, str, str]:
     scheme = "https"
     host = "generativelanguage.googleapis.com"
     fence = chr(96) * 3
@@ -215,48 +235,38 @@ def call_gemini_fast(api_key: str, prompt: str, models: list[str], timeout_sec: 
 
     for model_name in models:
         url = f"{scheme}://{host}/v1beta/models/{model_name}:generateContent?key={api_key}"
-        for attempt in range(1, max_retries + 2):
-            log(f"→ 呼叫模型 {model_name} (第 {attempt} 次，逾時 {timeout_sec}s)...")
-            req = urllib.request.Request(
-                url,
-                data=payload_bytes,
-                headers={"Content-Type": "application/json"},
-                method="POST",
-            )
-            try:
-                with urllib.request.urlopen(req, timeout=timeout_sec) as resp:
-                    res_data = json.loads(resp.read().decode("utf-8"))
-                    raw_text = res_data["candidates"][0]["content"]["parts"][0]["text"].strip()
-                    if raw_text.startswith(fence):
-                        raw_text = raw_text.split("\n", 1)[-1]
-                    if raw_text.endswith(fence):
-                        raw_text = raw_text.rsplit(fence, 1)[0]
-                    parsed = json.loads(raw_text.strip())
-                    if isinstance(parsed, dict):
-                        return parsed, model_name, ""
-                    last_err = f"模型 {model_name} 回傳非 JSON 物件"
-                    break
-            except urllib.error.HTTPError as e:
-                err_body = e.read().decode("utf-8", errors="ignore")[:200]
-                last_err = f"模型 {model_name} HTTP {e.code}: {err_body}"
-                log(f"  ✗ {last_err}")
-                if e.code in (429, 503) and attempt <= max_retries:
-                    time.sleep(2)
-                    continue
-                break
-            except Exception as e:
-                last_err = f"模型 {model_name} 錯誤: {e}"
-                log(f"  ✗ {last_err}")
-                if attempt <= max_retries:
-                    time.sleep(2)
-                    continue
-                break
+        log(f"→ 呼叫模型 {model_name} (逾時 {timeout_sec}s)...")
+        req = urllib.request.Request(
+            url,
+            data=payload_bytes,
+            headers={"Content-Type": "application/json"},
+            method="POST",
+        )
+        try:
+            with urllib.request.urlopen(req, timeout=timeout_sec) as resp:
+                res_data = json.loads(resp.read().decode("utf-8"))
+                raw_text = res_data["candidates"][0]["content"]["parts"][0]["text"].strip()
+                if raw_text.startswith(fence):
+                    raw_text = raw_text.split("\n", 1)[-1]
+                if raw_text.endswith(fence):
+                    raw_text = raw_text.rsplit(fence, 1)[0]
+                parsed = json.loads(raw_text.strip())
+                if isinstance(parsed, dict):
+                    return parsed, model_name, ""
+                last_err = f"模型 {model_name} 回傳非 JSON 物件"
+        except urllib.error.HTTPError as e:
+            err_body = e.read().decode("utf-8", errors="ignore")[:180]
+            last_err = f"模型 {model_name} HTTP {e.code}: {err_body}"
+            log(f"  ✗ {last_err}")
+        except Exception as e:
+            last_err = f"模型 {model_name} 錯誤: {e}"
+            log(f"  ✗ {last_err}")
 
     return None, "", last_err
 
 
 def main() -> None:
-    log("=== 開始執行 update_db.py ===")
+    log("=== 開始執行 update_db.py（增量輕量模式） ===")
     api_key = os.environ.get("GEMINI_API_KEY", "").strip()
     if not api_key:
         raise RuntimeError("找不到 GEMINI_API_KEY，請確認 GitHub Secrets 中已新增該名稱！")
@@ -279,25 +289,37 @@ def main() -> None:
     for k, v in prev_flights_clean.items():
         baseline_seed[k] = dict(v)
 
-    log(f"基準航班數：{len(baseline_seed)} 班，開始組裝 Prompt...")
+    # 合併既有 JR PASS 與基礎 17 種 JR PASS
+    jr_map = {item["id"]: dict(item) for item in BASE_JR_PASSES}
+    prev_jr = existing_db.get("jr_passes")
+    if isinstance(prev_jr, list):
+        for item in prev_jr:
+            if isinstance(item, dict) and item.get("id"):
+                jr_map[item["id"]] = dict(item)
+
+    # 精簡摘錄航班清單供增量核對（避免 Prompt 過長）
+    flight_summary_lines = [
+        f"{k}: {v.get('airline')} {v.get('airport')} {v.get('terminal')} {v.get('time')} ({v.get('aircraft')})"
+        for k, v in sorted(baseline_seed.items())
+    ]
 
     prompt = f"""你是台日航線與日本旅遊資料核對助手。今天是台灣時間 {tw_time}。
-請完成以下兩項工作，並嚴格只回傳純 JSON（不要任何 markdown 標記或說明文字）：
+為了快速回應，請只輸出「有變動或新增的項目」以及「當季精選活動」，嚴格回傳純 JSON（不要 markdown）：
 
-1. 針對以下台日熱門航班進行當季時刻、降落/起飛機場、航廈與機型核對，若發現與參考資料不同請修正為最新班表，並可補充 2～5 班常見台日直飛航班：
-{json.dumps(baseline_seed, ensure_ascii=False)}
+1. 檢查以下台日航班清單，**只列出與最新班表不同的修正航班，以及補充 2～4 班熱門台日直飛新航班**（沒有變動的航班不要重複輸出）：
+{chr(10).join(flight_summary_lines)}
 
-2. 針對日本 7 大地區（kansai 關西、kanto 關東、hokkaido 北海道、kyushu 九州、chubu 中部北陸、tohoku 東北、sanyo 山陽山陰四國），每個地區列出 2 筆（共 14 筆）近期或當季真實存在的限定祭典、夜間點燈或周邊順遊景點。
+2. 針對日本 7 大地區（kansai, kanto, hokkaido, kyushu, chubu, tohoku, sanyo），每個地區列出 2 筆（共 14 筆）當季限定祭典、點燈或順遊景點。
 
-回傳 JSON 格式如下：
+回傳 JSON 格式：
 {{
-  "flights": {{
-    "AK176": {{
-      "airline": "AirAsia 亞洲航空",
-      "airport": "關西國際機場 (KIX)",
+  "updated_flights": {{
+    "航班號": {{
+      "airline": "航空公司",
+      "airport": "機場名稱 (代碼)",
       "terminal": "T1",
-      "time": "19:30",
-      "aircraft": "A321neo",
+      "time": "HH:MM",
+      "aircraft": "機型",
       "region": "kansai"
     }}
   }},
@@ -307,26 +329,26 @@ def main() -> None:
       "region": "kansai",
       "months": [11, 12, 1],
       "category": "光影花火",
-      "title": "活動或景點名稱",
-      "location": "具體地點與最近車站",
-      "dateLabel": "舉辦月份或特色",
+      "title": "活動名稱",
+      "location": "地點與最近車站",
+      "dateLabel": "舉辦月份",
       "duration": 90,
       "isIndoor": false,
-      "desc": "45字內精簡亮點與順遊建議"
+      "desc": "40字內亮點說明"
     }}
   ]
 }}"""
 
     models = ["gemini-3.5-flash", "gemini-3.8-flash", "gemini-3-flash-preview"]
-    parsed, used_model, last_err = call_gemini_fast(api_key, prompt, models, timeout_sec=25, max_retries=1)
+    parsed, used_model, last_err = call_gemini_delta(api_key, prompt, models, timeout_sec=25)
 
     ai_flights = {}
     events = []
     fallback_used = False
 
     if parsed is not None:
-        log(f"✓ 成功使用模型 {used_model} 取得資料！")
-        ai_flights = parsed.get("flights") if isinstance(parsed.get("flights"), dict) else {}
+        log(f"✓ 成功使用模型 {used_model} 取得增量核對結果！")
+        ai_flights = parsed.get("updated_flights") if isinstance(parsed.get("updated_flights"), dict) else {}
         events = parsed.get("events") if isinstance(parsed.get("events"), list) else []
     else:
         fallback_used = True
@@ -350,9 +372,11 @@ def main() -> None:
         all_warnings.extend(warns)
 
     changes, added = diff_flights(prev_flights_clean, validated_flights)
+    jr_passes_list = list(jr_map.values())
 
     output = {
         "updated_at": tw_time,
+        "jr_passes": jr_passes_list,
         "flights": validated_flights,
         "events": events,
         "flight_audit": {
@@ -360,6 +384,7 @@ def main() -> None:
             "model_used": used_model if not fallback_used else "fallback_seed",
             "fallback_used": fallback_used,
             "total_flights": len(validated_flights),
+            "total_jr_passes": len(jr_passes_list),
             "added_count": len(added),
             "changed_count": len(changes),
             "warning_count": len(all_warnings),
@@ -372,9 +397,9 @@ def main() -> None:
     with open("db.json", "w", encoding="utf-8") as f:
         json.dump(output, f, ensure_ascii=False, indent=2)
 
-    log("\n================ 航班核對與變動摘要 ================")
-    log(f"核對時間：{tw_time}｜模式：{'保底寫入 (AI逾時/過載)' if fallback_used else f'AI 核對 ({used_model})'}")
-    log(f"航班總數：{len(validated_flights)} 班｜新增：{len(added)} 班｜變動：{len(changes)} 班｜欄位警告：{len(all_warnings)} 項")
+    log("\n================ 資料庫更新與核對摘要 ================")
+    log(f"核對時間：{tw_time}｜模式：{'保底寫入 (AI逾時/過載)' if fallback_used else f'增量核對 ({used_model})'}")
+    log(f"JR PASS 總數：{len(jr_passes_list)} 種｜航班總數：{len(validated_flights)} 班｜新增：{len(added)} 班｜變動：{len(changes)} 班")
     if added:
         log(f"新增航班：{', '.join(added)}")
     if changes:
@@ -387,12 +412,8 @@ def main() -> None:
             log(f"  - {item['flight_no']} ({', '.join(detail_parts)})")
     else:
         log("變動明細：與前次紀錄相比無欄位變更。")
-    if all_warnings:
-        log("欄位檢查提醒：")
-        for w in all_warnings:
-            log(f"  - {w}")
-    log(f"成功寫入 {len(events)} 筆活動與 {len(validated_flights)} 筆航班至 db.json")
-    log("===================================================\n")
+    log(f"成功寫入 {len(jr_passes_list)} 種 JR PASS、{len(events)} 筆活動與 {len(validated_flights)} 筆航班至 db.json")
+    log("======================================================\n")
 
 
 if __name__ == "__main__":
