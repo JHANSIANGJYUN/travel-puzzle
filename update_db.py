@@ -2,6 +2,7 @@ import datetime
 import json
 import os
 import re
+import time
 import urllib.error
 import urllib.request
 
@@ -196,6 +197,65 @@ def load_existing_db(path: str = "db.json") -> dict:
         return {}
 
 
+def call_gemini_with_retry(api_key: str, prompt: str, models: list[str], max_retries_per_model: int = 3) -> tuple[dict | None, str, str]:
+    """依序嘗試模型，遇到 429/503 暫時過載時自動退避重試；回傳 (parsed_dict, used_model, last_err)"""
+    scheme = "https"
+    host = "generativelanguage.googleapis.com"
+    fence = chr(96) * 3
+    last_err = ""
+
+    payload_bytes = json.dumps({
+        "contents": [{"parts": [{"text": prompt}]}],
+        "generationConfig": {
+            "responseMimeType": "application/json",
+            "thinkingConfig": {"thinkingBudget": 0},
+        },
+    }).encode("utf-8")
+
+    for model_name in models:
+        url = f"{scheme}://{host}/v1beta/models/{model_name}:generateContent?key={api_key}"
+        for attempt in range(1, max_retries_per_model + 1):
+            req = urllib.request.Request(
+                url,
+                data=payload_bytes,
+                headers={"Content-Type": "application/json"},
+                method="POST",
+            )
+            try:
+                with urllib.request.urlopen(req, timeout=120) as resp:
+                    res_data = json.loads(resp.read().decode("utf-8"))
+                    raw_text = res_data["candidates"][0]["content"]["parts"][0]["text"].strip()
+                    if raw_text.startswith(fence):
+                        raw_text = raw_text.split("\n", 1)[-1]
+                    if raw_text.endswith(fence):
+                        raw_text = raw_text.rsplit(fence, 1)[0]
+                    parsed = json.loads(raw_text.strip())
+                    if isinstance(parsed, dict):
+                        return parsed, model_name, ""
+                    last_err = f"模型 {model_name} 回傳非 JSON 物件"
+                    break
+            except urllib.error.HTTPError as e:
+                err_body = e.read().decode("utf-8", errors="ignore")
+                last_err = f"模型 {model_name} (第 {attempt}/{max_retries_per_model} 次) HTTP {e.code}: {err_body}"
+                print(last_err)
+                if e.code in (429, 503) and attempt < max_retries_per_model:
+                    sleep_sec = 2 ** attempt
+                    print(f"偵測到暫時性負載 ({e.code})，等待 {sleep_sec} 秒後重試...")
+                    time.sleep(sleep_sec)
+                    continue
+                break
+            except Exception as e:
+                last_err = f"模型 {model_name} (第 {attempt}/{max_retries_per_model} 次) 錯誤: {e}"
+                print(last_err)
+                if attempt < max_retries_per_model:
+                    sleep_sec = 2 ** attempt
+                    time.sleep(sleep_sec)
+                    continue
+                break
+
+    return None, "", last_err
+
+
 def main() -> None:
     api_key = os.environ.get("GEMINI_API_KEY", "").strip()
     if not api_key:
@@ -213,7 +273,6 @@ def main() -> None:
         if isinstance(k, str) and isinstance(v, dict)
     }
 
-    # 以 BASE_FLIGHTS 為完整基礎庫，並納入既有 db.json 紀錄作為比對基準
     baseline_seed = {}
     for k, v in BASE_FLIGHTS.items():
         baseline_seed[k] = dict(v)
@@ -256,52 +315,23 @@ def main() -> None:
   ]
 }}"""
 
-    scheme = "https"
-    host = "generativelanguage.googleapis.com"
     models = ["gemini-3.5-flash", "gemini-3.8-flash", "gemini-3-flash-preview"]
-    raw_text = ""
-    last_err = ""
+    parsed, used_model, last_err = call_gemini_with_retry(api_key, prompt, models, max_retries_per_model=3)
 
-    for m in models:
-        url = f"{scheme}://{host}/v1beta/models/{m}:generateContent?key={api_key}"
-        payload = {
-            "contents": [{"parts": [{"text": prompt}]}],
-            "generationConfig": {
-                "responseMimeType": "application/json",
-                "thinkingConfig": {"thinkingBudget": 0},
-            },
-        }
-        req = urllib.request.Request(
-            url,
-            data=json.dumps(payload).encode("utf-8"),
-            headers={"Content-Type": "application/json"},
-            method="POST",
-        )
-        try:
-            with urllib.request.urlopen(req, timeout=120) as resp:
-                res_data = json.loads(resp.read().decode("utf-8"))
-                raw_text = res_data["candidates"][0]["content"]["parts"][0]["text"].strip()
-                print(f"成功使用模型 {m} 取得資料！")
-                break
-        except urllib.error.HTTPError as e:
-            err_body = e.read().decode("utf-8", errors="ignore")
-            last_err = f"模型 {m} HTTP {e.code}: {err_body}"
-            print(last_err)
-        except Exception as e:
-            last_err = f"模型 {m} 錯誤: {e}"
-            print(last_err)
+    ai_flights = {}
+    events = []
+    fallback_used = False
 
-    if not raw_text:
-        raise RuntimeError(f"所有 Gemini 模型皆呼叫失敗，最後錯誤：{last_err}")
-
-    fence = chr(96) * 3
-    if raw_text.startswith(fence):
-        raw_text = raw_text.split("\n", 1)[-1]
-    if raw_text.endswith(fence):
-        raw_text = raw_text.rsplit(fence, 1)[0]
-
-    parsed = json.loads(raw_text.strip())
-    ai_flights = parsed.get("flights") if isinstance(parsed.get("flights"), dict) else {}
+    if parsed is not None:
+        print(f"成功使用模型 {used_model} 取得資料！")
+        ai_flights = parsed.get("flights") if isinstance(parsed.get("flights"), dict) else {}
+        events = parsed.get("events") if isinstance(parsed.get("events"), list) else []
+    else:
+        fallback_used = True
+        print(f"⚠️ 所有 Gemini 模型暫時無法回應，啟用本地基準保底寫入。最後錯誤：{last_err}")
+        prev_events = existing_db.get("events")
+        if isinstance(prev_events, list):
+            events = prev_events
 
     merged_candidates = dict(baseline_seed)
     for k, v in ai_flights.items():
@@ -318,7 +348,6 @@ def main() -> None:
         all_warnings.extend(warns)
 
     changes, added = diff_flights(prev_flights_clean, validated_flights)
-    events = parsed.get("events") if isinstance(parsed.get("events"), list) else []
 
     output = {
         "updated_at": tw_time,
@@ -326,6 +355,8 @@ def main() -> None:
         "events": events,
         "flight_audit": {
             "checked_at": tw_time,
+            "model_used": used_model if not fallback_used else "fallback_seed",
+            "fallback_used": fallback_used,
             "total_flights": len(validated_flights),
             "added_count": len(added),
             "changed_count": len(changes),
@@ -340,7 +371,7 @@ def main() -> None:
         json.dump(output, f, ensure_ascii=False, indent=2)
 
     print("\n================ 航班核對與變動摘要 ================")
-    print(f"核對時間：{tw_time}")
+    print(f"核對時間：{tw_time}｜模式：{'保底寫入 (503/過載)' if fallback_used else f'AI 核對 ({used_model})'}")
     print(f"航班總數：{len(validated_flights)} 班｜新增：{len(added)} 班｜變動：{len(changes)} 班｜欄位警告：{len(all_warnings)} 項")
     if added:
         print(f"新增航班：{', '.join(added)}")
