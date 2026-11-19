@@ -98,7 +98,42 @@ BASE_FLIGHTS = {
     "IT214": {"airline": "台灣虎航 Tigerair", "airport": "岡山桃太郎機場 (OKJ)", "terminal": "航廈", "time": "14:35", "aircraft": "A320", "region": "sanyo"},
     "IT215": {"airline": "台灣虎航 Tigerair", "airport": "岡山桃太郎機場 (OKJ)", "terminal": "航廈", "time": "15:25", "aircraft": "A320", "region": "sanyo"},
     "CI178": {"airline": "中華航空 China Airlines", "airport": "高松機場 (TAK)", "terminal": "航廈", "time": "17:55", "aircraft": "A321neo", "region": "sanyo"},
-    "CI179": {"airline": "中華航空 China Airlines", "airport": "高松機場 (TAK)", "terminal": "航廈", "time": "18:55", "aircraft": "A321neo", "region": "sanyo"}
+    "CI179": {"airline": "中華航空 China Airlines", "airport": "高松機場 (TAK)", "terminal": "航廈", "time": "18:55", "aircraft": "A321neo", "region": "sanyo"},
+
+    # --- 沖繩那霸 (OKA) & 離島 ---
+    "IT230": {"airline": "台灣虎航 Tigerair", "airport": "那霸機場 (OKA)", "terminal": "國際線", "time": "09:20", "aircraft": "A320neo", "region": "kyushu"},
+    "IT231": {"airline": "台灣虎航 Tigerair", "airport": "那霸機場 (OKA)", "terminal": "國際線", "time": "10:15", "aircraft": "A320neo", "region": "kyushu"},
+    "IT232": {"airline": "台灣虎航 Tigerair", "airport": "那霸機場 (OKA)", "terminal": "國際線", "time": "20:35", "aircraft": "A320", "region": "kyushu"},
+    "IT233": {"airline": "台灣虎航 Tigerair", "airport": "那霸機場 (OKA)", "terminal": "國際線", "time": "21:35", "aircraft": "A320", "region": "kyushu"},
+    "CI120": {"airline": "中華航空 China Airlines", "airport": "那霸機場 (OKA)", "terminal": "國際線", "time": "10:45", "aircraft": "A330-300", "region": "kyushu"},
+    "CI121": {"airline": "中華航空 China Airlines", "airport": "那霸機場 (OKA)", "terminal": "國際線", "time": "11:50", "aircraft": "A330-300", "region": "kyushu"},
+    "CI122": {"airline": "中華航空 China Airlines", "airport": "那霸機場 (OKA)", "terminal": "國際線", "time": "19:35", "aircraft": "A321neo", "region": "kyushu"},
+    "CI123": {"airline": "中華航空 China Airlines", "airport": "那霸機場 (OKA)", "terminal": "國際線", "time": "20:50", "aircraft": "A321neo", "region": "kyushu"},
+    "BR112": {"airline": "長榮航空 EVA Air", "airport": "那霸機場 (OKA)", "terminal": "國際線", "time": "09:15", "aircraft": "A321", "region": "kyushu"},
+    "BR111": {"airline": "長榮航空 EVA Air", "airport": "那霸機場 (OKA)", "terminal": "國際線", "time": "10:15", "aircraft": "A321", "region": "kyushu"},
+    "BR186": {"airline": "長榮航空 EVA Air", "airport": "那霸機場 (OKA)", "terminal": "國際線", "time": "18:55", "aircraft": "A321", "region": "kyushu"},
+    "BR185": {"airline": "長榮航空 EVA Air", "airport": "那霸機場 (OKA)", "terminal": "國際線", "time": "19:55", "aircraft": "A321", "region": "kyushu"},
+    "JX870": {"airline": "星宇航空 STARLUX", "airport": "那霸機場 (OKA)", "terminal": "國際線", "time": "12:15", "aircraft": "A321neo", "region": "kyushu"},
+    "JX871": {"airline": "星宇航空 STARLUX", "airport": "那霸機場 (OKA)", "terminal": "國際線", "time": "13:20", "aircraft": "A321neo", "region": "kyushu"},
+    "MM924": {"airline": "樂桃航空 Peach", "airport": "那霸機場 (OKA)", "terminal": "國際線", "time": "12:00", "aircraft": "A320neo", "region": "kyushu"},
+    "MM925": {"airline": "樂桃航空 Peach", "airport": "那霸機場 (OKA)", "terminal": "國際線", "time": "13:15", "aircraft": "A320neo", "region": "kyushu"},
+    "FD230": {"airline": "泰國亞洲航空 Thai AirAsia", "airport": "那霸機場 (OKA)", "terminal": "國際線", "time": "15:55", "aircraft": "A320", "region": "kyushu"},
+    "FD231": {"airline": "泰國亞洲航空 Thai AirAsia", "airport": "那霸機場 (OKA)", "terminal": "國際線", "time": "16:55", "aircraft": "A320", "region": "kyushu"},
+
+    # --- 其他日本二線直飛航點（旭川/花卷/秋田/佐賀/鹿兒島/新潟/富山） ---
+    "IT238": {"airline": "台灣虎航 Tigerair", "airport": "旭川機場 (AKJ)", "terminal": "航廈", "time": "11:15", "aircraft": "A320", "region": "hokkaido"},
+    "IT239": {"airline": "台灣虎航 Tigerair", "airport": "旭川機場 (AKJ)", "terminal": "航廈", "time": "12:15", "aircraft": "A320", "region": "hokkaido"},
+    "IT258": {"airline": "台灣虎航 Tigerair", "airport": "岩手花卷機場 (HNA)", "terminal": "航廈", "time": "16:10", "aircraft": "A320", "region": "tohoku"},
+    "IT259": {"airline": "台灣虎航 Tigerair", "airport": "岩手花卷機場 (HNA)", "terminal": "航廈", "time": "17:20", "aircraft": "A320", "region": "tohoku"},
+    "IT256": {"airline": "台灣虎航 Tigerair", "airport": "秋田機場 (AXT)", "terminal": "航廈", "time": "12:40", "aircraft": "A320", "region": "tohoku"},
+    "IT257": {"airline": "台灣虎航 Tigerair", "airport": "秋田機場 (AXT)", "terminal": "航廈", "time": "13:55", "aircraft": "A320", "region": "tohoku"},
+    "IT246": {"airline": "台灣虎航 Tigerair", "airport": "九州佐賀機場 (HSG)", "terminal": "航廈", "time": "10:45", "aircraft": "A320", "region": "kyushu"},
+    "IT247": {"airline": "台灣虎航 Tigerair", "airport": "九州佐賀機場 (HSG)", "terminal": "航廈", "time": "11:45", "aircraft": "A320", "region": "kyushu"},
+    "CI118": {"airline": "中華航空 China Airlines", "airport": "鹿兒島機場 (KOJ)", "terminal": "國際線", "time": "11:10", "aircraft": "A321neo", "region": "kyushu"},
+    "CI119": {"airline": "中華航空 China Airlines", "airport": "鹿兒島機場 (KOJ)", "terminal": "國際線", "time": "12:15", "aircraft": "A321neo", "region": "kyushu"},
+    "IT228": {"airline": "台灣虎航 Tigerair", "airport": "新潟機場 (KIJ)", "terminal": "航廈", "time": "18:00", "aircraft": "A320", "region": "chubu"},
+    "IT229": {"airline": "台灣虎航 Tigerair", "airport": "新潟機場 (KIJ)", "terminal": "航廈", "time": "19:00", "aircraft": "A320", "region": "chubu"}
+}
 }
 
 # 2. 官方 JR PASS 周遊券基礎資料庫（每日自動請 Gemini 核實最新日圓售價）
@@ -128,7 +163,7 @@ prompt = f"""你是一位日本旅遊與台日航空鐵道資料庫專家。請�
 
 2. 針對台日熱門航班，額外補充 10 班近期常態飛往日本（如日航 JL、全日空 NH、星宇 JX、虎航 IT、華航 CI、長榮 BR 飛東京/大阪/名古屋/九州/沖繩/東北）的航班時刻表（格式同下）。
 
-3. 針對日本 7 大旅遊地區（kansai 關西、kanto 關東、hokkaido 北海道、kyushu 九州、chubu 中部北陸、tohoku 東北、sanyo 山陽山陰四國），列出 14 個近期或當季真實存在的限定祭典、夜間點燈或周邊順遊景點。category 只能從「周邊順遊」、「傳統祭典」、「光影花火」、「賞花紅葉」、「季節美食」中選一。
+3. 針對日本 7 大旅遊地區（kansai 關西、kanto 關東、hokkaido 北海道、kyushu 九州、chubu 中部北陸、tohoku 東北、sanyo 山陽山陰四國），請「每個地區各自列出 5 個」（共 35 個）近期或當季真實存在的限定祭典、夜間點燈或周邊順遊景點，並確保 region 欄位精準對應（例如大阪京都神戶奈良必須填 kansai）。category 只能從「周邊順遊」、「傳統祭典」、「光影花火」、「賞花紅葉」、「季節美食」中選一。
 
 回傳 JSON 格式：
 {{
