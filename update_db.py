@@ -12,23 +12,54 @@ def log(msg: str) -> None:
 
 
 BASE_JR_PASSES = [
+    # ================= 關西 / 山陽山陰 / 北陸 =================
     {"id": "jr-kansai-1", "name": "JR 關西地區鐵路周遊券 (1日)", "price": 2800, "days": 1, "regions": ["kansai"]},
     {"id": "jr-kansai-2", "name": "JR 關西地區鐵路周遊券 (2日)", "price": 4800, "days": 2, "regions": ["kansai"]},
     {"id": "jr-kansai-3", "name": "JR 關西地區鐵路周遊券 (3日)", "price": 5800, "days": 3, "regions": ["kansai"]},
     {"id": "jr-kansai-4", "name": "JR 關西地區鐵路周遊券 (4日)", "price": 7000, "days": 4, "regions": ["kansai"]},
+    {"id": "jr-haruka-oneway", "name": "JR 關西機場特快 HARUKA 車票 (單程)", "price": 1800, "days": 1, "regions": ["kansai"]},
+    {"id": "jr-haruka-roundtrip", "name": "JR 關西機場特快 HARUKA 車票 (來回)", "price": 3600, "days": 14, "regions": ["kansai"]},
     {"id": "jr-kansai-wide-5", "name": "JR 關西廣域鐵路周遊券 (5日)", "price": 12000, "days": 5, "regions": ["kansai", "sanyo"]},
     {"id": "jr-kansai-hiroshima-5", "name": "JR 關西＆廣島地區鐵路周遊券 (5日)", "price": 17000, "days": 5, "regions": ["kansai", "sanyo"]},
     {"id": "jr-kansai-hokuriku-7", "name": "JR 關西＆北陸地區鐵路周遊券 (7日)", "price": 19000, "days": 7, "regions": ["kansai", "chubu"]},
     {"id": "jr-sanyo-sanin-7", "name": "JR 山陽＆山陰地區鐵路周遊券 (7日)", "price": 23000, "days": 7, "regions": ["kansai", "sanyo"]},
+    {"id": "jr-okayama-hiroshima-yamaguchi-5", "name": "JR 岡山＆廣島＆山口地區鐵路周遊券 (5日)", "price": 15000, "days": 5, "regions": ["sanyo"]},
+    {"id": "jr-kansai-mini-3", "name": "JR 關西迷你鐵路周遊券 (3日)", "price": 3000, "days": 3, "regions": ["kansai"]},
+
+    # ================= 關東 / 東日本 =================
     {"id": "jr-tokyo-wide-3", "name": "JR 東京廣域周遊券 (3日)", "price": 15000, "days": 3, "regions": ["kanto"]},
     {"id": "jr-east-tohoku-5", "name": "JR 東日本鐵路周遊券・東北地區 (5日)", "price": 30000, "days": 5, "regions": ["kanto", "tohoku"]},
     {"id": "jr-east-nagano-niigata-5", "name": "JR 東日本鐵路周遊券・長野新潟 (5日)", "price": 27000, "days": 5, "regions": ["kanto", "chubu"]},
+    {"id": "jr-tohoku-south-hokkaido-6", "name": "JR 東北・南北海道鐵路周遊券 (任選6日)", "price": 35370, "days": 6, "regions": ["tohoku", "hokkaido"]},
+
+    # ================= 北海道 =================
+    {"id": "jr-sapporo-furano-4", "name": "JR 札幌－富良野區域鐵路周遊券 (4日)", "price": 11000, "days": 4, "regions": ["hokkaido"]},
+    {"id": "jr-sapporo-noboribetsu-4", "name": "JR 札幌－登別區域鐵路周遊券 (4日)", "price": 10000, "days": 4, "regions": ["hokkaido"]},
     {"id": "jr-hokkaido-5", "name": "JR 北海道鐵路周遊券 (5日)", "price": 20000, "days": 5, "regions": ["hokkaido"]},
     {"id": "jr-hokkaido-7", "name": "JR 北海道鐵路周遊券 (7日)", "price": 26000, "days": 7, "regions": ["hokkaido"]},
+    {"id": "jr-hokkaido-10", "name": "JR 北海道鐵路周遊券 (10日)", "price": 32000, "days": 10, "regions": ["hokkaido"]},
+
+    # ================= 九州 =================
     {"id": "jr-kyushu-north-3", "name": "JR 九州鐵路周遊券・北部九州 (3日)", "price": 12000, "days": 3, "regions": ["kyushu"]},
+    {"id": "jr-kyushu-north-5", "name": "JR 九州鐵路周遊券・北部九州 (5日)", "price": 17000, "days": 5, "regions": ["kyushu"]},
+    {"id": "jr-kyushu-all-3", "name": "JR 九州鐵路周遊券・全九州 (3日)", "price": 15000, "days": 3, "regions": ["kyushu"]},
     {"id": "jr-kyushu-all-5", "name": "JR 九州鐵路周遊券・全九州 (5日)", "price": 22000, "days": 5, "regions": ["kyushu"]},
-    {"id": "jr-takayama-hokuriku-5", "name": "JR 高山＆北陸地區周遊券 (5日)", "price": 19800, "days": 5, "regions": ["kansai", "chubu"]},
+    {"id": "jr-kyushu-all-7", "name": "JR 九州鐵路周遊券・全九州 (7日)", "price": 25000, "days": 7, "regions": ["kyushu"]},
+
+    # ================= 中部 / 北陸 =================
+    {"id": "jr-takayama-hokuriku-5", "name": "JR 高山＆北陸地區鐵路周遊券 (5日)", "price": 19800, "days": 5, "regions": ["kansai", "chubu"]},
+    {"id": "jr-ise-kumano-wakayama-5", "name": "JR 伊勢・熊野・和歌山地區鐵路周遊券 (5日)", "price": 16500, "days": 5, "regions": ["chubu", "kansai"]},
+
+    # ================= 四國 =================
+    {"id": "jr-shikoku-3", "name": "JR 四國鐵路周遊券 (3日)", "price": 9000, "days": 3, "regions": ["sanyo"]},
+    {"id": "jr-shikoku-4", "name": "JR 四國鐵路周遊券 (4日)", "price": 10500, "days": 4, "regions": ["sanyo"]},
+    {"id": "jr-shikoku-5", "name": "JR 四國鐵路周遊券 (5日)", "price": 12000, "days": 5, "regions": ["sanyo"]},
+    {"id": "jr-shikoku-7", "name": "JR 四國鐵路周遊券 (7日)", "price": 14000, "days": 7, "regions": ["sanyo"]},
+
+    # ================= 全國通用 =================
     {"id": "jr-all-japan-7", "name": "全日本鐵路通票 JR PASS (7日)", "price": 50000, "days": 7, "regions": ["all"]},
+    {"id": "jr-all-japan-14", "name": "全日本鐵路通票 JR PASS (14日)", "price": 80000, "days": 14, "regions": ["all"]},
+    {"id": "jr-all-japan-21", "name": "全日本鐵路通票 JR PASS (21日)", "price": 100000, "days": 21, "regions": ["all"]},
 ]
 
 BASE_FLIGHTS = {
