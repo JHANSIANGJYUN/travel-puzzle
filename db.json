@@ -1,207 +1,5 @@
 {
-  "updated_at": "2026-11-19 21:06",
-  "jr_passes": [
-    {
-      "id": "jr-kansai-mini-3",
-      "name": "JR 關西迷你周遊券 (3日)",
-      "priceJpy": 3000,
-      "days": 3,
-      "regions": [
-        "kansai"
-      ],
-      "airportCovered": false,
-      "note": "涵蓋大阪・京都・神戶・奈良普通/快速（不含關西機場段）"
-    },
-    {
-      "id": "jr-kansai-area-1",
-      "name": "JR 關西地區鐵路周遊券 (1日)",
-      "priceJpy": 2800,
-      "days": 1,
-      "regions": [
-        "kansai"
-      ],
-      "airportCovered": true,
-      "note": "含關空特快 HARUKA 自由席＋京阪神奈良 JR"
-    },
-    {
-      "id": "jr-kansai-area-3",
-      "name": "JR 關西地區鐵路周遊券 (3日)",
-      "priceJpy": 5800,
-      "days": 3,
-      "regions": [
-        "kansai"
-      ],
-      "airportCovered": true,
-      "note": "含關空特快 HARUKA 自由席＋京阪神奈良姬路"
-    },
-    {
-      "id": "jr-kansai-wide-5",
-      "name": "JR 關西廣域鐵路周遊券 (5日)",
-      "priceJpy": 12000,
-      "days": 5,
-      "regions": [
-        "kansai",
-        "sanyo"
-      ],
-      "airportCovered": true,
-      "note": "含新幹線新大阪-岡山＋HARUKA＋天橋立・城崎・和歌山"
-    },
-    {
-      "id": "jr-kansai-hiroshima-5",
-      "name": "JR 關西＆廣島地區周遊券 (5日)",
-      "priceJpy": 17000,
-      "days": 5,
-      "regions": [
-        "kansai",
-        "sanyo"
-      ],
-      "airportCovered": true,
-      "note": "含山陽新幹線（新大阪-廣島）＋宮島渡輪＋HARUKA"
-    },
-    {
-      "id": "jr-sanyo-sanin-7",
-      "name": "JR 山陽＆山陰地區鐵路周遊券 (7日)",
-      "priceJpy": 23000,
-      "days": 7,
-      "regions": [
-        "kansai",
-        "sanyo"
-      ],
-      "airportCovered": true,
-      "note": "含山陽新幹線全線（新大阪-博多）＋出雲・鳥取・宮島"
-    },
-    {
-      "id": "jr-hokuriku-arch-7",
-      "name": "JR 北陸拱型鐵路周遊券 (7日)",
-      "priceJpy": 30000,
-      "days": 7,
-      "regions": [
-        "kansai",
-        "kanto",
-        "chubu"
-      ],
-      "airportCovered": true,
-      "note": "串聯關西機場・大阪・京都・金澤・長野與東京成田/羽田"
-    },
-    {
-      "id": "jr-tokyo-wide-3",
-      "name": "JR 東京廣域周遊券 (3日)",
-      "priceJpy": 15000,
-      "days": 3,
-      "regions": [
-        "kanto"
-      ],
-      "airportCovered": true,
-      "note": "含成田特快 N’EX＋富士回遊＋輕井澤・日光・越後湯澤新幹線"
-    },
-    {
-      "id": "jr-east-tohoku-5",
-      "name": "JR 東日本鐵路周遊券・東北地區 (5日)",
-      "priceJpy": 30000,
-      "days": 5,
-      "regions": [
-        "kanto",
-        "tohoku"
-      ],
-      "airportCovered": true,
-      "note": "含東京圈與東北新幹線全線（仙台・青森・秋田・盛岡）"
-    },
-    {
-      "id": "jr-hokkaido-5",
-      "name": "JR 北海道鐵路周遊券 (5日)",
-      "priceJpy": 21000,
-      "days": 5,
-      "regions": [
-        "hokkaido"
-      ],
-      "airportCovered": true,
-      "note": "含新千歲機場快速＋札幌・函館・旭川・富良野・釧路特急"
-    },
-    {
-      "id": "jr-hokkaido-7",
-      "name": "JR 北海道鐵路周遊券 (7日)",
-      "priceJpy": 27000,
-      "days": 7,
-      "regions": [
-        "hokkaido"
-      ],
-      "airportCovered": true,
-      "note": "北海道全線特急列車 7 日無限搭乘"
-    },
-    {
-      "id": "jr-north-kyushu-3",
-      "name": "JR 北九州鐵路周遊券 (3日)",
-      "priceJpy": 12000,
-      "days": 3,
-      "regions": [
-        "kyushu"
-      ],
-      "airportCovered": true,
-      "note": "含由布院之森＋博多・熊本・阿蘇・長崎・別府特急"
-    },
-    {
-      "id": "jr-north-kyushu-5",
-      "name": "JR 北九州鐵路周遊券 (5日)",
-      "priceJpy": 15000,
-      "days": 5,
-      "regions": [
-        "kyushu"
-      ],
-      "airportCovered": true,
-      "note": "含由布院之森・九州新幹線（博多-熊本）5 日暢遊"
-    },
-    {
-      "id": "jr-all-kyushu-5",
-      "name": "JR 全九州鐵路周遊券 (5日)",
-      "priceJpy": 22500,
-      "days": 5,
-      "regions": [
-        "kyushu"
-      ],
-      "airportCovered": true,
-      "note": "含鹿兒島・指宿玉手箱・宮崎與全九州新幹線"
-    },
-    {
-      "id": "jr-takayama-hokuriku-5",
-      "name": "JR 高山・北陸地區周遊券 (5日)",
-      "priceJpy": 19800,
-      "days": 5,
-      "regions": [
-        "kansai",
-        "chubu"
-      ],
-      "airportCovered": true,
-      "note": "含名古屋・高山・白川鄉濃飛巴士・金澤・京都・關西機場"
-    },
-    {
-      "id": "jr-all-shikoku-5",
-      "name": "JR 四國鐵路周遊券 (5日)",
-      "priceJpy": 18000,
-      "days": 5,
-      "regions": [
-        "sanyo"
-      ],
-      "airportCovered": false,
-      "note": "四國全線特急自由席無限搭乘（現行價格 18,000 日圓）"
-    },
-    {
-      "id": "jr-whole-japan-7",
-      "name": "JR 全日本鐵路通票 (7日普通車)",
-      "priceJpy": 50000,
-      "days": 7,
-      "regions": [
-        "kansai",
-        "kanto",
-        "hokkaido",
-        "kyushu",
-        "chubu",
-        "tohoku",
-        "sanyo"
-      ],
-      "airportCovered": true,
-      "note": "全國 JR 幹線與新幹線（除 Nozomi/Mizuho 外）7 日無限搭乘"
-    }
-  ],
+  "updated_at": "2026-11-19 22:39",
   "flights": {
     "AK176": {
       "airline": "AirAsia 亞洲航空",
@@ -209,7 +7,9 @@
       "terminal": "T1",
       "time": "19:30",
       "aircraft": "A321neo",
-      "region": "kansai"
+      "region": "kansai",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
     },
     "AK177": {
       "airline": "AirAsia 亞洲航空",
@@ -217,495 +17,9 @@
       "terminal": "T1",
       "time": "20:45",
       "aircraft": "A321neo",
-      "region": "kansai"
-    },
-    "D7378": {
-      "airline": "AirAsia X 亞航長程",
-      "airport": "關西國際機場 (KIX)",
-      "terminal": "T1",
-      "time": "22:05",
-      "aircraft": "A330-300",
-      "region": "kansai"
-    },
-    "D7379": {
-      "airline": "AirAsia X 亞航長程",
-      "airport": "關西國際機場 (KIX)",
-      "terminal": "T1",
-      "time": "23:25",
-      "aircraft": "A330-300",
-      "region": "kansai"
-    },
-    "IT210": {
-      "airline": "台灣虎航 Tigerair Taiwan",
-      "airport": "大阪關西國際機場 (KIX)",
-      "terminal": "T1",
-      "time": "06:40",
-      "aircraft": "A320-neo",
-      "region": "kansai"
-    },
-    "IT211": {
-      "airline": "台灣虎航 Tigerair",
-      "airport": "關西國際機場 (KIX)",
-      "terminal": "T1",
-      "time": "11:15",
-      "aircraft": "A320neo",
-      "region": "kansai"
-    },
-    "IT212": {
-      "airline": "台灣虎航 Tigerair",
-      "airport": "關西國際機場 (KIX)",
-      "terminal": "T1",
-      "time": "18:05",
-      "aircraft": "A320",
-      "region": "kansai"
-    },
-    "IT213": {
-      "airline": "台灣虎航 Tigerair",
-      "airport": "關西國際機場 (KIX)",
-      "terminal": "T1",
-      "time": "19:05",
-      "aircraft": "A320",
-      "region": "kansai"
-    },
-    "IT284": {
-      "airline": "台灣虎航 Tigerair (高雄出發)",
-      "airport": "關西國際機場 (KIX)",
-      "terminal": "T1",
-      "time": "10:40",
-      "aircraft": "A320",
-      "region": "kansai"
-    },
-    "IT285": {
-      "airline": "台灣虎航 Tigerair (飛往高雄)",
-      "airport": "關西國際機場 (KIX)",
-      "terminal": "T1",
-      "time": "11:40",
-      "aircraft": "A320",
-      "region": "kansai"
-    },
-    "MM24": {
-      "airline": "樂桃航空 Peach",
-      "airport": "關西國際機場 (KIX)",
-      "terminal": "T2",
-      "time": "13:15",
-      "aircraft": "A320neo",
-      "region": "kansai"
-    },
-    "MM27": {
-      "airline": "樂桃航空 Peach",
-      "airport": "關西國際機場 (KIX)",
-      "terminal": "T2",
-      "time": "15:55",
-      "aircraft": "A320neo",
-      "region": "kansai"
-    },
-    "MM28": {
-      "airline": "樂桃航空 Peach",
-      "airport": "關西國際機場 (KIX)",
-      "terminal": "T2",
-      "time": "22:25",
-      "aircraft": "A321LR",
-      "region": "kansai"
-    },
-    "MM29": {
-      "airline": "樂桃航空 Peach",
-      "airport": "關西國際機場 (KIX)",
-      "terminal": "T2",
-      "time": "23:20",
-      "aircraft": "A321LR",
-      "region": "kansai"
-    },
-    "JX820": {
-      "airline": "星宇航空 STARLUX",
-      "airport": "關西國際機場 (KIX)",
-      "terminal": "T1",
-      "time": "11:10",
-      "aircraft": "A330-900neo",
-      "region": "kansai"
-    },
-    "JX821": {
-      "airline": "星宇航空 STARLUX",
-      "airport": "關西國際機場 (KIX)",
-      "terminal": "T1",
-      "time": "12:20",
-      "aircraft": "A330-900neo",
-      "region": "kansai"
-    },
-    "JX822": {
-      "airline": "星宇航空 STARLUX",
-      "airport": "關西國際機場 (KIX)",
-      "terminal": "T1",
-      "time": "13:55",
-      "aircraft": "A321neo",
-      "region": "kansai"
-    },
-    "JX823": {
-      "airline": "星宇航空 STARLUX",
-      "airport": "關西國際機場 (KIX)",
-      "terminal": "T1",
-      "time": "15:05",
-      "aircraft": "A321neo",
-      "region": "kansai"
-    },
-    "BR132": {
-      "airline": "長榮航空 EVA Air",
-      "airport": "關西國際機場 (KIX)",
-      "terminal": "T1",
-      "time": "11:55",
-      "aircraft": "B787-10",
-      "region": "kansai"
-    },
-    "BR131": {
-      "airline": "長榮航空 EVA Air",
-      "airport": "關西國際機場 (KIX)",
-      "terminal": "T1",
-      "time": "12:55",
-      "aircraft": "B787-10",
-      "region": "kansai"
-    },
-    "BR178": {
-      "airline": "長榮航空 EVA Air",
-      "airport": "關西國際機場 (KIX)",
-      "terminal": "T1",
-      "time": "10:10",
-      "aircraft": "B787-9",
-      "region": "kansai"
-    },
-    "BR177": {
-      "airline": "長榮航空 EVA Air",
-      "airport": "關西國際機場 (KIX)",
-      "terminal": "T1",
-      "time": "11:10",
-      "aircraft": "B787-9",
-      "region": "kansai"
-    },
-    "CI156": {
-      "airline": "中華航空 China Airlines",
-      "airport": "大阪關西國際機場 (KIX)",
-      "terminal": "T1",
-      "time": "08:10",
-      "aircraft": "A330-300",
-      "region": "kansai"
-    },
-    "CI157": {
-      "airline": "中華航空 China Airlines",
-      "airport": "關西國際機場 (KIX)",
-      "terminal": "T1",
-      "time": "12:50",
-      "aircraft": "A350-900",
-      "region": "kansai"
-    },
-    "CI172": {
-      "airline": "中華航空 China Airlines",
-      "airport": "關西國際機場 (KIX)",
-      "terminal": "T1",
-      "time": "17:50",
-      "aircraft": "A330-300",
-      "region": "kansai"
-    },
-    "CI173": {
-      "airline": "中華航空 China Airlines",
-      "airport": "關西國際機場 (KIX)",
-      "terminal": "T1",
-      "time": "19:00",
-      "aircraft": "A330-300",
-      "region": "kansai"
-    },
-    "IT200": {
-      "airline": "台灣虎航 Tigerair",
-      "airport": "成田國際機場 (NRT)",
-      "terminal": "T2",
-      "time": "10:35",
-      "aircraft": "A320neo",
-      "region": "kanto"
-    },
-    "IT201": {
-      "airline": "台灣虎航 Tigerair",
-      "airport": "成田國際機場 (NRT)",
-      "terminal": "T2",
-      "time": "11:50",
-      "aircraft": "A320neo",
-      "region": "kanto"
-    },
-    "IT202": {
-      "airline": "台灣虎航 Tigerair",
-      "airport": "成田國際機場 (NRT)",
-      "terminal": "T2",
-      "time": "17:45",
-      "aircraft": "A320",
-      "region": "kanto"
-    },
-    "IT203": {
-      "airline": "台灣虎航 Tigerair",
-      "airport": "成田國際機場 (NRT)",
-      "terminal": "T2",
-      "time": "18:50",
-      "aircraft": "A320",
-      "region": "kanto"
-    },
-    "IT216": {
-      "airline": "台灣虎航 Tigerair",
-      "airport": "東京羽田機場 (HND)",
-      "terminal": "T3",
-      "time": "04:25",
-      "aircraft": "A320neo",
-      "region": "kanto"
-    },
-    "IT217": {
-      "airline": "台灣虎航 Tigerair",
-      "airport": "東京羽田機場 (HND)",
-      "terminal": "T3",
-      "time": "05:25",
-      "aircraft": "A320neo",
-      "region": "kanto"
-    },
-    "JX800": {
-      "airline": "星宇航空 STARLUX",
-      "airport": "東京成田國際機場 (NRT)",
-      "terminal": "T2",
-      "time": "08:30",
-      "aircraft": "A350-900",
-      "region": "kanto"
-    },
-    "JX801": {
-      "airline": "星宇航空 STARLUX",
-      "airport": "成田國際機場 (NRT)",
-      "terminal": "T2",
-      "time": "13:40",
-      "aircraft": "A350-900",
-      "region": "kanto"
-    },
-    "JX802": {
-      "airline": "星宇航空 STARLUX",
-      "airport": "成田國際機場 (NRT)",
-      "terminal": "T2",
-      "time": "14:45",
-      "aircraft": "A330-900neo",
-      "region": "kanto"
-    },
-    "JX803": {
-      "airline": "星宇航空 STARLUX",
-      "airport": "成田國際機場 (NRT)",
-      "terminal": "T2",
-      "time": "16:10",
-      "aircraft": "A330-900neo",
-      "region": "kanto"
-    },
-    "BR198": {
-      "airline": "長榮航空 EVA AIR",
-      "airport": "東京成田國際機場 (NRT)",
-      "terminal": "T1",
-      "time": "08:50",
-      "aircraft": "B777-300ER",
-      "region": "kanto"
-    },
-    "BR197": {
-      "airline": "長榮航空 EVA Air",
-      "airport": "成田國際機場 (NRT)",
-      "terminal": "T1",
-      "time": "14:00",
-      "aircraft": "B787-10",
-      "region": "kanto"
-    },
-    "BR192": {
-      "airline": "長榮航空 EVA Air (松山出發)",
-      "airport": "東京羽田機場 (HND)",
-      "terminal": "T3",
-      "time": "11:15",
-      "aircraft": "B787-10",
-      "region": "kanto"
-    },
-    "BR191": {
-      "airline": "長榮航空 EVA Air (飛往松山)",
-      "airport": "東京羽田機場 (HND)",
-      "terminal": "T3",
-      "time": "12:15",
-      "aircraft": "B787-10",
-      "region": "kanto"
-    },
-    "CI100": {
-      "airline": "中華航空 China Airlines",
-      "airport": "成田國際機場 (NRT)",
-      "terminal": "T2",
-      "time": "13:15",
-      "aircraft": "B777-300ER",
-      "region": "kanto"
-    },
-    "CI101": {
-      "airline": "中華航空 China Airlines",
-      "airport": "成田國際機場 (NRT)",
-      "terminal": "T2",
-      "time": "14:35",
-      "aircraft": "B777-300ER",
-      "region": "kanto"
-    },
-    "CI220": {
-      "airline": "中華航空 China Airlines (松山出發)",
-      "airport": "東京羽田機場 (HND)",
-      "terminal": "T3",
-      "time": "12:55",
-      "aircraft": "A330-300",
-      "region": "kanto"
-    },
-    "CI221": {
-      "airline": "中華航空 China Airlines (飛往松山)",
-      "airport": "東京羽田機場 (HND)",
-      "terminal": "T3",
-      "time": "14:15",
-      "aircraft": "A330-300",
-      "region": "kanto"
-    },
-    "TR898": {
-      "airline": "酷航 Scoot",
-      "airport": "成田國際機場 (NRT)",
-      "terminal": "T1",
-      "time": "10:45",
-      "aircraft": "B787-9",
-      "region": "kanto"
-    },
-    "TR899": {
-      "airline": "酷航 Scoot",
-      "airport": "成田國際機場 (NRT)",
-      "terminal": "T1",
-      "time": "11:45",
-      "aircraft": "B787-9",
-      "region": "kanto"
-    },
-    "IT234": {
-      "airline": "台灣虎航 Tigerair",
-      "airport": "新千歲機場 (CTS)",
-      "terminal": "國際線",
-      "time": "11:25",
-      "aircraft": "A320",
-      "region": "hokkaido"
-    },
-    "IT235": {
-      "airline": "台灣虎航 Tigerair",
-      "airport": "新千歲機場 (CTS)",
-      "terminal": "國際線",
-      "time": "12:25",
-      "aircraft": "A320",
-      "region": "hokkaido"
-    },
-    "IT236": {
-      "airline": "台灣虎航 Tigerair",
-      "airport": "函館機場 (HKD)",
-      "terminal": "國際線",
-      "time": "11:10",
-      "aircraft": "A320",
-      "region": "hokkaido"
-    },
-    "IT237": {
-      "airline": "台灣虎航 Tigerair",
-      "airport": "函館機場 (HKD)",
-      "terminal": "國際線",
-      "time": "12:20",
-      "aircraft": "A320",
-      "region": "hokkaido"
-    },
-    "BR116": {
-      "airline": "長榮航空 EVA Air",
-      "airport": "新千歲機場 (CTS)",
-      "terminal": "國際線",
-      "time": "14:05",
-      "aircraft": "B787-10",
-      "region": "hokkaido"
-    },
-    "BR115": {
-      "airline": "長榮航空 EVA Air",
-      "airport": "新千歲機場 (CTS)",
-      "terminal": "國際線",
-      "time": "15:20",
-      "aircraft": "B787-10",
-      "region": "hokkaido"
-    },
-    "CI130": {
-      "airline": "中華航空 China Airlines",
-      "airport": "新千歲機場 (CTS)",
-      "terminal": "國際線",
-      "time": "13:15",
-      "aircraft": "A330-300",
-      "region": "hokkaido"
-    },
-    "CI131": {
-      "airline": "中華航空 China Airlines",
-      "airport": "新千歲機場 (CTS)",
-      "terminal": "國際線",
-      "time": "14:40",
-      "aircraft": "A330-300",
-      "region": "hokkaido"
-    },
-    "JX850": {
-      "airline": "星宇航空 STARLUX",
-      "airport": "新千歲機場 (CTS)",
-      "terminal": "國際線",
-      "time": "14:00",
-      "aircraft": "A330-900neo",
-      "region": "hokkaido"
-    },
-    "JX851": {
-      "airline": "星宇航空 STARLUX",
-      "airport": "新千歲機場 (CTS)",
-      "terminal": "國際線",
-      "time": "15:15",
-      "aircraft": "A330-900neo",
-      "region": "hokkaido"
-    },
-    "IT240": {
-      "airline": "台灣虎航 Tigerair",
-      "airport": "福岡機場 (FUK)",
-      "terminal": "國際線",
-      "time": "10:00",
-      "aircraft": "A320neo",
-      "region": "kyushu"
-    },
-    "IT241": {
-      "airline": "台灣虎航 Tigerair",
-      "airport": "福岡機場 (FUK)",
-      "terminal": "國際線",
-      "time": "10:55",
-      "aircraft": "A320neo",
-      "region": "kyushu"
-    },
-    "JX840": {
-      "airline": "星宇航空 STARLUX",
-      "airport": "福岡機場 (FUK)",
-      "terminal": "國際線",
-      "time": "13:45",
-      "aircraft": "A321neo",
-      "region": "kyushu"
-    },
-    "JX841": {
-      "airline": "星宇航空 STARLUX",
-      "airport": "福岡機場 (FUK)",
-      "terminal": "國際線",
-      "time": "14:45",
-      "aircraft": "A321neo",
-      "region": "kyushu"
-    },
-    "JX846": {
-      "airline": "星宇航空 STARLUX",
-      "airport": "阿蘇熊本機場 (KMJ)",
-      "terminal": "國際線",
-      "time": "12:00",
-      "aircraft": "A321neo",
-      "region": "kyushu"
-    },
-    "JX847": {
-      "airline": "星宇航空 STARLUX",
-      "airport": "阿蘇熊本機場 (KMJ)",
-      "terminal": "國際線",
-      "time": "13:00",
-      "aircraft": "A321neo",
-      "region": "kyushu"
-    },
-    "BR106": {
-      "airline": "長榮航空 EVA Air",
-      "airport": "福岡機場 (FUK)",
-      "terminal": "國際線",
-      "time": "11:15",
-      "aircraft": "B787-9",
-      "region": "kyushu"
+      "region": "kansai",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
     },
     "BR105": {
       "airline": "長榮航空 EVA Air",
@@ -713,207 +27,19 @@
       "terminal": "國際線",
       "time": "12:15",
       "aircraft": "B787-9",
-      "region": "kyushu"
+      "region": "kyushu",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
     },
-    "CI110": {
-      "airline": "中華航空 China Airlines",
-      "airport": "福岡機場 (FUK)",
-      "terminal": "Intl",
-      "time": "06:50",
-      "aircraft": "A321-neo",
-      "region": "kyushu"
-    },
-    "CI111": {
-      "airline": "中華航空 China Airlines",
+    "BR106": {
+      "airline": "長榮航空 EVA Air",
       "airport": "福岡機場 (FUK)",
       "terminal": "國際線",
-      "time": "11:00",
-      "aircraft": "A350-900",
-      "region": "kyushu"
-    },
-    "IT206": {
-      "airline": "台灣虎航 Tigerair",
-      "airport": "中部國際機場 (NGO)",
-      "terminal": "T1",
-      "time": "12:50",
-      "aircraft": "A320",
-      "region": "chubu"
-    },
-    "IT207": {
-      "airline": "台灣虎航 Tigerair",
-      "airport": "中部國際機場 (NGO)",
-      "terminal": "T1",
-      "time": "13:45",
-      "aircraft": "A320",
-      "region": "chubu"
-    },
-    "JX838": {
-      "airline": "星宇航空 STARLUX",
-      "airport": "中部國際機場 (NGO)",
-      "terminal": "T1",
-      "time": "18:15",
-      "aircraft": "A321neo",
-      "region": "chubu"
-    },
-    "JX839": {
-      "airline": "星宇航空 STARLUX",
-      "airport": "中部國際機場 (NGO)",
-      "terminal": "T1",
-      "time": "19:15",
-      "aircraft": "A321neo",
-      "region": "chubu"
-    },
-    "BR158": {
-      "airline": "長榮航空 EVA Air",
-      "airport": "小松機場 (KMQ)",
-      "terminal": "航廈",
-      "time": "10:25",
-      "aircraft": "A321",
-      "region": "chubu"
-    },
-    "BR157": {
-      "airline": "長榮航空 EVA Air",
-      "airport": "小松機場 (KMQ)",
-      "terminal": "航廈",
-      "time": "11:45",
-      "aircraft": "A321",
-      "region": "chubu"
-    },
-    "IT254": {
-      "airline": "台灣虎航 Tigerair Taiwan",
-      "airport": "仙台機場 (SDJ)",
-      "terminal": "Intl",
-      "time": "13:45",
-      "aircraft": "A320",
-      "region": "tohoku"
-    },
-    "IT255": {
-      "airline": "台灣虎航 Tigerair",
-      "airport": "仙台機場 (SDJ)",
-      "terminal": "航廈",
-      "time": "19:00",
-      "aircraft": "A320",
-      "region": "tohoku"
-    },
-    "JX862": {
-      "airline": "星宇航空 STARLUX",
-      "airport": "仙台機場 (SDJ)",
-      "terminal": "航廈",
-      "time": "16:00",
-      "aircraft": "A321neo",
-      "region": "tohoku"
-    },
-    "JX863": {
-      "airline": "星宇航空 STARLUX",
-      "airport": "仙台機場 (SDJ)",
-      "terminal": "航廈",
-      "time": "17:15",
-      "aircraft": "A321neo",
-      "region": "tohoku"
-    },
-    "IT214": {
-      "airline": "台灣虎航 Tigerair",
-      "airport": "岡山桃太郎機場 (OKJ)",
-      "terminal": "航廈",
-      "time": "14:35",
-      "aircraft": "A320",
-      "region": "sanyo"
-    },
-    "IT215": {
-      "airline": "台灣虎航 Tigerair",
-      "airport": "岡山桃太郎機場 (OKJ)",
-      "terminal": "航廈",
-      "time": "15:25",
-      "aircraft": "A320",
-      "region": "sanyo"
-    },
-    "CI178": {
-      "airline": "中華航空 China Airlines",
-      "airport": "高松機場 (TAK)",
-      "terminal": "航廈",
-      "time": "17:55",
-      "aircraft": "A321neo",
-      "region": "sanyo"
-    },
-    "CI179": {
-      "airline": "中華航空 China Airlines",
-      "airport": "高松機場 (TAK)",
-      "terminal": "航廈",
-      "time": "18:55",
-      "aircraft": "A321neo",
-      "region": "sanyo"
-    },
-    "IT230": {
-      "airline": "台灣虎航 Tigerair",
-      "airport": "那霸機場 (OKA)",
-      "terminal": "國際線",
-      "time": "09:20",
-      "aircraft": "A320neo",
-      "region": "kyushu"
-    },
-    "IT231": {
-      "airline": "台灣虎航 Tigerair",
-      "airport": "那霸機場 (OKA)",
-      "terminal": "國際線",
-      "time": "10:15",
-      "aircraft": "A320neo",
-      "region": "kyushu"
-    },
-    "IT232": {
-      "airline": "台灣虎航 Tigerair",
-      "airport": "那霸機場 (OKA)",
-      "terminal": "國際線",
-      "time": "20:35",
-      "aircraft": "A320",
-      "region": "kyushu"
-    },
-    "IT233": {
-      "airline": "台灣虎航 Tigerair",
-      "airport": "那霸機場 (OKA)",
-      "terminal": "國際線",
-      "time": "21:35",
-      "aircraft": "A320",
-      "region": "kyushu"
-    },
-    "CI120": {
-      "airline": "中華航空 China Airlines",
-      "airport": "那霸機場 (OKA)",
-      "terminal": "國際線",
-      "time": "10:45",
-      "aircraft": "A330-300",
-      "region": "kyushu"
-    },
-    "CI121": {
-      "airline": "中華航空 China Airlines",
-      "airport": "那霸機場 (OKA)",
-      "terminal": "國際線",
-      "time": "11:50",
-      "aircraft": "A330-300",
-      "region": "kyushu"
-    },
-    "CI122": {
-      "airline": "中華航空 China Airlines",
-      "airport": "那霸機場 (OKA)",
-      "terminal": "國際線",
-      "time": "19:35",
-      "aircraft": "A321neo",
-      "region": "kyushu"
-    },
-    "CI123": {
-      "airline": "中華航空 China Airlines",
-      "airport": "那霸機場 (OKA)",
-      "terminal": "國際線",
-      "time": "20:50",
-      "aircraft": "A321neo",
-      "region": "kyushu"
-    },
-    "BR112": {
-      "airline": "長榮航空 EVA Air",
-      "airport": "那霸機場 (OKA)",
-      "terminal": "國際線",
-      "time": "09:15",
-      "aircraft": "A321",
-      "region": "kyushu"
+      "time": "11:15",
+      "aircraft": "B787-9",
+      "region": "kyushu",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
     },
     "BR111": {
       "airline": "長榮航空 EVA Air",
@@ -921,15 +47,139 @@
       "terminal": "國際線",
       "time": "10:15",
       "aircraft": "A321",
-      "region": "kyushu"
+      "region": "kyushu",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
     },
-    "BR186": {
+    "BR112": {
       "airline": "長榮航空 EVA Air",
       "airport": "那霸機場 (OKA)",
       "terminal": "國際線",
-      "time": "18:55",
+      "time": "09:15",
       "aircraft": "A321",
-      "region": "kyushu"
+      "region": "kyushu",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "BR115": {
+      "airline": "長榮航空 EVA Air",
+      "airport": "新千歲機場 (CTS)",
+      "terminal": "國際線",
+      "time": "15:20",
+      "aircraft": "B787-10",
+      "region": "hokkaido",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "BR116": {
+      "airline": "長榮航空 EVA Air",
+      "airport": "新千歲機場 (CTS)",
+      "terminal": "國際線",
+      "time": "14:05",
+      "aircraft": "B787-10",
+      "region": "hokkaido",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "BR118": {
+      "airline": "長榮航空 EVA Air",
+      "airport": "仙台機場 (SDJ)",
+      "terminal": "I",
+      "time": "14:25",
+      "aircraft": "A321-200",
+      "region": "tohoku",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "BR130": {
+      "airline": "長榮航空 EVA Air",
+      "airport": "大阪關西機場 (KIX)",
+      "terminal": "T1",
+      "time": "15:10",
+      "aircraft": "A321-200",
+      "region": "kansai",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "BR131": {
+      "airline": "長榮航空 EVA Air",
+      "airport": "關西國際機場 (KIX)",
+      "terminal": "T1",
+      "time": "12:55",
+      "aircraft": "B787-10",
+      "region": "kansai",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "BR132": {
+      "airline": "長榮航空 EVA Air",
+      "airport": "關西國際機場 (KIX)",
+      "terminal": "T1",
+      "time": "11:55",
+      "aircraft": "B787-10",
+      "region": "kansai",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "BR150": {
+      "airline": "長榮航空 EVA Air",
+      "airport": "名古屋中部國際機場 (NGO)",
+      "terminal": "T1",
+      "time": "11:30",
+      "aircraft": "A321-200",
+      "region": "chubu",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "BR157": {
+      "airline": "長榮航空 EVA Air",
+      "airport": "小松機場 (KMQ)",
+      "terminal": "航廈",
+      "time": "11:45",
+      "aircraft": "A321",
+      "region": "chubu",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "BR158": {
+      "airline": "長榮航空 EVA Air",
+      "airport": "小松機場 (KMQ)",
+      "terminal": "航廈",
+      "time": "10:25",
+      "aircraft": "A321",
+      "region": "chubu",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "BR177": {
+      "airline": "長榮航空 EVA Air",
+      "airport": "關西國際機場 (KIX)",
+      "terminal": "T1",
+      "time": "11:10",
+      "aircraft": "B787-9",
+      "region": "kansai",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "BR178": {
+      "airline": "長榮航空 EVA Air",
+      "airport": "關西國際機場 (KIX)",
+      "terminal": "T1",
+      "time": "10:10",
+      "aircraft": "B787-9",
+      "region": "kansai",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "BR184": {
+      "airline": "長榮航空 EVA Air",
+      "airport": "東京成田機場 (NRT)",
+      "terminal": "T1",
+      "time": "19:15",
+      "aircraft": "B787-10",
+      "region": "kanto",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
     },
     "BR185": {
       "airline": "長榮航空 EVA Air",
@@ -937,119 +187,149 @@
       "terminal": "國際線",
       "time": "19:55",
       "aircraft": "A321",
-      "region": "kyushu"
+      "region": "kyushu",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
     },
-    "JX870": {
-      "airline": "星宇航空 STARLUX",
+    "BR186": {
+      "airline": "長榮航空 EVA Air",
       "airport": "那霸機場 (OKA)",
       "terminal": "國際線",
+      "time": "18:55",
+      "aircraft": "A321",
+      "region": "kyushu",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "BR190": {
+      "airline": "長榮航空 EVA Air",
+      "airport": "東京羽田機場 (HND)",
+      "terminal": "T3",
+      "time": "20:30",
+      "aircraft": "B787-10",
+      "region": "kanto",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "BR191": {
+      "airline": "長榮航空 EVA Air (飛往松山)",
+      "airport": "東京羽田機場 (HND)",
+      "terminal": "T3",
       "time": "12:15",
-      "aircraft": "A321neo",
-      "region": "kyushu"
+      "aircraft": "B787-10",
+      "region": "kanto",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
     },
-    "JX871": {
-      "airline": "星宇航空 STARLUX",
-      "airport": "那霸機場 (OKA)",
-      "terminal": "國際線",
-      "time": "13:20",
-      "aircraft": "A321neo",
-      "region": "kyushu"
-    },
-    "MM924": {
-      "airline": "樂桃航空 Peach",
-      "airport": "那霸機場 (OKA)",
-      "terminal": "國際線",
-      "time": "12:00",
-      "aircraft": "A320neo",
-      "region": "kyushu"
-    },
-    "MM925": {
-      "airline": "樂桃航空 Peach",
-      "airport": "那霸機場 (OKA)",
-      "terminal": "國際線",
-      "time": "13:15",
-      "aircraft": "A320neo",
-      "region": "kyushu"
-    },
-    "FD230": {
-      "airline": "泰國亞洲航空 Thai AirAsia",
-      "airport": "那霸機場 (OKA)",
-      "terminal": "國際線",
-      "time": "15:55",
-      "aircraft": "A320",
-      "region": "kyushu"
-    },
-    "FD231": {
-      "airline": "泰國亞洲航空 Thai AirAsia",
-      "airport": "那霸機場 (OKA)",
-      "terminal": "國際線",
-      "time": "16:55",
-      "aircraft": "A320",
-      "region": "kyushu"
-    },
-    "IT238": {
-      "airline": "台灣虎航 Tigerair",
-      "airport": "旭川機場 (AKJ)",
-      "terminal": "航廈",
+    "BR192": {
+      "airline": "長榮航空 EVA Air (松山出發)",
+      "airport": "東京羽田機場 (HND)",
+      "terminal": "T3",
       "time": "11:15",
-      "aircraft": "A320",
-      "region": "hokkaido"
+      "aircraft": "B787-10",
+      "region": "kanto",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
     },
-    "IT239": {
-      "airline": "台灣虎航 Tigerair",
-      "airport": "旭川機場 (AKJ)",
-      "terminal": "航廈",
-      "time": "12:15",
-      "aircraft": "A320",
-      "region": "hokkaido"
+    "BR196": {
+      "airline": "長榮航空 EVA Air",
+      "airport": "東京成田機場 (NRT)",
+      "terminal": "T1",
+      "time": "12:50",
+      "aircraft": "B787-9",
+      "region": "kanto",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
     },
-    "IT258": {
-      "airline": "台灣虎航 Tigerair",
-      "airport": "岩手花卷機場 (HNA)",
-      "terminal": "航廈",
-      "time": "16:10",
-      "aircraft": "A320",
-      "region": "tohoku"
+    "BR197": {
+      "airline": "長榮航空 EVA Air",
+      "airport": "成田國際機場 (NRT)",
+      "terminal": "T1",
+      "time": "14:00",
+      "aircraft": "B787-10",
+      "region": "kanto",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
     },
-    "IT259": {
-      "airline": "台灣虎航 Tigerair",
-      "airport": "岩手花卷機場 (HNA)",
-      "terminal": "航廈",
-      "time": "17:20",
-      "aircraft": "A320",
-      "region": "tohoku"
+    "BR198": {
+      "airline": "長榮航空 EVA AIR",
+      "airport": "東京成田國際機場 (NRT)",
+      "terminal": "T1",
+      "time": "08:50",
+      "aircraft": "B777-300ER",
+      "region": "kanto",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
     },
-    "IT256": {
-      "airline": "台灣虎航 Tigerair",
-      "airport": "秋田機場 (AXT)",
-      "terminal": "航廈",
-      "time": "12:40",
-      "aircraft": "A320",
-      "region": "tohoku"
+    "CI100": {
+      "airline": "中華航空 China Airlines",
+      "airport": "成田國際機場 (NRT)",
+      "terminal": "T2",
+      "time": "13:15",
+      "aircraft": "B777-300ER",
+      "region": "kanto",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
     },
-    "IT257": {
-      "airline": "台灣虎航 Tigerair",
-      "airport": "秋田機場 (AXT)",
-      "terminal": "航廈",
-      "time": "13:55",
-      "aircraft": "A320",
-      "region": "tohoku"
+    "CI101": {
+      "airline": "中華航空 China Airlines",
+      "airport": "成田國際機場 (NRT)",
+      "terminal": "T2",
+      "time": "14:35",
+      "aircraft": "B777-300ER",
+      "region": "kanto",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
     },
-    "IT246": {
-      "airline": "台灣虎航 Tigerair",
-      "airport": "九州佐賀機場 (HSG)",
-      "terminal": "航廈",
-      "time": "10:45",
-      "aircraft": "A320",
-      "region": "kyushu"
+    "CI106": {
+      "airline": "中華航空 China Airlines",
+      "airport": "東京成田機場 (NRT)",
+      "terminal": "T2",
+      "time": "17:30",
+      "aircraft": "A330-300",
+      "region": "kanto",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
     },
-    "IT247": {
-      "airline": "台灣虎航 Tigerair",
-      "airport": "九州佐賀機場 (HSG)",
-      "terminal": "航廈",
-      "time": "11:45",
-      "aircraft": "A320",
-      "region": "kyushu"
+    "CI110": {
+      "airline": "中華航空 China Airlines",
+      "airport": "福岡機場 (FUK)",
+      "terminal": "Intl",
+      "time": "06:50",
+      "aircraft": "A321-neo",
+      "region": "kyushu",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "CI111": {
+      "airline": "中華航空 China Airlines",
+      "airport": "福岡機場 (FUK)",
+      "terminal": "國際線",
+      "time": "11:00",
+      "aircraft": "A350-900",
+      "region": "kyushu",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "CI112": {
+      "airline": "中華航空 China Airlines",
+      "airport": "廣島機場 (HIJ)",
+      "terminal": "I",
+      "time": "11:50",
+      "aircraft": "A321neo",
+      "region": "sanyo",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "CI116": {
+      "airline": "中華航空 China Airlines",
+      "airport": "福岡機場 (FUK)",
+      "terminal": "I",
+      "time": "16:25",
+      "aircraft": "A321neo",
+      "region": "kyushu",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
     },
     "CI118": {
       "airline": "中華航空 China Airlines",
@@ -1057,7 +337,9 @@
       "terminal": "國際線",
       "time": "11:10",
       "aircraft": "A321neo",
-      "region": "kyushu"
+      "region": "kyushu",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
     },
     "CI119": {
       "airline": "中華航空 China Airlines",
@@ -1065,39 +347,79 @@
       "terminal": "國際線",
       "time": "12:15",
       "aircraft": "A321neo",
-      "region": "kyushu"
+      "region": "kyushu",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
     },
-    "IT228": {
-      "airline": "台灣虎航 Tigerair",
-      "airport": "新潟機場 (KIJ)",
-      "terminal": "航廈",
-      "time": "18:00",
-      "aircraft": "A320",
-      "region": "chubu"
+    "CI120": {
+      "airline": "中華航空 China Airlines",
+      "airport": "那霸機場 (OKA)",
+      "terminal": "國際線",
+      "time": "10:45",
+      "aircraft": "A330-300",
+      "region": "kyushu",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
     },
-    "IT229": {
-      "airline": "台灣虎航 Tigerair",
-      "airport": "新潟機場 (KIJ)",
-      "terminal": "航廈",
-      "time": "19:00",
-      "aircraft": "A320",
-      "region": "chubu"
+    "CI121": {
+      "airline": "中華航空 China Airlines",
+      "airport": "那霸機場 (OKA)",
+      "terminal": "國際線",
+      "time": "11:50",
+      "aircraft": "A330-300",
+      "region": "kyushu",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
     },
-    "NH852": {
-      "airline": "全日空 ANA",
-      "airport": "東京羽田國際機場 (HND)",
-      "terminal": "T3",
-      "time": "13:30",
-      "aircraft": "B787-8",
-      "region": "kanto"
+    "CI122": {
+      "airline": "中華航空 China Airlines",
+      "airport": "那霸機場 (OKA)",
+      "terminal": "國際線",
+      "time": "19:35",
+      "aircraft": "A321neo",
+      "region": "kyushu",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
     },
-    "JL812": {
-      "airline": "日本航空 JAL",
-      "airport": "高雄小港 - 成田 (NRT)",
-      "terminal": "T2",
-      "time": "09:35",
-      "aircraft": "B767-300ER",
-      "region": "kanto"
+    "CI123": {
+      "airline": "中華航空 China Airlines",
+      "airport": "那霸機場 (OKA)",
+      "terminal": "國際線",
+      "time": "20:50",
+      "aircraft": "A321neo",
+      "region": "kyushu",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "CI130": {
+      "airline": "中華航空 China Airlines",
+      "airport": "新千歲機場 (CTS)",
+      "terminal": "國際線",
+      "time": "13:15",
+      "aircraft": "A330-300",
+      "region": "hokkaido",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "CI131": {
+      "airline": "中華航空 China Airlines",
+      "airport": "新千歲機場 (CTS)",
+      "terminal": "國際線",
+      "time": "14:40",
+      "aircraft": "A330-300",
+      "region": "hokkaido",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "CI150": {
+      "airline": "中華航空 China Airlines",
+      "airport": "名古屋中部國際機場 (NGO)",
+      "terminal": "T1",
+      "time": "10:45",
+      "aircraft": "A321neo",
+      "region": "chubu",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
     },
     "CI154": {
       "airline": "中華航空 China Airlines",
@@ -1105,7 +427,939 @@
       "terminal": "T1",
       "time": "07:30",
       "aircraft": "A350-900",
-      "region": "chubu"
+      "region": "chubu",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "CI156": {
+      "airline": "中華航空 China Airlines",
+      "airport": "大阪關西國際機場 (KIX)",
+      "terminal": "T1",
+      "time": "08:10",
+      "aircraft": "A330-300",
+      "region": "kansai",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "CI157": {
+      "airline": "中華航空 China Airlines",
+      "airport": "關西國際機場 (KIX)",
+      "terminal": "T1",
+      "time": "12:50",
+      "aircraft": "A350-900",
+      "region": "kansai",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "CI158": {
+      "airline": "中華航空 China Airlines",
+      "airport": "大阪關西機場 (KIX)",
+      "terminal": "T1",
+      "time": "14:35",
+      "aircraft": "A321neo",
+      "region": "kansai",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "CI170": {
+      "airline": "中華航空 China Airlines",
+      "airport": "富山機場 (TOY)",
+      "terminal": "I",
+      "time": "11:40",
+      "aircraft": "A321neo",
+      "region": "chubu",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "CI172": {
+      "airline": "中華航空 China Airlines",
+      "airport": "關西國際機場 (KIX)",
+      "terminal": "T1",
+      "time": "17:50",
+      "aircraft": "A330-300",
+      "region": "kansai",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "CI173": {
+      "airline": "中華航空 China Airlines",
+      "airport": "關西國際機場 (KIX)",
+      "terminal": "T1",
+      "time": "19:00",
+      "aircraft": "A330-300",
+      "region": "kansai",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "CI178": {
+      "airline": "中華航空 China Airlines",
+      "airport": "高松機場 (TAK)",
+      "terminal": "航廈",
+      "time": "17:55",
+      "aircraft": "A321neo",
+      "region": "sanyo",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "CI179": {
+      "airline": "中華航空 China Airlines",
+      "airport": "高松機場 (TAK)",
+      "terminal": "航廈",
+      "time": "18:55",
+      "aircraft": "A321neo",
+      "region": "sanyo",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "CI220": {
+      "airline": "中華航空 China Airlines (松山出發)",
+      "airport": "東京羽田機場 (HND)",
+      "terminal": "T3",
+      "time": "12:55",
+      "aircraft": "A330-300",
+      "region": "kanto",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "CI221": {
+      "airline": "中華航空 China Airlines (飛往松山)",
+      "airport": "東京羽田機場 (HND)",
+      "terminal": "T3",
+      "time": "14:15",
+      "aircraft": "A330-300",
+      "region": "kanto",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "CI222": {
+      "airline": "中華航空 China Airlines",
+      "airport": "東京羽田機場 (HND)",
+      "terminal": "T3",
+      "time": "18:20",
+      "aircraft": "A321neo",
+      "region": "kanto",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "CI278": {
+      "airline": "中華航空 China Airlines",
+      "airport": "高松機場 (TAK)",
+      "terminal": "I",
+      "time": "10:20",
+      "aircraft": "A321neo",
+      "region": "sanyo",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "D7378": {
+      "airline": "AirAsia X 亞航長程",
+      "airport": "關西國際機場 (KIX)",
+      "terminal": "T1",
+      "time": "22:05",
+      "aircraft": "A330-300",
+      "region": "kansai",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "D7379": {
+      "airline": "AirAsia X 亞航長程",
+      "airport": "關西國際機場 (KIX)",
+      "terminal": "T1",
+      "time": "23:25",
+      "aircraft": "A330-300",
+      "region": "kansai",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "FD230": {
+      "airline": "泰國亞洲航空 Thai AirAsia",
+      "airport": "那霸機場 (OKA)",
+      "terminal": "國際線",
+      "time": "15:55",
+      "aircraft": "A320",
+      "region": "kyushu",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "FD231": {
+      "airline": "泰國亞洲航空 Thai AirAsia",
+      "airport": "那霸機場 (OKA)",
+      "terminal": "國際線",
+      "time": "16:55",
+      "aircraft": "A320",
+      "region": "kyushu",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "IT200": {
+      "airline": "台灣虎航 Tigerair",
+      "airport": "成田國際機場 (NRT)",
+      "terminal": "T2",
+      "time": "10:35",
+      "aircraft": "A320neo",
+      "region": "kanto",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "IT201": {
+      "airline": "台灣虎航 Tigerair",
+      "airport": "成田國際機場 (NRT)",
+      "terminal": "T2",
+      "time": "11:50",
+      "aircraft": "A320neo",
+      "region": "kanto",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "IT202": {
+      "airline": "台灣虎航 Tigerair",
+      "airport": "成田國際機場 (NRT)",
+      "terminal": "T2",
+      "time": "17:45",
+      "aircraft": "A320",
+      "region": "kanto",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "IT203": {
+      "airline": "台灣虎航 Tigerair",
+      "airport": "成田國際機場 (NRT)",
+      "terminal": "T2",
+      "time": "18:50",
+      "aircraft": "A320",
+      "region": "kanto",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "IT206": {
+      "airline": "台灣虎航 Tigerair",
+      "airport": "中部國際機場 (NGO)",
+      "terminal": "T1",
+      "time": "12:50",
+      "aircraft": "A320",
+      "region": "chubu",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "IT207": {
+      "airline": "台灣虎航 Tigerair",
+      "airport": "中部國際機場 (NGO)",
+      "terminal": "T1",
+      "time": "13:45",
+      "aircraft": "A320",
+      "region": "chubu",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "IT210": {
+      "airline": "台灣虎航 Tigerair Taiwan",
+      "airport": "大阪關西國際機場 (KIX)",
+      "terminal": "T1",
+      "time": "06:40",
+      "aircraft": "A320-neo",
+      "region": "kansai",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "IT211": {
+      "airline": "台灣虎航 Tigerair",
+      "airport": "關西國際機場 (KIX)",
+      "terminal": "T1",
+      "time": "11:15",
+      "aircraft": "A320neo",
+      "region": "kansai",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "IT212": {
+      "airline": "台灣虎航 Tigerair",
+      "airport": "關西國際機場 (KIX)",
+      "terminal": "T1",
+      "time": "18:05",
+      "aircraft": "A320",
+      "region": "kansai",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "IT213": {
+      "airline": "台灣虎航 Tigerair",
+      "airport": "關西國際機場 (KIX)",
+      "terminal": "T1",
+      "time": "19:05",
+      "aircraft": "A320",
+      "region": "kansai",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "IT214": {
+      "airline": "台灣虎航 Tigerair",
+      "airport": "岡山桃太郎機場 (OKJ)",
+      "terminal": "航廈",
+      "time": "14:35",
+      "aircraft": "A320",
+      "region": "sanyo",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "IT215": {
+      "airline": "台灣虎航 Tigerair",
+      "airport": "岡山桃太郎機場 (OKJ)",
+      "terminal": "航廈",
+      "time": "15:25",
+      "aircraft": "A320",
+      "region": "sanyo",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "IT216": {
+      "airline": "台灣虎航 Tigerair",
+      "airport": "東京羽田機場 (HND)",
+      "terminal": "T3",
+      "time": "04:25",
+      "aircraft": "A320neo",
+      "region": "kanto",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "IT217": {
+      "airline": "台灣虎航 Tigerair",
+      "airport": "東京羽田機場 (HND)",
+      "terminal": "T3",
+      "time": "05:25",
+      "aircraft": "A320neo",
+      "region": "kanto",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "IT228": {
+      "airline": "台灣虎航 Tigerair",
+      "airport": "新潟機場 (KIJ)",
+      "terminal": "航廈",
+      "time": "18:00",
+      "aircraft": "A320",
+      "region": "chubu",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "IT229": {
+      "airline": "台灣虎航 Tigerair",
+      "airport": "新潟機場 (KIJ)",
+      "terminal": "航廈",
+      "time": "19:00",
+      "aircraft": "A320",
+      "region": "chubu",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "IT230": {
+      "airline": "台灣虎航 Tigerair",
+      "airport": "那霸機場 (OKA)",
+      "terminal": "國際線",
+      "time": "09:20",
+      "aircraft": "A320neo",
+      "region": "kyushu",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "IT231": {
+      "airline": "台灣虎航 Tigerair",
+      "airport": "那霸機場 (OKA)",
+      "terminal": "國際線",
+      "time": "10:15",
+      "aircraft": "A320neo",
+      "region": "kyushu",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "IT232": {
+      "airline": "台灣虎航 Tigerair",
+      "airport": "那霸機場 (OKA)",
+      "terminal": "國際線",
+      "time": "20:35",
+      "aircraft": "A320",
+      "region": "kyushu",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "IT233": {
+      "airline": "台灣虎航 Tigerair",
+      "airport": "那霸機場 (OKA)",
+      "terminal": "國際線",
+      "time": "21:35",
+      "aircraft": "A320",
+      "region": "kyushu",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "IT234": {
+      "airline": "台灣虎航 Tigerair",
+      "airport": "新千歲機場 (CTS)",
+      "terminal": "國際線",
+      "time": "11:25",
+      "aircraft": "A320",
+      "region": "hokkaido",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "IT235": {
+      "airline": "台灣虎航 Tigerair",
+      "airport": "新千歲機場 (CTS)",
+      "terminal": "國際線",
+      "time": "12:25",
+      "aircraft": "A320",
+      "region": "hokkaido",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "IT236": {
+      "airline": "台灣虎航 Tigerair",
+      "airport": "函館機場 (HKD)",
+      "terminal": "國際線",
+      "time": "11:10",
+      "aircraft": "A320",
+      "region": "hokkaido",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "IT237": {
+      "airline": "台灣虎航 Tigerair",
+      "airport": "函館機場 (HKD)",
+      "terminal": "國際線",
+      "time": "12:20",
+      "aircraft": "A320",
+      "region": "hokkaido",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "IT238": {
+      "airline": "台灣虎航 Tigerair",
+      "airport": "旭川機場 (AKJ)",
+      "terminal": "航廈",
+      "time": "11:15",
+      "aircraft": "A320",
+      "region": "hokkaido",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "IT239": {
+      "airline": "台灣虎航 Tigerair",
+      "airport": "旭川機場 (AKJ)",
+      "terminal": "航廈",
+      "time": "12:15",
+      "aircraft": "A320",
+      "region": "hokkaido",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "IT240": {
+      "airline": "台灣虎航 Tigerair",
+      "airport": "福岡機場 (FUK)",
+      "terminal": "國際線",
+      "time": "10:00",
+      "aircraft": "A320neo",
+      "region": "kyushu",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "IT241": {
+      "airline": "台灣虎航 Tigerair",
+      "airport": "福岡機場 (FUK)",
+      "terminal": "國際線",
+      "time": "10:55",
+      "aircraft": "A320neo",
+      "region": "kyushu",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "IT246": {
+      "airline": "台灣虎航 Tigerair",
+      "airport": "九州佐賀機場 (HSG)",
+      "terminal": "航廈",
+      "time": "10:45",
+      "aircraft": "A320",
+      "region": "kyushu",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "IT247": {
+      "airline": "台灣虎航 Tigerair",
+      "airport": "九州佐賀機場 (HSG)",
+      "terminal": "航廈",
+      "time": "11:45",
+      "aircraft": "A320",
+      "region": "kyushu",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "IT252": {
+      "airline": "台灣虎航 Tigerair Taiwan",
+      "airport": "大阪關西機場 (KIX)",
+      "terminal": "T1",
+      "time": "14:55",
+      "aircraft": "A320neo",
+      "region": "kansai",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "IT253": {
+      "airline": "台灣虎航 Tigerair Taiwan",
+      "airport": "大阪關西機場 (KIX)",
+      "terminal": "T1",
+      "time": "15:55",
+      "aircraft": "A320neo",
+      "region": "kansai",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "IT254": {
+      "airline": "台灣虎航 Tigerair Taiwan",
+      "airport": "仙台機場 (SDJ)",
+      "terminal": "Intl",
+      "time": "13:45",
+      "aircraft": "A320",
+      "region": "tohoku",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "IT255": {
+      "airline": "台灣虎航 Tigerair",
+      "airport": "仙台機場 (SDJ)",
+      "terminal": "航廈",
+      "time": "19:00",
+      "aircraft": "A320",
+      "region": "tohoku",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "IT256": {
+      "airline": "台灣虎航 Tigerair",
+      "airport": "秋田機場 (AXT)",
+      "terminal": "航廈",
+      "time": "12:40",
+      "aircraft": "A320",
+      "region": "tohoku",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "IT257": {
+      "airline": "台灣虎航 Tigerair",
+      "airport": "秋田機場 (AXT)",
+      "terminal": "航廈",
+      "time": "13:55",
+      "aircraft": "A320",
+      "region": "tohoku",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "IT258": {
+      "airline": "台灣虎航 Tigerair",
+      "airport": "岩手花卷機場 (HNA)",
+      "terminal": "航廈",
+      "time": "16:10",
+      "aircraft": "A320",
+      "region": "tohoku",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "IT259": {
+      "airline": "台灣虎航 Tigerair",
+      "airport": "岩手花卷機場 (HNA)",
+      "terminal": "航廈",
+      "time": "17:20",
+      "aircraft": "A320",
+      "region": "tohoku",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "IT284": {
+      "airline": "台灣虎航 Tigerair (高雄出發)",
+      "airport": "關西國際機場 (KIX)",
+      "terminal": "T1",
+      "time": "10:40",
+      "aircraft": "A320",
+      "region": "kansai",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "IT285": {
+      "airline": "台灣虎航 Tigerair (飛往高雄)",
+      "airport": "關西國際機場 (KIX)",
+      "terminal": "T1",
+      "time": "11:40",
+      "aircraft": "A320",
+      "region": "kansai",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "IT728": {
+      "airline": "台灣虎航 Tigerair Taiwan",
+      "airport": "新潟機場 (KIJ)",
+      "terminal": "I",
+      "time": "16:05",
+      "aircraft": "A320neo",
+      "region": "chubu",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "IT744": {
+      "airline": "台灣虎航 Tigerair Taiwan",
+      "airport": "宮崎機場 (KMI)",
+      "terminal": "I",
+      "time": "12:40",
+      "aircraft": "A320neo",
+      "region": "kyushu",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "IT746": {
+      "airline": "台灣虎航 Tigerair Taiwan",
+      "airport": "熊本機場 (KMJ)",
+      "terminal": "I",
+      "time": "10:50",
+      "aircraft": "A320neo",
+      "region": "kyushu",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "JL812": {
+      "airline": "日本航空 JAL",
+      "airport": "高雄小港 - 成田 (NRT)",
+      "terminal": "T2",
+      "time": "09:35",
+      "aircraft": "B767-300ER",
+      "region": "kanto",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "JL98": {
+      "airline": "日本航空 JAL",
+      "airport": "東京羽田機場 (HND)",
+      "terminal": "T3",
+      "time": "13:10",
+      "aircraft": "B787-8",
+      "region": "kanto",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "JX300": {
+      "airline": "星宇航空 STARLUX Airlines",
+      "airport": "高松機場 (TAK)",
+      "terminal": "I",
+      "time": "10:40",
+      "aircraft": "A321neo",
+      "region": "sanyo",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "JX800": {
+      "airline": "星宇航空 STARLUX",
+      "airport": "東京成田國際機場 (NRT)",
+      "terminal": "T2",
+      "time": "08:30",
+      "aircraft": "A350-900",
+      "region": "kanto",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "JX801": {
+      "airline": "星宇航空 STARLUX",
+      "airport": "成田國際機場 (NRT)",
+      "terminal": "T2",
+      "time": "13:40",
+      "aircraft": "A350-900",
+      "region": "kanto",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "JX802": {
+      "airline": "星宇航空 STARLUX",
+      "airport": "成田國際機場 (NRT)",
+      "terminal": "T2",
+      "time": "14:45",
+      "aircraft": "A330-900neo",
+      "region": "kanto",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "JX803": {
+      "airline": "星宇航空 STARLUX",
+      "airport": "成田國際機場 (NRT)",
+      "terminal": "T2",
+      "time": "16:10",
+      "aircraft": "A330-900neo",
+      "region": "kanto",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "JX820": {
+      "airline": "星宇航空 STARLUX",
+      "airport": "關西國際機場 (KIX)",
+      "terminal": "T1",
+      "time": "11:10",
+      "aircraft": "A330-900neo",
+      "region": "kansai",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "JX821": {
+      "airline": "星宇航空 STARLUX",
+      "airport": "關西國際機場 (KIX)",
+      "terminal": "T1",
+      "time": "12:20",
+      "aircraft": "A330-900neo",
+      "region": "kansai",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "JX822": {
+      "airline": "星宇航空 STARLUX",
+      "airport": "關西國際機場 (KIX)",
+      "terminal": "T1",
+      "time": "13:55",
+      "aircraft": "A321neo",
+      "region": "kansai",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "JX823": {
+      "airline": "星宇航空 STARLUX",
+      "airport": "關西國際機場 (KIX)",
+      "terminal": "T1",
+      "time": "15:05",
+      "aircraft": "A321neo",
+      "region": "kansai",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "JX832": {
+      "airline": "星宇航空 STARLUX Airlines",
+      "airport": "熊本機場 (KMJ)",
+      "terminal": "I",
+      "time": "13:15",
+      "aircraft": "A321neo",
+      "region": "kyushu",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "JX836": {
+      "airline": "星宇航空 STARLUX Airlines",
+      "airport": "名古屋中部國際機場 (NGO)",
+      "terminal": "T1",
+      "time": "12:10",
+      "aircraft": "A321neo",
+      "region": "chubu",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "JX838": {
+      "airline": "星宇航空 STARLUX",
+      "airport": "中部國際機場 (NGO)",
+      "terminal": "T1",
+      "time": "18:15",
+      "aircraft": "A321neo",
+      "region": "chubu",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "JX839": {
+      "airline": "星宇航空 STARLUX",
+      "airport": "中部國際機場 (NGO)",
+      "terminal": "T1",
+      "time": "19:15",
+      "aircraft": "A321neo",
+      "region": "chubu",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "JX840": {
+      "airline": "星宇航空 STARLUX",
+      "airport": "福岡機場 (FUK)",
+      "terminal": "國際線",
+      "time": "13:45",
+      "aircraft": "A321neo",
+      "region": "kyushu",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "JX841": {
+      "airline": "星宇航空 STARLUX",
+      "airport": "福岡機場 (FUK)",
+      "terminal": "國際線",
+      "time": "14:45",
+      "aircraft": "A321neo",
+      "region": "kyushu",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "JX842": {
+      "airline": "星宇航空 STARLUX Airlines",
+      "airport": "福岡機場 (FUK)",
+      "terminal": "I",
+      "time": "17:10",
+      "aircraft": "A321neo",
+      "region": "kyushu",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "JX846": {
+      "airline": "星宇航空 STARLUX",
+      "airport": "阿蘇熊本機場 (KMJ)",
+      "terminal": "國際線",
+      "time": "12:00",
+      "aircraft": "A321neo",
+      "region": "kyushu",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "JX847": {
+      "airline": "星宇航空 STARLUX",
+      "airport": "阿蘇熊本機場 (KMJ)",
+      "terminal": "國際線",
+      "time": "13:00",
+      "aircraft": "A321neo",
+      "region": "kyushu",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "JX850": {
+      "airline": "星宇航空 STARLUX",
+      "airport": "新千歲機場 (CTS)",
+      "terminal": "國際線",
+      "time": "14:00",
+      "aircraft": "A330-900neo",
+      "region": "hokkaido",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "JX851": {
+      "airline": "星宇航空 STARLUX",
+      "airport": "新千歲機場 (CTS)",
+      "terminal": "國際線",
+      "time": "15:15",
+      "aircraft": "A330-900neo",
+      "region": "hokkaido",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "JX860": {
+      "airline": "星宇航空 STARLUX Airlines",
+      "airport": "東京羽田機場 (HND)",
+      "terminal": "T3",
+      "time": "12:15",
+      "aircraft": "A321neo",
+      "region": "kanto",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "JX862": {
+      "airline": "星宇航空 STARLUX",
+      "airport": "仙台機場 (SDJ)",
+      "terminal": "航廈",
+      "time": "16:00",
+      "aircraft": "A321neo",
+      "region": "tohoku",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "JX863": {
+      "airline": "星宇航空 STARLUX",
+      "airport": "仙台機場 (SDJ)",
+      "terminal": "航廈",
+      "time": "17:15",
+      "aircraft": "A321neo",
+      "region": "tohoku",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "JX870": {
+      "airline": "星宇航空 STARLUX",
+      "airport": "那霸機場 (OKA)",
+      "terminal": "國際線",
+      "time": "12:15",
+      "aircraft": "A321neo",
+      "region": "kyushu",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "JX871": {
+      "airline": "星宇航空 STARLUX",
+      "airport": "那霸機場 (OKA)",
+      "terminal": "國際線",
+      "time": "13:20",
+      "aircraft": "A321neo",
+      "region": "kyushu",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "MM23": {
+      "airline": "樂桃航空 Peach Aviation",
+      "airport": "大阪關西機場 (KIX)",
+      "terminal": "T1",
+      "time": "10:15",
+      "aircraft": "A320neo",
+      "region": "kansai",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "MM24": {
+      "airline": "樂桃航空 Peach",
+      "airport": "關西國際機場 (KIX)",
+      "terminal": "T2",
+      "time": "13:15",
+      "aircraft": "A320neo",
+      "region": "kansai",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "MM27": {
+      "airline": "樂桃航空 Peach",
+      "airport": "關西國際機場 (KIX)",
+      "terminal": "T2",
+      "time": "15:55",
+      "aircraft": "A320neo",
+      "region": "kansai",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "MM28": {
+      "airline": "樂桃航空 Peach",
+      "airport": "關西國際機場 (KIX)",
+      "terminal": "T2",
+      "time": "22:25",
+      "aircraft": "A321LR",
+      "region": "kansai",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "MM29": {
+      "airline": "樂桃航空 Peach",
+      "airport": "關西國際機場 (KIX)",
+      "terminal": "T2",
+      "time": "23:20",
+      "aircraft": "A321LR",
+      "region": "kansai",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "MM58": {
+      "airline": "樂桃航空 Peach Aviation",
+      "airport": "福岡機場 (FUK)",
+      "terminal": "I",
+      "time": "14:45",
+      "aircraft": "A320neo",
+      "region": "kyushu",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "MM622": {
+      "airline": "樂桃航空 Peach Aviation",
+      "airport": "東京成田機場 (NRT)",
+      "terminal": "T1",
+      "time": "11:25",
+      "aircraft": "A320neo",
+      "region": "kanto",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
     },
     "MM922": {
       "airline": "樂桃航空 Peach",
@@ -1113,7 +1367,69 @@
       "terminal": "LCC",
       "time": "09:30",
       "aircraft": "A320",
-      "region": "kyushu"
+      "region": "kyushu",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "MM924": {
+      "airline": "樂桃航空 Peach",
+      "airport": "那霸機場 (OKA)",
+      "terminal": "國際線",
+      "time": "12:00",
+      "aircraft": "A320neo",
+      "region": "kyushu",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "MM925": {
+      "airline": "樂桃航空 Peach",
+      "airport": "那霸機場 (OKA)",
+      "terminal": "國際線",
+      "time": "13:15",
+      "aircraft": "A320neo",
+      "region": "kyushu",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "NH852": {
+      "airline": "全日空 ANA",
+      "airport": "東京羽田國際機場 (HND)",
+      "terminal": "T3",
+      "time": "13:30",
+      "aircraft": "B787-8",
+      "region": "kanto",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "TR820": {
+      "airline": "酷航 Scoot",
+      "airport": "大阪關西機場 (KIX)",
+      "terminal": "T1",
+      "time": "10:50",
+      "aircraft": "B787-8",
+      "region": "kansai",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "TR898": {
+      "airline": "酷航 Scoot",
+      "airport": "成田國際機場 (NRT)",
+      "terminal": "T1",
+      "time": "10:45",
+      "aircraft": "B787-9",
+      "region": "kanto",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "TR899": {
+      "airline": "酷航 Scoot",
+      "airport": "成田國際機場 (NRT)",
+      "terminal": "T1",
+      "time": "11:45",
+      "aircraft": "B787-9",
+      "region": "kanto",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
     }
   },
   "events": [
@@ -1823,5 +2139,47 @@
       "desc": "如電影般的跨海大橋，蔚藍海色極致療癒，山陽自駕首選景點。",
       "imageUrl": ""
     }
-  ]
+  ],
+  "flight_audit": {
+    "checked_at": "2026-11-19 22:39",
+    "model_used": "fallback_seed",
+    "fallback_used": true,
+    "total_flights": 143,
+    "added_count": 29,
+    "changed_count": 0,
+    "warning_count": 0,
+    "added_flights": [
+      "BR118",
+      "BR130",
+      "BR150",
+      "BR184",
+      "BR190",
+      "BR196",
+      "CI106",
+      "CI112",
+      "CI116",
+      "CI150",
+      "CI158",
+      "CI170",
+      "CI222",
+      "CI278",
+      "IT252",
+      "IT253",
+      "IT728",
+      "IT744",
+      "IT746",
+      "JL98",
+      "JX300",
+      "JX832",
+      "JX836",
+      "JX842",
+      "JX860",
+      "MM23",
+      "MM58",
+      "MM622",
+      "TR820"
+    ],
+    "changed_flights": [],
+    "warnings": []
+  }
 }
