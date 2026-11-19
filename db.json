@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-19 20:49",
+  "updated_at": "2026-11-19 21:06",
   "jr_passes": [
     {
       "id": "jr-kansai-mini-3",
@@ -176,13 +176,13 @@
     {
       "id": "jr-all-shikoku-5",
       "name": "JR 四國鐵路周遊券 (5日)",
-      "priceJpy": 20000,
+      "priceJpy": 18000,
       "days": 5,
       "regions": [
         "sanyo"
       ],
       "airportCovered": false,
-      "note": "四國全線特急自由席無限搭乘，2024售價調漲更新"
+      "note": "四國全線特急自由席無限搭乘（現行價格 18,000 日圓）"
     },
     {
       "id": "jr-whole-japan-7",
@@ -207,16 +207,16 @@
       "airline": "AirAsia 亞洲航空",
       "airport": "關西國際機場 (KIX)",
       "terminal": "T1",
-      "time": "14:30",
-      "aircraft": "A330-300",
+      "time": "19:30",
+      "aircraft": "A321neo",
       "region": "kansai"
     },
     "AK177": {
       "airline": "AirAsia 亞洲航空",
       "airport": "關西國際機場 (KIX)",
       "terminal": "T1",
-      "time": "15:45",
-      "aircraft": "A330-300",
+      "time": "20:45",
+      "aircraft": "A321neo",
       "region": "kansai"
     },
     "D7378": {
@@ -236,12 +236,12 @@
       "region": "kansai"
     },
     "IT210": {
-      "airline": "台灣虎航 Tigerair",
-      "airport": "福岡機場 (FUK)",
-      "terminal": "I",
-      "time": "06:45",
-      "aircraft": "A320neo",
-      "region": "kyushu"
+      "airline": "台灣虎航 Tigerair Taiwan",
+      "airport": "大阪關西國際機場 (KIX)",
+      "terminal": "T1",
+      "time": "06:40",
+      "aircraft": "A320-neo",
+      "region": "kansai"
     },
     "IT211": {
       "airline": "台灣虎航 Tigerair",
@@ -351,7 +351,7 @@
       "airline": "長榮航空 EVA Air",
       "airport": "關西國際機場 (KIX)",
       "terminal": "T1",
-      "time": "08:30",
+      "time": "11:55",
       "aircraft": "B787-10",
       "region": "kansai"
     },
@@ -381,10 +381,10 @@
     },
     "CI156": {
       "airline": "中華航空 China Airlines",
-      "airport": "關西國際機場 (KIX)",
+      "airport": "大阪關西國際機場 (KIX)",
       "terminal": "T1",
-      "time": "08:20",
-      "aircraft": "A350-900",
+      "time": "08:10",
+      "aircraft": "A330-300",
       "region": "kansai"
     },
     "CI157": {
@@ -460,8 +460,8 @@
       "region": "kanto"
     },
     "JX800": {
-      "airline": "星宇航空 Starlux",
-      "airport": "成田國際機場 (NRT)",
+      "airline": "星宇航空 STARLUX",
+      "airport": "東京成田國際機場 (NRT)",
       "terminal": "T2",
       "time": "08:30",
       "aircraft": "A350-900",
@@ -492,11 +492,11 @@
       "region": "kanto"
     },
     "BR198": {
-      "airline": "長榮航空 EVA Air",
-      "airport": "成田國際機場 (NRT)",
+      "airline": "長榮航空 EVA AIR",
+      "airport": "東京成田國際機場 (NRT)",
       "terminal": "T1",
-      "time": "12:55",
-      "aircraft": "B787-10",
+      "time": "08:50",
+      "aircraft": "B777-300ER",
       "region": "kanto"
     },
     "BR197": {
@@ -668,10 +668,10 @@
       "region": "kyushu"
     },
     "JX840": {
-      "airline": "星宇航空 Starlux",
-      "airport": "熊本機場 (KMJ)",
-      "terminal": "I",
-      "time": "07:45",
+      "airline": "星宇航空 STARLUX",
+      "airport": "福岡機場 (FUK)",
+      "terminal": "國際線",
+      "time": "13:45",
       "aircraft": "A321neo",
       "region": "kyushu"
     },
@@ -718,9 +718,9 @@
     "CI110": {
       "airline": "中華航空 China Airlines",
       "airport": "福岡機場 (FUK)",
-      "terminal": "國際線",
-      "time": "09:55",
-      "aircraft": "A350-900",
+      "terminal": "Intl",
+      "time": "06:50",
+      "aircraft": "A321-neo",
       "region": "kyushu"
     },
     "CI111": {
@@ -780,9 +780,9 @@
       "region": "chubu"
     },
     "IT254": {
-      "airline": "台灣虎航 Tigerair",
+      "airline": "台灣虎航 Tigerair Taiwan",
       "airport": "仙台機場 (SDJ)",
-      "terminal": "I",
+      "terminal": "Intl",
       "time": "13:45",
       "aircraft": "A320",
       "region": "tohoku"
@@ -843,99 +843,709 @@
       "aircraft": "A321neo",
       "region": "sanyo"
     },
+    "IT230": {
+      "airline": "台灣虎航 Tigerair",
+      "airport": "那霸機場 (OKA)",
+      "terminal": "國際線",
+      "time": "09:20",
+      "aircraft": "A320neo",
+      "region": "kyushu"
+    },
+    "IT231": {
+      "airline": "台灣虎航 Tigerair",
+      "airport": "那霸機場 (OKA)",
+      "terminal": "國際線",
+      "time": "10:15",
+      "aircraft": "A320neo",
+      "region": "kyushu"
+    },
+    "IT232": {
+      "airline": "台灣虎航 Tigerair",
+      "airport": "那霸機場 (OKA)",
+      "terminal": "國際線",
+      "time": "20:35",
+      "aircraft": "A320",
+      "region": "kyushu"
+    },
+    "IT233": {
+      "airline": "台灣虎航 Tigerair",
+      "airport": "那霸機場 (OKA)",
+      "terminal": "國際線",
+      "time": "21:35",
+      "aircraft": "A320",
+      "region": "kyushu"
+    },
+    "CI120": {
+      "airline": "中華航空 China Airlines",
+      "airport": "那霸機場 (OKA)",
+      "terminal": "國際線",
+      "time": "10:45",
+      "aircraft": "A330-300",
+      "region": "kyushu"
+    },
+    "CI121": {
+      "airline": "中華航空 China Airlines",
+      "airport": "那霸機場 (OKA)",
+      "terminal": "國際線",
+      "time": "11:50",
+      "aircraft": "A330-300",
+      "region": "kyushu"
+    },
+    "CI122": {
+      "airline": "中華航空 China Airlines",
+      "airport": "那霸機場 (OKA)",
+      "terminal": "國際線",
+      "time": "19:35",
+      "aircraft": "A321neo",
+      "region": "kyushu"
+    },
+    "CI123": {
+      "airline": "中華航空 China Airlines",
+      "airport": "那霸機場 (OKA)",
+      "terminal": "國際線",
+      "time": "20:50",
+      "aircraft": "A321neo",
+      "region": "kyushu"
+    },
+    "BR112": {
+      "airline": "長榮航空 EVA Air",
+      "airport": "那霸機場 (OKA)",
+      "terminal": "國際線",
+      "time": "09:15",
+      "aircraft": "A321",
+      "region": "kyushu"
+    },
+    "BR111": {
+      "airline": "長榮航空 EVA Air",
+      "airport": "那霸機場 (OKA)",
+      "terminal": "國際線",
+      "time": "10:15",
+      "aircraft": "A321",
+      "region": "kyushu"
+    },
+    "BR186": {
+      "airline": "長榮航空 EVA Air",
+      "airport": "那霸機場 (OKA)",
+      "terminal": "國際線",
+      "time": "18:55",
+      "aircraft": "A321",
+      "region": "kyushu"
+    },
+    "BR185": {
+      "airline": "長榮航空 EVA Air",
+      "airport": "那霸機場 (OKA)",
+      "terminal": "國際線",
+      "time": "19:55",
+      "aircraft": "A321",
+      "region": "kyushu"
+    },
+    "JX870": {
+      "airline": "星宇航空 STARLUX",
+      "airport": "那霸機場 (OKA)",
+      "terminal": "國際線",
+      "time": "12:15",
+      "aircraft": "A321neo",
+      "region": "kyushu"
+    },
+    "JX871": {
+      "airline": "星宇航空 STARLUX",
+      "airport": "那霸機場 (OKA)",
+      "terminal": "國際線",
+      "time": "13:20",
+      "aircraft": "A321neo",
+      "region": "kyushu"
+    },
+    "MM924": {
+      "airline": "樂桃航空 Peach",
+      "airport": "那霸機場 (OKA)",
+      "terminal": "國際線",
+      "time": "12:00",
+      "aircraft": "A320neo",
+      "region": "kyushu"
+    },
+    "MM925": {
+      "airline": "樂桃航空 Peach",
+      "airport": "那霸機場 (OKA)",
+      "terminal": "國際線",
+      "time": "13:15",
+      "aircraft": "A320neo",
+      "region": "kyushu"
+    },
+    "FD230": {
+      "airline": "泰國亞洲航空 Thai AirAsia",
+      "airport": "那霸機場 (OKA)",
+      "terminal": "國際線",
+      "time": "15:55",
+      "aircraft": "A320",
+      "region": "kyushu"
+    },
+    "FD231": {
+      "airline": "泰國亞洲航空 Thai AirAsia",
+      "airport": "那霸機場 (OKA)",
+      "terminal": "國際線",
+      "time": "16:55",
+      "aircraft": "A320",
+      "region": "kyushu"
+    },
+    "IT238": {
+      "airline": "台灣虎航 Tigerair",
+      "airport": "旭川機場 (AKJ)",
+      "terminal": "航廈",
+      "time": "11:15",
+      "aircraft": "A320",
+      "region": "hokkaido"
+    },
+    "IT239": {
+      "airline": "台灣虎航 Tigerair",
+      "airport": "旭川機場 (AKJ)",
+      "terminal": "航廈",
+      "time": "12:15",
+      "aircraft": "A320",
+      "region": "hokkaido"
+    },
+    "IT258": {
+      "airline": "台灣虎航 Tigerair",
+      "airport": "岩手花卷機場 (HNA)",
+      "terminal": "航廈",
+      "time": "16:10",
+      "aircraft": "A320",
+      "region": "tohoku"
+    },
+    "IT259": {
+      "airline": "台灣虎航 Tigerair",
+      "airport": "岩手花卷機場 (HNA)",
+      "terminal": "航廈",
+      "time": "17:20",
+      "aircraft": "A320",
+      "region": "tohoku"
+    },
+    "IT256": {
+      "airline": "台灣虎航 Tigerair",
+      "airport": "秋田機場 (AXT)",
+      "terminal": "航廈",
+      "time": "12:40",
+      "aircraft": "A320",
+      "region": "tohoku"
+    },
+    "IT257": {
+      "airline": "台灣虎航 Tigerair",
+      "airport": "秋田機場 (AXT)",
+      "terminal": "航廈",
+      "time": "13:55",
+      "aircraft": "A320",
+      "region": "tohoku"
+    },
+    "IT246": {
+      "airline": "台灣虎航 Tigerair",
+      "airport": "九州佐賀機場 (HSG)",
+      "terminal": "航廈",
+      "time": "10:45",
+      "aircraft": "A320",
+      "region": "kyushu"
+    },
+    "IT247": {
+      "airline": "台灣虎航 Tigerair",
+      "airport": "九州佐賀機場 (HSG)",
+      "terminal": "航廈",
+      "time": "11:45",
+      "aircraft": "A320",
+      "region": "kyushu"
+    },
+    "CI118": {
+      "airline": "中華航空 China Airlines",
+      "airport": "鹿兒島機場 (KOJ)",
+      "terminal": "國際線",
+      "time": "11:10",
+      "aircraft": "A321neo",
+      "region": "kyushu"
+    },
+    "CI119": {
+      "airline": "中華航空 China Airlines",
+      "airport": "鹿兒島機場 (KOJ)",
+      "terminal": "國際線",
+      "time": "12:15",
+      "aircraft": "A321neo",
+      "region": "kyushu"
+    },
+    "IT228": {
+      "airline": "台灣虎航 Tigerair",
+      "airport": "新潟機場 (KIJ)",
+      "terminal": "航廈",
+      "time": "18:00",
+      "aircraft": "A320",
+      "region": "chubu"
+    },
+    "IT229": {
+      "airline": "台灣虎航 Tigerair",
+      "airport": "新潟機場 (KIJ)",
+      "terminal": "航廈",
+      "time": "19:00",
+      "aircraft": "A320",
+      "region": "chubu"
+    },
     "NH852": {
       "airline": "全日空 ANA",
-      "airport": "羽田國際機場 (HND)",
+      "airport": "東京羽田國際機場 (HND)",
       "terminal": "T3",
       "time": "13:30",
-      "aircraft": "B787-9",
+      "aircraft": "B787-8",
       "region": "kanto"
     },
     "JL812": {
       "airline": "日本航空 JAL",
-      "airport": "關西國際機場 (KIX)",
-      "terminal": "T1",
-      "time": "09:10",
-      "aircraft": "B787-8",
-      "region": "kansai"
-    },
-    "BR128": {
-      "airline": "長榮航空 EVA Air",
-      "airport": "新千歲機場 (CTS)",
-      "terminal": "I",
-      "time": "09:30",
-      "aircraft": "B777-300ER",
-      "region": "hokkaido"
-    },
-    "CI108": {
-      "airline": "中華航空 China Airlines",
-      "airport": "成田國際機場 (NRT)",
+      "airport": "高雄小港 - 成田 (NRT)",
       "terminal": "T2",
-      "time": "09:10",
-      "aircraft": "A330-300",
+      "time": "09:35",
+      "aircraft": "B767-300ER",
       "region": "kanto"
+    },
+    "CI154": {
+      "airline": "中華航空 China Airlines",
+      "airport": "名古屋中部國際機場 (NGO)",
+      "terminal": "T1",
+      "time": "07:30",
+      "aircraft": "A350-900",
+      "region": "chubu"
+    },
+    "MM922": {
+      "airline": "樂桃航空 Peach",
+      "airport": "沖繩那霸機場 (OKA)",
+      "terminal": "LCC",
+      "time": "09:30",
+      "aircraft": "A320",
+      "region": "kyushu"
     }
   },
   "events": [
     {
-      "id": "e-1",
+      "id": "ks-1",
       "region": "kansai",
       "months": [
+        7
+      ],
+      "category": "傳統祭典",
+      "title": "祇園祭",
+      "wikiJa": "祇園祭",
+      "location": "京都市八坂神社",
+      "dateLabel": "7月全月",
+      "duration": 180,
+      "isIndoor": false,
+      "desc": "日本三大祭之首，山鉾巡行極為壯觀，夏季造訪京都必看。",
+      "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5d/Gion_Matsuri_2017-5.jpg/960px-Gion_Matsuri_2017-5.jpg?utm_source=ja.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+    },
+    {
+      "id": "ks-2",
+      "region": "kansai",
+      "months": [
+        11,
         12
       ],
       "category": "光影花火",
       "title": "大阪光之文藝復興",
-      "location": "大阪市役所周邊/中之島公園",
+      "wikiJa": "OSAKA光のルネサンス",
+      "location": "大阪市役所週邊",
       "dateLabel": "12月中下旬",
-      "duration": 120,
+      "duration": 60,
       "isIndoor": false,
-      "desc": "中之島藝術牆面投影極具震撼，建議搭配周遊券搭乘地鐵至淀屋橋站。"
+      "desc": "中之島牆面投影秀，與御堂筋燈飾構成大阪冬季最美夜景。",
+      "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b9/2019_OSAKA_Hikari-Renaissance01-r.jpg/960px-2019_OSAKA_Hikari-Renaissance01-r.jpg?utm_source=ja.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
     },
     {
-      "id": "e-2",
+      "id": "ks-3",
+      "region": "kansai",
+      "months": [
+        3,
+        4
+      ],
+      "category": "賞花紅葉",
+      "title": "吉野山櫻花",
+      "wikiJa": "吉野山",
+      "location": "奈良縣吉野站",
+      "dateLabel": "4月上旬",
+      "duration": 240,
+      "isIndoor": false,
+      "desc": "一目千本櫻壯觀絕景，建議搭乘特急近鐵前往吉野站順遊。",
+      "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/79/Cherry_blossoms_at_Yoshinoyama_01.jpg/960px-Cherry_blossoms_at_Yoshinoyama_01.jpg?utm_source=ja.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+    },
+    {
+      "id": "ks-4",
+      "region": "kansai",
+      "months": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "category": "周邊順遊",
+      "title": "姬路城白鷺城",
+      "wikiJa": "姫路城",
+      "location": "兵庫縣姬路站",
+      "dateLabel": "全年皆宜",
+      "duration": 150,
+      "isIndoor": false,
+      "desc": "日本首座世界遺產，白色漆壁壯麗，適合從大阪搭新幹線順遊。",
+      "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c1/Himeji_castle_in_may_2015.jpg/960px-Himeji_castle_in_may_2015.jpg?utm_source=ja.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+    },
+    {
+      "id": "ks-5",
+      "region": "kansai",
+      "months": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "category": "季節美食",
+      "title": "黑門市場食之祭",
+      "wikiJa": "黒門市場",
+      "location": "大阪日本橋站",
+      "dateLabel": "全年",
+      "duration": 90,
+      "isIndoor": true,
+      "desc": "大阪人的廚房，冬季推薦品嚐河豚火鍋與鮮甜海膽。",
+      "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/42/%E9%BB%92%E9%96%80%E5%B8%82%E5%A0%B4_2024%281%29.jpg/960px-%E9%BB%92%E9%96%80%E5%B8%82%E5%A0%B4_2024%281%29.jpg?utm_source=ja.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+    },
+    {
+      "id": "kt-1",
       "region": "kanto",
       "months": [
+        5
+      ],
+      "category": "傳統祭典",
+      "title": "三社祭",
+      "wikiJa": "三社祭",
+      "location": "淺草神社",
+      "dateLabel": "5月第三個週末",
+      "duration": 120,
+      "isIndoor": false,
+      "desc": "江戶三大祭之一，神輿巡行充滿下町活力，可與淺草寺同遊。",
+      "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/15/%E4%B8%89%E4%B9%8B%E5%AE%AE%E7%A5%9E%E8%BC%BF%E5%AE%AE%E5%87%BA%E3%81%97.JPG/960px-%E4%B8%89%E4%B9%8B%E5%AE%AE%E7%A5%9E%E8%BC%BF%E5%AE%AE%E5%87%BA%E3%81%97.JPG?utm_source=ja.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+    },
+    {
+      "id": "kt-2",
+      "region": "kanto",
+      "months": [
+        11,
+        12,
         1,
         2
       ],
       "category": "光影花火",
-      "title": "江之島湘南之寶石",
-      "location": "神奈川江之島海蠟燭",
-      "dateLabel": "11月至隔年2月",
-      "duration": 150,
+      "title": "相模湖燈光秀",
+      "wikiJa": "さがみ湖イルミリオン",
+      "location": "神奈川相模湖",
+      "dateLabel": "冬季",
+      "duration": 120,
       "isIndoor": false,
-      "desc": "關東三大點燈之一，搭乘江之電順遊鎌倉高校前，欣賞海邊夢幻紫色燈飾。"
+      "desc": "關東最大規模燈光秀，結合遊樂園設施，適合親子同遊。",
+      "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/1b/Gthumb.svg/960px-Gthumb.svg.png?utm_source=ja.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
     },
     {
-      "id": "e-3",
+      "id": "kt-3",
+      "region": "kanto",
+      "months": [
+        4,
+        5
+      ],
+      "category": "賞花紅葉",
+      "title": "足利花卉公園紫藤",
+      "wikiJa": "あしかがフラワーパーク",
+      "location": "栃木足利花卉公園站",
+      "dateLabel": "4月中旬至5月",
+      "duration": 150,
+      "isIndoor": false,
+      "desc": "世界最美紫藤花隧道，夜間點燈夢幻無比，可搭配 JR Pass 前往。",
+      "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/36/Japanese_wisteria%2C_Ashikaga_Flower_Park_13.jpg/960px-Japanese_wisteria%2C_Ashikaga_Flower_Park_13.jpg?utm_source=ja.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+    },
+    {
+      "id": "kt-4",
+      "region": "kanto",
+      "months": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "category": "周邊順遊",
+      "title": "江之島電鐵之旅",
+      "wikiJa": "江ノ島電鉄",
+      "location": "鐮倉/藤澤站",
+      "dateLabel": "全年",
+      "duration": 180,
+      "isIndoor": false,
+      "desc": "鐮倉高校前平交道灌籃高手聖地，海邊散策與江之島美食。",
+      "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/43/Enodenhonsha.jpg/960px-Enodenhonsha.jpg?utm_source=ja.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+    },
+    {
+      "id": "kt-5",
+      "region": "kanto",
+      "months": [
+        11
+      ],
+      "category": "賞花紅葉",
+      "title": "明治神宮外苑銀杏",
+      "wikiJa": "明治神宮外苑",
+      "location": "青山一丁目站",
+      "dateLabel": "11月中下旬",
+      "duration": 60,
+      "isIndoor": false,
+      "desc": "東京最著名黃金隧道，散步於 146 棵銀杏樹下極度浪漫。",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/8/8e/Jingu_gaien_air.jpg?utm_source=ja.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled"
+    },
+    {
+      "id": "hk-1",
       "region": "hokkaido",
       "months": [
         2
       ],
-      "category": "傳統祭典",
+      "category": "光影花火",
       "title": "札幌雪祭",
-      "location": "札幌大通公園/薄野",
+      "wikiJa": "さっぽろ雪まつり",
+      "location": "大通公園/薄野",
       "dateLabel": "2月上旬",
-      "duration": 180,
+      "duration": 120,
       "isIndoor": false,
-      "desc": "世界級冰雕盛會，建議入住大通站周邊，順便品嚐札幌味增拉麵。"
+      "desc": "北海道最大冬季盛事，巨大冰雕投影秀與雪地滑梯必玩。",
+      "imageUrl": ""
     },
     {
-      "id": "e-4",
+      "id": "hk-2",
+      "region": "hokkaido",
+      "months": [
+        7,
+        8
+      ],
+      "category": "賞花紅葉",
+      "title": "富田農場薰衣草",
+      "wikiJa": "ファーム富田",
+      "location": "富良野中富良野站",
+      "dateLabel": "7月中旬",
+      "duration": 180,
+      "isIndoor": false,
+      "desc": "紫色花海與七彩花田，必吃薰衣草冰淇淋，可搭觀光列車。",
+      "imageUrl": ""
+    },
+    {
+      "id": "hk-3",
+      "region": "hokkaido",
+      "months": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "category": "季節美食",
+      "title": "函館朝市釣烏賊",
+      "wikiJa": "函館朝市",
+      "location": "函館站旁",
+      "dateLabel": "全年",
+      "duration": 60,
+      "isIndoor": true,
+      "desc": "現釣現吃活烏賊刺身，清脆鮮甜，是函館早晨最夯活動。",
+      "imageUrl": ""
+    },
+    {
+      "id": "hk-4",
+      "region": "hokkaido",
+      "months": [
+        2
+      ],
+      "category": "光影花火",
+      "title": "小樽運河雪燈路",
+      "wikiJa": "小樽雪あかりの路",
+      "location": "小樽運河",
+      "dateLabel": "2月",
+      "duration": 90,
+      "isIndoor": false,
+      "desc": "玻璃浮玉燭光點亮小樽運河，氛圍極致浪漫，適合情侶。",
+      "imageUrl": ""
+    },
+    {
+      "id": "hk-5",
+      "region": "hokkaido",
+      "months": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "category": "周邊順遊",
+      "title": "旭山動物園企鵝散步",
+      "wikiJa": "旭山動物園",
+      "location": "旭川市",
+      "dateLabel": "冬季限定",
+      "duration": 150,
+      "isIndoor": false,
+      "desc": "冬季特有企鵝雪地漫步，近距離觀察極地動物，北海道必排。",
+      "imageUrl": ""
+    },
+    {
+      "id": "ky-1",
       "region": "kyushu",
       "months": [
         11
       ],
-      "category": "傳統祭典",
+      "category": "光影花火",
       "title": "佐賀國際熱氣球節",
-      "location": "佐賀市嘉瀨川河濱",
+      "wikiJa": "佐賀インターナショナルバルーンフェスタ",
+      "location": "佐賀嘉瀨川河川敷",
       "dateLabel": "11月上旬",
-      "duration": 240,
+      "duration": 120,
       "isIndoor": false,
-      "desc": "亞洲最大規模熱氣球賽，JR會增設臨時站，可從福岡搭特急直達。"
+      "desc": "百顆熱氣球齊飛超夢幻，夜間點燈秀伴隨音樂節奏壯觀。",
+      "imageUrl": ""
     },
     {
-      "id": "e-5",
+      "id": "ky-2",
+      "region": "kyushu",
+      "months": [
+        7
+      ],
+      "category": "傳統祭典",
+      "title": "博多祇園山笠",
+      "wikiJa": "博多祇園山笠",
+      "location": "福岡櫛田神社",
+      "dateLabel": "7月15日",
+      "duration": 180,
+      "isIndoor": false,
+      "desc": "博多漢子抬山笠狂奔，氣勢驚人，是九州夏季最有力的祭典。",
+      "imageUrl": ""
+    },
+    {
+      "id": "ky-3",
+      "region": "kyushu",
+      "months": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "category": "周邊順遊",
+      "title": "由布院金鱗湖",
+      "wikiJa": "金鱗湖",
+      "location": "大分由布院站",
+      "dateLabel": "秋冬晨霧最美",
+      "duration": 120,
+      "isIndoor": false,
+      "desc": "溫泉匯入形成的湖泊，秋冬清晨霧氣瀰漫，順遊湯之坪街道。",
+      "imageUrl": ""
+    },
+    {
+      "id": "ky-4",
+      "region": "kyushu",
+      "months": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "category": "季節美食",
+      "title": "糸島牡蠣小屋",
+      "wikiJa": "糸島半島",
+      "location": "福岡糸島市",
+      "dateLabel": "11月至3月",
+      "duration": 90,
+      "isIndoor": true,
+      "desc": "冬季九州限定美味，現烤肥美鮮蚵，位於筑前前原站轉巴士。",
+      "imageUrl": ""
+    },
+    {
+      "id": "ky-5",
+      "region": "kyushu",
+      "months": [
+        11,
+        12,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "category": "光影花火",
+      "title": "豪斯登堡燈光秀",
+      "wikiJa": "ハウステンボス",
+      "location": "長崎豪斯登堡",
+      "dateLabel": "冬季",
+      "duration": 240,
+      "isIndoor": false,
+      "desc": "世界最大規模燈飾，搭配 3D 投影與運河遊船，極具歐洲風情。",
+      "imageUrl": ""
+    },
+    {
+      "id": "cb-1",
+      "region": "chubu",
+      "months": [
+        4,
+        10
+      ],
+      "category": "傳統祭典",
+      "title": "高山祭",
+      "wikiJa": "高山祭",
+      "location": "岐阜高山市",
+      "dateLabel": "4月/10月",
+      "duration": 180,
+      "isIndoor": false,
+      "desc": "日本最美祭典之一，華麗屋台巡行，被譽為移動的藝術品。",
+      "imageUrl": ""
+    },
+    {
+      "id": "cb-2",
       "region": "chubu",
       "months": [
         1,
@@ -943,101 +1553,16 @@
       ],
       "category": "光影花火",
       "title": "白川鄉合掌造點燈",
-      "location": "岐阜縣大白川",
-      "dateLabel": "1月至2月特定日",
+      "wikiJa": "白川郷・五箇山の合掌造り集落",
+      "location": "岐阜白川鄉",
+      "dateLabel": "1月2月限定",
       "duration": 120,
       "isIndoor": false,
-      "desc": "世界遺產雪地童話感點燈，需預約接駁巴士，建議由高山搭濃飛巴士前往。"
+      "desc": "雪地中的薑餅屋夢幻點燈，採預約制，冬季北陸最美奇蹟。",
+      "imageUrl": ""
     },
     {
-      "id": "e-6",
-      "region": "tohoku",
-      "months": [
-        8
-      ],
-      "category": "傳統祭典",
-      "title": "青森睡魔祭",
-      "location": "青森市內中心街道",
-      "dateLabel": "8月上旬",
-      "duration": 180,
-      "isIndoor": false,
-      "desc": "日本代表性夏季祭典，巨大的燈籠遊行極其震撼，建議提早半年預訂住宿。"
-    },
-    {
-      "id": "e-7",
-      "region": "sanyo",
-      "months": [
-        10,
-        11
-      ],
-      "category": "賞花紅葉",
-      "title": "宮島紅葉谷公園",
-      "location": "廣島縣宮島",
-      "dateLabel": "11月中旬",
-      "duration": 120,
-      "isIndoor": false,
-      "desc": "搭配嚴島神社海上大鳥居賞楓，可使用廣島地區周遊券免費搭乘渡輪。"
-    },
-    {
-      "id": "e-8",
-      "region": "kansai",
-      "months": [
-        7
-      ],
-      "category": "傳統祭典",
-      "title": "京都祇園祭",
-      "location": "京都市四条通/八坂神社",
-      "dateLabel": "7月整月",
-      "duration": 200,
-      "isIndoor": false,
-      "desc": "千年歷史祭典，山鉾巡行為看點，建議避開最熱的中午，早晚觀賞宵山活動。"
-    },
-    {
-      "id": "e-9",
-      "region": "kanto",
-      "months": [
-        4
-      ],
-      "category": "賞花紅葉",
-      "title": "國營常陸海濱公園粉蝶花",
-      "location": "茨城縣勝田站轉巴士",
-      "dateLabel": "4月下旬至5月上旬",
-      "duration": 180,
-      "isIndoor": false,
-      "desc": "湛藍花海與天空連成一線，可用東京廣域周遊券搭特急常陸號前往。"
-    },
-    {
-      "id": "e-10",
-      "region": "kyushu",
-      "months": [
-        1,
-        2
-      ],
-      "category": "季節美食",
-      "title": "糸島牡蠣小屋",
-      "location": "福岡縣糸島市各漁港",
-      "dateLabel": "冬季限定",
-      "duration": 90,
-      "isIndoor": true,
-      "desc": "現烤牡蠣肥美超值，由筑前前原站轉乘巴士可達，是福岡冬季限定美味。"
-    },
-    {
-      "id": "e-11",
-      "region": "tohoku",
-      "months": [
-        1,
-        2
-      ],
-      "category": "周邊順遊",
-      "title": "藏王樹冰",
-      "location": "山形藏王溫泉纜車",
-      "dateLabel": "2月最盛期",
-      "duration": 150,
-      "isIndoor": false,
-      "desc": "震撼的雪怪景觀，夜間有點燈活動，適合搭配銀山溫泉兩天一夜行程。"
-    },
-    {
-      "id": "e-12",
+      "id": "cb-3",
       "region": "chubu",
       "months": [
         4,
@@ -1045,41 +1570,258 @@
         6
       ],
       "category": "周邊順遊",
-      "title": "立山黑部雪之大谷",
-      "location": "富山縣室堂平",
-      "dateLabel": "4月中開山",
+      "title": "立山黑部雪牆",
+      "wikiJa": "立山黒部アルペンルート",
+      "location": "富山立山站",
+      "dateLabel": "4月中旬開山",
       "duration": 300,
       "isIndoor": false,
-      "desc": "高達20公尺的巨型雪牆，建議使用立山黑部周遊券由信濃大町或富山進入。"
+      "desc": "高達 20 公尺的壯觀雪牆，搭乘六種交通工具穿越北阿爾卑斯。",
+      "imageUrl": ""
     },
     {
-      "id": "e-13",
+      "id": "cb-4",
+      "region": "chubu",
+      "months": [
+        11,
+        12,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "category": "光影花火",
+      "title": "名花之里燈海",
+      "wikiJa": "なばなの里",
+      "location": "三重桑名市",
+      "dateLabel": "冬季",
+      "duration": 120,
+      "isIndoor": false,
+      "desc": "日本最大花卉園燈光秀，光之隧道與鏡池倒影是打卡聖地。",
+      "imageUrl": ""
+    },
+    {
+      "id": "cb-5",
+      "region": "chubu",
+      "months": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "category": "季節美食",
+      "title": "飛驒牛饗宴",
+      "wikiJa": "飛騨牛",
+      "location": "岐阜縣高山市",
+      "dateLabel": "全年",
+      "duration": 60,
+      "isIndoor": true,
+      "desc": "在高山老街品嚐飛驒牛握壽司與串燒，霜降油脂入口即化。",
+      "imageUrl": ""
+    },
+    {
+      "id": "th-1",
+      "region": "tohoku",
+      "months": [
+        8
+      ],
+      "category": "傳統祭典",
+      "title": "青森睡魔祭",
+      "wikiJa": "青森ねぶた祭",
+      "location": "青森市內",
+      "dateLabel": "8月2-7日",
+      "duration": 180,
+      "isIndoor": false,
+      "desc": "巨型燈籠山車巡行，東北最熱血夏季祭典，震撼力十足。",
+      "imageUrl": ""
+    },
+    {
+      "id": "th-2",
+      "region": "tohoku",
+      "months": [
+        1,
+        2
+      ],
+      "category": "光影花火",
+      "title": "藏王樹冰點燈",
+      "wikiJa": "蔵王の樹氷",
+      "location": "山形藏王溫泉",
+      "dateLabel": "2月最盛",
+      "duration": 120,
+      "isIndoor": false,
+      "desc": "被稱為雪怪的樹冰奇景，夜間點燈增添神祕氛圍，必搭纜車。",
+      "imageUrl": ""
+    },
+    {
+      "id": "th-3",
+      "region": "tohoku",
+      "months": [
+        2
+      ],
+      "category": "傳統祭典",
+      "title": "橫手雪屋祭",
+      "wikiJa": "横手の雪まつり",
+      "location": "秋田橫手市",
+      "dateLabel": "2月15-16日",
+      "duration": 90,
+      "isIndoor": false,
+      "desc": "超過 450 年歷史，坐在雪屋內喝甘酒吃烤麻糬，純樸溫馨。",
+      "imageUrl": ""
+    },
+    {
+      "id": "th-4",
+      "region": "tohoku",
+      "months": [
+        4
+      ],
+      "category": "賞花紅葉",
+      "title": "弘前櫻花祭",
+      "wikiJa": "弘前城",
+      "location": "青森弘前公園",
+      "dateLabel": "4月下旬",
+      "duration": 180,
+      "isIndoor": false,
+      "desc": "日本櫻花名所百選，花筏填滿外濠的「櫻花河」絕景。",
+      "imageUrl": ""
+    },
+    {
+      "id": "th-5",
+      "region": "tohoku",
+      "months": [
+        10,
+        11
+      ],
+      "category": "賞花紅葉",
+      "title": "奧入瀨溪流",
+      "wikiJa": "奥入瀬渓流",
+      "location": "青森縣十和田市",
+      "dateLabel": "10月下旬",
+      "duration": 240,
+      "isIndoor": false,
+      "desc": "東北紅葉之王，散步於溪流步道欣賞瀑布與五彩森林。",
+      "imageUrl": ""
+    },
+    {
+      "id": "sy-1",
+      "region": "sanyo",
+      "months": [
+        8
+      ],
+      "category": "光影花火",
+      "title": "宮島水中花火大會",
+      "wikiJa": "厳島神社",
+      "location": "廣島宮島",
+      "dateLabel": "8月下旬",
+      "duration": 60,
+      "isIndoor": false,
+      "desc": "水中煙火與大鳥居相輝映，是西日本最具代表性的花火。",
+      "imageUrl": ""
+    },
+    {
+      "id": "sy-2",
+      "region": "sanyo",
+      "months": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "category": "周邊順遊",
+      "title": "倉敷美觀地區",
+      "wikiJa": "倉敷美観地区",
+      "location": "岡山倉敷站",
+      "dateLabel": "全年",
+      "duration": 150,
+      "isIndoor": false,
+      "desc": "白壁土藏建築與運河，可體驗乘船與穿和服，散發優雅氛圍。",
+      "imageUrl": ""
+    },
+    {
+      "id": "sy-3",
+      "region": "sanyo",
+      "months": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "category": "季節美食",
+      "title": "下關唐戶市場",
+      "wikiJa": "唐戸市場",
+      "location": "山口下關市",
+      "dateLabel": "週末限定",
+      "duration": 90,
+      "isIndoor": true,
+      "desc": "河豚料理的大本營，週末有握壽司市集，過關門大橋即達。",
+      "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c1/Himeji_castle_in_may_2015.jpg/960px-Himeji_castle_in_may_2015.jpg?utm_source=ja.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+    },
+    {
+      "id": "sy-4",
       "region": "sanyo",
       "months": [
         8
       ],
       "category": "傳統祭典",
       "title": "德島阿波舞",
-      "location": "德島市中心",
-      "dateLabel": "8月中旬",
+      "wikiJa": "阿波踊り",
+      "location": "德島站週邊",
+      "dateLabel": "8月12-15日",
       "duration": 180,
       "isIndoor": false,
-      "desc": "四國最大規模舞祭，節奏感強烈，持四國周遊券可搭特急由高松抵達。"
+      "desc": "四國最火熱祭典，萬人齊跳傻瓜舞，節奏明快富有感染力。",
+      "imageUrl": ""
     },
     {
-      "id": "e-14",
-      "region": "hokkaido",
+      "id": "sy-5",
+      "region": "sanyo",
       "months": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
         7,
-        8
+        8,
+        9,
+        10,
+        11,
+        12
       ],
-      "category": "賞花紅葉",
-      "title": "富良野薰衣草",
-      "location": "中富良野富田農場",
-      "dateLabel": "7月中旬",
+      "category": "周邊順遊",
+      "title": "角島大橋",
+      "wikiJa": "角島大橋",
+      "location": "山口縣下關市",
+      "dateLabel": "晴天最佳",
       "duration": 120,
       "isIndoor": false,
-      "desc": "紫色花田美不勝收，可搭乘期間限定的富良野美瑛慢車號火車欣賞。"
+      "desc": "如電影般的跨海大橋，蔚藍海色極致療癒，山陽自駕首選景點。",
+      "imageUrl": ""
     }
   ]
 }
