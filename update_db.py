@@ -25,7 +25,7 @@ prompt = """請針對日本熱門旅遊地區（kansai 關西、kanto 關東、h
 
 scheme = "https"
 host = "generativelanguage.googleapis.com"
-models = ["gemini-2.5-flash-lite", "gemini-2.5-flash", "gemini-2.0-flash"]
+models = ["gemini-3.5-flash", "gemini-3.8-flash", "gemini-3-flash-preview"]
 raw_text = ""
 last_err = ""
 
