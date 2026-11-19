@@ -6,6 +6,11 @@ import time
 import urllib.error
 import urllib.request
 
+
+def log(msg: str) -> None:
+    print(msg, flush=True)
+
+
 BASE_FLIGHTS = {
     # ================= 關西 Kansai (KIX) =================
     "AK176": {"airline": "AirAsia 亞洲航空", "airport": "關西國際機場 (KIX)", "terminal": "T1", "time": "19:30", "aircraft": "A321neo", "region": "kansai"},
@@ -104,7 +109,6 @@ BASE_FLIGHTS = {
 
 
 def normalize_time(raw_time: str) -> tuple[str, bool]:
-    """將時間字串標準化為 HH:MM，回傳 (標準化時間, 是否為合法時間)"""
     if not isinstance(raw_time, str):
         return "12:00", False
     s = raw_time.strip()
@@ -118,7 +122,6 @@ def normalize_time(raw_time: str) -> tuple[str, bool]:
 
 
 def validate_flight_entry(flight_no: str, entry: dict, source: str, checked_at: str) -> tuple[dict, list[str]]:
-    """檢查單筆航班欄位完整性與格式，補齊必要欄位並回傳警告清單"""
     warnings = []
     clean_no = flight_no.strip().upper()
     if not isinstance(entry, dict):
@@ -161,7 +164,6 @@ def validate_flight_entry(flight_no: str, entry: dict, source: str, checked_at: 
 
 
 def diff_flights(old_flights: dict, new_flights: dict) -> tuple[list[dict], list[str]]:
-    """比對新舊航班資料，回傳變動明細與新增航班清單"""
     changes = []
     added = []
     tracked_fields = ["time", "airport", "terminal", "aircraft", "airline"]
@@ -197,8 +199,7 @@ def load_existing_db(path: str = "db.json") -> dict:
         return {}
 
 
-def call_gemini_with_retry(api_key: str, prompt: str, models: list[str], max_retries_per_model: int = 3) -> tuple[dict | None, str, str]:
-    """依序嘗試模型，遇到 429/503 暫時過載時自動退避重試；回傳 (parsed_dict, used_model, last_err)"""
+def call_gemini_fast(api_key: str, prompt: str, models: list[str], timeout_sec: int = 25, max_retries: int = 1) -> tuple[dict | None, str, str]:
     scheme = "https"
     host = "generativelanguage.googleapis.com"
     fence = chr(96) * 3
@@ -214,7 +215,8 @@ def call_gemini_with_retry(api_key: str, prompt: str, models: list[str], max_ret
 
     for model_name in models:
         url = f"{scheme}://{host}/v1beta/models/{model_name}:generateContent?key={api_key}"
-        for attempt in range(1, max_retries_per_model + 1):
+        for attempt in range(1, max_retries + 2):
+            log(f"→ 呼叫模型 {model_name} (第 {attempt} 次，逾時 {timeout_sec}s)...")
             req = urllib.request.Request(
                 url,
                 data=payload_bytes,
@@ -222,7 +224,7 @@ def call_gemini_with_retry(api_key: str, prompt: str, models: list[str], max_ret
                 method="POST",
             )
             try:
-                with urllib.request.urlopen(req, timeout=120) as resp:
+                with urllib.request.urlopen(req, timeout=timeout_sec) as resp:
                     res_data = json.loads(resp.read().decode("utf-8"))
                     raw_text = res_data["candidates"][0]["content"]["parts"][0]["text"].strip()
                     if raw_text.startswith(fence):
@@ -235,21 +237,18 @@ def call_gemini_with_retry(api_key: str, prompt: str, models: list[str], max_ret
                     last_err = f"模型 {model_name} 回傳非 JSON 物件"
                     break
             except urllib.error.HTTPError as e:
-                err_body = e.read().decode("utf-8", errors="ignore")
-                last_err = f"模型 {model_name} (第 {attempt}/{max_retries_per_model} 次) HTTP {e.code}: {err_body}"
-                print(last_err)
-                if e.code in (429, 503) and attempt < max_retries_per_model:
-                    sleep_sec = 2 ** attempt
-                    print(f"偵測到暫時性負載 ({e.code})，等待 {sleep_sec} 秒後重試...")
-                    time.sleep(sleep_sec)
+                err_body = e.read().decode("utf-8", errors="ignore")[:200]
+                last_err = f"模型 {model_name} HTTP {e.code}: {err_body}"
+                log(f"  ✗ {last_err}")
+                if e.code in (429, 503) and attempt <= max_retries:
+                    time.sleep(2)
                     continue
                 break
             except Exception as e:
-                last_err = f"模型 {model_name} (第 {attempt}/{max_retries_per_model} 次) 錯誤: {e}"
-                print(last_err)
-                if attempt < max_retries_per_model:
-                    sleep_sec = 2 ** attempt
-                    time.sleep(sleep_sec)
+                last_err = f"模型 {model_name} 錯誤: {e}"
+                log(f"  ✗ {last_err}")
+                if attempt <= max_retries:
+                    time.sleep(2)
                     continue
                 break
 
@@ -257,6 +256,7 @@ def call_gemini_with_retry(api_key: str, prompt: str, models: list[str], max_ret
 
 
 def main() -> None:
+    log("=== 開始執行 update_db.py ===")
     api_key = os.environ.get("GEMINI_API_KEY", "").strip()
     if not api_key:
         raise RuntimeError("找不到 GEMINI_API_KEY，請確認 GitHub Secrets 中已新增該名稱！")
@@ -279,13 +279,15 @@ def main() -> None:
     for k, v in prev_flights_clean.items():
         baseline_seed[k] = dict(v)
 
+    log(f"基準航班數：{len(baseline_seed)} 班，開始組裝 Prompt...")
+
     prompt = f"""你是台日航線與日本旅遊資料核對助手。今天是台灣時間 {tw_time}。
 請完成以下兩項工作，並嚴格只回傳純 JSON（不要任何 markdown 標記或說明文字）：
 
 1. 針對以下台日熱門航班進行當季時刻、降落/起飛機場、航廈與機型核對，若發現與參考資料不同請修正為最新班表，並可補充 2～5 班常見台日直飛航班：
-{json.dumps(baseline_seed, ensure_ascii=False, indent=2)}
+{json.dumps(baseline_seed, ensure_ascii=False)}
 
-2. 針對日本 7 大地區（kansai 關西、kanto 關東、hokkaido 北海道、kyushu 九州、chubu 中部北陸、tohoku 東北、sanyo 山陽山陰四國），每個地區列出 3 筆（共 21 筆）近期或當季真實存在的限定祭典、夜間點燈或周邊順遊景點。
+2. 針對日本 7 大地區（kansai 關西、kanto 關東、hokkaido 北海道、kyushu 九州、chubu 中部北陸、tohoku 東北、sanyo 山陽山陰四國），每個地區列出 2 筆（共 14 筆）近期或當季真實存在的限定祭典、夜間點燈或周邊順遊景點。
 
 回傳 JSON 格式如下：
 {{
@@ -316,19 +318,19 @@ def main() -> None:
 }}"""
 
     models = ["gemini-3.5-flash", "gemini-3.8-flash", "gemini-3-flash-preview"]
-    parsed, used_model, last_err = call_gemini_with_retry(api_key, prompt, models, max_retries_per_model=3)
+    parsed, used_model, last_err = call_gemini_fast(api_key, prompt, models, timeout_sec=25, max_retries=1)
 
     ai_flights = {}
     events = []
     fallback_used = False
 
     if parsed is not None:
-        print(f"成功使用模型 {used_model} 取得資料！")
+        log(f"✓ 成功使用模型 {used_model} 取得資料！")
         ai_flights = parsed.get("flights") if isinstance(parsed.get("flights"), dict) else {}
         events = parsed.get("events") if isinstance(parsed.get("events"), list) else []
     else:
         fallback_used = True
-        print(f"⚠️ 所有 Gemini 模型暫時無法回應，啟用本地基準保底寫入。最後錯誤：{last_err}")
+        log(f"⚠️ Gemini 暫時無法回應，啟用本地基準保底寫入。最後錯誤：{last_err}")
         prev_events = existing_db.get("events")
         if isinstance(prev_events, list):
             events = prev_events
@@ -370,27 +372,27 @@ def main() -> None:
     with open("db.json", "w", encoding="utf-8") as f:
         json.dump(output, f, ensure_ascii=False, indent=2)
 
-    print("\n================ 航班核對與變動摘要 ================")
-    print(f"核對時間：{tw_time}｜模式：{'保底寫入 (503/過載)' if fallback_used else f'AI 核對 ({used_model})'}")
-    print(f"航班總數：{len(validated_flights)} 班｜新增：{len(added)} 班｜變動：{len(changes)} 班｜欄位警告：{len(all_warnings)} 項")
+    log("\n================ 航班核對與變動摘要 ================")
+    log(f"核對時間：{tw_time}｜模式：{'保底寫入 (AI逾時/過載)' if fallback_used else f'AI 核對 ({used_model})'}")
+    log(f"航班總數：{len(validated_flights)} 班｜新增：{len(added)} 班｜變動：{len(changes)} 班｜欄位警告：{len(all_warnings)} 項")
     if added:
-        print(f"新增航班：{', '.join(added)}")
+        log(f"新增航班：{', '.join(added)}")
     if changes:
-        print("變動明細：")
+        log("變動明細：")
         for item in changes:
             detail_parts = [
                 f"{field}: {diff['from']} -> {diff['to']}"
                 for field, diff in item["diffs"].items()
             ]
-            print(f"  - {item['flight_no']} ({', '.join(detail_parts)})")
+            log(f"  - {item['flight_no']} ({', '.join(detail_parts)})")
     else:
-        print("變動明細：與前次紀錄相比無欄位變更。")
+        log("變動明細：與前次紀錄相比無欄位變更。")
     if all_warnings:
-        print("欄位檢查提醒：")
+        log("欄位檢查提醒：")
         for w in all_warnings:
-            print(f"  - {w}")
-    print(f"成功寫入 {len(events)} 筆活動與 {len(validated_flights)} 筆航班至 db.json")
-    print("===================================================\n")
+            log(f"  - {w}")
+    log(f"成功寫入 {len(events)} 筆活動與 {len(validated_flights)} 筆航班至 db.json")
+    log("===================================================\n")
 
 
 if __name__ == "__main__":
