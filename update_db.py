@@ -7,8 +7,8 @@ if not API_KEY:
 # 1. 完整台日熱門航班基礎資料庫（涵蓋關西/成田/羽田/新千歲/函館/福岡/熊本/名古屋/小松/仙台/岡山/高松/沖繩）
 BASE_FLIGHTS = {
     # --- 關西國際機場 (KIX) ---
-    "AK176": {"airline": "AirAsia 亞洲航空", "airport": "關西國際機場 (KIX)", "terminal": "T1", "time": "14:30", "aircraft": "A330-300", "region": "kansai"},
-    "AK177": {"airline": "AirAsia 亞洲航空", "airport": "關西國際機場 (KIX)", "terminal": "T1", "time": "15:45", "aircraft": "A330-300", "region": "kansai"},
+    "AK176": {"airline": "AirAsia 亞洲航空", "airport": "關西國際機場 (KIX)", "terminal": "T1", "time": "19:30", "aircraft": "A321neo", "region": "kansai"},
+    "AK177": {"airline": "AirAsia 亞洲航空", "airport": "關西國際機場 (KIX)", "terminal": "T1", "time": "20:45", "aircraft": "A321neo", "region": "kansai"},
     "D7378": {"airline": "AirAsia X 亞航長程", "airport": "關西國際機場 (KIX)", "terminal": "T1", "time": "22:05", "aircraft": "A330-300", "region": "kansai"},
     "D7379": {"airline": "AirAsia X 亞航長程", "airport": "關西國際機場 (KIX)", "terminal": "T1", "time": "23:25", "aircraft": "A330-300", "region": "kansai"},
     "IT210": {"airline": "台灣虎航 Tigerair", "airport": "關西國際機場 (KIX)", "terminal": "T1", "time": "10:05", "aircraft": "A320neo", "region": "kansai"},
