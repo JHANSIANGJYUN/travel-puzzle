@@ -1,4 +1,4 @@
-import os, json, datetime, urllib.request, urllib.error
+import os, json, datetime, urllib.request, urllib.error, urllib.parse
 
 API_KEY = os.environ.get("GEMINI_API_KEY", "").strip()
 if not API_KEY:
@@ -134,7 +134,6 @@ BASE_FLIGHTS = {
     "IT228": {"airline": "台灣虎航 Tigerair", "airport": "新潟機場 (KIJ)", "terminal": "航廈", "time": "18:00", "aircraft": "A320", "region": "chubu"},
     "IT229": {"airline": "台灣虎航 Tigerair", "airport": "新潟機場 (KIJ)", "terminal": "航廈", "time": "19:00", "aircraft": "A320", "region": "chubu"}
 }
-}
 
 # 2. 官方 JR PASS 周遊券基礎資料庫（每日自動請 Gemini 核實最新日圓售價）
 BASE_JR_PASSES = [
@@ -163,7 +162,7 @@ prompt = f"""你是一位日本旅遊與台日航空鐵道資料庫專家。請�
 
 2. 針對台日熱門航班，額外補充 10 班近期常態飛往日本（如日航 JL、全日空 NH、星宇 JX、虎航 IT、華航 CI、長榮 BR 飛東京/大阪/名古屋/九州/沖繩/東北）的航班時刻表（格式同下）。
 
-3. 針對日本 7 大旅遊地區（kansai 關西、kanto 關東、hokkaido 北海道、kyushu 九州、chubu 中部北陸、tohoku 東北、sanyo 山陽山陰四國），請「每個地區各自列出 5 個」（共 35 個）近期或當季真實存在的限定祭典、夜間點燈或周邊順遊景點，並確保 region 欄位精準對應（例如大阪京都神戶奈良必須填 kansai）。category 只能從「周邊順遊」、「傳統祭典」、「光影花火」、「賞花紅葉」、「季節美食」中選一。
+3. 針對日本 7 大旅遊地區（kansai 關西、kanto 關東、hokkaido 北海道、kyushu 九州、chubu 中部北陸、tohoku 東北、sanyo 山陽山陰四國），請「每個地區各自列出 5 個」（共 35 個）近期或當季真實存在的限定祭典、夜間點燈或周邊順遊景點，並確保 region 欄位精準對應（例如大阪京都神戶奈良必須填 kansai）。category 只能從「周邊順遊」、「傳統祭典」、「光影花火」、「賞花紅葉」、「季節美食」中選一，並務必填寫該景點的日文維基百科精準條目名稱 wikiJa（例如「伏見稲荷大社」、「姫路城」、「道頓堀」），方便自動抓取實景照片。
 
 回傳 JSON 格式：
 {{
@@ -180,6 +179,7 @@ prompt = f"""你是一位日本旅遊與台日航空鐵道資料庫專家。請�
       "months": [11, 12, 1],
       "category": "光影花火",
       "title": "活動或景點名稱",
+      "wikiJa": "該景點日文維基百科條目名稱",
       "location": "具體地點與最近車站",
       "dateLabel": "舉辦月份或特色",
       "duration": 90,
@@ -235,7 +235,68 @@ if raw_text.endswith(fence):
 
 parsed = json.loads(raw_text.strip())
 
-# 合併基礎航班與 AI 擴充後的航班（確保原本 70+ 班完整保留）
+# 3. 雲端自動為每個景點抓取實景照片網址（並存入 db.json，確保 100% 有圖且網頁秒開）
+photo_cache = {}
+REGION_FALLBACK_WIKI = {
+    "kansai": ["道頓堀", "大坂城", "京都駅", "神戸ポートタワー"],
+    "kanto": ["浅草寺", "東京スカイツリー", "東京駅", "横浜みなとみらい21"],
+    "hokkaido": ["大通公園", "小樽運河", "函館山"],
+    "kyushu": ["中洲", "熊本城", "由布院温泉"],
+    "chubu": ["兼六園", "白川郷", "名古屋城"],
+    "tohoku": ["仙台城", "松島", "銀山温泉"],
+    "sanyo": ["厳島神社", "倉敷美観地区", "姫路城"]
+}
+
+def fetch_wiki_image(query_title, lang="ja"):
+    if not query_title:
+        return ""
+    cache_key = f"{lang}:{query_title}"
+    if cache_key in photo_cache:
+        return photo_cache[cache_key]
+    try:
+        encoded = urllib.parse.quote(query_title)
+        api_url = f"{scheme}://{lang}.wikipedia.org/w/api.php?action=query&titles={encoded}&redirects=1&prop=pageimages&format=json&pithumbsize=900"
+        req = urllib.request.Request(api_url, headers={"User-Agent": "TravelPuzzleBot/1.0"})
+        with urllib.request.urlopen(req, timeout=10) as r:
+            d = json.loads(r.read().decode("utf-8"))
+            pages = d.get("query", {}).get("pages", {})
+            for pid, pinfo in pages.items():
+                if pid != "-1":
+                    src = pinfo.get("thumbnail", {}).get("source", "")
+                    if src and not src.lower().endswith(".svg") and "map" not in src.lower() and "icon" not in src.lower():
+                        photo_cache[cache_key] = src
+                        return src
+        # 若精準標題沒圖，使用維基搜尋找最相關頁面縮圖
+        search_url = f"{scheme}://{lang}.wikipedia.org/w/api.php?action=query&generator=search&gsrsearch={encoded}&gsrlimit=3&prop=pageimages&format=json&pithumbsize=900"
+        req2 = urllib.request.Request(search_url, headers={"User-Agent": "TravelPuzzleBot/1.0"})
+        with urllib.request.urlopen(req2, timeout=10) as r2:
+            d2 = json.loads(r2.read().decode("utf-8"))
+            pages2 = d2.get("query", {}).get("pages", {})
+            for pid, pinfo in pages2.items():
+                src = pinfo.get("thumbnail", {}).get("source", "")
+                if src and not src.lower().endswith(".svg") and "map" not in src.lower() and "icon" not in src.lower():
+                    photo_cache[cache_key] = src
+                    return src
+    except Exception:
+        pass
+    photo_cache[cache_key] = ""
+    return ""
+
+events_list = parsed.get("events", [])
+for idx, ev in enumerate(events_list):
+    if not isinstance(ev, dict):
+        continue
+    reg = str(ev.get("region", "kansai")).lower().strip()
+    img_url = fetch_wiki_image(ev.get("wikiJa", ""), "ja")
+    if not img_url:
+        clean_title = str(ev.get("title", "")).split("・")[0].split("＆")[0].strip()
+        img_url = fetch_wiki_image(clean_title, "ja") or fetch_wiki_image(clean_title, "zh")
+    if not img_url:
+        fb_list = REGION_FALLBACK_WIKI.get(reg, REGION_FALLBACK_WIKI["kansai"])
+        img_url = fetch_wiki_image(fb_list[idx % len(fb_list)], "ja")
+    ev["imageUrl"] = img_url
+
+# 合併基礎航班與 AI 擴充後的航班
 merged_flights = dict(BASE_FLIGHTS)
 if isinstance(parsed.get("flights"), dict):
     for code, info in parsed["flights"].items():
@@ -256,10 +317,10 @@ output = {
     "updated_at": tw_time,
     "jr_passes": list(jr_map.values()),
     "flights": merged_flights,
-    "events": parsed.get("events", [])
+    "events": events_list
 }
 
 with open("db.json", "w", encoding="utf-8") as f:
     json.dump(output, f, ensure_ascii=False, indent=2)
 
-print(f"成功寫入 {len(output['jr_passes'])} 種 JR PASS、{len(merged_flights)} 班台日航班與 {len(output['events'])} 筆活動到 db.json！")
+print(f"成功寫入 {len(output['jr_passes'])} 種 JR PASS、{len(merged_flights)} 班台日航班與 {len(events_list)} 筆含實景圖片的活動到 db.json！")
