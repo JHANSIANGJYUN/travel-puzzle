@@ -2,7 +2,7 @@ import os, json, datetime, urllib.request, urllib.error
 
 API_KEY = os.environ.get("GEMINI_API_KEY", "").strip()
 if not API_KEY:
-    raise RuntimeError("找不到 GEMINI_API_KEY，請確認 GitHub Settings -> Secrets and variables -> Actions 中已新增該名稱！")
+    raise RuntimeError("找不到 GEMINI_API_KEY，請確認 GitHub Secrets 中已新增該名稱！")
 
 prompt = """請針對日本熱門旅遊地區（kansai 關西、kanto 關東、hokkaido 北海道、kyushu 九州、chubu 中部北陸、tohoku 東北、sanyo 山陽山陰四國），列出 14 個近期或當季真實存在的限定祭典、夜間點燈或周邊順遊景點。
 嚴格只回傳純 JSON（不要任何 markdown 標記）：
@@ -23,12 +23,14 @@ prompt = """請針對日本熱門旅遊地區（kansai 關西、kanto 關東、h
   ]
 }"""
 
+scheme = "https"
+host = "generativelanguage.googleapis.com"
 models = ["gemini-2.5-flash-lite", "gemini-2.5-flash", "gemini-2.0-flash"]
 raw_text = ""
 last_err = ""
 
 for m in models:
-    url = f"[https://generativelanguage.googleapis.com/v1beta/models/](https://generativelanguage.googleapis.com/v1beta/models/){m}:generateContent?key={API_KEY}"
+    url = f"{scheme}://{host}/v1beta/models/{m}:generateContent?key={API_KEY}"
     payload = {
         "contents": [{"parts": [{"text": prompt}]}],
         "generationConfig": {"responseMimeType": "application/json"}
