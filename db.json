@@ -1,5 +1,231 @@
 {
-  "updated_at": "等待首次自動更新",
+  "updated_at": "2026-11-19 20:20",
   "flights": {},
-  "events": []
+  "events": [
+    {
+      "id": "event-001",
+      "region": "kansai",
+      "months": [
+        12
+      ],
+      "category": "光影花火",
+      "title": "大阪光之文藝復興",
+      "location": "大阪市役所至中之島公園 (淀屋橋站)",
+      "dateLabel": "12月中下旬",
+      "duration": 60,
+      "isIndoor": false,
+      "desc": "水都大阪地標光雕投影，極具視覺震撼，建議順遊梅田藍天大廈。"
+    },
+    {
+      "id": "event-002",
+      "region": "kansai",
+      "months": [
+        2
+      ],
+      "category": "祭典",
+      "title": "春日大社節分萬燈籠",
+      "location": "奈良春日大社 (近鐵奈良站轉巴士)",
+      "dateLabel": "2月3日節分當日",
+      "duration": 120,
+      "isIndoor": false,
+      "desc": "三千盞燈籠點亮古都冬夜，神秘而莊嚴，建議順遊奈良公園餵鹿。"
+    },
+    {
+      "id": "event-003",
+      "region": "kanto",
+      "months": [
+        10,
+        11,
+        12,
+        1,
+        2
+      ],
+      "category": "光影花火",
+      "title": "足利花卉公園光之花庭",
+      "location": "栃木縣足利花卉公園站",
+      "dateLabel": "10月中至2月中",
+      "duration": 150,
+      "isIndoor": false,
+      "desc": "日本三大燈節，500萬顆燈泡妝點花海，順遊佐野Outlet。"
+    },
+    {
+      "id": "event-004",
+      "region": "kanto",
+      "months": [
+        11,
+        12,
+        1,
+        2
+      ],
+      "category": "光影花火",
+      "title": "丸之內香檳金燈飾",
+      "location": "東京丸之內仲通 (東京站)",
+      "dateLabel": "11月至隔年2月",
+      "duration": 60,
+      "isIndoor": false,
+      "desc": "1.2公里精品街滿布香檳色燈飾，極致浪漫，適合晚餐後散步。"
+    },
+    {
+      "id": "event-005",
+      "region": "hokkaido",
+      "months": [
+        11,
+        12,
+        1,
+        2,
+        3
+      ],
+      "category": "光影花火",
+      "title": "札幌白色燈樹節",
+      "location": "大通公園 (地下鐵大通站)",
+      "dateLabel": "11月下旬開跑",
+      "duration": 90,
+      "isIndoor": false,
+      "desc": "北海道最具代表性燈節，雪中燈海夢幻，建議順遊札幌電視塔。"
+    },
+    {
+      "id": "event-006",
+      "region": "hokkaido",
+      "months": [
+        2
+      ],
+      "category": "祭典",
+      "title": "小樽雪燈之路",
+      "location": "小樽運河與手宮線廢線跡 (JR小樽站)",
+      "dateLabel": "2月中旬限定",
+      "duration": 120,
+      "isIndoor": false,
+      "desc": "運河浮球與雪雕點亮燭火，氛圍溫馨，建議品嚐當地新鮮壽司。"
+    },
+    {
+      "id": "event-007",
+      "region": "kyushu",
+      "months": [
+        1,
+        2
+      ],
+      "category": "祭典",
+      "title": "長崎燈會",
+      "location": "新地中華街與眼鏡橋 (路面電車新地中華街站)",
+      "dateLabel": "農曆新年期間",
+      "duration": 180,
+      "isIndoor": false,
+      "desc": "萬盞中式紅燈籠照亮夜空，充滿異國色彩，推薦順遊稻佐山夜景。"
+    },
+    {
+      "id": "event-008",
+      "region": "kyushu",
+      "months": [
+        11,
+        12,
+        1
+      ],
+      "category": "光影花火",
+      "title": "博多光之街道",
+      "location": "JR博多站站前廣場",
+      "dateLabel": "11月至1月上旬",
+      "duration": 40,
+      "isIndoor": false,
+      "desc": "星空意象燈海壯觀，交通極方便，建議搭配站內屋台美食饗宴。"
+    },
+    {
+      "id": "event-009",
+      "region": "chubu",
+      "months": [
+        1,
+        2
+      ],
+      "category": "光影花火",
+      "title": "白川鄉合掌造夜間點燈",
+      "location": "岐阜縣白川村 (預約制巴士前往)",
+      "dateLabel": "1至2月週日限定",
+      "duration": 180,
+      "isIndoor": false,
+      "desc": "宛如置身童話薑餅屋世界，名額稀少需預約，建議順遊高山老街。"
+    },
+    {
+      "id": "event-010",
+      "region": "chubu",
+      "months": [
+        10,
+        11,
+        12,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "category": "光影花火",
+      "title": "名花之里冬華共演",
+      "location": "三重縣名花之里 (近鐵長島站巴士)",
+      "dateLabel": "10月至隔年5月",
+      "duration": 150,
+      "isIndoor": false,
+      "desc": "日本規模最大水上燈海與光之隧道，順遊爵士之夢長島Outlet。"
+    },
+    {
+      "id": "event-011",
+      "region": "tohoku",
+      "months": [
+        12,
+        1,
+        2
+      ],
+      "category": "光影花火",
+      "title": "藏王樹冰夜間點燈",
+      "location": "山形藏王溫泉滑雪場 (JR山形站巴士)",
+      "dateLabel": "12月下旬至2月",
+      "duration": 90,
+      "isIndoor": false,
+      "desc": "魔幻五彩燈光照射巨大「雪怪」，景色驚世，建議順遊藏王溫泉。"
+    },
+    {
+      "id": "event-012",
+      "region": "tohoku",
+      "months": [
+        12,
+        1,
+        2
+      ],
+      "category": "光影花火",
+      "title": "弘前城冬櫻點燈",
+      "location": "青森縣弘前公園 (JR弘前站巴士)",
+      "dateLabel": "12月至2月",
+      "duration": 60,
+      "isIndoor": false,
+      "desc": "護城河積雪被粉紅燈光染成冬日櫻花瓣，極美，順遊星巴克弘前店。"
+    },
+    {
+      "id": "event-013",
+      "region": "sanyo",
+      "months": [
+        11,
+        12,
+        1
+      ],
+      "category": "光影花火",
+      "title": "廣島夢幻點燈",
+      "location": "廣島市平和大通 (廣電袋町站)",
+      "dateLabel": "11月中至1月上旬",
+      "duration": 90,
+      "isIndoor": false,
+      "desc": "以童話故事為主題的裝置燈飾，市中心散步首選，順遊原爆圓頂。"
+    },
+    {
+      "id": "event-014",
+      "region": "sanyo",
+      "months": [
+        11
+      ],
+      "category": "景點",
+      "title": "栗林公園秋季點燈",
+      "location": "香川縣栗林公園 (JR栗林公園北口)",
+      "dateLabel": "11月下旬紅葉期",
+      "duration": 120,
+      "isIndoor": false,
+      "desc": "日式庭園與楓紅倒映湖面極其優雅，建議順遊高松市區品嚐烏龍麵。"
+    }
+  ]
 }
