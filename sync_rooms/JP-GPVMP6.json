@@ -1,7 +1,7 @@
 {
   "syncCode": "JP-GPVMP6",
-  "updatedStamp": "1795166712691-pwgd",
-  "updatedAt": "2026-11-20T09:25:12.691Z",
+  "updatedStamp": "1795166731587-3s6s",
+  "updatedAt": "2026-11-20T09:25:31.587Z",
   "appState": {
     "startDate": "2026-12-18",
     "endDate": "2026-12-21",
@@ -84,6 +84,14 @@
           "duration": 60,
           "isIndoor": false,
           "note": "大阪市役所至中之島公園 (淀屋橋站)"
+        },
+        {
+          "id": "act-1795166729922-5fxe",
+          "title": "道頓堀一蘭拉麵",
+          "type": "季節美食",
+          "duration": 60,
+          "isIndoor": true,
+          "note": ""
         }
       ],
       "2": [
@@ -183,21 +191,7 @@
       "20": [],
       "21": []
     },
-    "deletedPuzzleBin": [
-      {
-        "trashId": "trash-1795166711027-ubvt",
-        "originalDay": 1,
-        "deletedAt": "17:25",
-        "piece": {
-          "id": "act-1795099048435-efkt",
-          "title": "道頓堀一蘭拉麵",
-          "type": "季節美食",
-          "duration": 60,
-          "isIndoor": true,
-          "note": ""
-        }
-      }
-    ],
+    "deletedPuzzleBin": [],
     "customTransitMinutes": {
       "d2-luggage": 31
     },
