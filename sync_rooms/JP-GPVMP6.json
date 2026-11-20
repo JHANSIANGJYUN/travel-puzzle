@@ -1,7 +1,7 @@
 {
   "syncCode": "JP-GPVMP6",
-  "updatedStamp": "1795166792642-6du9",
-  "updatedAt": "2026-11-20T09:26:32.642Z",
+  "updatedStamp": "1795171523252-w00v",
+  "updatedAt": "2026-11-20T10:45:23.252Z",
   "appState": {
     "startDate": "2026-12-18",
     "endDate": "2026-12-21",
@@ -28,7 +28,7 @@
     "rentalCarCostJpy": 32000,
     "rentalTollFuelJpy": 8500,
     "useJrPass": true,
-    "jrPassId": "jr-kansai-wide-5",
+    "jrPassId": "jr-kansai-mini-3",
     "jrPassStartDay": 2,
     "useSecondJrPass": false,
     "jrPassId2": "jr-kansai-wide-5",
