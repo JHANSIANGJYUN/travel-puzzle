@@ -1,7 +1,7 @@
 {
   "syncCode": "JP-GPVMP6",
-  "updatedStamp": "1795164785702-dytg",
-  "updatedAt": "2026-11-20T08:53:05.702Z",
+  "updatedStamp": "1795164809217-dd0v",
+  "updatedAt": "2026-11-20T08:53:29.217Z",
   "appState": {
     "startDate": "2026-12-25",
     "endDate": "2026-12-31",
@@ -17,11 +17,11 @@
       "aircraft": "A320neo"
     },
     "inboundFlight": {
-      "code": "MM921",
-      "airline": "待確認航空公司",
-      "airport": "關西國際機場 (KIX)",
-      "terminal": "T1",
-      "time": "16:00",
+      "code": "MM925",
+      "airline": "樂桃航空 Peach",
+      "airport": "那霸機場 (OKA)",
+      "terminal": "國際線",
+      "time": "13:15",
       "aircraft": "A320neo"
     },
     "drivingMode": false,
