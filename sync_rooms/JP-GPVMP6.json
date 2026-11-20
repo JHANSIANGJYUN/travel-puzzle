@@ -1,7 +1,7 @@
 {
   "syncCode": "JP-GPVMP6",
-  "updatedStamp": "1795164766590-gcph",
-  "updatedAt": "2026-11-20T08:52:46.590Z",
+  "updatedStamp": "1795164785702-dytg",
+  "updatedAt": "2026-11-20T08:53:05.702Z",
   "appState": {
     "startDate": "2026-12-25",
     "endDate": "2026-12-31",
@@ -9,26 +9,20 @@
     "regionId": "kyushu",
     "extraRegions": [],
     "outboundFlight": {
-      "code": "AK176",
-      "airline": "AirAsia 亞洲航空",
+      "code": "MM922",
+      "airline": "待確認航空公司",
       "airport": "關西國際機場 (KIX)",
       "terminal": "T1",
-      "time": "19:30",
-      "aircraft": "A321neo",
-      "region": "kansai",
-      "source": "base_seed",
-      "verified_at": "2026-11-19"
+      "time": "14:30",
+      "aircraft": "A320neo"
     },
     "inboundFlight": {
-      "code": "AK177",
-      "airline": "AirAsia 亞洲航空",
+      "code": "MM921",
+      "airline": "待確認航空公司",
       "airport": "關西國際機場 (KIX)",
       "terminal": "T1",
-      "time": "20:45",
-      "aircraft": "A321neo",
-      "region": "kansai",
-      "source": "base_seed",
-      "verified_at": "2026-11-19"
+      "time": "16:00",
+      "aircraft": "A320neo"
     },
     "drivingMode": false,
     "rentalCarCostJpy": 32000,
@@ -41,7 +35,7 @@
     "jrPassStartDay2": 4,
     "activeDay": 1,
     "dayStartTimes": {
-      "1": "19:30",
+      "1": "15:45",
       "2": "09:30",
       "3": "09:30",
       "4": "09:30",
