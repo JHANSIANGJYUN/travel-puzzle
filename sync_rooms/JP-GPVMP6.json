@@ -1,7 +1,7 @@
 {
   "syncCode": "JP-GPVMP6",
-  "updatedStamp": "1795171541982-rpm7",
-  "updatedAt": "2026-11-20T10:45:41.982Z",
+  "updatedStamp": "1795171544042-7o8t",
+  "updatedAt": "2026-11-20T10:45:44.042Z",
   "appState": {
     "startDate": "2026-12-18",
     "endDate": "2026-12-21",
@@ -70,20 +70,20 @@
     "activitiesByDay": {
       "1": [
         {
-          "id": "act-1795166785907-y6nb",
-          "title": "道頓堀一蘭拉麵",
-          "type": "季節美食",
-          "duration": 60,
-          "isIndoor": true,
-          "note": ""
-        },
-        {
           "id": "act-init-1",
           "title": "道頓堀＆心齋橋筋商店街",
           "type": "購物散策",
           "duration": 150,
           "isIndoor": false,
           "note": "跑跑人看板拍照＋章魚燒大阪燒晚餐"
+        },
+        {
+          "id": "act-1795166785907-y6nb",
+          "title": "道頓堀一蘭拉麵",
+          "type": "季節美食",
+          "duration": 60,
+          "isIndoor": true,
+          "note": ""
         },
         {
           "id": "act-1795092571758-7nmc",
