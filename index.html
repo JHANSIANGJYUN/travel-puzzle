@@ -662,6 +662,10 @@
                         <button type="button" onclick="pushCurrentStateToCloud(false)" class="bg-matcha hover:bg-matcha/90 text-white font-bold text-[11px] px-2.5 py-1.5 rounded-lg shadow-2xs cursor-pointer" title="將目前畫面行程上傳至雲端">⬆️ 上傳</button>
                     </div>
                 </div>
+                <div class="pt-1 flex flex-wrap items-center justify-between gap-2">
+                    <span class="text-[11px] text-indigoJp/80">📱 懶得在手機重打 3 組金鑰？點右側複製專屬連結傳給自己：</span>
+                    <button type="button" onclick="copyMagicSetupLink()" class="bg-amber-500 hover:bg-amber-600 text-white font-bold text-[11px] px-3 py-1.5 rounded-lg shadow-2xs cursor-pointer">🔗 複製一鍵自動設定連結</button>
+                </div>
                 <div class="pt-1 border-t border-indigoJp/10 space-y-1">
                     <label class="block text-[11px] font-bold text-indigoJp">🔑 GitHub 寫入權杖 Personal Access Token（上傳行程必填，手機僅讀取可留空）</label>
                     <input type="password" id="github-pat-input" placeholder="貼上 ghp_... 或 github_pat_...（需勾選 repo 權限）" onchange="saveGithubPatToken(this.value)" class="w-full bg-white border border-indigoJp/25 rounded-lg px-2.5 py-1.5 text-xs font-mono focus:outline-none">
@@ -1381,11 +1385,53 @@
             showToast(`📋 已複製跨裝置同步代碼：${input.value}`);
         }
 
+        function copyMagicSetupLink() {
+            const payload = {
+                c: activeSyncCode || localStorage.getItem(SYNC_CODE_STORAGE_KEY) || '',
+                p: getGithubPatToken(),
+                m: getGoogleMapsApiKey(),
+                g: getGeminiApiKey(),
+                d: getCloudDbUrl()
+            };
+            const encoded = utf8ToBase64(JSON.stringify(payload));
+            const baseUrl = window.location.href.split('#')[0];
+            const magicUrl = `${baseUrl}#setup=${encodeURIComponent(encoded)}`;
+            const tempInput = document.createElement('input');
+            tempInput.value = magicUrl;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+            showToast('🔗 已複製一鍵自動設定連結！貼到手機打開即自動填好全部金鑰與行程');
+        }
+
+        function applyMagicSetupFromHash() {
+            try {
+                const hash = window.location.hash || '';
+                const m = hash.match(/#setup=([^&]+)/);
+                if (!m) return false;
+                const decoded = JSON.parse(base64ToUtf8(decodeURIComponent(m[1])));
+                if (decoded && typeof decoded === 'object') {
+                    if (decoded.c) {
+                        activeSyncCode = String(decoded.c).trim().toUpperCase();
+                        localStorage.setItem(SYNC_CODE_STORAGE_KEY, activeSyncCode);
+                    }
+                    if (decoded.p) localStorage.setItem(GITHUB_PAT_STORAGE_KEY, String(decoded.p).trim());
+                    if (decoded.m) localStorage.setItem(GMAPS_KEY_STORAGE, String(decoded.m).trim());
+                    if (decoded.g) localStorage.setItem(GEMINI_KEY_STORAGE, String(decoded.g).trim());
+                    if (decoded.d) localStorage.setItem(CLOUD_DB_URL_STORAGE, String(decoded.d).trim());
+                    history.replaceState(null, '', window.location.pathname + window.location.search);
+                    return true;
+                }
+            } catch (e) {}
+            return false;
+        }
+
         async function connectAndPullSyncCode() {
             const input = document.getElementById('device-sync-code-input');
-            const code = (input?.value || '').trim().toUpperCase();
+            const code = String(input?.value || '').trim().toUpperCase();
             if (!code) {
-                showToast('請輸入跨裝置同步代碼');
+                showToast('請輸入跨裝置同步代碼（如：JP-GPVMP6）');
                 return;
             }
             activeSyncCode = code;
@@ -1398,14 +1444,75 @@
             }
         }
 
-        async function requestGeminiWithFallback(prompt, options = {}) {
+        function previewGithubRawUrl() {
+            const u = (document.getElementById('github-user-input')?.value || '').trim();
+            const r = (document.getElementById('github-repo-input')?.value || '').trim();
+            const dbInput = document.getElementById('cloud-db-url-input');
+            if (u && r && dbInput) {
+                dbInput.value = `https://raw.githubusercontent.com/${u}/${r}/main/db.json`;
+            }
+        }
+
+        async function syncCloudDatabase(silent = false) {
+            const url = getCloudDbUrl();
+            const statusEl = document.getElementById('cloud-db-modal-status');
+            const headerBadge = document.getElementById('cloud-sync-header-badge');
+            if (!url) return false;
+            try {
+                const res = await fetch(`${url}${url.includes('?') ? '&' : '?'}t=${Date.now()}`, { cache: 'no-store' });
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                const data = await res.json();
+                if (Array.isArray(data.jrPasses) && data.jrPasses.length > 0) {
+                    dynamicJrPasses = data.jrPasses;
+                }
+                if (data.flights && typeof data.flights === 'object') {
+                    dynamicFlightsDb = { ...KNOWN_FLIGHTS_DB, ...data.flights };
+                }
+                if (Array.isArray(data.events)) {
+                    cloudEventsPool = data.events;
+                }
+                cloudUpdatedAt = data.updatedAt || '';
+                if (statusEl) statusEl.textContent = `🟢 已同步 (${cloudUpdatedAt || '最新'})`;
+                if (headerBadge) headerBadge.textContent = '・🌐 雲端庫已同步';
+                populateJrPassDropdowns();
+                updateJrPassSummaryUI();
+                loadBuiltinRecommendations();
+                if (!silent) showToast('✅ 已成功從 GitHub 雲端庫同步最新景點、航班與 JR PASS！');
+                return true;
+            } catch (e) {
+                if (statusEl) statusEl.textContent = '⚠️ 讀取失敗（使用內建資料庫）';
+                if (!silent) showToast(`⚠️ 雲端資料庫尚未建立或讀取失敗，目前使用內建資料庫`);
+                return false;
+            }
+        }
+
+        async function saveAndSyncCloudDb() {
+            const url = (document.getElementById('cloud-db-url-input')?.value || '').trim();
+            localStorage.setItem(CLOUD_DB_URL_STORAGE, url);
+            await syncCloudDatabase(false);
+        }
+
+        function clearCloudDbUrl() {
+            localStorage.setItem(CLOUD_DB_URL_STORAGE, '');
+            const dbInput = document.getElementById('cloud-db-url-input');
+            if (dbInput) dbInput.value = '';
+            const statusEl = document.getElementById('cloud-db-modal-status');
+            if (statusEl) statusEl.textContent = '已清除';
+            showToast('已清除雲端資料庫網址');
+        }
+
+        async function requestGeminiWithFallback(promptText, opts = {}) {
             const apiKey = getGeminiApiKey();
             if (!apiKey) return { ok: false, error: '未設定 Gemini API Key' };
             for (const model of GEMINI_MODEL_FALLBACKS) {
                 try {
                     const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${encodeURIComponent(apiKey)}`;
-                    const body = { contents: [{ parts: [{ text: prompt }] }] };
-                    if (options.useSearch) body.tools = [{ google_search: {} }];
+                    const body = {
+                        contents: [{ parts: [{ text: promptText }] }]
+                    };
+                    if (opts.useSearch) {
+                        body.tools = [{ google_search: {} }];
+                    }
                     const res = await fetch(url, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
@@ -1414,106 +1521,56 @@
                     if (!res.ok) continue;
                     const data = await res.json();
                     const text = data?.candidates?.[0]?.content?.parts?.map(p => p.text || '').join('') || '';
-                    if (text.trim()) return { ok: true, text, model };
+                    if (text) return { ok: true, text, model };
                 } catch (e) {}
             }
-            return { ok: false, error: '模型暫時忙碌或額度達上限' };
+            return { ok: false, error: '所有 Gemini 模型皆無法連線或金鑰無效' };
         }
 
         async function testGeminiApiConnection() {
             const val = (document.getElementById('gemini-api-key-input')?.value || '').trim();
             if (val) localStorage.setItem(GEMINI_KEY_STORAGE, val);
             const box = document.getElementById('api-test-result-box');
-            if (box) {
-                box.classList.remove('hidden');
-                box.className = 'rounded-xl p-2.5 text-xs border bg-sky-50 border-sky-200 text-sky-900';
-                box.textContent = '⏳ 正在測試 Gemini API 連線...';
+            if (!box) return;
+            box.classList.remove('hidden');
+            if (!getGeminiApiKey()) {
+                box.className = 'rounded-xl p-2.5 text-xs border bg-red-50 border-red-200 text-red-900';
+                box.textContent = '❌ 請先貼上 Gemini API Key';
+                return;
             }
-            const res = await requestGeminiWithFallback('請只回覆 OK 兩個字');
-            if (box) {
-                if (res.ok) {
-                    box.className = 'rounded-xl p-2.5 text-xs border bg-emerald-50 border-emerald-200 text-emerald-900';
-                    box.textContent = `✅ Gemini API 連線成功（使用模型：${res.model}）！`;
-                    updateApiKeyHeaderStatus();
-                } else {
-                    box.className = 'rounded-xl p-2.5 text-xs border bg-red-50 border-red-200 text-red-900';
-                    box.textContent = `❌ 測試失敗：${res.error}`;
-                }
-            }
-        }
-
-        function previewGithubRawUrl() {
-            const u = (document.getElementById('github-user-input')?.value || '').trim();
-            const r = (document.getElementById('github-repo-input')?.value || '').trim();
-            const urlInput = document.getElementById('cloud-db-url-input');
-            if (u && r && urlInput) {
-                urlInput.value = `https://raw.githubusercontent.com/${u}/${r}/main/db.json`;
-            }
-        }
-
-        function clearCloudDbUrl() {
-            localStorage.setItem(CLOUD_DB_URL_STORAGE, '');
-            const urlInput = document.getElementById('cloud-db-url-input');
-            if (urlInput) urlInput.value = '';
-            showToast('已清除雲端資料庫網址');
-        }
-
-        async function saveAndSyncCloudDb() {
-            const urlVal = (document.getElementById('cloud-db-url-input')?.value || '').trim();
-            localStorage.setItem(CLOUD_DB_URL_STORAGE, urlVal);
-            await syncCloudDatabase(false);
-        }
-
-        async function syncCloudDatabase(silent = false) {
-            const url = getCloudDbUrl();
-            if (!url) return;
-            try {
-                const res = await fetch(`${url}?t=${Date.now()}`, { cache: 'no-store' });
-                if (!res.ok) throw new Error(`HTTP ${res.status}`);
-                const data = await res.json();
-                if (Array.isArray(data.jr_passes) && data.jr_passes.length > 0) {
-                    dynamicJrPasses = data.jr_passes.map(p => ({
-                        ...p,
-                        priceJpy: Number(p.priceJpy || p.price || 3000),
-                        days: Number(p.days || 1),
-                        regions: Array.isArray(p.regions) ? p.regions : ['kansai']
-                    }));
-                }
-                if (data.flights && typeof data.flights === 'object') {
-                    dynamicFlightsDb = { ...KNOWN_FLIGHTS_DB, ...data.flights };
-                }
-                if (Array.isArray(data.events)) {
-                    cloudEventsPool = data.events;
-                }
-                cloudUpdatedAt = data.updated_at || '今日';
-                const statusEl = document.getElementById('cloud-db-modal-status');
-                const badgeEl = document.getElementById('cloud-sync-header-badge');
-                if (statusEl) statusEl.textContent = `🟢 已同步 (${cloudUpdatedAt})`;
-                if (badgeEl) badgeEl.textContent = `・🌐 雲端庫已同步`;
-
-                populateJrPassDropdowns();
-                updateJrPassSummaryUI();
-                loadBuiltinRecommendations();
-                if (!silent) showToast(`🌐 已同步雲端資料庫（${dynamicJrPasses.length} 種 PASS・${cloudEventsPool.length} 筆活動）！`);
-            } catch (e) {
-                if (!silent) showToast(`⚠️ 雲端資料庫讀取失敗：${e.message}`);
+            box.className = 'rounded-xl p-2.5 text-xs border bg-sky-50 border-sky-200 text-sky-900';
+            box.textContent = '⏳ 正在測試 Gemini API 連線...';
+            const res = await requestGeminiWithFallback('請回覆 OK', { useSearch: false });
+            if (res.ok) {
+                box.className = 'rounded-xl p-2.5 text-xs border bg-emerald-50 border-emerald-200 text-emerald-900';
+                box.textContent = `✅ Gemini API (${res.model}) 連線成功！`;
+                updateApiKeyHeaderStatus();
+            } else {
+                box.className = 'rounded-xl p-2.5 text-xs border bg-red-50 border-red-200 text-red-900';
+                box.textContent = `❌ 測試失敗：${res.error}`;
             }
         }
 
         // ==========================================
-        // 5. 日期、人數、區域與航班查詢控制
+        // 5. 旅程日期、人數、10 大地區與航班時刻查詢
         // ==========================================
         function handleDateRangeChange(changedSide) {
-            const sVal = document.getElementById('start-date')?.value;
-            const eVal = document.getElementById('end-date')?.value;
-            if (!sVal || !eVal) return;
-            if (changedSide === 'start' && eVal < sVal) {
-                appState.endDate = sVal;
-            } else if (changedSide === 'end' && eVal < sVal) {
-                appState.startDate = eVal;
+            const startEl = document.getElementById('start-date');
+            const endEl = document.getElementById('end-date');
+            if (!startEl || !endEl) return;
+            let sVal = startEl.value || appState.startDate;
+            let eVal = endEl.value || appState.endDate;
+            if (sVal && eVal && eVal < sVal) {
+                if (changedSide === 'start') {
+                    eVal = sVal;
+                    endEl.value = eVal;
+                } else {
+                    sVal = eVal;
+                    startEl.value = sVal;
+                }
             }
-            appState.startDate = document.getElementById('start-date').value;
-            appState.endDate = document.getElementById('end-date').value;
+            appState.startDate = sVal;
+            appState.endDate = eVal;
             const total = getTotalDaysCount();
             if (appState.activeDay > total) appState.activeDay = total;
             for (let d = 1; d <= total; d++) {
@@ -1526,7 +1583,7 @@
         }
 
         function handleTravelerCountChange(val) {
-            const count = parseInt(val, 10) || 2;
+            const count = Math.max(1, parseInt(val, 10) || 2);
             appState.travelerCount = count;
             if (count < 3 && appState.drivingMode) {
                 appState.drivingMode = false;
@@ -1536,196 +1593,198 @@
         }
 
         function renderRegionSelector() {
-            const regContainer = document.getElementById('region-selector');
-            const multiContainer = document.getElementById('multi-region-container');
+            const mainContainer = document.getElementById('region-selector');
+            const extraContainer = document.getElementById('multi-region-container');
             const descEl = document.getElementById('region-desc-text');
+            if (!mainContainer || !extraContainer) return;
+
             const activeReg = REGIONS_DB.find(r => r.id === appState.regionId) || REGIONS_DB[0];
             if (descEl) descEl.textContent = activeReg.desc;
 
-            if (regContainer) {
-                regContainer.innerHTML = REGIONS_DB.map(r => {
-                    const isSelected = r.id === appState.regionId;
-                    return `<button type="button" onclick="selectRegion('${r.id}')" class="px-3 py-1.5 rounded-xl text-xs font-bold border transition-all cursor-pointer ${isSelected ? 'bg-indigoJp text-white border-indigoJp shadow-2xs' : 'bg-white text-stone-600 border-stone-200 hover:border-indigoJp/40'}">${r.name}</button>`;
-                }).join('');
-            }
-            if (multiContainer) {
-                multiContainer.innerHTML = REGIONS_DB.filter(r => r.id !== appState.regionId).map(r => {
-                    const isExtra = (appState.extraRegions || []).includes(r.id);
-                    return `<button type="button" onclick="toggleExtraRegion('${r.id}')" class="px-2.5 py-1 rounded-lg text-[11px] font-medium border transition-colors cursor-pointer ${isExtra ? 'bg-vermilion/10 text-vermilion border-vermilion/40 font-bold' : 'bg-white text-stone-500 border-stone-200 hover:bg-stone-100'}">${isExtra ? '✓ ' : '+ '}${r.name}</button>`;
-                }).join('');
-            }
+            mainContainer.innerHTML = REGIONS_DB.map(reg => {
+                const isSelected = reg.id === appState.regionId;
+                return `
+                    <button type="button" onclick="selectRegion('${reg.id}')" class="px-3.5 py-1.5 rounded-full text-xs font-bold border transition-all cursor-pointer ${isSelected ? 'bg-indigoJp text-white border-indigoJp shadow-2xs' : 'bg-white text-stone-700 border-stone-200 hover:border-indigoJp/50'}">
+                        ${escapeHtml(reg.name)}
+                    </button>
+                `;
+            }).join('');
+
+            const extraSet = new Set(appState.extraRegions || []);
+            extraContainer.innerHTML = REGIONS_DB.filter(r => r.id !== appState.regionId).map(reg => {
+                const isChecked = extraSet.has(reg.id);
+                return `
+                    <button type="button" onclick="toggleExtraRegion('${reg.id}')" class="px-2.5 py-1 rounded-full text-[11px] font-medium border transition-all cursor-pointer ${isChecked ? 'bg-matcha text-white border-matcha font-bold' : 'bg-white text-stone-600 border-stone-200 hover:border-matcha/50'}">
+                        ${isChecked ? '✓ ' : '＋ '}${escapeHtml(reg.name)}
+                    </button>
+                `;
+            }).join('');
         }
 
         function selectRegion(regionId) {
+            if (!REGIONS_DB.some(r => r.id === regionId)) return;
             appState.regionId = regionId;
             appState.extraRegions = (appState.extraRegions || []).filter(id => id !== regionId);
+            const matchingPasses = getFilteredJrPassesForCurrentRegions();
+            if (matchingPasses.length > 0 && !matchingPasses.some(p => p.id === appState.jrPassId)) {
+                appState.jrPassId = matchingPasses[0].id;
+            }
             saveStateToLocal();
             syncInputsFromState();
             loadBuiltinRecommendations();
         }
 
         function toggleExtraRegion(regionId) {
-            if (!appState.extraRegions) appState.extraRegions = [];
-            if (appState.extraRegions.includes(regionId)) {
-                appState.extraRegions = appState.extraRegions.filter(id => id !== regionId);
-            } else {
-                appState.extraRegions.push(regionId);
-            }
+            const set = new Set(appState.extraRegions || []);
+            if (set.has(regionId)) set.delete(regionId);
+            else set.add(regionId);
+            appState.extraRegions = Array.from(set);
             saveStateToLocal();
             syncInputsFromState();
             loadBuiltinRecommendations();
         }
 
-        async function lookupFlights() {
-            const outCode = (document.getElementById('outbound-flight-input')?.value || '').trim().toUpperCase();
-            const inCode = (document.getElementById('inbound-flight-input')?.value || '').trim().toUpperCase();
-            const tipEl = document.getElementById('flight-status-tip');
-            const btn = document.getElementById('fetch-flight-btn');
-            if (!outCode && !inCode) {
-                showToast('請輸入去程或回程航班號碼');
-                return;
-            }
-            if (btn) btn.disabled = true;
-            if (tipEl) {
-                tipEl.classList.remove('hidden');
-                tipEl.className = 'text-[11px] px-3 py-1.5 rounded-lg border bg-sky-50 border-sky-200 text-sky-900';
-                tipEl.textContent = `⏳ 正在查詢 ${outCode} / ${inCode} 航班時刻與執飛機型...`;
-            }
-
-            let outInfo = outCode ? dynamicFlightsDb[outCode] : null;
-            let inInfo = inCode ? dynamicFlightsDb[inCode] : null;
-
-            if ((!outInfo || !inInfo) && getGeminiApiKey()) {
-                const prompt = `請查詢台灣飛往日本的直飛航班 ${outCode}（去程抵達日本當地時間）與 ${inCode}（回程離開日本當地時間）的航空公司、日本機場與代碼、航廈、當地起降時間(HH:MM)與常見執飛機型。
-只回傳純 JSON（無 markdown）：
-{
-  "${outCode}": { "airline": "航空公司", "airport": "機場名稱 (代碼)", "terminal": "T1", "time": "19:30", "aircraft": "A321neo" },
-  "${inCode}": { "airline": "航空公司", "airport": "機場名稱 (代碼)", "terminal": "T1", "time": "20:45", "aircraft": "A321neo" }
-}`;
-                const aiRes = await requestGeminiWithFallback(prompt, { useSearch: true });
-                if (aiRes.ok) {
-                    try {
-                        const parsed = JSON.parse(aiRes.text.replace(/```json|```/g, '').trim());
-                        if (outCode && parsed[outCode]) outInfo = parsed[outCode];
-                        if (inCode && parsed[inCode]) inInfo = parsed[inCode];
-                    } catch (e) {}
-                }
-            }
-
-            if (outCode) {
-                appState.outboundFlight = {
-                    code: outCode,
-                    airline: outInfo?.airline || '待確認航空公司',
-                    airport: outInfo?.airport || '關西國際機場 (KIX)',
-                    terminal: outInfo?.terminal || 'T1',
-                    time: outInfo?.time || '14:30',
-                    aircraft: outInfo?.aircraft || 'A320neo'
-                };
-                appState.dayStartTimes[1] = computeDay1StartTimeFromFlight();
-            }
-            if (inCode) {
-                appState.inboundFlight = {
-                    code: inCode,
-                    airline: inInfo?.airline || '待確認航空公司',
-                    airport: inInfo?.airport || '關西國際機場 (KIX)',
-                    terminal: inInfo?.terminal || 'T1',
-                    time: inInfo?.time || '16:00',
-                    aircraft: inInfo?.aircraft || 'A320neo'
-                };
-            }
-
-            if (btn) btn.disabled = false;
-            if (tipEl) {
-                tipEl.className = 'text-[11px] px-3 py-1.5 rounded-lg border bg-emerald-50 border-emerald-200 text-emerald-900';
-                tipEl.textContent = `✅ 已更新 ${outCode} 與 ${inCode} 航班時刻！如季節班表微調，可點擊卡片右側「微調」。`;
-            }
-            gmapsRouteCache.clear();
-            saveStateToLocal();
-            syncInputsFromState();
-        }
-
         function renderFlightBanner() {
-            const container = document.getElementById('flight-result-banner');
-            if (!container) return;
-            const outF = appState.outboundFlight;
-            const inF = appState.inboundFlight;
-            container.innerHTML = `
-                <div class="bg-white border border-stone-200 rounded-xl p-3 flex items-start justify-between gap-2">
-                    <div class="space-y-1 text-xs">
-                        <div class="flex items-center gap-1.5">
-                            <span class="px-2 py-0.5 rounded-md bg-indigoJp/10 text-indigoJp font-bold text-[11px]">🛫 去程 ${escapeHtml(outF.code)}</span>
-                            <span class="font-bold text-sumi">${escapeHtml(outF.airline)}</span>
-                        </div>
-                        <p class="text-stone-600">降落：<strong>${escapeHtml(outF.airport)}</strong>（${escapeHtml(outF.terminal)}）</p>
-                        <p class="text-[11px] text-vermilion font-bold">⏰ 抵達時間 ${escapeHtml(outF.time)}（自動設為 Day 1 起點）｜機型 ${escapeHtml(outF.aircraft)}</p>
+            const banner = document.getElementById('flight-result-banner');
+            if (!banner) return;
+            const out = appState.outboundFlight || {};
+            const inb = appState.inboundFlight || {};
+            banner.innerHTML = `
+                <div class="bg-white border border-stone-200 rounded-xl p-3 flex items-center justify-between gap-2 text-xs">
+                    <div>
+                        <div class="font-bold text-indigoJp">🛬 去程 ${escapeHtml(out.code || '')}・${escapeHtml(out.airline || '')}</div>
+                        <div class="text-stone-600 mt-0.5">${escapeHtml(out.airport || '')} (${escapeHtml(out.terminal || 'T1')}) <strong>${escapeHtml(out.time || '19:30')} 抵達</strong>・${escapeHtml(out.aircraft || '')}</div>
                     </div>
                     <button type="button" onclick="openFlightQuickEdit('outbound')" class="text-[11px] text-indigoJp hover:text-vermilion underline shrink-0 cursor-pointer">微調</button>
                 </div>
-                <div class="bg-white border border-stone-200 rounded-xl p-3 flex items-start justify-between gap-2">
-                    <div class="space-y-1 text-xs">
-                        <div class="flex items-center gap-1.5">
-                            <span class="px-2 py-0.5 rounded-md bg-vermilion/10 text-vermilion font-bold text-[11px]">🛬 回程 ${escapeHtml(inF.code)}</span>
-                            <span class="font-bold text-sumi">${escapeHtml(inF.airline)}</span>
-                        </div>
-                        <p class="text-stone-600">起飛：<strong>${escapeHtml(inF.airport)}</strong>（${escapeHtml(inF.terminal)}）</p>
-                        <p class="text-[11px] text-vermilion font-bold">⏰ 起飛時間 ${escapeHtml(inF.time)}（建議前 2.5 小時抵達機場）｜機型 ${escapeHtml(inF.aircraft)}</p>
+                <div class="bg-white border border-stone-200 rounded-xl p-3 flex items-center justify-between gap-2 text-xs">
+                    <div>
+                        <div class="font-bold text-vermilion">🛫 回程 ${escapeHtml(inb.code || '')}・${escapeHtml(inb.airline || '')}</div>
+                        <div class="text-stone-600 mt-0.5">${escapeHtml(inb.airport || '')} (${escapeHtml(inb.terminal || 'T1')}) <strong>${escapeHtml(inb.time || '20:45')} 起飛</strong>・${escapeHtml(inb.aircraft || '')}</div>
                     </div>
                     <button type="button" onclick="openFlightQuickEdit('inbound')" class="text-[11px] text-indigoJp hover:text-vermilion underline shrink-0 cursor-pointer">微調</button>
                 </div>
             `;
         }
 
-        function openFlightQuickEdit(direction) {
-            const container = document.getElementById('flight-result-banner');
-            if (!container) return;
-            const target = direction === 'outbound' ? appState.outboundFlight : appState.inboundFlight;
-            const label = direction === 'outbound' ? '去程抵達' : '回程起飛';
-            container.innerHTML = `
-                <div class="col-span-full bg-amber-50 border border-amber-300 rounded-xl p-3 space-y-2 text-xs">
-                    <div class="font-bold text-amber-950">✏️ 微調${label}航班（${escapeHtml(target.code)}）</div>
-                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                        <input type="text" id="qe-airport" value="${escapeHtml(target.airport)}" placeholder="機場名稱" class="bg-white border border-stone-300 rounded-lg px-2 py-1">
-                        <input type="text" id="qe-terminal" value="${escapeHtml(target.terminal)}" placeholder="航廈" class="bg-white border border-stone-300 rounded-lg px-2 py-1">
-                        <input type="time" id="qe-time" value="${escapeHtml(target.time)}" class="bg-white border border-stone-300 rounded-lg px-2 py-1 font-mono font-bold">
-                        <input type="text" id="qe-aircraft" value="${escapeHtml(target.aircraft)}" placeholder="機型" class="bg-white border border-stone-300 rounded-lg px-2 py-1">
-                    </div>
-                    <div class="flex justify-end gap-2">
-                        <button type="button" onclick="renderFlightBanner()" class="px-3 py-1 rounded-lg bg-white border border-stone-300 text-stone-600 cursor-pointer">取消</button>
-                        <button type="button" onclick="saveFlightQuickEdit('${direction}')" class="px-3 py-1 rounded-lg bg-indigoJp text-white font-bold cursor-pointer">儲存微調</button>
+        function openFlightQuickEdit(leg) {
+            const tip = document.getElementById('flight-status-tip');
+            if (!tip) return;
+            const isOut = leg === 'outbound';
+            const f = isOut ? appState.outboundFlight : appState.inboundFlight;
+            tip.classList.remove('hidden');
+            tip.className = 'text-xs px-3 py-2.5 rounded-xl border bg-white border-indigoJp/30 space-y-2';
+            tip.innerHTML = `
+                <div class="font-bold text-indigoJp">✏️ 微調${isOut ? '去程（抵達日本）' : '回程（離開日本）'}航班時刻與機場</div>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                    <input type="text" id="qe-airport" value="${escapeHtml(f.airport || '')}" placeholder="機場名稱" class="bg-washi border border-stone-300 rounded-lg px-2.5 py-1 text-xs">
+                    <input type="time" id="qe-time" value="${escapeHtml(f.time || '19:30')}" class="bg-washi border border-stone-300 rounded-lg px-2.5 py-1 text-xs font-mono font-bold">
+                    <div class="flex gap-1.5">
+                        <button type="button" onclick="saveFlightQuickEdit('${leg}')" class="flex-1 bg-indigoJp text-white font-bold text-xs py-1 rounded-lg cursor-pointer">套用</button>
+                        <button type="button" onclick="document.getElementById('flight-status-tip').classList.add('hidden')" class="px-2.5 bg-stone-100 text-stone-600 text-xs rounded-lg cursor-pointer">關閉</button>
                     </div>
                 </div>
             `;
         }
 
-        function saveFlightQuickEdit(direction) {
-            const target = direction === 'outbound' ? appState.outboundFlight : appState.inboundFlight;
-            target.airport = (document.getElementById('qe-airport')?.value || target.airport).trim();
-            target.terminal = (document.getElementById('qe-terminal')?.value || target.terminal).trim();
-            target.time = (document.getElementById('qe-time')?.value || target.time).trim();
-            target.aircraft = (document.getElementById('qe-aircraft')?.value || target.aircraft).trim();
-            if (direction === 'outbound') {
+        function saveFlightQuickEdit(leg) {
+            const airport = (document.getElementById('qe-airport')?.value || '').trim();
+            const time = (document.getElementById('qe-time')?.value || '').trim();
+            const target = leg === 'outbound' ? appState.outboundFlight : appState.inboundFlight;
+            if (airport) target.airport = airport;
+            if (time) target.time = time;
+            if (leg === 'outbound') {
                 appState.dayStartTimes[1] = computeDay1StartTimeFromFlight();
             }
+            document.getElementById('flight-status-tip')?.classList.add('hidden');
             gmapsRouteCache.clear();
             saveStateToLocal();
             syncInputsFromState();
-            showToast('✅ 已更新航班時刻並重新計算時間軸');
+            showToast('✅ 已更新航班時刻與 Day 1 銜接時間');
+        }
+
+        async function lookupFlights() {
+            const outCode = (document.getElementById('outbound-flight-input')?.value || '').trim().toUpperCase();
+            const inCode = (document.getElementById('inbound-flight-input')?.value || '').trim().toUpperCase();
+            const tip = document.getElementById('flight-status-tip');
+            if (!outCode && !inCode) {
+                showToast('請輸入航班編號（例如 AK176、IT230）');
+                return;
+            }
+            if (tip) {
+                tip.classList.remove('hidden');
+                tip.className = 'text-[11px] px-3 py-1.5 rounded-lg border bg-sky-50 border-sky-200 text-sky-900';
+                tip.textContent = `⏳ 正在查詢 ${outCode} / ${inCode} 航班時刻與日本降落機場...`;
+            }
+
+            let foundOut = outCode ? dynamicFlightsDb[outCode] : null;
+            let foundIn = inCode ? dynamicFlightsDb[inCode] : null;
+
+            if ((!foundOut || !foundIn) && getGeminiApiKey()) {
+                const prompt = `查詢台灣飛往日本航班時刻：去程 "${outCode}"、回程 "${inCode}"。請回傳純 JSON（無 markdown）：
+{
+  "outbound": { "code": "${outCode}", "airline": "航空公司", "airport": "日本抵達機場名稱 (IATA)", "terminal": "航廈", "time": "HH:MM", "aircraft": "常見機型", "region": "kansai|kanto|hokkaido|kyushu|okinawa|chubu|tohoku|sanyo|sanin|shikoku" },
+  "inbound": { "code": "${inCode}", "airline": "航空公司", "airport": "日本起飛機場名稱 (IATA)", "terminal": "航廈", "time": "HH:MM", "aircraft": "常見機型", "region": "kansai|kanto|hokkaido|kyushu|okinawa|chubu|tohoku|sanyo|sanin|shikoku" }
+}`;
+                const aiRes = await requestGeminiWithFallback(prompt, { useSearch: true });
+                if (aiRes.ok) {
+                    try {
+                        const parsed = JSON.parse(aiRes.text.replace(/```json|```/g, '').trim());
+                        if (parsed.outbound?.time) foundOut = parsed.outbound;
+                        if (parsed.inbound?.time) foundIn = parsed.inbound;
+                    } catch (e) {}
+                }
+            }
+
+            if (foundOut) {
+                appState.outboundFlight = { code: outCode, ...foundOut };
+                appState.dayStartTimes[1] = computeDay1StartTimeFromFlight();
+                if (foundOut.region && REGIONS_DB.some(r => r.id === foundOut.region)) {
+                    appState.regionId = foundOut.region;
+                }
+            } else if (outCode) {
+                appState.outboundFlight.code = outCode;
+            }
+
+            if (foundIn) {
+                appState.inboundFlight = { code: inCode, ...foundIn };
+            } else if (inCode) {
+                appState.inboundFlight.code = inCode;
+            }
+
+            gmapsRouteCache.clear();
+            saveStateToLocal();
+            syncInputsFromState();
+            loadBuiltinRecommendations();
+
+            if (tip) {
+                if (foundOut || foundIn) {
+                    tip.className = 'text-[11px] px-3 py-1.5 rounded-lg border bg-emerald-50 border-emerald-200 text-emerald-900';
+                    tip.textContent = `✅ 已更新航班資訊並自動計算 Day 1 出關出發時間（${appState.dayStartTimes[1]}）！若需微調時刻可點卡片右側「微調」。`;
+                } else {
+                    tip.className = 'text-[11px] px-3 py-1.5 rounded-lg border bg-amber-50 border-amber-200 text-amber-900';
+                    tip.textContent = `ℹ️ 內建庫暫無 ${outCode}/${inCode} 詳細時刻，已更新航班代碼；您可點擊下方卡片「微調」手動設定抵達與起飛時間。`;
+                }
+            }
         }
 
         // ==========================================
-        // 6. 自駕與 JR PASS 計算邏輯
+        // 6. 自駕模式與 JR PASS 周遊券計算
         // ==========================================
         function toggleDrivingMode(checked) {
+            if (checked && (appState.travelerCount || 1) < 3) {
+                showToast('需 3 人以上同行才解鎖自駕模式');
+                return;
+            }
             appState.drivingMode = Boolean(checked);
-            if (appState.drivingMode) appState.useJrPass = false;
             gmapsRouteCache.clear();
             saveStateToLocal();
             syncInputsFromState();
         }
 
         function handleRentalCostChange() {
-            appState.rentalCarCostJpy = parseInt(document.getElementById('rental-car-cost')?.value, 10) || 0;
-            appState.rentalTollFuelJpy = parseInt(document.getElementById('rental-toll-fuel')?.value, 10) || 0;
+            appState.rentalCarCostJpy = Math.max(0, parseInt(document.getElementById('rental-car-cost')?.value, 10) || 0);
+            appState.rentalTollFuelJpy = Math.max(0, parseInt(document.getElementById('rental-toll-fuel')?.value, 10) || 0);
             saveStateToLocal();
             updateJrPassSummaryUI();
             renderExpenseSummary();
@@ -1733,8 +1792,6 @@
 
         function toggleJrPass(checked) {
             appState.useJrPass = Boolean(checked);
-            if (appState.useJrPass) appState.drivingMode = false;
-            gmapsRouteCache.clear();
             saveStateToLocal();
             syncInputsFromState();
         }
@@ -1746,61 +1803,48 @@
         }
 
         function handleJrPassConfigChange() {
-            appState.jrPassId = document.getElementById('jr-pass-select')?.value || appState.jrPassId;
-            appState.jrPassStartDay = parseInt(document.getElementById('jr-pass-start-day')?.value, 10) || 1;
-            appState.jrPassId2 = document.getElementById('jr-pass-select-2')?.value || appState.jrPassId2;
-            appState.jrPassStartDay2 = parseInt(document.getElementById('jr-pass-start-day-2')?.value, 10) || 4;
+            const p1 = document.getElementById('jr-pass-select')?.value;
+            const d1 = parseInt(document.getElementById('jr-pass-start-day')?.value, 10);
+            const p2 = document.getElementById('jr-pass-select-2')?.value;
+            const d2 = parseInt(document.getElementById('jr-pass-start-day-2')?.value, 10);
+            if (p1) appState.jrPassId = p1;
+            if (d1 >= 1) appState.jrPassStartDay = d1;
+            if (p2) appState.jrPassId2 = p2;
+            if (d2 >= 1) appState.jrPassStartDay2 = d2;
             saveStateToLocal();
             syncInputsFromState();
         }
 
-        function getFilteredJrPasses() {
-            const allowed = new Set([appState.regionId, ...(appState.extraRegions || []), 'all']);
-            const matched = dynamicJrPasses.filter(p => (p.regions || []).some(r => allowed.has(r)));
+        function getFilteredJrPassesForCurrentRegions() {
+            const selected = new Set([appState.regionId, ...(appState.extraRegions || [])]);
+            const matched = dynamicJrPasses.filter(p => (p.regions || []).some(r => selected.has(r)));
             return matched.length > 0 ? matched : dynamicJrPasses;
         }
 
         function populateJrPassDropdowns() {
-            const passes = getFilteredJrPasses();
             const sel1 = document.getElementById('jr-pass-select');
             const sel2 = document.getElementById('jr-pass-select-2');
-            const optsHtml = passes.map(p => `<option value="${p.id}">${escapeHtml(p.name)} — ¥${Number(p.priceJpy || 0).toLocaleString()}/人</option>`).join('');
-            if (sel1) {
-                sel1.innerHTML = optsHtml;
-                if (passes.some(p => p.id === appState.jrPassId)) {
-                    sel1.value = appState.jrPassId;
-                } else if (passes[0]) {
-                    appState.jrPassId = passes[0].id;
-                    sel1.value = appState.jrPassId;
-                }
-            }
-            if (sel2) {
-                sel2.innerHTML = optsHtml;
-                if (passes.some(p => p.id === appState.jrPassId2)) {
-                    sel2.value = appState.jrPassId2;
-                } else if (passes[0]) {
-                    appState.jrPassId2 = passes[0].id;
-                    sel2.value = appState.jrPassId2;
-                }
-            }
+            const passes = getFilteredJrPassesForCurrentRegions();
+            const buildOptions = (selectedId) => passes.map(p =>
+                `<option value="${p.id}" ${p.id === selectedId ? 'selected' : ''}>${escapeHtml(p.name)} - ¥${(p.priceJpy || 0).toLocaleString()}</option>`
+            ).join('');
+            if (sel1) sel1.innerHTML = buildOptions(appState.jrPassId);
+            if (sel2) sel2.innerHTML = buildOptions(appState.jrPassId2);
         }
 
         function populateJrStartDayOptions() {
+            const s1 = document.getElementById('jr-pass-start-day');
+            const s2 = document.getElementById('jr-pass-start-day-2');
             const total = getTotalDaysCount();
-            const sel1 = document.getElementById('jr-pass-start-day');
-            const sel2 = document.getElementById('jr-pass-start-day-2');
-            let html = '';
-            for (let d = 1; d <= total; d++) {
-                html += `<option value="${d}">Day ${d} 啟用</option>`;
-            }
-            if (sel1) {
-                sel1.innerHTML = html;
-                sel1.value = String(Math.min(total, appState.jrPassStartDay || 1));
-            }
-            if (sel2) {
-                sel2.innerHTML = html;
-                sel2.value = String(Math.min(total, appState.jrPassStartDay2 || total));
-            }
+            const buildDayOpts = (selectedDay) => {
+                let h = '';
+                for (let d = 1; d <= total; d++) {
+                    h += `<option value="${d}" ${d === selectedDay ? 'selected' : ''}>Day ${d} 啟用</option>`;
+                }
+                return h;
+            };
+            if (s1) s1.innerHTML = buildDayOpts(appState.jrPassStartDay || 1);
+            if (s2) s2.innerHTML = buildDayOpts(appState.jrPassStartDay2 || Math.min(total, 4));
         }
 
         function isDayCoveredByJrPass(dayNum) {
@@ -1808,13 +1852,15 @@
             const p1 = dynamicJrPasses.find(p => p.id === appState.jrPassId);
             if (p1) {
                 const start1 = appState.jrPassStartDay || 1;
-                if (dayNum >= start1 && dayNum < start1 + (p1.days || 1)) return true;
+                const end1 = start1 + (p1.days || 1) - 1;
+                if (dayNum >= start1 && dayNum <= end1) return true;
             }
             if (appState.useSecondJrPass) {
                 const p2 = dynamicJrPasses.find(p => p.id === appState.jrPassId2);
                 if (p2) {
                     const start2 = appState.jrPassStartDay2 || 1;
-                    if (dayNum >= start2 && dayNum < start2 + (p2.days || 1)) return true;
+                    const end2 = start2 + (p2.days || 1) - 1;
+                    if (dayNum >= start2 && dayNum <= end2) return true;
                 }
             }
             return false;
@@ -3944,6 +3990,7 @@ category 只能從這 5 個中選一：「周邊順遊」、「傳統祭典」�
             saveAndSyncCloudDb,
             clearCloudDbUrl,
             copyDeviceSyncCode,
+            copyMagicSetupLink,
             connectAndPullSyncCode,
             pushCurrentStateToCloud,
             saveGithubPatToken,
@@ -3953,11 +4000,20 @@ category 只能從這 5 個中選一：「周邊順遊」、「傳統祭典」�
         });
 
         async function bootApp() {
+            const appliedMagic = applyMagicSetupFromHash();
             updateApiKeyHeaderStatus();
             loadSavedState();
             syncInputsFromState();
             loadBuiltinRecommendations();
             await initRealtimeCloudSync();
+            if (appliedMagic && activeSyncCode) {
+                if (fbDb && fbUser) {
+                    attachSyncRoomListener(activeSyncCode, true);
+                } else {
+                    await pullStateFromGithubRepo(activeSyncCode);
+                }
+                showToast('✨ 已透過專屬連結自動載入全部金鑰與同步代碼！');
+            }
             if (getGoogleMapsApiKey()) {
                 renderTimeline();
             }
