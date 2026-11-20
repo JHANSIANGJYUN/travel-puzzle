@@ -1,12 +1,12 @@
 {
   "syncCode": "JP-GPVMP6",
-  "updatedStamp": "1795165758224-bbls",
-  "updatedAt": "2026-11-20T09:09:18.224Z",
+  "updatedStamp": "1795165760693-804z",
+  "updatedAt": "2026-11-20T09:09:20.693Z",
   "appState": {
     "startDate": "2026-12-18",
     "endDate": "2026-12-21",
     "travelerCount": 2,
-    "regionId": "chubu",
+    "regionId": "tohoku",
     "extraRegions": [],
     "outboundFlight": {
       "code": "AK176",
@@ -28,10 +28,10 @@
     "rentalCarCostJpy": 32000,
     "rentalTollFuelJpy": 8500,
     "useJrPass": true,
-    "jrPassId": "jr-kansai-hokuriku-7",
+    "jrPassId": "jr-east-tohoku-5",
     "jrPassStartDay": 2,
     "useSecondJrPass": false,
-    "jrPassId2": "jr-kansai-hokuriku-7",
+    "jrPassId2": "jr-east-tohoku-5",
     "jrPassStartDay2": 4,
     "activeDay": 4,
     "dayStartTimes": {
