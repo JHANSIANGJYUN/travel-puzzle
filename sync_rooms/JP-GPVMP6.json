@@ -1,12 +1,12 @@
 {
   "syncCode": "JP-GPVMP6",
-  "updatedStamp": "1795165304480-lkzq",
-  "updatedAt": "2026-11-20T09:01:44.480Z",
+  "updatedStamp": "1795165310084-j03y",
+  "updatedAt": "2026-11-20T09:01:50.084Z",
   "appState": {
     "startDate": "2026-12-18",
     "endDate": "2026-12-21",
     "travelerCount": 2,
-    "regionId": "hokkaido",
+    "regionId": "kansai",
     "extraRegions": [],
     "outboundFlight": {
       "code": "MM930",
@@ -28,10 +28,10 @@
     "rentalCarCostJpy": 32000,
     "rentalTollFuelJpy": 8500,
     "useJrPass": true,
-    "jrPassId": "jr-tohoku-south-hokkaido-6",
+    "jrPassId": "jr-kansai-mini-3",
     "jrPassStartDay": 2,
     "useSecondJrPass": false,
-    "jrPassId2": "jr-tohoku-south-hokkaido-6",
+    "jrPassId2": "jr-kansai-mini-3",
     "jrPassStartDay2": 4,
     "activeDay": 1,
     "dayStartTimes": {
