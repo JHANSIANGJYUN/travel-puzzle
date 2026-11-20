@@ -1,7 +1,7 @@
 {
   "syncCode": "JP-GPVMP6",
-  "updatedStamp": "1795165800767-vp2d",
-  "updatedAt": "2026-11-20T09:10:00.767Z",
+  "updatedStamp": "1795165804256-ku2c",
+  "updatedAt": "2026-11-20T09:10:04.256Z",
   "appState": {
     "startDate": "2026-12-18",
     "endDate": "2026-12-21",
@@ -9,11 +9,11 @@
     "regionId": "kansai",
     "extraRegions": [],
     "outboundFlight": {
-      "code": "MM925",
-      "airline": "樂桃航空 Peach",
-      "airport": "那霸機場 (OKA)",
-      "terminal": "國際線",
-      "time": "13:15",
+      "code": "MM929",
+      "airline": "待確認航空公司",
+      "airport": "關西國際機場 (KIX)",
+      "terminal": "T1",
+      "time": "14:30",
       "aircraft": "A320neo"
     },
     "inboundFlight": {
@@ -35,7 +35,7 @@
     "jrPassStartDay2": 4,
     "activeDay": 4,
     "dayStartTimes": {
-      "1": "14:30",
+      "1": "15:45",
       "2": "09:30",
       "3": "09:30",
       "4": "09:30",
