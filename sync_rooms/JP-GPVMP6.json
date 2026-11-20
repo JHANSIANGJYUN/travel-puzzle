@@ -1,7 +1,7 @@
 {
   "syncCode": "JP-GPVMP6",
-  "updatedStamp": "1795165377784-w2b7",
-  "updatedAt": "2026-11-20T09:02:57.784Z",
+  "updatedStamp": "1795165385024-ax8d",
+  "updatedAt": "2026-11-20T09:03:05.024Z",
   "appState": {
     "startDate": "2026-12-18",
     "endDate": "2026-12-21",
@@ -148,17 +148,17 @@
           "note": ""
         },
         {
-          "id": "act-1795095375473-xybj",
-          "title": "Harukas300展望台",
-          "type": "經典景點",
+          "id": "act-1795095463998-2cik",
+          "title": "天王寺MIO",
+          "type": "購物散策",
           "duration": 60,
           "isIndoor": false,
           "note": ""
         },
         {
-          "id": "act-1795095463998-2cik",
-          "title": "天王寺MIO",
-          "type": "購物散策",
+          "id": "act-1795095375473-xybj",
+          "title": "Harukas300展望台",
+          "type": "經典景點",
           "duration": 60,
           "isIndoor": false,
           "note": ""
