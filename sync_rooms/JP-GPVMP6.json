@@ -1,9 +1,9 @@
 {
   "syncCode": "JP-GPVMP6",
-  "updatedStamp": "1795164706763-txmq",
-  "updatedAt": "2026-11-20T08:51:46.763Z",
+  "updatedStamp": "1795164763091-tcet",
+  "updatedAt": "2026-11-20T08:52:43.091Z",
   "appState": {
-    "startDate": "2026-12-18",
+    "startDate": "2026-12-25",
     "endDate": "2026-12-21",
     "travelerCount": 2,
     "regionId": "kyushu",
@@ -39,7 +39,7 @@
     "useSecondJrPass": false,
     "jrPassId2": "jr-north-kyushu-3",
     "jrPassStartDay2": 4,
-    "activeDay": 4,
+    "activeDay": 1,
     "dayStartTimes": {
       "1": "19:30",
       "2": "09:30",
