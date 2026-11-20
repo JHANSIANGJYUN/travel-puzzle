@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-19 22:53",
+  "updated_at": "2026-11-20 08:58",
   "jr_passes": [
     {
       "id": "jr-kansai-mini-3",
@@ -578,11 +578,11 @@
       "region": "kansai"
     },
     "BR132": {
-      "airline": "長榮航空 EVA",
+      "airline": "長榮航空 EVA AIR",
       "airport": "關西國際機場 (KIX)",
       "terminal": "T1",
-      "time": "12:10",
-      "aircraft": "B777-300ER",
+      "time": "08:30",
+      "aircraft": "B787-10",
       "region": "kansai"
     },
     "BR131": {
@@ -613,7 +613,7 @@
       "airline": "中華航空 China Airlines",
       "airport": "關西國際機場 (KIX)",
       "terminal": "T1",
-      "time": "11:40",
+      "time": "08:10",
       "aircraft": "A350-900",
       "region": "kansai"
     },
@@ -693,7 +693,7 @@
       "airline": "星宇航空 STARLUX",
       "airport": "成田國際機場 (NRT)",
       "terminal": "T2",
-      "time": "12:30",
+      "time": "08:30",
       "aircraft": "A350-900",
       "region": "kanto"
     },
@@ -757,8 +757,8 @@
       "airline": "中華航空 China Airlines",
       "airport": "成田國際機場 (NRT)",
       "terminal": "T2",
-      "time": "13:30",
-      "aircraft": "A350-900",
+      "time": "13:15",
+      "aircraft": "B777-300ER",
       "region": "kanto"
     },
     "CI101": {
@@ -947,11 +947,11 @@
     },
     "CI110": {
       "airline": "中華航空 China Airlines",
-      "airport": "福岡機場 (FUK)",
-      "terminal": "國際線",
-      "time": "09:55",
-      "aircraft": "A350-900",
-      "region": "kyushu"
+      "airport": "新千歲機場 (CTS)",
+      "terminal": "國際航廈",
+      "time": "06:35",
+      "aircraft": "A330-300",
+      "region": "hokkaido"
     },
     "CI111": {
       "airline": "中華航空 China Airlines",
@@ -1213,17 +1213,9 @@
       "airline": "全日空 ANA",
       "airport": "羽田機場 (HND)",
       "terminal": "T3",
-      "time": "20:50",
+      "time": "16:50",
       "aircraft": "B787-9",
       "region": "kanto"
-    },
-    "CX564": {
-      "airline": "國泰航空 Cathay Pacific",
-      "airport": "關西國際機場 (KIX)",
-      "terminal": "T1",
-      "time": "16:40",
-      "aircraft": "B777-300",
-      "region": "kansai"
     }
   },
   "events": [
@@ -2060,226 +2052,226 @@
       "imageUrl": ""
     },
     {
-      "id": "ev-kansai-1",
+      "id": "ev-ks-1",
       "region": "kansai",
       "months": [
         12
       ],
       "category": "光影花火",
-      "title": "神戶光之祭典",
+      "title": "神戶ルミナリエ",
       "wikiJa": "神戸ルミナリエ",
       "location": "神戶市舊外國人居留地及東遊園地",
       "dateLabel": "12月中下旬",
-      "duration": 120,
+      "duration": 60,
       "isIndoor": false,
-      "desc": "義大利贈送的壯麗幾何光廊，追思震災並象徵希望，建議搭配神戶港夜景。",
+      "desc": "阪神大地震追悼活動，壯觀義大利式燈飾藝術，建議搭配南京町散策。",
       "imageUrl": ""
     },
     {
-      "id": "ev-kansai-2",
+      "id": "ev-ks-2",
       "region": "kansai",
       "months": [
         7
       ],
       "category": "傳統祭典",
-      "title": "祇園祭",
-      "wikiJa": "祇園祭",
-      "location": "京都市八坂神社與市中心街道",
-      "dateLabel": "7月全月",
-      "duration": 240,
+      "title": "天神祭",
+      "wikiJa": "天神祭",
+      "location": "大阪天滿宮、大川沿岸",
+      "dateLabel": "7月24日-25日",
+      "duration": 180,
       "isIndoor": false,
-      "desc": "日本三大祭之首，巨大的山鉾巡行極具震撼力，宵山期間攤販熱鬧非凡。",
+      "desc": "日本三大祭之一，船渡御與奉納花火不可錯過，展現大阪水都魅力。",
       "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/ca/Osaka_Castle_03bs3200.jpg/960px-Osaka_Castle_03bs3200.jpg?utm_source=ja.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
     },
     {
-      "id": "ev-kansai-3",
+      "id": "ev-ks-3",
       "region": "kansai",
       "months": [
         11,
         12
       ],
-      "category": "季節美食",
-      "title": "間人螃蟹",
-      "wikiJa": "ズワイガニ",
-      "location": "京都府京丹後市間人港",
-      "dateLabel": "冬季限定",
-      "duration": 180,
-      "isIndoor": true,
-      "desc": "幻之松葉蟹，當天捕撈品質極佳，適合安排天橋立、伊根舟屋一日遊吃蟹。",
+      "category": "賞花紅葉",
+      "title": "東寺夜間特別拝観",
+      "wikiJa": "教王護国寺",
+      "location": "京都市東寺（教王護國寺）",
+      "dateLabel": "11月上旬至12月上旬",
+      "duration": 90,
+      "isIndoor": false,
+      "desc": "倒映在瓢簞池中的五重塔與紅葉極其優美，京都必看夜楓點燈。",
       "imageUrl": ""
     },
     {
-      "id": "ev-kanto-1",
+      "id": "ev-kt-1",
+      "region": "kanto",
+      "months": [
+        5
+      ],
+      "category": "傳統祭典",
+      "title": "三社祭",
+      "wikiJa": "三社祭",
+      "location": "東京都淺草神社",
+      "dateLabel": "5月第三個週末",
+      "duration": 120,
+      "isIndoor": false,
+      "desc": "江戶三大祭之一，神輿繞境充滿魄力，感受下町熱情文化的巔峰。",
+      "imageUrl": ""
+    },
+    {
+      "id": "ev-kt-2",
       "region": "kanto",
       "months": [
         11,
-        12
-      ],
-      "category": "賞花紅葉",
-      "title": "明治神宮外苑銀杏林",
-      "wikiJa": "明治神宮外苑",
-      "location": "東京都青山一丁目站旁",
-      "dateLabel": "11月下旬",
-      "duration": 60,
-      "isIndoor": false,
-      "desc": "長達300公尺的黃金隧道，是東京深秋最美地標，鄰近國立競技場。",
-      "imageUrl": ""
-    },
-    {
-      "id": "ev-kanto-2",
-      "region": "kanto",
-      "months": [
-        12
-      ],
-      "category": "光影花火",
-      "title": "澀谷青之洞窟",
-      "wikiJa": "青の洞窟 (イルミネーション)",
-      "location": "澀谷代代木公園櫸樹大道",
-      "dateLabel": "12月",
-      "duration": 60,
-      "isIndoor": false,
-      "desc": "迷幻湛藍LED燈海延伸至代代木公園，充滿時尚浪漫氛圍，適合澀谷購物後順遊。",
-      "imageUrl": ""
-    },
-    {
-      "id": "ev-kanto-3",
-      "region": "kanto",
-      "months": [
+        12,
         1,
         2
       ],
-      "category": "傳統祭典",
-      "title": "達磨市集",
-      "wikiJa": "高崎だるま市",
-      "location": "群馬縣高崎市少林山達磨寺",
-      "dateLabel": "1月初",
+      "category": "光影花火",
+      "title": "足利花卉公園光之花庭園",
+      "wikiJa": "あしかがフラワーパーク",
+      "location": "栃木縣足利花卉公園",
+      "dateLabel": "冬季限定",
       "duration": 120,
       "isIndoor": false,
-      "desc": "日本最大規模達磨市集，可購買祈福不倒翁，搭乘新幹線至高崎站極方便。",
+      "desc": "日本三大燈節，500萬盞LED打造藤花隧道，從東京搭特急直達。",
       "imageUrl": ""
     },
     {
-      "id": "ev-hokkaido-1",
+      "id": "ev-kt-3",
+      "region": "kanto",
+      "months": [
+        8
+      ],
+      "category": "季節美食",
+      "title": "房總半島黑鮪魚",
+      "wikiJa": "銚子漁港",
+      "location": "千葉縣銚子漁港",
+      "dateLabel": "夏季限定",
+      "duration": 60,
+      "isIndoor": true,
+      "desc": "夏季銚子捕獲的鮪魚肉質鮮美，推薦至漁市場食堂享用限定海鮮丼。",
+      "imageUrl": ""
+    },
+    {
+      "id": "ev-hk-1",
       "region": "hokkaido",
       "months": [
         2
       ],
       "category": "光影花火",
-      "title": "札幌雪祭",
-      "wikiJa": "さっぽろ雪まつり",
-      "location": "札幌市大通公園、薄野、TSUDOME",
-      "dateLabel": "2月上旬",
-      "duration": 180,
+      "title": "小樽雪あかりの路",
+      "wikiJa": "小樽雪あかりの路",
+      "location": "小樽運河、手宮線遺址",
+      "dateLabel": "2月中旬",
+      "duration": 90,
       "isIndoor": false,
-      "desc": "世界三大冰雪節，巨大雪雕與光影投影秀，夜間點燈後更顯夢幻驚艷。",
+      "desc": "運河漂浮玻璃浮球與雪雕燭光，氛圍浪漫至極，適合情侶漫步。",
       "imageUrl": ""
     },
     {
-      "id": "ev-hokkaido-2",
+      "id": "ev-hk-2",
       "region": "hokkaido",
       "months": [
-        5,
         6,
         7,
         8
       ],
-      "category": "季節美食",
-      "title": "積丹海膽",
-      "wikiJa": "ウニ",
-      "location": "積丹半島、小樽一帶",
-      "dateLabel": "夏季禁漁解封",
+      "category": "賞花紅葉",
+      "title": "富田農場薰衣草",
+      "wikiJa": "ファーム富田",
+      "location": "北海道中富良野町",
+      "dateLabel": "7月中下旬最盛",
       "duration": 120,
-      "isIndoor": true,
-      "desc": "積丹藍海域孕育的頂級馬糞海膽，鮮甜無比，可順遊神威岬絕美海岸。",
+      "isIndoor": false,
+      "desc": "紫色花海覆蓋山丘，必嚐薰衣草霜淇淋，搭配美瑛青池規劃行程。",
       "imageUrl": ""
     },
     {
-      "id": "ev-hokkaido-3",
+      "id": "ev-hk-3",
       "region": "hokkaido",
       "months": [
+        12,
         1,
-        2,
-        3
+        2
       ],
-      "category": "周邊順遊",
-      "title": "網走流冰觀光船",
-      "wikiJa": "おろろん (砕氷船)",
-      "location": "網走港（Aurora號）",
-      "dateLabel": "1月至3月",
+      "category": "季節美食",
+      "title": "石狩鍋",
+      "wikiJa": "石狩鍋",
+      "location": "石狩市及札幌市內餐廳",
+      "dateLabel": "冬季美味",
       "duration": 60,
-      "isIndoor": false,
-      "desc": "乘破冰船近距離接觸鄂霍次克海流冰，幸運可見海豹，為道東冬季經典。",
+      "isIndoor": true,
+      "desc": "以味噌調味的鮭魚野菜鍋，是北海道冬季代表漁師料理，暖身首選。",
       "imageUrl": ""
     },
     {
-      "id": "ev-kyushu-1",
+      "id": "ev-ky-1",
       "region": "kyushu",
       "months": [
         11
       ],
       "category": "傳統祭典",
-      "title": "唐津君祭",
+      "title": "唐津くんち",
       "wikiJa": "唐津くんち",
-      "location": "佐賀縣唐津市唐津神社",
-      "dateLabel": "11月2-4日",
-      "duration": 150,
+      "location": "佐賀縣唐津神社周邊",
+      "dateLabel": "11月2日-4日",
+      "duration": 120,
       "isIndoor": false,
-      "desc": "巨大鯛魚與赤獅子曳山巡行，氣勢壯觀，名列聯合國教科文組織文化遺產。",
+      "desc": "巨大鯛魚與頭盔造型曳山巡遊，被登錄為世界無形文化遺產。",
       "imageUrl": ""
     },
     {
-      "id": "ev-kyushu-2",
-      "region": "kyushu",
-      "months": [
-        11
-      ],
-      "category": "光影花火",
-      "title": "佐賀國際熱氣球節",
-      "wikiJa": "佐賀インターナショナルバルーンフェスタ",
-      "location": "佐嘉川河川敷",
-      "dateLabel": "11月上旬",
-      "duration": 180,
-      "isIndoor": false,
-      "desc": "亞洲最大規模熱氣球競技，百顆氣球齊發極震撼，夜間點燈表演不可錯過。",
-      "imageUrl": ""
-    },
-    {
-      "id": "ev-kyushu-3",
+      "id": "ev-ky-2",
       "region": "kyushu",
       "months": [
         1,
-        2,
-        3
+        2
       ],
-      "category": "季節美食",
-      "title": "糸島牡蠣小屋",
-      "wikiJa": "カキ (貝)",
-      "location": "福岡縣糸島市各漁港",
-      "dateLabel": "冬季限定",
-      "duration": 90,
-      "isIndoor": true,
-      "desc": "穿著特製防護服現場火烤現撈牡蠣，價格實惠，是福岡冬季特有的海岸風景。",
+      "category": "光影花火",
+      "title": "長崎ランタンフェスティバル",
+      "wikiJa": "長崎ランタンフェスティバル",
+      "location": "長崎新地中華街、湊公園",
+      "dateLabel": "農曆新年期間",
+      "duration": 150,
+      "isIndoor": false,
+      "desc": "萬盞燈籠點亮長崎市區，充滿異國色彩的春節慶典，規模全日第一。",
       "imageUrl": ""
     },
     {
-      "id": "ev-chubu-1",
+      "id": "ev-ky-3",
+      "region": "kyushu",
+      "months": [
+        10,
+        11
+      ],
+      "category": "光影花火",
+      "title": "佐賀インターナショナルバルーンフェスタ",
+      "wikiJa": "佐賀インターナショナルバルーンフェスタ",
+      "location": "佐賀市嘉瀨川河川敷",
+      "dateLabel": "11月上旬",
+      "duration": 180,
+      "isIndoor": false,
+      "desc": "亞洲最大熱氣球節，百顆球體同時升空震撼人心，夜間點燈亦美。",
+      "imageUrl": ""
+    },
+    {
+      "id": "ev-cb-1",
       "region": "chubu",
       "months": [
         1,
         2
       ],
       "category": "光影花火",
-      "title": "白川鄉點燈",
+      "title": "白川郷合掌造り集落ライトアップ",
       "wikiJa": "白川郷・五箇山の合掌造り集落",
-      "location": "岐阜縣白川村合掌造集落",
-      "dateLabel": "1月、2月週日",
-      "duration": 180,
+      "location": "岐阜縣白川村",
+      "dateLabel": "1月至2月特定日",
+      "duration": 120,
       "isIndoor": false,
-      "desc": "宛如童話故事般的薑餅屋雪景，採完全預約制，需提前安排交通接駁。",
+      "desc": "宛如童話世界的雪地燈火，需預約入場，是中部冬旅的夢幻清單。",
       "imageUrl": ""
     },
     {
-      "id": "ev-chubu-2",
+      "id": "ev-cb-2",
       "region": "chubu",
       "months": [
         4,
@@ -2287,135 +2279,131 @@
         6
       ],
       "category": "周邊順遊",
-      "title": "立山黑部雪之大谷",
+      "title": "立山黒部アルペンルート雪の大谷",
       "wikiJa": "立山黒部アルペンルート",
       "location": "富山縣室堂平",
-      "dateLabel": "4月中旬開山",
+      "dateLabel": "4月中旬至6月",
       "duration": 240,
       "isIndoor": false,
-      "desc": "高達20公尺的巨型雪牆，是阿爾卑斯路線開山後的奇觀，搭乘多種交通工具。",
+      "desc": "高達20公尺的巨型雪壁，春季開山限定壯觀景象，建議從富山進。",
       "imageUrl": ""
     },
     {
-      "id": "ev-chubu-3",
+      "id": "ev-cb-3",
       "region": "chubu",
       "months": [
-        11,
-        12,
-        1,
-        2,
-        3,
         4,
-        5
+        10
       ],
-      "category": "光影花火",
-      "title": "名花之里燈海",
-      "wikiJa": "なばなの里",
-      "location": "三重縣桑名市",
-      "dateLabel": "秋冬至春季",
-      "duration": 120,
+      "category": "傳統祭典",
+      "title": "高山祭",
+      "wikiJa": "高山祭",
+      "location": "岐阜縣高山市上三之町",
+      "dateLabel": "4月及10月",
+      "duration": 150,
       "isIndoor": false,
-      "desc": "日本規模最大燈飾，光之隧道與壯觀的主題燈秀，鄰近長島溫泉樂園。",
+      "desc": "華麗無比的屋台工藝，被譽為日本最美祭典之一，感受小京都魅力。",
       "imageUrl": ""
     },
     {
-      "id": "ev-tohoku-1",
+      "id": "ev-th-1",
       "region": "tohoku",
       "months": [
         8
       ],
       "category": "傳統祭典",
-      "title": "青森睡魔祭",
+      "title": "青森ねぶた祭",
       "wikiJa": "青森ねぶた祭",
-      "location": "青森市中心街道",
-      "dateLabel": "8月2-7日",
+      "location": "青森市中心街",
+      "dateLabel": "8月2日-7日",
       "duration": 120,
       "isIndoor": false,
-      "desc": "色彩絢麗的巨大紙紮燈籠巡遊，跳人舞者呼喊聲震天，東北夏祭熱氣巔峰。",
+      "desc": "巨大立體紙夯燈籠遊行，觀客可穿舞人服參與跳人，震驚全場。",
       "imageUrl": ""
     },
     {
-      "id": "ev-tohoku-2",
+      "id": "ev-th-2",
       "region": "tohoku",
       "months": [
         2
       ],
       "category": "光影花火",
-      "title": "橫手雪屋祭",
+      "title": "橫手の雪まつり（かまくら）",
       "wikiJa": "かまくら",
       "location": "秋田縣橫手市",
-      "dateLabel": "2月15-16日",
+      "dateLabel": "2月15日-16日",
       "duration": 90,
       "isIndoor": false,
-      "desc": "四百年歷史傳統，小孩在雪屋內烤年糕招待遊客，夜間點亮燭光極其溫馨。",
+      "desc": "在雪屋（Kamakura）內喝甘酒、吃烤麻糬，河岸有無數微型雪燈。",
       "imageUrl": ""
     },
     {
-      "id": "ev-tohoku-3",
+      "id": "ev-th-3",
       "region": "tohoku",
       "months": [
-        1,
-        2
+        10,
+        11
       ],
-      "category": "周邊順遊",
-      "title": "藏王樹冰",
-      "wikiJa": "樹氷",
-      "location": "山形縣藏王溫泉",
-      "dateLabel": "1月下旬-2月",
-      "duration": 120,
+      "category": "賞花紅葉",
+      "title": "奧入瀨溪流紅葉",
+      "wikiJa": "奥入瀬渓流",
+      "location": "青森縣十和田市",
+      "dateLabel": "10月中下旬",
+      "duration": 180,
       "isIndoor": false,
-      "desc": "被譽為「冰雪怪獸」的特殊自然景觀，搭乘纜車俯瞰，夜間有色彩燈光投射。",
+      "desc": "瀑布與溪流交織的楓紅名所，建議租腳踏車或步行漫遊至十和田湖。",
       "imageUrl": ""
     },
     {
-      "id": "ev-sanyo-1",
+      "id": "ev-sn-1",
       "region": "sanyo",
       "months": [
         8
       ],
-      "category": "光影花火",
-      "title": "宮島水中花火大會",
-      "wikiJa": "宮島水中花火大会",
-      "location": "廣島縣宮島嚴島神社海面",
-      "dateLabel": "8月下旬",
-      "duration": 120,
+      "category": "傳統祭典",
+      "title": "阿波踊り",
+      "wikiJa": "阿波踊り",
+      "location": "德島縣德島市中心部",
+      "dateLabel": "8月12日-15日",
+      "duration": 180,
       "isIndoor": false,
-      "desc": "花火在海中爆炸與大鳥居剪影構成絕景，是攝影愛好者的夢幻場景。",
+      "desc": "日本規模最大的盆踊，400年歷史「傻瓜舞」熱鬧非凡，全民同樂。",
       "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c1/Himeji_castle_in_may_2015.jpg/960px-Himeji_castle_in_may_2015.jpg?utm_source=ja.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
     },
     {
-      "id": "ev-sanyo-2",
-      "region": "sanyo",
-      "months": [
-        8
-      ],
-      "category": "傳統祭典",
-      "title": "阿波舞",
-      "wikiJa": "阿波踊り",
-      "location": "德島縣德島市中心",
-      "dateLabel": "8月12-15日",
-      "duration": 180,
-      "isIndoor": false,
-      "desc": "日本最具代表性的盆舞，口號豪邁、節奏輕快，百萬遊客齊聚感受瘋狂狂歡。",
-      "imageUrl": ""
-    },
-    {
-      "id": "ev-sanyo-3",
+      "id": "ev-sn-2",
       "region": "sanyo",
       "months": [
         11,
         12,
+        1
+      ],
+      "category": "光影花火",
+      "title": "レオマリゾート・レオマ光ワールド",
+      "wikiJa": "ニューレオマワールド",
+      "location": "香川縣丸龜市",
+      "dateLabel": "冬季限定",
+      "duration": 120,
+      "isIndoor": false,
+      "desc": "四國最大級燈飾，結合遊樂園設施，250萬盞燈光打造璀璨夜晚。",
+      "imageUrl": ""
+    },
+    {
+      "id": "ev-sn-3",
+      "region": "sanyo",
+      "months": [
         1,
-        2
+        2,
+        3
       ],
       "category": "季節美食",
-      "title": "下關河豚",
-      "wikiJa": "マフグ",
-      "location": "山口縣下關市唐戶市場",
-      "dateLabel": "冬季最旬",
-      "duration": 90,
+      "title": "広島の牡蠣",
+      "wikiJa": "カキ (貝)",
+      "location": "廣島縣宮島及宮島口周邊",
+      "dateLabel": "冬季最肥美",
+      "duration": 60,
       "isIndoor": true,
-      "desc": "日本第一河豚集散地，品嚐精細如畫的河豚生魚片，順遊門司港港城風景。",
+      "desc": "廣島牡蠣產量日本第一，推薦在宮島表參道商店街享用碳烤生蠔。",
       "imageUrl": ""
     }
   ]
