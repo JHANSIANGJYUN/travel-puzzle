@@ -1,0 +1,164 @@
+{
+  "syncCode": "JP-GPVMP6",
+  "updatedStamp": "1795164545891-tjac",
+  "updatedAt": "2026-11-20T08:49:05.891Z",
+  "appState": {
+    "startDate": "2026-12-18",
+    "endDate": "2026-12-21",
+    "travelerCount": 4,
+    "regionId": "kansai",
+    "extraRegions": [],
+    "outboundFlight": {
+      "code": "AK176",
+      "airline": "AirAsia 亞洲航空",
+      "airport": "關西國際機場 (KIX)",
+      "terminal": "T1",
+      "time": "19:30",
+      "aircraft": "A321neo",
+      "region": "kansai",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "inboundFlight": {
+      "code": "AK177",
+      "airline": "AirAsia 亞洲航空",
+      "airport": "關西國際機場 (KIX)",
+      "terminal": "T1",
+      "time": "20:45",
+      "aircraft": "A321neo",
+      "region": "kansai",
+      "source": "base_seed",
+      "verified_at": "2026-11-19"
+    },
+    "drivingMode": false,
+    "rentalCarCostJpy": 32000,
+    "rentalTollFuelJpy": 8500,
+    "useJrPass": true,
+    "jrPassId": "jr-kansai-mini-3",
+    "jrPassStartDay": 2,
+    "useSecondJrPass": false,
+    "jrPassId2": "jr-kansai-mini-3",
+    "jrPassStartDay2": 4,
+    "activeDay": 4,
+    "dayStartTimes": {
+      "1": "19:30",
+      "2": "09:30",
+      "3": "09:30",
+      "4": "09:30"
+    },
+    "dayHotels": {
+      "1": "東橫INN 大阪難波西",
+      "2": "東橫INN 新大阪東口",
+      "3": "東橫INN 新大阪東口"
+    },
+    "dropLuggageFirst": {
+      "1": true,
+      "2": true,
+      "3": false
+    },
+    "activitiesByDay": {
+      "1": [
+        {
+          "id": "act-1795099048435-efkt",
+          "title": "道頓堀一蘭拉麵",
+          "type": "季節美食",
+          "duration": 60,
+          "isIndoor": true,
+          "note": ""
+        },
+        {
+          "id": "act-init-1",
+          "title": "道頓堀＆心齋橋筋商店街",
+          "type": "購物散策",
+          "duration": 150,
+          "isIndoor": false,
+          "note": "跑跑人看板拍照＋章魚燒大阪燒晚餐"
+        },
+        {
+          "id": "act-1795092571758-7nmc",
+          "title": "大阪光之文藝復興",
+          "type": "經典景點",
+          "duration": 60,
+          "isIndoor": false,
+          "note": "大阪市役所至中之島公園 (淀屋橋站)"
+        }
+      ],
+      "2": [
+        {
+          "id": "act-init-2",
+          "title": "神戶布引香草園",
+          "type": "經典景點",
+          "duration": 180,
+          "isIndoor": false,
+          "note": "搭乘空中纜車俯瞰神戶港景與溫室花房"
+        },
+        {
+          "id": "act-init-3",
+          "title": "神戶 Luminarie 光之雕刻盛典",
+          "type": "光影花火",
+          "duration": 90,
+          "isIndoor": false,
+          "note": "傍晚點燈浪漫散步"
+        }
+      ],
+      "3": [
+        {
+          "id": "act-init-4",
+          "title": "京都嵐山渡月橋＆竹林小徑",
+          "type": "經典景點",
+          "duration": 180,
+          "isIndoor": false,
+          "note": "持 JR PASS 搭 JR 嵯峨野線直達"
+        },
+        {
+          "id": "act-init-5",
+          "title": "宇治平等院鳳凰堂＆抹茶表參道",
+          "type": "周邊順遊",
+          "duration": 150,
+          "isIndoor": false,
+          "note": "JR 奈良線順遊宇治抹茶聖代"
+        }
+      ],
+      "4": [
+        {
+          "id": "act-1795095428598-8j0o",
+          "title": "通天閣",
+          "type": "經典景點",
+          "duration": 90,
+          "isIndoor": false,
+          "note": ""
+        },
+        {
+          "id": "act-1795094560212-k57r",
+          "title": "阿倍野 Q's Mall",
+          "type": "購物散策",
+          "duration": 180,
+          "isIndoor": true,
+          "note": ""
+        },
+        {
+          "id": "act-1795095375473-xybj",
+          "title": "Harukas300展望台",
+          "type": "經典景點",
+          "duration": 60,
+          "isIndoor": false,
+          "note": ""
+        },
+        {
+          "id": "act-1795095463998-2cik",
+          "title": "天王寺MIO",
+          "type": "購物散策",
+          "duration": 60,
+          "isIndoor": false,
+          "note": ""
+        }
+      ]
+    },
+    "customTransitMinutes": {
+      "d2-luggage": 31
+    },
+    "jpyRate": 0.215,
+    "fixedExpenses": [],
+    "expenses": []
+  }
+}
