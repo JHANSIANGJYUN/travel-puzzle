@@ -1,7 +1,7 @@
 {
   "syncCode": "JP-GPVMP6",
-  "updatedStamp": "1795165390090-vw1v",
-  "updatedAt": "2026-11-20T09:03:10.090Z",
+  "updatedStamp": "1795165414125-d87y",
+  "updatedAt": "2026-11-20T09:03:34.125Z",
   "appState": {
     "startDate": "2026-12-18",
     "endDate": "2026-12-21",
@@ -33,7 +33,7 @@
     "useSecondJrPass": false,
     "jrPassId2": "jr-kansai-mini-3",
     "jrPassStartDay2": 4,
-    "activeDay": 1,
+    "activeDay": 3,
     "dayStartTimes": {
       "1": "20:45",
       "2": "09:30",
@@ -128,6 +128,15 @@
           "duration": 150,
           "isIndoor": false,
           "note": "JR 奈良線順遊宇治抹茶聖代"
+        },
+        {
+          "id": "act-1795165412465-nml2",
+          "title": "京都清水寺＆二年坂三年坂",
+          "type": "傳統祭典",
+          "duration": 150,
+          "isIndoor": false,
+          "note": "京都市東山區（祇園四條站步行15分）",
+          "imageUrl": ""
         }
       ],
       "4": [
