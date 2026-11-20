@@ -1,7 +1,7 @@
 {
   "syncCode": "JP-GPVMP6",
-  "updatedStamp": "1795164820862-s5ml",
-  "updatedAt": "2026-11-20T08:53:40.862Z",
+  "updatedStamp": "1795164825528-gb0s",
+  "updatedAt": "2026-11-20T08:53:45.528Z",
   "appState": {
     "startDate": "2026-12-25",
     "endDate": "2026-12-31",
@@ -9,7 +9,7 @@
     "regionId": "kyushu",
     "extraRegions": [],
     "outboundFlight": {
-      "code": "MM926",
+      "code": "MM927",
       "airline": "待確認航空公司",
       "airport": "關西國際機場 (KIX)",
       "terminal": "T1",
