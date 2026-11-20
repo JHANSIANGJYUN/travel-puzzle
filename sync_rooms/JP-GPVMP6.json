@@ -1,10 +1,10 @@
 {
   "syncCode": "JP-GPVMP6",
-  "updatedStamp": "1795164763091-tcet",
-  "updatedAt": "2026-11-20T08:52:43.091Z",
+  "updatedStamp": "1795164766590-gcph",
+  "updatedAt": "2026-11-20T08:52:46.590Z",
   "appState": {
     "startDate": "2026-12-25",
-    "endDate": "2026-12-21",
+    "endDate": "2026-12-31",
     "travelerCount": 2,
     "regionId": "kyushu",
     "extraRegions": [],
@@ -44,7 +44,10 @@
       "1": "19:30",
       "2": "09:30",
       "3": "09:30",
-      "4": "09:30"
+      "4": "09:30",
+      "5": "09:30",
+      "6": "09:30",
+      "7": "09:30"
     },
     "dayHotels": {
       "1": "東橫INN 大阪難波西",
@@ -152,7 +155,10 @@
           "isIndoor": false,
           "note": ""
         }
-      ]
+      ],
+      "5": [],
+      "6": [],
+      "7": []
     },
     "customTransitMinutes": {
       "d2-luggage": 31
