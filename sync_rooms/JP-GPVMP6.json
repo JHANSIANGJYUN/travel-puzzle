@@ -1,12 +1,12 @@
 {
   "syncCode": "JP-GPVMP6",
-  "updatedStamp": "1795164585646-o4fa",
-  "updatedAt": "2026-11-20T08:49:45.646Z",
+  "updatedStamp": "1795164701307-3o9s",
+  "updatedAt": "2026-11-20T08:51:41.307Z",
   "appState": {
     "startDate": "2026-12-18",
     "endDate": "2026-12-21",
     "travelerCount": 4,
-    "regionId": "kansai",
+    "regionId": "kanto",
     "extraRegions": [],
     "outboundFlight": {
       "code": "AK176",
@@ -34,10 +34,10 @@
     "rentalCarCostJpy": 32000,
     "rentalTollFuelJpy": 8500,
     "useJrPass": true,
-    "jrPassId": "jr-kansai-mini-3",
+    "jrPassId": "jr-hokuriku-arch-7",
     "jrPassStartDay": 2,
     "useSecondJrPass": false,
-    "jrPassId2": "jr-kansai-mini-3",
+    "jrPassId2": "jr-hokuriku-arch-7",
     "jrPassStartDay2": 4,
     "activeDay": 4,
     "dayStartTimes": {
