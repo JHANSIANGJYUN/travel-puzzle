@@ -101,7 +101,7 @@
                 <div>
                     <div class="flex items-center flex-wrap gap-1.5">
                         <h1 class="font-serif text-base sm:text-lg font-bold text-indigoJp tracking-wide">旅遊拼圖 Travel Puzzle</h1>
-                        <span id="app-version-badge" class="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-indigoJp/10 text-indigoJp">v1.27</span>
+                        <span id="app-version-badge" class="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-indigoJp/10 text-indigoJp">v1.28</span>
                         <span id="cloud-db-version-badge" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-stone-100 text-stone-500">🌐 雲端庫就緒</span>
                         <span id="auto-save-status" class="text-[11px] text-stone-400 font-medium">☁️ 已自動儲存</span>
                     </div>
@@ -723,9 +723,11 @@
     </div>
 
     <script>
-        const APP_VERSION = 'v1.27';
+        const APP_VERSION = 'v1.28';
         const STORAGE_KEY = 'travel_puzzle_jp_state_v1';
         const CONFIG_KEY = 'travel_puzzle_jp_config_v1';
+        const LEGACY_CONFIG_KEYS = ['travel_puzzle_config', 'jp_travel_config_v1', 'travelPuzzleConfig'];
+        const DEFAULT_SYNC_CODE = 'JP-GPVMP6';
 
         const REGIONS_META = [
             { id: 'kansai', name: '關西地區', desc: '大阪・京都・神戶・奈良・和歌山與城崎溫泉', defaultHotel: '東橫INN 大阪難波西', weatherTip: '12月關西白天約 8–12°C，早晚偏冷建議洋蔥式穿搭；雨天可優先安排地下街或京都車站室內景點。' },
@@ -957,12 +959,17 @@
         function saveConfig() {
             try {
                 localStorage.setItem(CONFIG_KEY, JSON.stringify(userConfig));
+                // 同步寫入相容鍵名，確保跨版本更新永不遺失設定
+                if (userConfig.gmapsKey) localStorage.setItem('gmaps_api_key', userConfig.gmapsKey);
+                if (userConfig.geminiKey) localStorage.setItem('gemini_api_key', userConfig.geminiKey);
+                if (userConfig.githubToken) localStorage.setItem('github_token', userConfig.githubToken);
+                if (userConfig.syncCode) localStorage.setItem('sync_code', userConfig.syncCode);
             } catch (e) {}
         }
 
         function loadSavedData() {
             try {
-                // 解析 #setup= 一鍵分享連結
+                // 1. 解析 #setup= 一鍵分享連結
                 const hash = window.location.hash || '';
                 if (hash.startsWith('#setup=')) {
                     const raw = decodeURIComponent(atob(hash.slice(7)));
@@ -972,13 +979,39 @@
                     history.replaceState(null, '', window.location.pathname + window.location.search);
                 }
 
-                // 載入與相容舊版金鑰設定
+                // 2. 掃描相容 v1.21 與舊版所有可能儲存過的設定物件
+                for (const legacyKey of LEGACY_CONFIG_KEYS) {
+                    const legacyRaw = localStorage.getItem(legacyKey);
+                    if (legacyRaw) {
+                        const legacyObj = JSON.parse(legacyRaw);
+                        if (legacyObj && typeof legacyObj === 'object') {
+                            Object.assign(userConfig, legacyObj);
+                        }
+                    }
+                }
+
                 const savedCfg = JSON.parse(localStorage.getItem(CONFIG_KEY) || '{}');
                 Object.assign(userConfig, savedCfg);
-                if (!userConfig.gmapsKey) userConfig.gmapsKey = localStorage.getItem('gmaps_api_key') || localStorage.getItem('google_maps_api_key') || '';
-                if (!userConfig.geminiKey) userConfig.geminiKey = localStorage.getItem('gemini_api_key') || '';
-                if (!userConfig.githubToken) userConfig.githubToken = localStorage.getItem('github_token') || localStorage.getItem('gh_token') || '';
-                if (!userConfig.syncCode) userConfig.syncCode = localStorage.getItem('sync_code') || 'JP-GPVMP6';
+
+                // 3. 逐欄補齊獨立儲存的 API Key 與同步代碼
+                if (!userConfig.gmapsKey) {
+                    userConfig.gmapsKey = localStorage.getItem('gmaps_api_key') || localStorage.getItem('google_maps_api_key') || localStorage.getItem('googleMapsApiKey') || '';
+                }
+                if (!userConfig.geminiKey) {
+                    userConfig.geminiKey = localStorage.getItem('gemini_api_key') || localStorage.getItem('geminiApiKey') || '';
+                }
+                if (!userConfig.githubToken) {
+                    userConfig.githubToken = localStorage.getItem('github_token') || localStorage.getItem('gh_token') || localStorage.getItem('githubToken') || '';
+                }
+                if (!userConfig.syncCode) {
+                    userConfig.syncCode = localStorage.getItem('sync_code') || localStorage.getItem('device_sync_code') || DEFAULT_SYNC_CODE;
+                }
+                if (!userConfig.githubUser) userConfig.githubUser = 'JHANSIANGJYUN';
+                if (!userConfig.githubRepo) userConfig.githubRepo = 'travel-puzzle';
+                if (!userConfig.cloudDbUrl) {
+                    userConfig.cloudDbUrl = `https://raw.githubusercontent.com/${userConfig.githubUser}/${userConfig.githubRepo}/main/db.json`;
+                }
+                saveConfig();
 
                 const savedState = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
                 if (savedState && typeof savedState === 'object') {
@@ -2207,11 +2240,11 @@
             document.getElementById('modal-github-user').value = userConfig.githubUser || 'JHANSIANGJYUN';
             document.getElementById('modal-github-repo').value = userConfig.githubRepo || 'travel-puzzle';
             document.getElementById('modal-cloud-db-url').value = userConfig.cloudDbUrl || `https://raw.githubusercontent.com/${userConfig.githubUser || 'JHANSIANGJYUN'}/${userConfig.githubRepo || 'travel-puzzle'}/main/db.json`;
-            document.getElementById('modal-sync-code-input').value = userConfig.syncCode || 'JP-GPVMP6';
+            document.getElementById('modal-sync-code-input').value = userConfig.syncCode || DEFAULT_SYNC_CODE;
             const statusLine = document.getElementById('github-sync-status-line');
             if (statusLine) {
                 statusLine.textContent = userConfig.githubToken
-                    ? `🟢 GitHub 雙向同步已就緒 (${userConfig.syncCode || 'JP-GPVMP6'})`
+                    ? `🟢 GitHub 雙向同步已就緒 (${userConfig.syncCode || DEFAULT_SYNC_CODE})`
                     : `🟡 僅唯讀模式（填入 GitHub Token 即可上傳同步）`;
             }
             document.getElementById('api-key-modal')?.classList.remove('hidden');
