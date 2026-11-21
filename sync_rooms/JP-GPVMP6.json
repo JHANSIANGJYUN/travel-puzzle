@@ -1,7 +1,7 @@
 {
   "syncCode": "JP-GPVMP6",
-  "updatedStamp": "1795229851997-vxvp",
-  "updatedAt": "2026-11-21T02:57:31.997Z",
+  "updatedStamp": "1795231457752-w6ou",
+  "updatedAt": "2026-11-21T03:24:17.752Z",
   "appState": {
     "startDate": "2026-12-18",
     "endDate": "2026-12-21",
@@ -118,6 +118,14 @@
           "duration": 90,
           "isIndoor": false,
           "note": "傍晚點燈浪漫散步"
+        },
+        {
+          "id": "act-1795231455992-12om",
+          "title": "遊びトレジャー本店",
+          "type": "經典景點",
+          "duration": 60,
+          "isIndoor": false,
+          "note": ""
         }
       ],
       "3": [
