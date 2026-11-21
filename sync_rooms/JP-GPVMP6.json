@@ -1,7 +1,7 @@
 {
   "syncCode": "JP-GPVMP6",
-  "updatedStamp": "1795239068526-fvdi",
-  "updatedAt": "2026-11-21T05:31:08.526Z",
+  "updatedStamp": "1795239096662-p2ak",
+  "updatedAt": "2026-11-21T05:31:36.662Z",
   "appState": {
     "startDate": "2026-12-18",
     "endDate": "2026-12-21",
@@ -274,7 +274,15 @@
     ],
     "customTransitMinutes": {},
     "jpyRate": 0.215,
-    "fixedExpenses": [],
+    "fixedExpenses": [
+      {
+        "id": "fexp-1795239095007",
+        "type": "機票費用",
+        "item": "機票",
+        "currency": "TWD",
+        "amount": 5000
+      }
+    ],
     "expenses": []
   }
 }
