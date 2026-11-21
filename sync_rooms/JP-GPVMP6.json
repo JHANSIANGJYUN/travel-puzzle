@@ -1,7 +1,7 @@
 {
   "syncCode": "JP-GPVMP6",
-  "updatedStamp": "1795238207773-a07l",
-  "updatedAt": "2026-11-21T05:16:47.773Z",
+  "updatedStamp": "1795238213150-b8gr",
+  "updatedAt": "2026-11-21T05:16:53.150Z",
   "appState": {
     "startDate": "2026-12-18",
     "endDate": "2026-12-21",
@@ -112,18 +112,18 @@
           "note": ""
         },
         {
-          "id": "act-1795228269800-dk7e",
-          "title": "神戶港",
-          "type": "經典景點",
-          "duration": 90,
-          "isIndoor": false,
-          "note": ""
-        },
-        {
           "id": "act-1795229839376-i54o",
           "title": "Blue Bottle Coffee - Kobe Cafe",
           "type": "季節美食",
           "duration": 45,
+          "isIndoor": false,
+          "note": ""
+        },
+        {
+          "id": "act-1795228269800-dk7e",
+          "title": "神戶港",
+          "type": "經典景點",
+          "duration": 90,
           "isIndoor": false,
           "note": ""
         }
