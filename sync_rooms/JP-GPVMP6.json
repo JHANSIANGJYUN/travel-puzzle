@@ -1,7 +1,7 @@
 {
   "syncCode": "JP-GPVMP6",
-  "updatedStamp": "1795237467195-zrey",
-  "updatedAt": "2026-11-21T05:04:27.195Z",
+  "updatedStamp": "1795237469174-gpet",
+  "updatedAt": "2026-11-21T05:04:29.174Z",
   "appState": {
     "startDate": "2026-12-18",
     "endDate": "2026-12-21",
@@ -136,16 +136,7 @@
           "note": "傍晚點燈浪漫散步"
         }
       ],
-      "3": [
-        {
-          "id": "act-1795235482057-hakt",
-          "title": "京都車站",
-          "type": "經典景點",
-          "duration": 60,
-          "isIndoor": false,
-          "note": ""
-        }
-      ],
+      "3": [],
       "4": [
         {
           "id": "act-1795095428598-8j0o",
@@ -199,6 +190,19 @@
       "21": []
     },
     "deletedPuzzleBin": [
+      {
+        "trashId": "trash-1795237467526-pws9",
+        "originalDay": 3,
+        "deletedAt": "13:04",
+        "piece": {
+          "id": "act-1795235482057-hakt",
+          "title": "京都車站",
+          "type": "經典景點",
+          "duration": 60,
+          "isIndoor": false,
+          "note": ""
+        }
+      },
       {
         "trashId": "trash-1795235513641-5fcr",
         "originalDay": 3,
