@@ -1,7 +1,7 @@
 {
   "syncCode": "JP-GPVMP6",
-  "updatedStamp": "1795234077278-ywy7",
-  "updatedAt": "2026-11-21T04:07:57.278Z",
+  "updatedStamp": "1795234080250-tq10",
+  "updatedAt": "2026-11-21T04:08:00.250Z",
   "appState": {
     "startDate": "2026-12-18",
     "endDate": "2026-12-21",
@@ -91,7 +91,7 @@
           "id": "act-1795229839376-i54o",
           "title": "Blue Bottle Coffee - Kobe Cafe",
           "type": "季節美食",
-          "duration": 60,
+          "duration": 45,
           "isIndoor": false,
           "note": ""
         },
