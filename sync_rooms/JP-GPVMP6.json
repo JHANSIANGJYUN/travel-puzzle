@@ -1,7 +1,7 @@
 {
   "syncCode": "JP-GPVMP6",
-  "updatedStamp": "1795228240463-vbsw",
-  "updatedAt": "2026-11-21T02:30:40.463Z",
+  "updatedStamp": "1795228246541-5ouz",
+  "updatedAt": "2026-11-21T02:30:46.541Z",
   "appState": {
     "startDate": "2026-12-18",
     "endDate": "2026-12-21",
@@ -102,14 +102,6 @@
           "duration": 90,
           "isIndoor": false,
           "note": "傍晚點燈浪漫散步"
-        },
-        {
-          "id": "act-init-4",
-          "title": "京都嵐山渡月橋＆竹林小徑",
-          "type": "經典景點",
-          "duration": 180,
-          "isIndoor": false,
-          "note": "持 JR PASS 搭 JR 嵯峨野線直達"
         }
       ],
       "3": [
@@ -184,6 +176,19 @@
       "21": []
     },
     "deletedPuzzleBin": [
+      {
+        "trashId": "trash-1795228244843-epjo",
+        "originalDay": 2,
+        "deletedAt": "10:30",
+        "piece": {
+          "id": "act-init-4",
+          "title": "京都嵐山渡月橋＆竹林小徑",
+          "type": "經典景點",
+          "duration": 180,
+          "isIndoor": false,
+          "note": "持 JR PASS 搭 JR 嵯峨野線直達"
+        }
+      },
       {
         "trashId": "trash-1795228026914-ur3c",
         "originalDay": 1,
