@@ -1,7 +1,7 @@
 {
   "syncCode": "JP-GPVMP6",
-  "updatedStamp": "1795235907038-vjy4",
-  "updatedAt": "2026-11-21T04:38:27.038Z",
+  "updatedStamp": "1795236296338-eyb8",
+  "updatedAt": "2026-11-21T04:44:56.338Z",
   "appState": {
     "startDate": "2026-12-18",
     "endDate": "2026-12-21",
@@ -253,9 +253,7 @@
         }
       }
     ],
-    "customTransitMinutes": {
-      "d2-luggage": 31
-    },
+    "customTransitMinutes": {},
     "jpyRate": 0.215,
     "fixedExpenses": [],
     "expenses": []
