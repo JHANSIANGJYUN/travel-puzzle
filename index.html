@@ -353,6 +353,7 @@
                     <h2 class="font-serif text-lg font-bold text-indigoJp">每日行程拼圖時間軸</h2>
                 </div>
                 <div class="flex items-center gap-2 flex-wrap">
+                    <button type="button" onclick="forceRecalculateAllGoogleMaps()" class="px-2.5 py-1 rounded-xl bg-sky-50 hover:bg-sky-100 text-indigoJp border border-sky-200 text-xs font-bold transition-colors cursor-pointer" title="清除快取與手動覆寫，強制向 Google Maps 重新取得真實車程">🗺️ 強制用 Google Maps 重算</button>
                     <div class="inline-flex bg-washi p-1 rounded-xl border border-stone-200 text-xs font-bold">
                         <button type="button" id="view-mode-single-btn" onclick="setTimelineViewMode('single')" class="px-3 py-1 rounded-lg bg-indigoJp text-white shadow-2xs transition-all cursor-pointer">📋 單日精算詳情</button>
                         <button type="button" id="view-mode-overview-btn" onclick="setTimelineViewMode('overview')" class="px-3 py-1 rounded-lg text-stone-600 hover:text-indigoJp transition-all cursor-pointer">🧩 全行程總覽看板（自由拖曳）</button>
@@ -828,6 +829,10 @@
         };
 
         const BUILTIN_EVENTS_DB = [
+            { id: 'ev-ks-dec-1', region: 'kansai', months: [11,12], category: '光影花火', title: '京都車站大樓冬季點燈・大階段光之階梯', location: '京都市下京區（JR京都車站中央口大階段）', dateLabel: '11月～12月25日冬季限定', duration: 60, isIndoor: false, desc: '171階巨大階梯化身為聖誕樹與四季光影動畫，免費入場且搭車超順路。' },
+            { id: 'ev-ks-dec-2', region: 'kansai', months: [11,12], category: '光影花火', title: '道頓堀・御堂筋光之饗宴＆中之島光之文藝復興', location: '道頓堀戎橋～御堂筋・中之島公園', dateLabel: '11月～12月31日冬季限定', duration: 90, isIndoor: false, desc: '全長4公里金黃香檳樹海點燈串聯道頓堀運河夜景，逛街吃美食同步賞燈。' },
+            { id: 'ev-ks-dec-3', region: 'kansai', months: [12,1], category: '光影花火', title: '神戶 Luminarie 光之雕刻與美利堅港區點燈', location: '神戶市中央區（舊居留地・東遊園地・美利堅公園）', dateLabel: '冬季限定光雕盛典', duration: 90, isIndoor: false, desc: '義大利匠人手工打造的壯麗彩繪光廊，結合神戶港夜景與冬季市集。' },
+            { id: 'ev-ks-dec-4', region: 'kansai', months: [12], category: '傳統祭典', title: '京都嵐山花燈路＆竹林夜間點燈', location: '京都市右京區（嵐山渡月橋・竹林小徑）', dateLabel: '12月冬季夜間限定', duration: 120, isIndoor: false, desc: '渡月橋與竹林小徑在暖黃燈火映照下展現靜謐夢幻的冬夜古都風情。' },
             { id: 'ev-ks-1', region: 'kansai', months: [1,2,3,4,5,6,7,8,9,10,11,12], category: '傳統祭典', title: '京都清水寺＆二年坂三年坂', location: '京都市東山區（祇園四條站步行15分）', dateLabel: '世界遺產・四季必訪', duration: 150, isIndoor: false, desc: '懸空清水舞台遠眺京都市景，沿石坂古街品嚐抹茶與八橋。' },
             { id: 'ev-ks-2', region: 'kansai', months: [1,2,3,4,5,6,7,8,9,10,11,12], category: '周邊順遊', title: '大阪通天閣＆新世界串炸老街', location: '大阪市浪速區（恵美須町/動物園前站）', dateLabel: '大阪經典地標・高人氣', duration: 120, isIndoor: false, desc: '登展望台俯瞰大阪市景，品嚐新世界元祖炸串與昭和懷舊風情。' },
             { id: 'ev-ks-3', region: 'kansai', months: [1,2,3,4,5,6,7,8,9,10,11,12], category: '傳統祭典', title: '伏見稻荷大社・千本鳥居', location: '京都市伏見區（JR稻荷站步行1分）', dateLabel: 'JR奈良線直達・全天開放', duration: 120, isIndoor: false, desc: '綿延山頭的朱紅色千本鳥居隧道，清晨光影最為迷人。' },
@@ -838,12 +843,13 @@
             { id: 'ev-ks-8', region: 'kansai', months: [1,2,3,4,5,6,7,8,9,10,11,12], category: '周邊順遊', title: '日本國寶・姬路城白鷺城巡禮', location: '兵庫縣姬路市（JR姬路站步行15分）', dateLabel: '世界遺產・JR新快速直達', duration: 150, isIndoor: false, desc: '日本現存最完整木造天守閣，搭 JR 新快速從大阪直達僅1小時。' },
             { id: 'ev-ks-9', region: 'kansai', months: [1,2,3,4,5,6,7,8,9,10,11,12], category: '季節美食', title: '京都錦市場＆新京極美食巡禮', location: '京都市中京區（烏丸/河原町站）', dateLabel: '雨天備案首選・京都廚房', duration: 120, isIndoor: true, desc: '有遮雨棚的百年市場，現烤玉子燒、豆乳甜甜圈與海鮮串燒。' },
             { id: 'ev-ks-10', region: 'kansai', months: [1,2,3,4,5,6,7,8,9,10,11,12], category: '光影花火', title: '阿倍野 HARUKAS 300 展望台', location: '大阪市阿倍野區（JR天王寺站直結）', dateLabel: '室內300公尺高空夜景', duration: 90, isIndoor: true, desc: '全玻璃幕牆高空俯瞰大阪與神戶港夜景，樓下即大型百貨。' },
-            { id: 'ev-ks-11', region: 'kansai', months: [11,12], category: '光影花火', title: '大阪光之饗宴・御堂筋彩燈大道', location: '梅田～難波御堂筋沿線', dateLabel: '11月～12月31日冬季限定', duration: 90, isIndoor: false, desc: '全長4公里金黃與香檳色樹海點燈，傍晚一路散步至心齋橋。' },
             { id: 'ev-ks-12', region: 'kansai', months: [1,2,3,4,5,6,7,8,9,10,11,12], category: '季節美食', title: '神戶南京町＆A5神戶牛鐵板燒', location: '神戶市中央區（JR元町站步行3分）', dateLabel: '午餐晚餐皆宜', duration: 120, isIndoor: true, desc: '逛日本三大中華街小吃，再品嚐入口即化的頂級A5神戶牛。' },
+            { id: 'ev-kt-dec-1', region: 'kanto', months: [11,12,1,2], category: '光影花火', title: '東京丸之內香檳金點燈＆東京車站紅磚夜景', location: '東京都千代田區（JR東京站丸之內口）', dateLabel: '11月～2月中旬冬季限定', duration: 90, isIndoor: false, desc: '超過百萬顆香檳金LED燈飾點亮丸之內仲通，搭配百年紅磚站舍超浪漫。' },
             { id: 'ev-kt-1', region: 'kanto', months: [1,2,3,4,5,6,7,8,9,10,11,12], category: '傳統祭典', title: '淺草寺雷門＆仲見世通老街', location: '東京都台東區（淺草站步行3分）', dateLabel: '東京必訪地標', duration: 120, isIndoor: false, desc: '東京最古老寺院雷門大燈籠打卡，順遊隅田川遠眺晴空塔。' },
             { id: 'ev-kt-2', region: 'kanto', months: [1,2,3,4,5,6,7,8,9,10,11,12], category: '光影花火', title: '東京晴空塔＆墨田水族館', location: '東京都墨田區（押上站直結）', dateLabel: '室內高空展望', duration: 150, isIndoor: true, desc: '登上450公尺天望回廊俯瞰東京灣，雨天也能逛晴空街道商場。' },
             { id: 'ev-kt-3', region: 'kanto', months: [1,2,3,4,5,6,7,8,9,10,11,12], category: '周邊順遊', title: '鎌倉大佛＆江之島湘南海岸', location: '神奈川縣鎌倉市（JR橫須賀線）', dateLabel: '東京近郊一日遊', duration: 240, isIndoor: false, desc: '搭乘江之電穿梭海岸線與平交道，傍晚登上江之島遠眺富士山。' },
             { id: 'ev-kt-4', region: 'kanto', months: [1,2,3,4,5,6,7,8,9,10,11,12], category: '周邊順遊', title: '河口湖大石公園＆富士回遊列車', location: '山梨縣富士河口湖町', dateLabel: '持東京廣域券可搭', duration: 240, isIndoor: false, desc: '搭特急富士回遊直達河口湖，無遮蔽拍攝逆富士與季節花海。' },
+            { id: 'ev-hk-dec-1', region: 'hokkaido', months: [11,12,1,2,3], category: '光影花火', title: '札幌白色燈樹節＆慕尼黑聖誕市集', location: '札幌市中央區（大通公園・站前通）', dateLabel: '11月下旬～12月25日限定', duration: 120, isIndoor: false, desc: '雪白大通公園閃耀巨型光雕樹海，順逛熱紅酒與德國聖誕市集攤位。' },
             { id: 'ev-hk-1', region: 'hokkaido', months: [1,2,3,4,5,6,7,8,9,10,11,12], category: '周邊順遊', title: '小樽運河煤氣燈＆堺町通玻璃街', location: '北海道小樽市（JR小樽站步行8分）', dateLabel: 'JR快速35分直達', duration: 180, isIndoor: false, desc: '紅磚倉庫倒映運河水面，品嚐六花亭、北菓樓與鮮甜海鮮丼。' },
             { id: 'ev-hk-2', region: 'hokkaido', months: [1,2,3,4,5,6,7,8,9,10,11,12], category: '光影花火', title: '函館山百萬夜景＆金森紅磚倉庫', location: '北海道函館市（函館市電十字街站）', dateLabel: '世界三大夜景', duration: 150, isIndoor: false, desc: '搭纜車登頂俯瞰雙海灣沙漏形璀璨燈海，傍晚藍調時刻最夢幻。' },
             { id: 'ev-ky-1', region: 'kyushu', months: [1,2,3,4,5,6,7,8,9,10,11,12], category: '周邊順遊', title: '由布院溫泉街＆金鱗湖晨霧散策', location: '大分縣由布市（JR由布院站）', dateLabel: '搭由布院之森直達', duration: 210, isIndoor: false, desc: '搭乘觀光特急由布院之森抵達，漫步湯之坪街道與夢幻金鱗湖。' },
@@ -1934,8 +1940,10 @@
 
         function sanitizePlaceForMaps(placeName) {
             let s = String(placeName || '').trim();
-            s = s.replace(/東橫INN\s*新大阪東口/gi, '東橫INN 新大阪站東口');
-            s = s.replace(/東橫INN\s*大阪難波西/gi, '東橫INN 大阪難波西');
+            s = s.replace(/東橫INN\s*新大阪東口/gi, '東横INN新大阪東口');
+            s = s.replace(/東橫INN\s*大阪難波西/gi, '東横INN大阪なんば西');
+            s = s.replace(/京都車站/g, '京都駅');
+            s = s.replace(/大阪車站/g, '大阪駅');
             return s;
         }
 
@@ -1946,45 +1954,73 @@
             return `https://www.google.com/maps/dir/?api=1&origin=${o}&destination=${d}&travelmode=${mode}`;
         }
 
-        function estimateTransitSegment(origin, dest, dayNum) {
+        function forceRecalculateAllGoogleMaps() {
+            if (!getGoogleMapsApiKey()) {
+                showToast('⚠️ 請先點擊右上角「🔑 API / 雲端庫」設定 Google Maps API Key！');
+                openApiKeyModal();
+                return;
+            }
+            gmapsRouteCache.clear();
+            pendingGmapsRouteKeys.clear();
+            appState.customTransitMinutes = {};
+            saveStateToLocal();
+            renderTimeline();
+            if (timelineViewMode === 'overview') renderOverviewPuzzleBoard();
+            showToast('🗺️ 已強制向 Google Maps Routes API 重新抓取所有路段真實時間！');
+        }
+
+        function estimateTransitSegment(origin, dest, dayNum, segmentDepartMins = 540) {
             const routeKey = `${dayNum}|${origin}|${dest}|${appState.drivingMode ? 'D' : 'T'}`;
             const customMins = appState.customTransitMinutes?.[routeKey];
             const isDriving = Boolean(appState.drivingMode);
             const passActive = isDayCoveredByJrPass(dayNum);
+            const hasGmapsKey = Boolean(getGoogleMapsApiKey());
             const pair = `${origin} ${dest}`;
 
             let mins = 28;
             let fareJpy = 290;
             let modeLabel = isDriving ? '🚗 自駕導航路線' : '🚇 地鐵／市區電車路線';
-            let detailText = '依據站間距離與兩端步行進出站時間估算（可手動微調分鐘數）';
+            let detailText = hasGmapsKey
+                ? '⏳ 正在向 Google Maps 取得真實門到門路線時間...'
+                : '依據站間距離與兩端步行進出站時間估算（設定 Google Maps API 可強制自動精算）';
             let isMetroFaster = false;
 
             if (/機場|KIX|NRT|HND|CTS|FUK|NGO|OKA/i.test(pair)) {
                 mins = isDriving ? 55 : 52;
                 fareJpy = 1360;
                 modeLabel = isDriving ? '🚗 機場高速自駕路線' : '🚄 機場特快 / 利木津巴士';
-                detailText = '含航廈出關步行至月台及抵達市區車站步行時間';
+                if (!hasGmapsKey) detailText = '含航廈月台搭車及抵達市區車站步行時間';
             } else if (/難波|心齋橋|梅田|天王寺/.test(origin) && /新大阪/.test(dest) || /新大阪/.test(origin) && /難波|心齋橋|梅田|天王寺/.test(dest)) {
                 mins = isDriving ? 32 : 40;
                 fareJpy = 290;
                 isMetroFaster = !isDriving;
                 modeLabel = isDriving ? '🚗 阪神高速市區路線' : '🚇 地鐵御堂筋線直達最快（亦可搭 JR 轉乘）';
-                detailText = '地鐵一班車直達加兩端步行約 40 分（若改搭 JR 轉乘約需 48 分）';
+                if (!hasGmapsKey) detailText = '地鐵一班車直達加兩端步行約 40 分';
+            } else if (/新大阪/.test(pair) && /京都車站|京都站|京都駅/.test(pair)) {
+                mins = isDriving ? 50 : 35;
+                fareJpy = 580;
+                modeLabel = isDriving ? '🚗 名神高速自駕' : '🚄 JR 京都線新快速直達';
+                if (!hasGmapsKey) detailText = '新大阪搭 JR 新快速至京都車站僅 24 分，含步行進站門到門約 35 分';
+            } else if (/新大阪/.test(pair) && /京都|清水|伏見|嵐山|金閣/.test(pair)) {
+                mins = isDriving ? 55 : 46;
+                fareJpy = 580;
+                modeLabel = isDriving ? '🚗 JR 京都線＋市區轉乘' : '🚄 JR 京都線新快速＋轉乘';
+                if (!hasGmapsKey) detailText = '新大阪至京都 24 分＋轉乘市區巴士／地鐵前往景點約 46 分';
             } else if (/大阪|難波|梅田/.test(pair) && /京都|清水|伏見|嵐山|金閣/.test(pair)) {
                 mins = isDriving ? 65 : 55;
                 fareJpy = 580;
                 modeLabel = isDriving ? '🚗 名神高速自駕' : '🚄 JR 京都線新快速 / 私鐵直達';
-                detailText = 'JR 新快速大阪－京都僅 29 分，含兩端轉乘與步行約 55 分';
+                if (!hasGmapsKey) detailText = '難波／梅田轉乘至京都含兩端步行約 55 分';
             } else if (/大阪|難波|梅田/.test(pair) && /神戶|元町|三宮|姫路|姬路/.test(pair)) {
                 mins = isDriving ? 55 : 48;
                 fareJpy = 420;
                 modeLabel = isDriving ? '🚗 阪神高速神戶線' : '🚄 JR 神戶線新快速直達';
-                detailText = 'JR 新快速直達神戶三宮/元町，含兩端步行約 48 分';
+                if (!hasGmapsKey) detailText = 'JR 新快速直達神戶三宮/元町，含兩端步行約 48 分';
             } else if (/大阪|難波|京都/.test(pair) && /奈良|東大寺/.test(pair)) {
                 mins = isDriving ? 55 : 52;
                 fareJpy = 680;
                 modeLabel = isDriving ? '🚗 第二阪奈道路自駕' : '🚃 近鐵奈良線 / JR 大和路快速';
-                detailText = '近鐵直達奈良站步行至公園約 52 分';
+                if (!hasGmapsKey) detailText = '近鐵直達奈良站步行至公園約 52 分';
             }
 
             if (gmapsRouteCache.has(routeKey)) {
@@ -1992,29 +2028,39 @@
                 mins = cached.mins;
                 detailText = cached.detailText;
                 if (cached.fareJpy > 0) fareJpy = cached.fareJpy;
-            } else if (getGoogleMapsApiKey() && !pendingGmapsRouteKeys.has(routeKey)) {
-                fetchRealGoogleRoute(routeKey, origin, dest, isDriving);
+            } else if (hasGmapsKey && !pendingGmapsRouteKeys.has(routeKey)) {
+                fetchRealGoogleRoute(routeKey, origin, dest, isDriving, dayNum, segmentDepartMins);
             }
 
-            if (customMins > 0) mins = customMins;
+            if (customMins > 0) {
+                mins = customMins;
+            }
 
             return {
                 routeKey,
                 mins,
                 fareJpy,
-                modeLabel,
-                detailText,
                 passActive,
                 isMetroFaster,
+                modeLabel,
+                detailText,
                 mapsUrl: buildGoogleMapsDirectionsUrl(origin, dest, isDriving)
             };
         }
 
-        async function fetchRealGoogleRoute(routeKey, origin, dest, isDriving) {
+        async function fetchRealGoogleRoute(routeKey, origin, dest, isDriving, dayNum = 1, segmentDepartMins = 540) {
             const apiKey = getGoogleMapsApiKey();
             if (!apiKey) return;
             pendingGmapsRouteKeys.add(routeKey);
             try {
+                const sDate = new Date((appState.startDate || '2026-12-18') + 'T00:00:00+09:00');
+                if (!isNaN(sDate.getTime())) {
+                    sDate.setDate(sDate.getDate() + Math.max(0, dayNum - 1));
+                    sDate.setMinutes(sDate.getMinutes() + Math.max(0, segmentDepartMins));
+                }
+                const nowPlusBuffer = new Date(Date.now() + 1800 * 1000);
+                const departureDate = (!isNaN(sDate.getTime()) && sDate > nowPlusBuffer) ? sDate : nowPlusBuffer;
+
                 const res = await fetch('https://routes.googleapis.com/directions/v2:computeRoutes', {
                     method: 'POST',
                     headers: {
@@ -2026,6 +2072,7 @@
                         origin: { address: sanitizePlaceForMaps(origin) + ', Japan' },
                         destination: { address: sanitizePlaceForMaps(dest) + ', Japan' },
                         travelMode: isDriving ? 'DRIVE' : 'TRANSIT',
+                        departureTime: departureDate.toISOString(),
                         languageCode: 'zh-TW'
                     })
                 });
@@ -2034,16 +2081,33 @@
                     const route = data?.routes?.[0];
                     if (route?.duration) {
                         const secs = parseInt(String(route.duration).replace('s', ''), 10) || 1800;
-                        const mins = Math.max(5, Math.round(secs / 60));
+                        const mins = Math.max(3, Math.round(secs / 60));
                         const km = ((route.distanceMeters || 0) / 1000).toFixed(1);
                         const fareUnits = Number(route?.travelAdvisory?.transitFare?.units || 0);
                         gmapsRouteCache.set(routeKey, {
                             mins,
                             fareJpy: fareUnits,
-                            detailText: `依據 Google Maps 實測距離 ${km} km 推算門到門總時間（含兩端步行與候車共 ${mins} 分鐘）`
+                            detailText: `✅ Google Maps 強制精算：門到門 ${mins} 分鐘（距離 ${km} km，含步行與實際班次轉乘）`
+                        });
+                        renderTimeline();
+                        if (timelineViewMode === 'overview') renderOverviewPuzzleBoard();
+                    } else {
+                        gmapsRouteCache.set(routeKey, {
+                            mins: 35,
+                            fareJpy: 0,
+                            detailText: `⚠️ Google Maps 未回傳此時段大眾運輸班次（已使用備援估算，可點右側 Google Maps ↗ 查看）`
                         });
                         renderTimeline();
                     }
+                } else {
+                    const errData = await res.json().catch(() => ({}));
+                    const errMsg = errData?.error?.message || `HTTP ${res.status}`;
+                    gmapsRouteCache.set(routeKey, {
+                        mins: 35,
+                        fareJpy: 0,
+                        detailText: `⚠️ Google Maps API 回應異常（${errMsg}），請檢查金鑰權限`
+                    });
+                    renderTimeline();
                 }
             } catch (e) {
             } finally {
@@ -2253,7 +2317,7 @@
 
             if (dayNum < total && appState.dropLuggageFirst?.[dayNum] && appState.dayHotels[dayNum]) {
                 const tonightHotel = appState.dayHotels[dayNum];
-                const seg = estimateTransitSegment(originPlace, tonightHotel, dayNum);
+                const seg = estimateTransitSegment(originPlace, tonightHotel, dayNum, currentMins);
                 currentMins += seg.mins;
                 items.push({
                     kind: 'hotel',
@@ -2267,7 +2331,7 @@
             }
 
             acts.forEach((act, idx) => {
-                const seg = estimateTransitSegment(originPlace, act.title, dayNum);
+                const seg = estimateTransitSegment(originPlace, act.title, dayNum, currentMins);
                 currentMins += seg.mins;
                 const startClock = formatMinutesToClock(currentMins);
                 const endClock = formatMinutesToClock(currentMins + (act.duration || 90));
@@ -2287,7 +2351,7 @@
 
             if (dayNum < total) {
                 const endHotel = appState.dayHotels[dayNum] || '今晚住宿飯店';
-                const seg = estimateTransitSegment(originPlace, endHotel, dayNum);
+                const seg = estimateTransitSegment(originPlace, endHotel, dayNum, currentMins);
                 currentMins += seg.mins;
                 items.push({
                     kind: 'hotel',
@@ -2298,7 +2362,7 @@
                 });
             } else {
                 const airport = appState.inboundFlight.airport;
-                const seg = estimateTransitSegment(originPlace, airport, dayNum);
+                const seg = estimateTransitSegment(originPlace, airport, dayNum, currentMins);
                 currentMins += seg.mins;
                 items.push({
                     kind: 'airport',
@@ -2596,7 +2660,7 @@
             photoJobs.push({ query: originPlace, domId: 'tl-origin-card', directUrl: '' });
 
             const renderTransitBlock = (fromPlace, toPlace) => {
-                const seg = estimateTransitSegment(fromPlace, toPlace, d);
+                const seg = estimateTransitSegment(fromPlace, toPlace, d, currentMins);
                 const fareLabel = seg.passActive
                     ? (seg.isMetroFaster
                         ? `原價車資 ¥${seg.fareJpy.toLocaleString()}（地鐵需自付／若改搭 JR 轉乘可用 PASS）`
@@ -3285,18 +3349,22 @@
             const months = getMonthsInDateRange();
             const fullDb = getCombinedEventsDatabase();
 
-            const pool = fullDb.filter(ev => {
-                const reg = String(ev.region || '').toLowerCase().trim();
-                return selectedRegions.has(reg) && !isSpotAlreadyExcluded(ev.title, excludeTitles);
-            });
+            const pool = fullDb
+                .filter(ev => {
+                    const reg = String(ev.region || '').toLowerCase().trim();
+                    return selectedRegions.has(reg) && !isSpotAlreadyExcluded(ev.title, excludeTitles);
+                })
+                .map(ev => {
+                    const evMonths = Array.isArray(ev.months) ? ev.months : [];
+                    const isSpecificSeason = evMonths.length > 0 && evMonths.length <= 6 && evMonths.some(m => months.includes(m));
+                    const isFestivalOrLight = ['光影花火', '傳統祭典', '賞花紅葉'].includes(ev.category);
+                    const priorityScore = (isSpecificSeason ? 100 : 0) + (isSpecificSeason && isFestivalOrLight ? 50 : 0) + (ev.isFromGemini ? 30 : 0);
+                    return { ...ev, isSeasonalMatch: isSpecificSeason, priorityScore };
+                });
 
-            pool.sort((a, b) => {
-                const aSeason = (a.months || []).some(m => months.includes(m)) ? 1 : 0;
-                const bSeason = (b.months || []).some(m => months.includes(m)) ? 1 : 0;
-                return bSeason - aSeason;
-            });
+            pool.sort((a, b) => b.priorityScore - a.priorityScore);
 
-            return pool.slice(0, 21).map(ev => ({ ...ev }));
+            return pool.slice(0, 21);
         }
 
         function loadBuiltinRecommendations() {
@@ -3408,13 +3476,15 @@ category 只能從這 5 個中選一：「周邊順遊」、「傳統祭典」�
                 const isEntering = enteringRecId && rec.id === enteringRecId;
                 const recDomId = `rec-card-${rec.id}`;
                 photoJobs.push({ query: rec.title, domId: recDomId, directUrl: rec.imageUrl || '' });
+                const isSeasonalPriority = Boolean(rec.isSeasonalMatch);
 
                 return `
-                    <div id="${recDomId}" data-rec-id="${rec.id}" class="jigsaw-tile ${rec.category === '周邊順遊' ? 'jigsaw-nearby border-indigoJp/30' : 'border-stone-200'} ${isEntering ? 'puzzle-entering' : ''} relative bg-white border rounded-xl p-3 shadow-2xs flex flex-col justify-between gap-2">
+                    <div id="${recDomId}" data-rec-id="${rec.id}" class="jigsaw-tile ${isSeasonalPriority ? 'border-amber-400 ring-1 ring-amber-300/60 bg-amber-50/25' : (rec.category === '周邊順遊' ? 'jigsaw-nearby border-indigoJp/30 bg-white' : 'border-stone-200 bg-white')} ${isEntering ? 'puzzle-entering' : ''} relative border rounded-xl p-3 shadow-2xs flex flex-col justify-between gap-2">
                         <div class="puzzle-photo-bg absolute inset-y-0 right-0 w-2/5 rounded-r-xl bg-cover bg-center opacity-0 transition-opacity duration-700 pointer-events-none"></div>
                         <div class="absolute inset-y-0 right-0 w-2/5 rounded-r-xl bg-gradient-to-r from-white via-white/45 to-transparent pointer-events-none"></div>
                         <div class="relative z-10 space-y-1 pr-10">
                             <div class="flex items-center flex-wrap gap-1">
+                                ${isSeasonalPriority ? `<span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-500 text-white shadow-2xs">🔥 當季限定</span>` : ''}
                                 <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-vermilion/10 text-vermilion">${escapeHtml(rec.category)}</span>
                                 <span class="text-[10px] text-stone-500 font-medium">${escapeHtml(rec.dateLabel || '')}</span>
                             </div>
@@ -3994,6 +4064,7 @@ category 只能從這 5 個中選一：「周邊順遊」、「傳統祭典」�
             connectAndPullSyncCode,
             pushCurrentStateToCloud,
             saveGithubPatToken,
+            forceRecalculateAllGoogleMaps,
             openResetConfirmModal,
             closeResetConfirmModal,
             confirmResetAll
