@@ -1,6 +1,6 @@
 {
-  "updated_at": "2026-11-21 08:27",
-  "jr_passes": [
+  "updatedAt": "2026-11-21T18:56:22+09:00",
+  "jrPasses": [
     {
       "id": "jr-kansai-mini-3",
       "name": "JR 關西迷你鐵路周遊券 (3日)",
@@ -9,8 +9,7 @@
       "regions": [
         "kansai"
       ],
-      "airportCovered": false,
-      "note": "涵蓋大阪・京都・神戶・奈良普通/快速（不含關西機場段）"
+      "airportCovered": false
     },
     {
       "id": "jr-kansai-area-1",
@@ -20,8 +19,7 @@
       "regions": [
         "kansai"
       ],
-      "airportCovered": true,
-      "note": "含關空特快 HARUKA 自由席＋京阪神奈良 JR"
+      "airportCovered": true
     },
     {
       "id": "jr-kansai-area-2",
@@ -31,8 +29,7 @@
       "regions": [
         "kansai"
       ],
-      "airportCovered": true,
-      "note": "含關空特快 HARUKA 自由席＋京阪神奈良 JR"
+      "airportCovered": true
     },
     {
       "id": "jr-kansai-area-3",
@@ -42,8 +39,7 @@
       "regions": [
         "kansai"
       ],
-      "airportCovered": true,
-      "note": "含關空特快 HARUKA 自由席＋京阪神奈良姬路"
+      "airportCovered": true
     },
     {
       "id": "jr-kansai-area-4",
@@ -53,8 +49,7 @@
       "regions": [
         "kansai"
       ],
-      "airportCovered": true,
-      "note": "含關空特快 HARUKA 自由席＋京阪神奈良姬路"
+      "airportCovered": true
     },
     {
       "id": "jr-haruka-oneway",
@@ -64,8 +59,7 @@
       "regions": [
         "kansai"
       ],
-      "airportCovered": true,
-      "note": "關西機場直達天王寺・新大阪・京都特快列車"
+      "airportCovered": true
     },
     {
       "id": "jr-haruka-roundtrip",
@@ -75,8 +69,7 @@
       "regions": [
         "kansai"
       ],
-      "airportCovered": true,
-      "note": "14日內往返關西機場與大阪/京都超值套票"
+      "airportCovered": true
     },
     {
       "id": "jr-kansai-wide-5",
@@ -85,10 +78,10 @@
       "days": 5,
       "regions": [
         "kansai",
-        "sanyo"
+        "sanyo",
+        "sanin"
       ],
-      "airportCovered": true,
-      "note": "含新幹線新大阪-岡山＋HARUKA＋天橋立・城崎・和歌山"
+      "airportCovered": true
     },
     {
       "id": "jr-kansai-hiroshima-5",
@@ -99,8 +92,7 @@
         "kansai",
         "sanyo"
       ],
-      "airportCovered": true,
-      "note": "含山陽新幹線（新大阪-廣島）＋宮島渡輪＋HARUKA"
+      "airportCovered": true
     },
     {
       "id": "jr-kansai-hokuriku-7",
@@ -111,8 +103,7 @@
         "kansai",
         "chubu"
       ],
-      "airportCovered": true,
-      "note": "串聯關西・金澤・富山・敦賀與北陸新幹線"
+      "airportCovered": true
     },
     {
       "id": "jr-sanyo-sanin-7",
@@ -121,10 +112,23 @@
       "days": 7,
       "regions": [
         "kansai",
-        "sanyo"
+        "sanyo",
+        "sanin"
       ],
-      "airportCovered": true,
-      "note": "含山陽新幹線全線（新大阪-博多）＋出雲・鳥取・宮島"
+      "airportCovered": true
+    },
+    {
+      "id": "jr-sanyo-sanin-northern-kyushu-7",
+      "name": "JR 山陽＆山陰＆北部九州周遊券 (7日)",
+      "priceJpy": 26000,
+      "days": 7,
+      "regions": [
+        "kansai",
+        "sanyo",
+        "sanin",
+        "kyushu"
+      ],
+      "airportCovered": true
     },
     {
       "id": "jr-okayama-hiroshima-yamaguchi-5",
@@ -134,21 +138,60 @@
       "regions": [
         "sanyo"
       ],
-      "airportCovered": false,
-      "note": "含山陽新幹線岡山-博多＋宮島渡輪＋錦帶橋"
+      "airportCovered": false
     },
     {
-      "id": "jr-hokuriku-arch-7",
-      "name": "JR 北陸拱型鐵路周遊券 (7日)",
-      "priceJpy": 30000,
+      "id": "jr-sanin-okayama-4",
+      "name": "JR 山陰＆岡山地區鐵路周遊券 (4日)",
+      "priceJpy": 6500,
+      "days": 4,
+      "regions": [
+        "sanin",
+        "sanyo"
+      ],
+      "airportCovered": false
+    },
+    {
+      "id": "jr-setouchi-area-7",
+      "name": "JR 瀨戶內地區鐵路周遊券 (7日)",
+      "priceJpy": 22000,
       "days": 7,
       "regions": [
         "kansai",
-        "kanto",
-        "chubu"
+        "sanyo",
+        "shikoku"
       ],
-      "airportCovered": true,
-      "note": "串聯關西機場・大阪・京都・金澤・長野與東京成田/羽田"
+      "airportCovered": true
+    },
+    {
+      "id": "jr-all-shikoku-3",
+      "name": "JR 四國鐵路周遊券 (3日)",
+      "priceJpy": 12000,
+      "days": 3,
+      "regions": [
+        "shikoku"
+      ],
+      "airportCovered": false
+    },
+    {
+      "id": "jr-all-shikoku-5",
+      "name": "JR 四國鐵路周遊券 (5日)",
+      "priceJpy": 16200,
+      "days": 5,
+      "regions": [
+        "shikoku"
+      ],
+      "airportCovered": false
+    },
+    {
+      "id": "jr-all-shikoku-7",
+      "name": "JR 四國鐵路周遊券 (7日)",
+      "priceJpy": 19000,
+      "days": 7,
+      "regions": [
+        "shikoku"
+      ],
+      "airportCovered": false
     },
     {
       "id": "jr-tokyo-wide-3",
@@ -158,66 +201,7 @@
       "regions": [
         "kanto"
       ],
-      "airportCovered": true,
-      "note": "含成田特快 N’EX＋富士回遊＋輕井澤・日光・越後湯澤新幹線"
-    },
-    {
-      "id": "jr-east-tohoku-5",
-      "name": "JR 東日本鐵路周遊券・東北地區 (5日)",
-      "priceJpy": 30000,
-      "days": 5,
-      "regions": [
-        "kanto",
-        "tohoku"
-      ],
-      "airportCovered": true,
-      "note": "含東京圈與東北新幹線全線（仙台・青森・秋田・盛岡）"
-    },
-    {
-      "id": "jr-east-nagano-niigata-5",
-      "name": "JR 東日本鐵路周遊券・長野新潟 (5日)",
-      "priceJpy": 27000,
-      "days": 5,
-      "regions": [
-        "kanto",
-        "chubu"
-      ],
-      "airportCovered": true,
-      "note": "串聯東京・長野・松本・輕井澤與新潟新幹線"
-    },
-    {
-      "id": "jr-tohoku-south-hokkaido-6",
-      "name": "JR 東北・南北海道鐵路周遊券 (任選6日)",
-      "priceJpy": 35370,
-      "days": 6,
-      "regions": [
-        "tohoku",
-        "hokkaido"
-      ],
-      "airportCovered": true,
-      "note": "跨越東北與道南函館・札幌一帶"
-    },
-    {
-      "id": "jr-sapporo-furano-4",
-      "name": "JR 札幌－富良野區域鐵路周遊券 (4日)",
-      "priceJpy": 11000,
-      "days": 4,
-      "regions": [
-        "hokkaido"
-      ],
-      "airportCovered": true,
-      "note": "道央札幌・新千歲・小樽・旭川・富良野・美瑛"
-    },
-    {
-      "id": "jr-sapporo-noboribetsu-4",
-      "name": "JR 札幌－登別區域鐵路周遊券 (4日)",
-      "priceJpy": 10000,
-      "days": 4,
-      "regions": [
-        "hokkaido"
-      ],
-      "airportCovered": true,
-      "note": "札幌・新千歲・小樽・登別溫泉・白老"
+      "airportCovered": true
     },
     {
       "id": "jr-hokkaido-5",
@@ -227,30 +211,7 @@
       "regions": [
         "hokkaido"
       ],
-      "airportCovered": true,
-      "note": "含新千歲機場快速＋札幌・函館・旭川・富良野・釧路特急"
-    },
-    {
-      "id": "jr-hokkaido-7",
-      "name": "JR 北海道鐵路周遊券 (7日)",
-      "priceJpy": 27000,
-      "days": 7,
-      "regions": [
-        "hokkaido"
-      ],
-      "airportCovered": true,
-      "note": "北海道全線特急列車 7 日無限搭乘"
-    },
-    {
-      "id": "jr-hokkaido-10",
-      "name": "JR 北海道鐵路周遊券 (10日)",
-      "priceJpy": 33000,
-      "days": 10,
-      "regions": [
-        "hokkaido"
-      ],
-      "airportCovered": true,
-      "note": "北海道全線深度環島 10 日暢遊"
+      "airportCovered": true
     },
     {
       "id": "jr-north-kyushu-3",
@@ -260,30 +221,7 @@
       "regions": [
         "kyushu"
       ],
-      "airportCovered": true,
-      "note": "含由布院之森＋博多・熊本・阿蘇・長崎・別府特急"
-    },
-    {
-      "id": "jr-north-kyushu-5",
-      "name": "JR 北九州鐵路周遊券 (5日)",
-      "priceJpy": 15000,
-      "days": 5,
-      "regions": [
-        "kyushu"
-      ],
-      "airportCovered": true,
-      "note": "含由布院之森・九州新幹線（博多-熊本）5 日暢遊"
-    },
-    {
-      "id": "jr-all-kyushu-3",
-      "name": "JR 全九州鐵路周遊券 (3日)",
-      "priceJpy": 17000,
-      "days": 3,
-      "regions": [
-        "kyushu"
-      ],
-      "airportCovered": true,
-      "note": "含鹿兒島・宮崎與全九州新幹線 3 日暢遊"
+      "airportCovered": true
     },
     {
       "id": "jr-all-kyushu-5",
@@ -293,19 +231,17 @@
       "regions": [
         "kyushu"
       ],
-      "airportCovered": true,
-      "note": "含鹿兒島・指宿玉手箱・宮崎與全九州新幹線"
+      "airportCovered": true
     },
     {
-      "id": "jr-all-kyushu-7",
-      "name": "JR 全九州鐵路周遊券 (7日)",
-      "priceJpy": 25000,
-      "days": 7,
+      "id": "okinawa-yui-rail-2",
+      "name": "沖繩都市單軌電車 Yui-Rail 2日券（沖繩無JR）",
+      "priceJpy": 1400,
+      "days": 2,
       "regions": [
-        "kyushu"
+        "okinawa"
       ],
-      "airportCovered": true,
-      "note": "全九州環島 7 日無限搭乘"
+      "airportCovered": true
     },
     {
       "id": "jr-takayama-hokuriku-5",
@@ -316,53 +252,18 @@
         "kansai",
         "chubu"
       ],
-      "airportCovered": true,
-      "note": "含名古屋・高山・白川鄉濃飛巴士・金澤・京都・關西機場"
+      "airportCovered": true
     },
     {
-      "id": "jr-ise-kumano-wakayama-5",
-      "name": "JR 伊勢・熊野・和歌山地區周遊券 (5日)",
-      "priceJpy": 16500,
+      "id": "jr-east-tohoku-5",
+      "name": "JR 東日本鐵路周遊券・東北地區 (5日)",
+      "priceJpy": 30000,
       "days": 5,
       "regions": [
-        "kansai",
-        "chubu"
+        "kanto",
+        "tohoku"
       ],
-      "airportCovered": true,
-      "note": "涵蓋名古屋・伊勢志摩・熊野古道・白濱・和歌山"
-    },
-    {
-      "id": "jr-all-shikoku-3",
-      "name": "JR 四國鐵路周遊券 (3日)",
-      "priceJpy": 12000,
-      "days": 3,
-      "regions": [
-        "sanyo"
-      ],
-      "airportCovered": false,
-      "note": "四國全線（高松・松山・高知・德島）特急自由席"
-    },
-    {
-      "id": "jr-all-shikoku-5",
-      "name": "JR 四國鐵路周遊券 (5日)",
-      "priceJpy": 16200,
-      "days": 5,
-      "regions": [
-        "sanyo"
-      ],
-      "airportCovered": false,
-      "note": "四國全線（高松・松山・高知・德島）特急自由席無限搭"
-    },
-    {
-      "id": "jr-all-shikoku-7",
-      "name": "JR 四國鐵路周遊券 (7日)",
-      "priceJpy": 19000,
-      "days": 7,
-      "regions": [
-        "sanyo"
-      ],
-      "airportCovered": false,
-      "note": "四國環島 7 日鐵道深度漫遊"
+      "airportCovered": true
     },
     {
       "id": "jr-whole-japan-7",
@@ -376,44 +277,11 @@
         "kyushu",
         "chubu",
         "tohoku",
-        "sanyo"
+        "sanyo",
+        "sanin",
+        "shikoku"
       ],
-      "airportCovered": true,
-      "note": "全國 JR 幹線與新幹線（除 Nozomi/Mizuho 外）7 日無限搭乘"
-    },
-    {
-      "id": "jr-whole-japan-14",
-      "name": "JR 全日本鐵路通票 (14日普通車)",
-      "priceJpy": 80000,
-      "days": 14,
-      "regions": [
-        "kansai",
-        "kanto",
-        "hokkaido",
-        "kyushu",
-        "chubu",
-        "tohoku",
-        "sanyo"
-      ],
-      "airportCovered": true,
-      "note": "全國 JR 幹線與新幹線 14 日跨區長征"
-    },
-    {
-      "id": "jr-whole-japan-21",
-      "name": "JR 全日本鐵路通票 (21日普通車)",
-      "priceJpy": 100000,
-      "days": 21,
-      "regions": [
-        "kansai",
-        "kanto",
-        "hokkaido",
-        "kyushu",
-        "chubu",
-        "tohoku",
-        "sanyo"
-      ],
-      "airportCovered": true,
-      "note": "全國 JR 幹線與新幹線 21 日全制霸"
+      "airportCovered": true
     }
   ],
   "flights": {
@@ -431,22 +299,6 @@
       "terminal": "T1",
       "time": "20:45",
       "aircraft": "A321neo",
-      "region": "kansai"
-    },
-    "D7378": {
-      "airline": "AirAsia X 亞航長程",
-      "airport": "關西國際機場 (KIX)",
-      "terminal": "T1",
-      "time": "22:05",
-      "aircraft": "A330-300",
-      "region": "kansai"
-    },
-    "D7379": {
-      "airline": "AirAsia X 亞航長程",
-      "airport": "關西國際機場 (KIX)",
-      "terminal": "T1",
-      "time": "23:25",
-      "aircraft": "A330-300",
       "region": "kansai"
     },
     "IT210": {
@@ -481,6 +333,182 @@
       "aircraft": "A320",
       "region": "kansai"
     },
+    "MM24": {
+      "airline": "樂桃航空 Peach",
+      "airport": "關西國際機場 (KIX)",
+      "terminal": "T2",
+      "time": "13:15",
+      "aircraft": "A320neo",
+      "region": "kansai"
+    },
+    "MM27": {
+      "airline": "樂桃航空 Peach",
+      "airport": "關西國際機場 (KIX)",
+      "terminal": "T2",
+      "time": "15:55",
+      "aircraft": "A320neo",
+      "region": "kansai"
+    },
+    "JX820": {
+      "airline": "星宇航空 STARLUX",
+      "airport": "關西國際機場 (KIX)",
+      "terminal": "T1",
+      "time": "11:10",
+      "aircraft": "A330-900neo",
+      "region": "kansai"
+    },
+    "JX821": {
+      "airline": "星宇航空 STARLUX",
+      "airport": "關西國際機場 (KIX)",
+      "terminal": "T1",
+      "time": "12:20",
+      "aircraft": "A330-900neo",
+      "region": "kansai"
+    },
+    "BR132": {
+      "airline": "長榮航空 EVA AIR",
+      "airport": "關西國際機場 (KIX)",
+      "terminal": "T1",
+      "time": "12:10",
+      "aircraft": "B787-10",
+      "region": "kansai"
+    },
+    "BR131": {
+      "airline": "長榮航空 EVA Air",
+      "airport": "關西國際機場 (KIX)",
+      "terminal": "T1",
+      "time": "12:55",
+      "aircraft": "B787-10",
+      "region": "kansai"
+    },
+    "CI156": {
+      "airline": "中華航空 China Airlines",
+      "airport": "關西國際機場 (KIX)",
+      "terminal": "T1",
+      "time": "11:40",
+      "aircraft": "A350-900",
+      "region": "kansai"
+    },
+    "CI157": {
+      "airline": "中華航空 China Airlines",
+      "airport": "關西國際機場 (KIX)",
+      "terminal": "T1",
+      "time": "12:50",
+      "aircraft": "A350-900",
+      "region": "kansai"
+    },
+    "IT200": {
+      "airline": "台灣虎航 Tigerair",
+      "airport": "成田國際機場 (NRT)",
+      "terminal": "T2",
+      "time": "10:35",
+      "aircraft": "A320neo",
+      "region": "kanto"
+    },
+    "IT201": {
+      "airline": "台灣虎航 Tigerair",
+      "airport": "成田國際機場 (NRT)",
+      "terminal": "T2",
+      "time": "11:50",
+      "aircraft": "A320neo",
+      "region": "kanto"
+    },
+    "JX800": {
+      "airline": "星宇航空 STARLUX",
+      "airport": "新千歲機場 (CTS)",
+      "terminal": "Intl",
+      "time": "15:00",
+      "aircraft": "A330neo",
+      "region": "hokkaido"
+    },
+    "JX801": {
+      "airline": "星宇航空 STARLUX",
+      "airport": "成田國際機場 (NRT)",
+      "terminal": "T2",
+      "time": "13:40",
+      "aircraft": "A350-900",
+      "region": "kanto"
+    },
+    "BR198": {
+      "airline": "長榮航空 EVA Air",
+      "airport": "成田國際機場 (NRT)",
+      "terminal": "T1",
+      "time": "12:55",
+      "aircraft": "B787-10",
+      "region": "kanto"
+    },
+    "BR197": {
+      "airline": "長榮航空 EVA Air",
+      "airport": "成田國際機場 (NRT)",
+      "terminal": "T1",
+      "time": "14:00",
+      "aircraft": "B787-10",
+      "region": "kanto"
+    },
+    "IT234": {
+      "airline": "台灣虎航 Tigerair",
+      "airport": "新千歲機場 (CTS)",
+      "terminal": "國際線",
+      "time": "11:25",
+      "aircraft": "A320",
+      "region": "hokkaido"
+    },
+    "IT235": {
+      "airline": "台灣虎航 Tigerair",
+      "airport": "新千歲機場 (CTS)",
+      "terminal": "國際線",
+      "time": "12:25",
+      "aircraft": "A320",
+      "region": "hokkaido"
+    },
+    "IT240": {
+      "airline": "台灣虎航 Tigerair",
+      "airport": "福岡機場 (FUK)",
+      "terminal": "國際線",
+      "time": "10:00",
+      "aircraft": "A320neo",
+      "region": "kyushu"
+    },
+    "IT241": {
+      "airline": "台灣虎航 Tigerair",
+      "airport": "福岡機場 (FUK)",
+      "terminal": "國際線",
+      "time": "10:55",
+      "aircraft": "A320neo",
+      "region": "kyushu"
+    },
+    "IT230": {
+      "airline": "台灣虎航 Tigerair",
+      "airport": "那霸機場 (OKA)",
+      "terminal": "國際線",
+      "time": "09:20",
+      "aircraft": "A320neo",
+      "region": "kyushu"
+    },
+    "IT231": {
+      "airline": "台灣虎航 Tigerair",
+      "airport": "那霸機場 (OKA)",
+      "terminal": "國際線",
+      "time": "10:15",
+      "aircraft": "A320neo",
+      "region": "kyushu"
+    },
+    "D7378": {
+      "airline": "AirAsia X 亞航長程",
+      "airport": "關西國際機場 (KIX)",
+      "terminal": "T1",
+      "time": "22:05",
+      "aircraft": "A330-300",
+      "region": "kansai"
+    },
+    "D7379": {
+      "airline": "AirAsia X 亞航長程",
+      "airport": "關西國際機場 (KIX)",
+      "terminal": "T1",
+      "time": "23:25",
+      "aircraft": "A330-300",
+      "region": "kansai"
+    },
     "IT252": {
       "airline": "台灣虎航 Tigerair",
       "airport": "關西國際機場 (KIX)",
@@ -513,22 +541,6 @@
       "aircraft": "A320",
       "region": "kansai"
     },
-    "MM24": {
-      "airline": "樂桃航空 Peach",
-      "airport": "關西國際機場 (KIX)",
-      "terminal": "T2",
-      "time": "13:15",
-      "aircraft": "A320neo",
-      "region": "kansai"
-    },
-    "MM27": {
-      "airline": "樂桃航空 Peach",
-      "airport": "關西國際機場 (KIX)",
-      "terminal": "T2",
-      "time": "15:55",
-      "aircraft": "A320neo",
-      "region": "kansai"
-    },
     "MM28": {
       "airline": "樂桃航空 Peach",
       "airport": "關西國際機場 (KIX)",
@@ -543,22 +555,6 @@
       "terminal": "T2",
       "time": "23:20",
       "aircraft": "A321LR",
-      "region": "kansai"
-    },
-    "JX820": {
-      "airline": "星宇航空 STARLUX",
-      "airport": "關西國際機場 (KIX)",
-      "terminal": "T1",
-      "time": "11:10",
-      "aircraft": "A330-900neo",
-      "region": "kansai"
-    },
-    "JX821": {
-      "airline": "星宇航空 STARLUX",
-      "airport": "關西國際機場 (KIX)",
-      "terminal": "T1",
-      "time": "12:20",
-      "aircraft": "A330-900neo",
       "region": "kansai"
     },
     "JX822": {
@@ -577,22 +573,6 @@
       "aircraft": "A321neo",
       "region": "kansai"
     },
-    "BR132": {
-      "airline": "長榮航空 EVA AIR",
-      "airport": "關西國際機場 (KIX)",
-      "terminal": "T1",
-      "time": "12:10",
-      "aircraft": "B787-10",
-      "region": "kansai"
-    },
-    "BR131": {
-      "airline": "長榮航空 EVA Air",
-      "airport": "關西國際機場 (KIX)",
-      "terminal": "T1",
-      "time": "12:55",
-      "aircraft": "B787-10",
-      "region": "kansai"
-    },
     "BR178": {
       "airline": "長榮航空 EVA Air",
       "airport": "關西國際機場 (KIX)",
@@ -607,22 +587,6 @@
       "terminal": "T1",
       "time": "11:10",
       "aircraft": "B787-9",
-      "region": "kansai"
-    },
-    "CI156": {
-      "airline": "中華航空 China Airlines",
-      "airport": "關西國際機場 (KIX)",
-      "terminal": "T1",
-      "time": "11:40",
-      "aircraft": "A350-900",
-      "region": "kansai"
-    },
-    "CI157": {
-      "airline": "中華航空 China Airlines",
-      "airport": "關西國際機場 (KIX)",
-      "terminal": "T1",
-      "time": "12:50",
-      "aircraft": "A350-900",
       "region": "kansai"
     },
     "CI172": {
@@ -640,22 +604,6 @@
       "time": "19:00",
       "aircraft": "A330-300",
       "region": "kansai"
-    },
-    "IT200": {
-      "airline": "台灣虎航 Tigerair",
-      "airport": "成田國際機場 (NRT)",
-      "terminal": "T2",
-      "time": "10:35",
-      "aircraft": "A320neo",
-      "region": "kanto"
-    },
-    "IT201": {
-      "airline": "台灣虎航 Tigerair",
-      "airport": "成田國際機場 (NRT)",
-      "terminal": "T2",
-      "time": "11:50",
-      "aircraft": "A320neo",
-      "region": "kanto"
     },
     "IT202": {
       "airline": "台灣虎航 Tigerair",
@@ -689,22 +637,6 @@
       "aircraft": "A320neo",
       "region": "kanto"
     },
-    "JX800": {
-      "airline": "星宇航空 STARLUX",
-      "airport": "新千歲機場 (CTS)",
-      "terminal": "Intl",
-      "time": "15:00",
-      "aircraft": "A330neo",
-      "region": "hokkaido"
-    },
-    "JX801": {
-      "airline": "星宇航空 STARLUX",
-      "airport": "成田國際機場 (NRT)",
-      "terminal": "T2",
-      "time": "13:40",
-      "aircraft": "A350-900",
-      "region": "kanto"
-    },
     "JX802": {
       "airline": "星宇航空 STARLUX",
       "airport": "成田國際機場 (NRT)",
@@ -719,22 +651,6 @@
       "terminal": "T2",
       "time": "16:10",
       "aircraft": "A330-900neo",
-      "region": "kanto"
-    },
-    "BR198": {
-      "airline": "長榮航空 EVA Air",
-      "airport": "成田國際機場 (NRT)",
-      "terminal": "T1",
-      "time": "12:55",
-      "aircraft": "B787-10",
-      "region": "kanto"
-    },
-    "BR197": {
-      "airline": "長榮航空 EVA Air",
-      "airport": "成田國際機場 (NRT)",
-      "terminal": "T1",
-      "time": "14:00",
-      "aircraft": "B787-10",
       "region": "kanto"
     },
     "BR192": {
@@ -801,22 +717,6 @@
       "aircraft": "B787-9",
       "region": "kanto"
     },
-    "IT234": {
-      "airline": "台灣虎航 Tigerair",
-      "airport": "新千歲機場 (CTS)",
-      "terminal": "國際線",
-      "time": "11:25",
-      "aircraft": "A320",
-      "region": "hokkaido"
-    },
-    "IT235": {
-      "airline": "台灣虎航 Tigerair",
-      "airport": "新千歲機場 (CTS)",
-      "terminal": "國際線",
-      "time": "12:25",
-      "aircraft": "A320",
-      "region": "hokkaido"
-    },
     "IT236": {
       "airline": "台灣虎航 Tigerair",
       "airport": "函館機場 (HKD)",
@@ -880,22 +780,6 @@
       "time": "15:15",
       "aircraft": "A330-900neo",
       "region": "hokkaido"
-    },
-    "IT240": {
-      "airline": "台灣虎航 Tigerair",
-      "airport": "福岡機場 (FUK)",
-      "terminal": "國際線",
-      "time": "10:00",
-      "aircraft": "A320neo",
-      "region": "kyushu"
-    },
-    "IT241": {
-      "airline": "台灣虎航 Tigerair",
-      "airport": "福岡機場 (FUK)",
-      "terminal": "國際線",
-      "time": "10:55",
-      "aircraft": "A320neo",
-      "region": "kyushu"
     },
     "JX840": {
       "airline": "星宇航空 STARLUX",
@@ -1072,22 +956,6 @@
       "time": "18:55",
       "aircraft": "A321neo",
       "region": "sanyo"
-    },
-    "IT230": {
-      "airline": "台灣虎航 Tigerair",
-      "airport": "那霸機場 (OKA)",
-      "terminal": "國際線",
-      "time": "09:20",
-      "aircraft": "A320neo",
-      "region": "kyushu"
-    },
-    "IT231": {
-      "airline": "台灣虎航 Tigerair",
-      "airport": "那霸機場 (OKA)",
-      "terminal": "國際線",
-      "time": "10:15",
-      "aircraft": "A320neo",
-      "region": "kyushu"
     },
     "IT232": {
       "airline": "台灣虎航 Tigerair",
@@ -2423,6 +2291,253 @@
       "isIndoor": false,
       "desc": "在古色古香的白壁街道裝點和風燈飾，河川映照出靜謐的江戶情懷。",
       "imageUrl": ""
+    }
+  ],
+  "stations": [
+    {
+      "name": "関西国際空港",
+      "pref": "大阪府",
+      "line": "JR関西空港線・南海空港線",
+      "lat": 34.4347,
+      "lng": 135.244
+    },
+    {
+      "name": "新大阪",
+      "pref": "大阪府",
+      "line": "東海道新幹線・JR京都線・御堂筋線",
+      "lat": 34.7335,
+      "lng": 135.5003
+    },
+    {
+      "name": "大阪",
+      "pref": "大阪府",
+      "line": "JR京都線・JR大阪環状線・JR神戸線",
+      "lat": 34.7024,
+      "lng": 135.49519
+    },
+    {
+      "name": "難波",
+      "pref": "大阪府",
+      "line": "御堂筋線・南海本線・近鉄難波線",
+      "lat": 34.6669,
+      "lng": 135.5003
+    },
+    {
+      "name": "天王寺",
+      "pref": "大阪府",
+      "line": "JR大阪環状線・阪和線・御堂筋線",
+      "lat": 34.6476,
+      "lng": 135.5133
+    },
+    {
+      "name": "京都",
+      "pref": "京都府",
+      "line": "JR京都線・JR奈良線・JR山陰本線",
+      "lat": 34.98546,
+      "lng": 135.75775
+    },
+    {
+      "name": "祇園四条",
+      "pref": "京都府",
+      "line": "京阪本線",
+      "lat": 35.0037,
+      "lng": 135.772
+    },
+    {
+      "name": "嵯峨嵐山",
+      "pref": "京都府",
+      "line": "JR山陰本線（嵯峨野線）",
+      "lat": 35.0185,
+      "lng": 135.6812
+    },
+    {
+      "name": "稲荷",
+      "pref": "京都府",
+      "line": "JR奈良線",
+      "lat": 34.9671,
+      "lng": 135.7727
+    },
+    {
+      "name": "三ノ宮",
+      "pref": "兵庫県",
+      "line": "JR神戸線・阪急神戸線・阪神本線",
+      "lat": 34.6947,
+      "lng": 135.1955
+    },
+    {
+      "name": "姫路",
+      "pref": "兵庫県",
+      "line": "山陽新幹線・JR神戸線",
+      "lat": 34.8276,
+      "lng": 134.6908
+    },
+    {
+      "name": "奈良",
+      "pref": "奈良県",
+      "line": "JR大和路線・奈良線",
+      "lat": 34.681,
+      "lng": 135.819
+    },
+    {
+      "name": "宇治",
+      "pref": "京都府",
+      "line": "JR奈良線・京阪宇治線",
+      "lat": 34.8906,
+      "lng": 135.8008
+    },
+    {
+      "name": "成田空港",
+      "pref": "千葉県",
+      "line": "JR成田線・京成本線",
+      "lat": 35.7719,
+      "lng": 140.3929
+    },
+    {
+      "name": "羽田空港",
+      "pref": "東京都",
+      "line": "京急空港線・東京モノレール",
+      "lat": 35.5494,
+      "lng": 139.7798
+    },
+    {
+      "name": "東京",
+      "pref": "東京都",
+      "line": "JR上野東京ライン・JR中央線・JR京浜東北線",
+      "lat": 35.68139,
+      "lng": 139.7661
+    },
+    {
+      "name": "新宿",
+      "pref": "東京都",
+      "line": "JR中央線・JR埼京線・JR山手線",
+      "lat": 35.68973,
+      "lng": 139.70046
+    },
+    {
+      "name": "渋谷",
+      "pref": "東京都",
+      "line": "JR山手線・銀座線・東急東横線",
+      "lat": 35.658,
+      "lng": 139.7016
+    },
+    {
+      "name": "上野",
+      "pref": "東京都",
+      "line": "東北新幹線・JR山手線・銀座線",
+      "lat": 35.7141,
+      "lng": 139.7774
+    },
+    {
+      "name": "浅草",
+      "pref": "東京都",
+      "line": "東京メトロ銀座線・都営浅草線",
+      "lat": 35.7118,
+      "lng": 139.7983
+    },
+    {
+      "name": "押上",
+      "pref": "東京都",
+      "line": "半蔵門線・都営浅草線・東武線",
+      "lat": 35.7101,
+      "lng": 139.8107
+    },
+    {
+      "name": "新千歳空港",
+      "pref": "北海道",
+      "line": "JR千歳線",
+      "lat": 42.7752,
+      "lng": 141.6923
+    },
+    {
+      "name": "札幌",
+      "pref": "北海道",
+      "line": "JR函館本線",
+      "lat": 43.06861,
+      "lng": 141.35077
+    },
+    {
+      "name": "小樽",
+      "pref": "北海道",
+      "line": "JR函館本線",
+      "lat": 43.1977,
+      "lng": 140.9937
+    },
+    {
+      "name": "函館",
+      "pref": "北海道",
+      "line": "JR函館本線",
+      "lat": 41.7737,
+      "lng": 140.7264
+    },
+    {
+      "name": "博多",
+      "pref": "福岡県",
+      "line": "JR博多南線・JR鹿児島本線・九州新幹線",
+      "lat": 33.59,
+      "lng": 130.42062
+    },
+    {
+      "name": "由布院",
+      "pref": "大分県",
+      "line": "JR久大本線",
+      "lat": 33.2624,
+      "lng": 131.355
+    },
+    {
+      "name": "熊本",
+      "pref": "熊本県",
+      "line": "九州新幹線・JR鹿児島本線",
+      "lat": 32.79,
+      "lng": 130.6886
+    },
+    {
+      "name": "那覇空港",
+      "pref": "沖縄県",
+      "line": "沖縄都市モノレール（ゆいレール）",
+      "lat": 26.2064,
+      "lng": 127.6465
+    },
+    {
+      "name": "名古屋",
+      "pref": "愛知県",
+      "line": "JR中央本線・JR東海道本線・JR関西本線",
+      "lat": 35.17069,
+      "lng": 136.88164
+    },
+    {
+      "name": "金沢",
+      "pref": "石川県",
+      "line": "IRいしかわ鉄道線・北陸新幹線",
+      "lat": 36.57812,
+      "lng": 136.64817
+    },
+    {
+      "name": "仙台",
+      "pref": "宮城県",
+      "line": "東北新幹線・JR仙石線・南北線",
+      "lat": 38.2601,
+      "lng": 140.8824
+    },
+    {
+      "name": "広島",
+      "pref": "広島県",
+      "line": "山陽新幹線・JR山陽本線",
+      "lat": 34.3977,
+      "lng": 132.4754
+    },
+    {
+      "name": "岡山",
+      "pref": "岡山県",
+      "line": "山陽新幹線・JR瀬戸大橋線",
+      "lat": 34.6665,
+      "lng": 133.9181
+    },
+    {
+      "name": "高松",
+      "pref": "香川県",
+      "line": "JR予讃線・高徳線",
+      "lat": 34.3513,
+      "lng": 134.0466
     }
   ]
 }
