@@ -1,7 +1,7 @@
 {
   "syncCode": "JP-GPVMP6",
-  "updatedStamp": "1795228028564-b2cc",
-  "updatedAt": "2026-11-21T02:27:08.564Z",
+  "updatedStamp": "1795228033403-o19i",
+  "updatedAt": "2026-11-21T02:27:13.403Z",
   "appState": {
     "startDate": "2026-12-18",
     "endDate": "2026-12-21",
@@ -81,7 +81,7 @@
           "id": "act-init-1",
           "title": "道頓堀＆心齋橋筋商店街",
           "type": "購物散策",
-          "duration": 150,
+          "duration": 120,
           "isIndoor": false,
           "note": "跑跑人看板拍照＋章魚燒大阪燒晚餐"
         }
