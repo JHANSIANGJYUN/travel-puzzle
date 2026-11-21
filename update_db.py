@@ -179,3 +179,226 @@ def enrich_stations_from_open_data(existing_stations: list[dict]) -> list[dict]:
             pass
 
     return list(station_map.values())
+
+
+def call_gemini_json(prompt_text: str):
+    """呼叫 Gemini API 並強制解析回傳的 JSON 陣列或物件（支援無金鑰時安全跳過）"""
+    api_key = os.environ.get("GEMINI_API_KEY", "").strip()
+    if not api_key:
+        print("[INFO] 未偵測到 GEMINI_API_KEY，將略過 AI 擴充並保留現有累積資料與開放車站座標。")
+        return None
+
+    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={api_key}"
+    payload = {
+        "contents": [{"parts": [{"text": prompt_text}]}],
+        "generationConfig": {"temperature": 0.35, "responseMimeType": "application/json"}
+    }
+    try:
+        req = urllib.request.Request(
+            url,
+            data=json.dumps(payload).encode("utf-8"),
+            headers={"Content-Type": "application/json"}
+        )
+        with urllib.request.urlopen(req, timeout=45) as resp:
+            res_data = json.loads(resp.read().decode("utf-8"))
+            text = res_data["candidates"][0]["content"]["parts"][0]["text"]
+            text = re.sub(r"^```json\s*|\s*```$", "", text.strip())
+            return json.loads(text)
+    except Exception as e:
+        print(f"[WARN] Gemini API 呼叫失敗: {e}")
+        return None
+
+
+def build_target_months(existing_events: list[dict], jst_now: datetime) -> list[int]:
+    """決定本次要補充的月份：永遠包含當月與下個月，再自動輪替補齊全年 1～12 月最缺資料的月份"""
+    curr_m = jst_now.month
+    next_m = 1 if curr_m == 12 else curr_m + 1
+    month_counts = {m: 0 for m in range(1, 13)}
+    for ev in existing_events:
+        for m in ev.get("months", []):
+            if m in month_counts:
+                month_counts[m] += 1
+
+    # 找出目前活動數最少的 2 個月份一起輪替補齊，逐步達成 1～12 月全年覆蓋
+    other_months = [m for m in range(1, 13) if m not in (curr_m, next_m)]
+    other_months.sort(key=lambda m: month_counts[m])
+    return sorted(list({curr_m, next_m, *other_months[:2]}))
+
+
+def fetch_seasonal_events(target_months: list[int]) -> list[dict]:
+    """請 Gemini 針對指定月份與日本 10 大分區生成結構化季節祭典、點燈與順遊景點"""
+    prompt = f"""
+請擔任日本資深旅遊編輯，針對日本 10 大旅遊分區（kansai, kanto, hokkaido, kyushu, okinawa, chubu, tohoku, sanyo, sanin, shikoku），
+列出在月份 {target_months} 期間最值得造訪的季節限定祭典、夜間點燈、花季、花火大會或順遊名勝（每個分區請提供 2～3 筆代表性項目）。
+請嚴格輸出 JSON 陣列，每筆物件格式如下：
+{{
+  "region": "kansai",
+  "type": "event",
+  "months": [12],
+  "tag": "光影花火",
+  "periodText": "12月冬季限定",
+  "location": "具體車站或區域（如：JR京都站直結）",
+  "title": "繁體中文活動或景點名稱",
+  "duration": 90,
+  "note": "40字內實用遊玩建議與交通提示"
+}}
+注意：type 僅限 "event"（季節祭典／點燈／花季）或 "spot"（常態經典名勝／美食）。
+"""
+    res = call_gemini_json(prompt)
+    if not isinstance(res, list):
+        return []
+
+    valid_regions = {"kansai", "kanto", "hokkaido", "kyushu", "okinawa", "chubu", "tohoku", "sanyo", "sanin", "shikoku"}
+    cleaned = []
+    for idx, item in enumerate(res):
+        if not isinstance(item, dict):
+            continue
+        reg = str(item.get("region", "")).strip().lower()
+        title = str(item.get("title", "")).strip()
+        if reg not in valid_regions or not title:
+            continue
+        months = [int(m) for m in item.get("months", target_months) if isinstance(m, (int, float)) and 1 <= int(m) <= 12]
+        cleaned.append({
+            "id": f"auto-{reg}-{idx}-{abs(hash(title)) % 100000}",
+            "region": reg,
+            "type": "event" if item.get("type") == "event" else "spot",
+            "months": sorted(list(set(months))) or target_months,
+            "tag": str(item.get("tag") or ("季節祭典" if item.get("type") == "event" else "熱門景點")),
+            "periodText": str(item.get("periodText") or "季節推薦"),
+            "location": str(item.get("location") or ""),
+            "title": title,
+            "duration": int(item.get("duration") or 90),
+            "note": str(item.get("note") or "")
+        })
+    return cleaned
+
+
+def fetch_updated_jr_passes(current_passes: list[dict]) -> list[dict]:
+    """透過 Gemini 核實 26 種日本 JR PASS 最新官方日圓售價，並與基線合併"""
+    pass_summary = [{"id": p["id"], "name": p["name"], "priceJpy": p["priceJpy"]} for p in current_passes]
+    prompt = f"""
+請核實以下日本 JR PASS 與交通周遊券截至目前的最新成人官方日圓售價（JPY），若有調漲或最新售價請更新 priceJpy 整數，若無變動請維持原價。
+請嚴格輸出 JSON 陣列（格式為 [{{"id": "...", "priceJpy": 12000}}]）：
+{json.dumps(pass_summary, ensure_ascii=False)}
+"""
+    res = call_gemini_json(prompt)
+    if not isinstance(res, list):
+        return current_passes
+
+    price_map = {}
+    for row in res:
+        if isinstance(row, dict) and row.get("id") and isinstance(row.get("priceJpy"), (int, float)):
+            p_val = int(row["priceJpy"])
+            if 500 <= p_val <= 150000:
+                price_map[row["id"]] = p_val
+
+    updated = []
+    for p in current_passes:
+        item = dict(p)
+        if item["id"] in price_map:
+            item["priceJpy"] = price_map[item["id"]]
+        updated.append(item)
+    return updated
+
+
+def fetch_updated_flights(current_flights: dict) -> dict:
+    """請 Gemini 補充或核實台灣往返日本主要機場（KIX/NRT/HND/CTS/FUK/OKA）熱門航班時刻"""
+    prompt = """
+請提供 12 班台灣桃園/松山往返日本主要機場（KIX 關西、NRT 成田、HND 羽田、CTS 新千歲、FUK 福岡、OKA 那霸）的最新代表性定期航班時刻（含華航、長榮、星宇、虎航、樂桃、亞航）。
+請嚴格輸出 JSON 物件，Key 為航班代號（大寫無空格，如 "JX820"），Value 格式如下：
+{
+  "JX820": {
+    "airline": "星宇航空 STARLUX",
+    "airport": "關西國際機場 (KIX)",
+    "terminal": "T1",
+    "time": "11:10",
+    "aircraft": "A330neo",
+    "region": "kansai"
+  }
+}
+"""
+    res = call_gemini_json(prompt)
+    if not isinstance(res, dict):
+        return current_flights
+
+    merged = dict(current_flights)
+    for code, info in res.items():
+        clean_code = re.sub(r"[^A-Z0-9]", "", str(code).upper())
+        if clean_code and isinstance(info, dict) and info.get("airport") and info.get("time"):
+            merged[clean_code] = {
+                "airline": str(info.get("airline") or ""),
+                "airport": str(info.get("airport") or ""),
+                "terminal": str(info.get("terminal") or "T1"),
+                "time": str(info.get("time") or ""),
+                "aircraft": str(info.get("aircraft") or ""),
+                "region": str(info.get("region") or "kansai")
+            }
+    return merged
+
+
+def merge_events_dedup(existing_events: list[dict], new_events: list[dict]) -> list[dict]:
+    """依『地區 + 正規化標題』去重累積合併，保留舊月份活動並用新資料更新欄位"""
+    merged_map = {}
+
+    def make_key(ev: dict) -> str:
+        reg = str(ev.get("region", "")).strip().lower()
+        norm_title = re.sub(r"[\s・\-—（）()【】\[\]]+", "", str(ev.get("title", "")).lower())
+        return f"{reg}::{norm_title}"
+
+    for ev in existing_events or []:
+        if ev.get("title"):
+            merged_map[make_key(ev)] = dict(ev)
+
+    for ev in new_events or []:
+        if not ev.get("title"):
+            continue
+        k = make_key(ev)
+        if k in merged_map:
+            old = merged_map[k]
+            combined_months = sorted(list(set((old.get("months") or []) + (ev.get("months") or []))))
+            merged_map[k] = {**old, **ev, "id": old.get("id") or ev.get("id"), "months": combined_months}
+        else:
+            merged_map[k] = dict(ev)
+
+    return list(merged_map.values())
+
+
+def main():
+    jst = timezone(timedelta(hours=9))
+    now_jst = datetime.now(jst)
+    print(f"=== 開始執行 Travel Puzzle 每日資料庫累積更新 ({now_jst.strftime('%Y-%m-%d %H:%M JST')}) ===")
+
+    db = load_existing_db()
+    target_months = build_target_months(db.get("events", []), now_jst)
+    print(f"[INFO] 本次鎖定擴充月份: {target_months}")
+
+    # 1. 同步開放資料樞紐車站經緯度
+    stations = enrich_stations_from_open_data(db.get("stations", []))
+    print(f"[OK] 車站座標庫共 {len(stations)} 站")
+
+    # 2. 更新 JR PASS 票價與台日熱門航班庫
+    jr_passes = fetch_updated_jr_passes(db.get("jrPasses", DEFAULT_JR_PASSES))
+    flights = fetch_updated_flights(db.get("flights", DEFAULT_FLIGHTS_DB))
+    print(f"[OK] JR PASS 共 {len(jr_passes)} 種，航班庫共 {len(flights)} 班")
+
+    # 3. 抓取當季與輪替月份活動並累積合併
+    fetched_events = fetch_seasonal_events(target_months)
+    merged_events = merge_events_dedup(db.get("events", []), fetched_events)
+    print(f"[OK] 活動與景點庫累積至 {len(merged_events)} 筆")
+
+    output = {
+        "updatedAt": now_jst.strftime("%Y-%m-%dT%H:%M:%S+09:00"),
+        "jrPasses": jr_passes,
+        "flights": flights,
+        "events": merged_events,
+        "stations": stations
+    }
+
+    with open(DB_FILE, "w", encoding="utf-8") as f:
+        json.dump(output, f, ensure_ascii=False, indent=2)
+
+    print(f"=== 已成功寫入 {DB_FILE}！ ===")
+
+
+if __name__ == "__main__":
+    main()
