@@ -101,7 +101,7 @@
                 <div>
                     <div class="flex items-center flex-wrap gap-1.5">
                         <h1 class="font-serif text-base sm:text-lg font-bold text-indigoJp tracking-wide">旅遊拼圖 Travel Puzzle</h1>
-                        <span id="app-version-badge" class="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-indigoJp/10 text-indigoJp">v1.31</span>
+                        <span id="app-version-badge" class="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-indigoJp/10 text-indigoJp">v1.34</span>
                         <span id="cloud-db-version-badge" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-stone-100 text-stone-500">🌐 雲端庫就緒</span>
                         <span id="auto-save-status" class="text-[11px] text-stone-400 font-medium">☁️ 已自動儲存</span>
                     </div>
@@ -510,7 +510,9 @@
                 <!-- 單日零用開銷新增區 -->
                 <div class="grid grid-cols-1 sm:grid-cols-12 gap-2 items-center bg-washi p-3 rounded-xl border border-stone-200/80">
                     <div class="sm:col-span-2">
-                        <span id="expense-active-day-label" class="block text-center text-xs font-bold text-indigoJp bg-white py-2 rounded-xl border border-stone-200">Day 1 開銷</span>
+                        <select id="expense-day-select" onchange="handleExpenseDaySelectChange(this.value)" aria-label="選擇記帳天數" class="w-full bg-white border border-stone-300 rounded-xl px-2 py-2 text-xs font-bold text-indigoJp text-center cursor-pointer focus:outline-none focus:border-indigoJp">
+                            <option value="1">Day 1 開銷</option>
+                        </select>
                     </div>
                     <div class="sm:col-span-3">
                         <select id="expense-category" class="w-full bg-white border border-stone-300 rounded-xl px-2.5 py-2 text-xs font-bold text-sumi">
@@ -566,19 +568,20 @@
                     <span class="w-6 h-6 rounded-full bg-matcha text-white text-xs font-bold flex items-center justify-center">3</span>
                     <div>
                         <h2 class="font-serif text-lg font-bold text-indigoJp">當季限定祭典、點燈與順遊景點拼圖庫</h2>
-                        <p class="text-[11px] text-stone-500">自動優先置頂出發月份限定活動・選擇天數即可一鍵嵌入行程</p>
+                        <p class="text-[11px] text-stone-500">自動優先置頂出發月份限定活動，並自動串接 Google Maps 4.0★ 以上高評價推薦</p>
                     </div>
                 </div>
                 <div class="flex items-center gap-1.5 flex-wrap">
                     <button type="button" id="rec-filter-all" onclick="setRecFilter('all')" class="px-3 py-1 rounded-full text-xs font-bold bg-indigoJp text-white cursor-pointer">全部推薦</button>
                     <button type="button" id="rec-filter-event" onclick="setRecFilter('event')" class="px-3 py-1 rounded-full text-xs font-bold bg-washi text-stone-600 hover:text-indigoJp border border-stone-200 cursor-pointer">🔥 祭典點燈</button>
                     <button type="button" id="rec-filter-spot" onclick="setRecFilter('spot')" class="px-3 py-1 rounded-full text-xs font-bold bg-washi text-stone-600 hover:text-indigoJp border border-stone-200 cursor-pointer">⛩️ 順遊名勝</button>
+                    <button type="button" id="rec-refresh-gmaps-btn" onclick="fetchGoogleTopRatedSpots(true)" class="px-3 py-1 rounded-full text-xs font-bold bg-amber-50 hover:bg-amber-500 text-amber-900 hover:text-white border border-amber-300 transition-colors cursor-pointer">⭐ 探索 4★+ 熱門</button>
                 </div>
             </div>
 
             <div class="flex flex-col sm:flex-row gap-2">
                 <input type="text" id="spot-search-input" onkeydown="if(event.key==='Enter') searchCustomPlaceOrQuickAdd()" placeholder="輸入想去的日本景點、餐廳或車站名稱（例如：黑門市場、神戶動物王國）..." class="flex-1 bg-washi border border-stone-300 rounded-xl px-3.5 py-2 text-xs sm:text-sm focus:outline-none focus:border-indigoJp">
-                <button type="button" onclick="searchCustomPlaceOrQuickAdd()" class="bg-indigoJp hover:bg-vermilion text-white font-bold text-xs px-4 py-2 rounded-xl shadow-2xs transition-colors cursor-pointer shrink-0">＋ 新增至推薦拼圖庫</button>
+                <button type="button" onclick="searchCustomPlaceOrQuickAdd()" class="bg-indigoJp hover:bg-vermilion text-white font-bold text-xs px-4 py-2 rounded-xl shadow-2xs transition-colors cursor-pointer shrink-0">＋ 搜尋並加入拼圖庫</button>
             </div>
 
             <div id="recommendations-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pt-1"></div>
@@ -723,7 +726,7 @@
     </div>
 
     <script>
-        const APP_VERSION = 'v1.31';
+        const APP_VERSION = 'v1.34';
         const STORAGE_KEY = 'travel_puzzle_jp_state_v1';
         const CONFIG_KEY = 'travel_puzzle_jp_config_v1';
         const LEGACY_CONFIG_KEYS = ['travel_puzzle_config', 'jp_travel_config_v1', 'travelPuzzleConfig', 'travel_puzzle_api_keys', 'travel_puzzle_settings', 'tp_config_v1'];
@@ -909,12 +912,18 @@
                 1: [{ id: 'ex-1', category: '🍜 美食餐飲', item: '道頓堀章魚燒＆拉麵', amountJpy: 3200 }]
             },
             recFilter: 'all',
-            customRecItems: []
+            customRecItems: [],
+            expenseSelectedDay: 1
         };
 
         let lastRouteSnapshot = null;
         const photoCache = {};
+        const googleTopSpotsCache = {};
+        const googleTopSpotsLoading = {};
 
+        // =========================================================
+        // 基礎時間、日期與資料持久化工具
+        // =========================================================
         function parseClockToMinutes(clockStr) {
             const m = String(clockStr || '09:00').match(/^(\d{1,2}):(\d{2})$/);
             if (!m) return 540;
@@ -1719,8 +1728,8 @@
                     <div class="puzzle-card relative z-10 bg-white border-2 border-indigoJp/20 hover:border-vermilion/60 rounded-2xl p-4 shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-3 overflow-hidden">
                         <!-- 右側淡入地點實景背景圖片 -->
                         <div class="pointer-events-none absolute inset-0 rounded-2xl overflow-hidden z-0">
-                            <div id="${tlBgId}" class="absolute inset-y-0 right-0 w-[48%] sm:w-[42%] bg-cover bg-center opacity-45 transition-opacity duration-500" style="background-image:url('${initialBg}')"></div>
-                            <div class="absolute inset-0 bg-gradient-to-r from-white via-white/95 to-white/20"></div>
+                            <div id="${tlBgId}" class="absolute inset-y-0 right-0 w-[68%] sm:w-[62%] bg-cover bg-center opacity-75 transition-opacity duration-500" style="background-image:url('${initialBg}'); -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.45) 38%, black 100%); mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.45) 38%, black 100%);"></div>
+                            <div class="absolute inset-0 bg-gradient-to-r from-white via-white/75 to-transparent"></div>
                         </div>
 
                         <div class="relative z-10 flex items-start gap-3">
@@ -1918,9 +1927,26 @@
             const tripMonth = Number((appState.startDate || '2026-12-18').split('-')[1]) || 12;
             const totalDays = getTotalDays();
 
+            // 若有設定 Google Maps API Key，背景自動抓取所選區域 4.0★ 以上高分景點
+            if (userConfig.gmapsKey) {
+                targetRegs.forEach(regId => {
+                    if (!googleTopSpotsCache[regId] && !googleTopSpotsLoading[regId]) {
+                        fetchGoogleTopRatedSpots(false, regId);
+                    }
+                });
+            }
+
+            const googleFetchedItems = [];
+            targetRegs.forEach(regId => {
+                if (Array.isArray(googleTopSpotsCache[regId])) {
+                    googleFetchedItems.push(...googleTopSpotsCache[regId]);
+                }
+            });
+
             const allItems = [
                 ...(appState.customRecItems || []),
                 ...(cloudData.events || []),
+                ...googleFetchedItems,
                 ...BUILTIN_EVENTS_DB
             ];
 
@@ -1953,6 +1979,9 @@
                     ? `${item.months.join('・')}月限定`
                     : '全年皆宜');
                 const locText = item.location || `${regName}・建議停留 ${item.duration || 90} 分鐘`;
+                const ratingBadge = item.rating
+                    ? `<span class="inline-flex items-center gap-0.5 font-mono font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-900">⭐ ${Number(item.rating).toFixed(1)}${item.userRatingCount ? ` (${item.userRatingCount.toLocaleString()})` : ''}</span>`
+                    : '';
                 const cardId = `rec-puzzle-card-${idx}`;
                 const bgImgId = `rec-puzzle-bg-${idx}`;
                 const initialBg = photoCache[item.title] || getGuaranteedFallbackPhoto(item, idx);
@@ -1970,14 +1999,15 @@
 
                         <!-- 右側淡入實景背景圖層（三層保底永不空白） -->
                         <div class="pointer-events-none absolute inset-0 rounded-2xl overflow-hidden z-0">
-                            <div id="${bgImgId}" class="absolute inset-y-0 right-0 w-[56%] bg-cover bg-center opacity-50 transition-opacity duration-500" style="background-image:url('${initialBg}')"></div>
-                            <div class="absolute inset-0 bg-gradient-to-r from-white via-white/95 to-white/25"></div>
+                            <div id="${bgImgId}" class="absolute inset-y-0 right-0 w-[72%] bg-cover bg-center opacity-80 transition-opacity duration-500" style="background-image:url('${initialBg}'); -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.45) 38%, black 100%); mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.45) 38%, black 100%);"></div>
+                            <div class="absolute inset-0 bg-gradient-to-r from-white via-white/75 to-transparent"></div>
                         </div>
 
                         <div class="relative z-10 space-y-2 pr-2">
                             <div class="flex items-center gap-1.5 flex-wrap text-[11px]">
                                 ${isSeasonal ? `<span class="inline-flex items-center gap-1 font-bold px-2.5 py-0.5 rounded-full bg-[#E69D1E] text-white shadow-2xs">🔥 當季限定</span>` : `<span class="inline-flex items-center font-bold px-2.5 py-0.5 rounded-full bg-indigoJp/10 text-indigoJp">${regName}</span>`}
                                 <span class="font-bold px-2.5 py-0.5 rounded-full bg-[#FBEAE8] text-[#B84A39]">${item.tag || (item.type === 'event' ? '光影花火' : '經典名勝')}</span>
+                                ${ratingBadge}
                                 <span class="font-medium text-stone-600">${periodLabel}</span>
                             </div>
 
@@ -2005,121 +2035,75 @@
             window._currentRecItems = filtered;
         }
 
-        function addRecommendedFromCard(idx) {
-            const sel = document.getElementById(`rec-day-select-${idx}`);
-            const targetDay = sel ? Number(sel.value) : (appState.activeDay || 1);
-            const item = (window._currentRecItems || [])[idx];
-            if (!item) return;
+        async function fetchGoogleTopRatedSpots(forceRefresh = false, targetRegionId = null) {
+            const regId = targetRegionId || appState.region || 'kansai';
+            if (!userConfig.gmapsKey) {
+                if (forceRefresh) openApiKeyModal();
+                return;
+            }
+            if (!forceRefresh && (googleTopSpotsCache[regId] || googleTopSpotsLoading[regId])) return;
+            googleTopSpotsLoading[regId] = true;
 
-            const cardEl = document.getElementById(`rec-puzzle-card-${idx}`);
-            if (cardEl) cardEl.classList.add('puzzle-leaving');
+            const btn = document.getElementById('rec-refresh-gmaps-btn');
+            if (btn && forceRefresh) btn.textContent = '⏳ 搜尋 4★+ 景點中...';
 
-            setTimeout(() => {
-                if (!appState.activitiesByDay[targetDay]) appState.activitiesByDay[targetDay] = [];
-                appState.activitiesByDay[targetDay].push({
-                    id: 'act-' + Date.now(),
-                    title: item.title,
-                    tag: item.tag || '景點',
-                    duration: item.duration || 90,
-                    note: item.note || ''
-                });
-                appState.activeDay = targetDay;
-                saveState();
-                renderAll();
-            }, 260);
-        }
+            const meta = REGIONS_META.find(r => r.id === regId) || REGIONS_META[0];
+            const queries = [
+                `${meta.desc.split('・')[0]} 必去 觀光景點 神社 夜景`,
+                `${meta.desc.split('・')[0]} 必吃 名店 美食街`
+            ];
 
-        // =========================================================
-        // 記帳本、表單操作與彈窗控制
-        // =========================================================
-        function handleDateRangeChange(which) {
-            const sEl = document.getElementById('start-date');
-            const eEl = document.getElementById('end-date');
-            if (sEl && sEl.value) appState.startDate = sEl.value;
-            if (eEl && eEl.value) appState.endDate = eEl.value;
-            const days = getTotalDays();
-            const badge = document.getElementById('trip-days-badge');
-            if (badge) badge.textContent = `${days} 天 ${Math.max(0, days - 1)} 夜`;
-            saveState();
-            renderAll();
-        }
-
-        function handleTravelerCountChange(val) {
-            appState.travelers = Math.max(1, Number(val) || 2);
-            saveState();
-            renderAll();
-        }
-
-        function handleRentalCostChange() {
-            appState.rentalCost = Number(document.getElementById('rental-car-cost')?.value || 0);
-            appState.tollFuelCost = Number(document.getElementById('rental-toll-fuel')?.value || 0);
-            saveState();
-            renderAll();
-        }
-
-        function toggleDrivingMode(checked) {
-            appState.drivingMode = !!checked;
-            saveState();
-            renderAll();
-        }
-
-        function toggleJrPass(checked) {
-            appState.useJrPass = !!checked;
-            saveState();
-            renderAll();
-        }
-
-        function toggleSecondJrPass(checked) {
-            appState.useSecondJrPass = !!checked;
-            saveState();
-            renderAll();
-        }
-
-        function handleJrPassConfigChange() {
-            appState.jrPassId = document.getElementById('jr-pass-select')?.value || appState.jrPassId;
-            appState.jrPassStartDay = Number(document.getElementById('jr-pass-start-day')?.value || 1);
-            appState.jrPassId2 = document.getElementById('jr-pass-select-2')?.value || appState.jrPassId2;
-            appState.jrPassStartDay2 = Number(document.getElementById('jr-pass-start-day-2')?.value || 1);
-            saveState();
-            renderAll();
-        }
-
-        function updateDayStartTime(val) {
-            if (!val) return;
-            appState.dayStartTimes[appState.activeDay] = val;
-            saveState();
-            renderTimeline();
-        }
-
-        function saveDayHotel(val) {
-            appState.dayHotels[appState.activeDay] = String(val || '').trim();
-            saveState();
-            renderAll();
-        }
-
-        function handleManualDaySwap() {
-            const d1 = appState.activeDay;
-            const d2 = Number(document.getElementById('swap-target-day')?.value || 0);
-            if (!d2 || d1 === d2) return;
-            const tmp = appState.activitiesByDay[d1] || [];
-            appState.activitiesByDay[d1] = appState.activitiesByDay[d2] || [];
-            appState.activitiesByDay[d2] = tmp;
-            saveState();
-            renderAll();
-        }
-
-        function toggleDropLuggageFirst(checked) {
-            appState.dropLuggageFirst[appState.activeDay] = !!checked;
-            saveState();
-            renderTimeline();
-        }
-
-        function updateJpyRate(val) {
-            const r = Number(val);
-            if (r > 0) {
-                appState.jpyRate = r;
-                saveState();
-                renderExpenseSummary();
+            try {
+                const collected = [];
+                for (let qi = 0; qi < queries.length; qi++) {
+                    const resp = await fetch('https://places.googleapis.com/v1/places:searchText', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-Goog-Api-Key': userConfig.gmapsKey,
+                            'X-Goog-FieldMask': 'places.displayName,places.formattedAddress,places.rating,places.userRatingCount,places.photos,places.editorialSummary'
+                        },
+                        body: JSON.stringify({
+                            textQuery: queries[qi],
+                            minRating: 4.0,
+                            languageCode: 'zh-TW',
+                            maxResultCount: 8
+                        })
+                    });
+                    const data = await resp.json();
+                    const places = Array.isArray(data?.places) ? data.places : [];
+                    places.forEach((p, idx) => {
+                        const rating = Number(p.rating || 0);
+                        const title = p.displayName?.text || '';
+                        if (!title || rating < 4.0) return;
+                        const photoName = p.photos?.[0]?.name;
+                        const photoUrl = photoName
+                            ? `https://places.googleapis.com/v1/${photoName}/media?maxWidthPx=600&key=${userConfig.gmapsKey}`
+                            : '';
+                        if (photoUrl) photoCache[title] = photoUrl;
+                        collected.push({
+                            id: `gmaps-${regId}-${qi}-${idx}-${title}`,
+                            region: regId,
+                            type: 'spot',
+                            months: [1,2,3,4,5,6,7,8,9,10,11,12],
+                            tag: qi === 1 ? '4★+ 美食' : '4★+ 名勝',
+                            periodText: 'Google 高分推薦',
+                            rating,
+                            userRatingCount: Number(p.userRatingCount || 0),
+                            location: (p.formattedAddress || '').replace(/^日本、?/, ''),
+                            title,
+                            duration: 90,
+                            note: p.editorialSummary?.text || `Google Maps 評價 ${rating.toFixed(1)} 星人氣推薦地點`,
+                            photoUrl
+                        });
+                    });
+                }
+                googleTopSpotsCache[regId] = collected;
+                loadBuiltinRecommendations();
+            } catch (e) {
+            } finally {
+                googleTopSpotsLoading[regId] = false;
+                if (btn) btn.textContent = '⭐ 探索 4★+ 熱門';
             }
         }
 
@@ -2143,7 +2127,9 @@
         }
 
         function addExpenseRecord() {
-            const day = appState.activeDay || 1;
+            const selDay = Number(document.getElementById('expense-day-select')?.value || 0);
+            const day = selDay || appState.expenseSelectedDay || appState.activeDay || 1;
+            appState.expenseSelectedDay = day;
             const category = document.getElementById('expense-category')?.value || '🍜 美食餐飲';
             const item = (document.getElementById('expense-item-name')?.value || '').trim();
             const amountJpy = Number(document.getElementById('expense-amount-jpy')?.value || 0);
@@ -2156,6 +2142,13 @@
             renderExpenseSummary();
         }
 
+        function handleExpenseDaySelectChange(val) {
+            const day = Math.max(1, Number(val) || 1);
+            appState.expenseSelectedDay = day;
+            saveState();
+            renderExpenseSummary();
+        }
+
         function removeDayExpense(day, id) {
             appState.expensesByDay[day] = (appState.expensesByDay[day] || []).filter(e => e.id !== id);
             saveState();
@@ -2163,14 +2156,20 @@
         }
 
         function renderExpenseSummary() {
-            const day = appState.activeDay || 1;
+            const totalDays = getTotalDays();
+            let day = Number(appState.expenseSelectedDay || appState.activeDay || 1);
+            if (day > totalDays) day = totalDays;
+            appState.expenseSelectedDay = day;
             const rate = Number(appState.jpyRate || 0.215);
             const travelers = Number(appState.travelers || 2);
 
-            const dayLabel = document.getElementById('expense-active-day-label');
+            const daySelectEl = document.getElementById('expense-day-select');
             const dayTitle = document.getElementById('expense-day-list-title');
-            if (dayLabel) dayLabel.textContent = `Day ${day} 開銷`;
-            if (dayTitle) dayTitle.textContent = `Day ${day} 消費明細`;
+            if (daySelectEl) {
+                daySelectEl.innerHTML = Array.from({ length: totalDays }, (_, i) => i + 1)
+                    .map(d => `<option value="${d}" ${d === day ? 'selected' : ''}>Day ${d} 開銷</option>`).join('');
+            }
+            if (dayTitle) dayTitle.textContent = `Day ${day}（${getDateLabelForDay(day)}）消費明細`;
 
             const fixedListEl = document.getElementById('fixed-expense-list');
             let fixedTwdTotal = 0;
@@ -2241,24 +2240,61 @@
             if (ppEl) ppEl.textContent = `每人均攤約 NT$${Math.round(grandTwd / travelers).toLocaleString()}`;
         }
 
-        function searchCustomPlaceOrQuickAdd() {
+        async function searchCustomPlaceOrQuickAdd() {
             const input = document.getElementById('spot-search-input');
             const val = (input?.value || '').trim();
             if (!val) return;
+            input.value = '';
+
+            let rating = 0;
+            let userRatingCount = 0;
+            let photoUrl = '';
+            let locationText = `${REGIONS_META.find(r => r.id === appState.region)?.name || '日本'}・自訂搜尋地點`;
+            let noteText = '使用者自訂搜尋加入的行程拼圖，可選擇天數嵌入。';
+
+            if (userConfig.gmapsKey) {
+                try {
+                    const resp = await fetch('https://places.googleapis.com/v1/places:searchText', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-Goog-Api-Key': userConfig.gmapsKey,
+                            'X-Goog-FieldMask': 'places.displayName,places.formattedAddress,places.rating,places.userRatingCount,places.photos,places.editorialSummary'
+                        },
+                        body: JSON.stringify({ textQuery: `${val} 日本`, languageCode: 'zh-TW', maxResultCount: 1 })
+                    });
+                    const data = await resp.json();
+                    const p = data?.places?.[0];
+                    if (p) {
+                        rating = Number(p.rating || 0);
+                        userRatingCount = Number(p.userRatingCount || 0);
+                        if (p.formattedAddress) locationText = p.formattedAddress.replace(/^日本、?/, '');
+                        if (p.editorialSummary?.text) noteText = p.editorialSummary.text;
+                        const photoName = p.photos?.[0]?.name;
+                        if (photoName) {
+                            photoUrl = `https://places.googleapis.com/v1/${photoName}/media?maxWidthPx=600&key=${userConfig.gmapsKey}`;
+                            photoCache[val] = photoUrl;
+                        }
+                    }
+                } catch (e) {}
+            }
+
             appState.customRecItems.unshift({
                 id: 'custom-rec-' + Date.now(),
                 region: appState.region,
                 type: 'spot',
                 months: [1,2,3,4,5,6,7,8,9,10,11,12],
-                tag: '自訂搜尋',
+                tag: rating >= 4.0 ? '4★+ 搜尋' : '自訂搜尋',
                 periodText: '即時加入',
-                location: `${REGIONS_META.find(r => r.id === appState.region)?.name || '日本'}・自訂搜尋地點`,
+                rating,
+                userRatingCount,
+                location: locationText,
                 title: val,
                 duration: 90,
-                note: '使用者自訂搜尋加入的行程拼圖，可選擇天數嵌入。',
+                note: noteText,
+                photoUrl,
                 fallbackImg: 'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=600&q=75'
             });
-            input.value = '';
             saveState();
             loadBuiltinRecommendations();
         }
