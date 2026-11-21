@@ -1,7 +1,7 @@
 {
   "syncCode": "JP-GPVMP6",
-  "updatedStamp": "1795171588302-k4rk",
-  "updatedAt": "2026-11-20T10:46:28.302Z",
+  "updatedStamp": "1795228028564-b2cc",
+  "updatedAt": "2026-11-21T02:27:08.564Z",
   "appState": {
     "startDate": "2026-12-18",
     "endDate": "2026-12-21",
@@ -84,14 +84,6 @@
           "duration": 150,
           "isIndoor": false,
           "note": "跑跑人看板拍照＋章魚燒大阪燒晚餐"
-        },
-        {
-          "id": "act-1795092571758-7nmc",
-          "title": "大阪光之文藝復興",
-          "type": "經典景點",
-          "duration": 60,
-          "isIndoor": false,
-          "note": "大阪市役所至中之島公園 (淀屋橋站)"
         }
       ],
       "2": [
@@ -191,7 +183,21 @@
       "20": [],
       "21": []
     },
-    "deletedPuzzleBin": [],
+    "deletedPuzzleBin": [
+      {
+        "trashId": "trash-1795228026914-ur3c",
+        "originalDay": 1,
+        "deletedAt": "10:27",
+        "piece": {
+          "id": "act-1795092571758-7nmc",
+          "title": "大阪光之文藝復興",
+          "type": "經典景點",
+          "duration": 60,
+          "isIndoor": false,
+          "note": "大阪市役所至中之島公園 (淀屋橋站)"
+        }
+      }
+    ],
     "customTransitMinutes": {
       "d2-luggage": 31
     },
