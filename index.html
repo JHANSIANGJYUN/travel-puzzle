@@ -101,7 +101,7 @@
                 <div>
                     <div class="flex items-center flex-wrap gap-1.5">
                         <h1 class="font-serif text-base sm:text-lg font-bold text-indigoJp tracking-wide">旅遊拼圖 Travel Puzzle</h1>
-                        <span id="app-version-badge" class="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-indigoJp/10 text-indigoJp">v1.34</span>
+                        <span id="app-version-badge" class="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-indigoJp/10 text-indigoJp">v1.35</span>
                         <span id="cloud-db-version-badge" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-stone-100 text-stone-500">🌐 雲端庫就緒</span>
                         <span id="auto-save-status" class="text-[11px] text-stone-400 font-medium">☁️ 已自動儲存</span>
                     </div>
@@ -671,23 +671,23 @@
                     <div>
                         <label class="block text-[11px] font-bold text-emerald-900 mb-0.5">倉庫名稱</label>
                         <input type="text" id="modal-github-repo" value="travel-puzzle" oninput="updateCloudUrlPreview()" placeholder="travel-puzzle" class="w-full bg-white border border-emerald-300 rounded-xl px-2.5 py-1.5 font-mono">
+            <!-- 3. Google Maps 與 Gemini API Key（含即時測試按鈕） -->
+            <div class="bg-washi p-3.5 rounded-2xl border border-stone-200 space-y-3 text-xs">
+                <div class="space-y-1.5">
+                    <div class="flex items-center justify-between gap-2">
+                        <label class="font-bold text-stone-700">🗺️ Google Maps API Key（真實門到門路線時間與地點實景照）</label>
+                        <button type="button" id="btn-test-gmaps" onclick="testGoogleMapsApiKey()" class="shrink-0 px-2.5 py-1 rounded-lg bg-indigoJp/10 hover:bg-indigoJp text-indigoJp hover:text-white font-bold text-[11px] transition-colors cursor-pointer">🧪 測試連線</button>
                     </div>
-                </div>
-                <div>
-                    <label class="block text-[11px] font-bold text-emerald-900 mb-0.5">對應的雲端 db.json 網址（可自動產生或直接貼上）</label>
-                    <input type="text" id="modal-cloud-db-url" placeholder="https://raw.githubusercontent.com/JHANSIANGJYUN/travel-puzzle/main/db.json" class="w-full bg-white border border-emerald-300 rounded-xl px-3 py-1.5 font-mono text-[11px]">
-                </div>
-            </div>
-
-            <!-- 3. Google Maps 與 Gemini API Key -->
-            <div class="bg-washi p-3.5 rounded-2xl border border-stone-200 space-y-2.5 text-xs">
-                <div>
-                    <label class="block font-bold text-stone-700 mb-1">🗺️ Google Maps API Key（用於真實路網距離與地點實景照片）</label>
                     <input type="password" id="modal-gmaps-key" placeholder="AIzaSy..." class="w-full bg-white border border-stone-300 rounded-xl px-3 py-1.5 font-mono">
+                    <div id="gmaps-test-result" class="hidden text-[11px] font-bold px-2.5 py-1 rounded-lg"></div>
                 </div>
-                <div>
-                    <label class="block font-bold text-stone-700 mb-1">✨ Gemini API Key（用於冷門航班與景點智慧補充）</label>
+                <div class="space-y-1.5">
+                    <div class="flex items-center justify-between gap-2">
+                        <label class="font-bold text-stone-700">✨ Gemini API Key（冷門航班與景點智慧補充）</label>
+                        <button type="button" id="btn-test-gemini" onclick="testGeminiApiKey()" class="shrink-0 px-2.5 py-1 rounded-lg bg-indigoJp/10 hover:bg-indigoJp text-indigoJp hover:text-white font-bold text-[11px] transition-colors cursor-pointer">🧪 測試連線</button>
+                    </div>
                     <input type="password" id="modal-gemini-key" placeholder="AIzaSy..." class="w-full bg-white border border-stone-300 rounded-xl px-3 py-1.5 font-mono">
+                    <div id="gemini-test-result" class="hidden text-[11px] font-bold px-2.5 py-1 rounded-lg"></div>
                 </div>
             </div>
 
@@ -726,7 +726,7 @@
     </div>
 
     <script>
-        const APP_VERSION = 'v1.34';
+        const APP_VERSION = 'v1.35';
         const STORAGE_KEY = 'travel_puzzle_jp_state_v1';
         const CONFIG_KEY = 'travel_puzzle_jp_config_v1';
         const LEGACY_CONFIG_KEYS = ['travel_puzzle_config', 'jp_travel_config_v1', 'travelPuzzleConfig', 'travel_puzzle_api_keys', 'travel_puzzle_settings', 'tp_config_v1'];
@@ -1321,24 +1321,30 @@
             const s2 = findStationCoord(toPlace);
             const passActive = isPassActiveOnDay(dayNum);
 
+            // 若起訖點含飯店或具體景點，需計入進出站步行＋月台轉乘時間（約 18～22 分鐘），避免只算純乘車時間
+            const hasDoorWalk1 = s1 && fromPlace.trim() !== s1.name && !fromPlace.includes('機場') && !fromPlace.includes('空港');
+            const hasDoorWalk2 = s2 && toPlace.trim() !== s2.name && !toPlace.includes('機場') && !toPlace.includes('空港');
+            const doorBufferMins = (hasDoorWalk1 ? 11 : 0) + (hasDoorWalk2 ? 11 : 0);
+
             if (s1 && s2) {
                 if (s1.name === s2.name) {
-                    return { minutes: 12, modeLabel: appState.drivingMode ? '🚗 市區短程移動' : '🚶 步行散策', isManual: false };
+                    return { minutes: 14, modeLabel: appState.drivingMode ? '🚗 市區短程移動' : '🚶 步行散策', isManual: false };
                 }
                 const railKm = calcHaversineKm(s1.lat, s1.lng, s2.lat, s2.lng) * 1.22;
                 if (appState.drivingMode) {
-                    const mins = Math.max(15, Math.round((railKm / 48) * 60 + 10));
+                    const mins = Math.max(18, Math.round((railKm / 42) * 60 + 12));
                     return { minutes: mins, modeLabel: `🚗 自駕約 ${Math.round(railKm)} km`, isManual: false };
                 }
                 if (railKm < 2.5) {
-                    return { minutes: Math.max(10, Math.round(railKm * 12)), modeLabel: '🚶 步行移動', isManual: false };
+                    return { minutes: Math.max(12, Math.round(railKm * 13)), modeLabel: '🚶 步行移動', isManual: false };
                 }
                 if (railKm <= 18) {
-                    const mins = Math.max(15, Math.round((railKm / 30) * 60 + 8));
-                    return { minutes: mins, modeLabel: passActive ? '🚃 JR 在來線／地鐵' : '🚇 地鐵／私鐵', isManual: false };
+                    const rideMins = Math.round((railKm / 28) * 60 + 5);
+                    const totalMins = Math.max(20, rideMins + doorBufferMins);
+                    return { minutes: totalMins, modeLabel: passActive ? '🚃 JR 在來線／地鐵（含步行）' : '🚇 地鐵／私鐵（含步行）', isManual: false };
                 }
                 const speed = railKm > 120 ? 175 : 95;
-                const mins = Math.max(25, Math.round((railKm / speed) * 60 + 12));
+                const mins = Math.max(28, Math.round((railKm / speed) * 60 + 10 + doorBufferMins));
                 return {
                     minutes: mins,
                     modeLabel: passActive ? `🚄 JR 特急／新快速（約 ${Math.round(railKm)} km）` : `🚆 鐵道特急（約 ${Math.round(railKm)} km）`,
@@ -1347,15 +1353,76 @@
             }
 
             return {
-                minutes: appState.drivingMode ? 30 : 35,
+                minutes: appState.drivingMode ? 32 : 38,
                 modeLabel: appState.drivingMode ? '🚗 自駕預估移動' : (passActive ? '🚆 JR／鐵道預估移動' : '🚇 大眾運輸預估移動'),
                 isManual: false
             };
         }
 
+        function ensureGoogleMapsSdkLoaded(apiKey) {
+            return new Promise((resolve, reject) => {
+                if (!apiKey) return reject(new Error('未設定 Google Maps API Key'));
+                if (window.google && window.google.maps && window.google.maps.DirectionsService) {
+                    return resolve(window.google.maps);
+                }
+                if (window._gmapsSdkLoadingPromise) return window._gmapsSdkLoadingPromise.then(resolve).catch(reject);
+
+                window._gmapsSdkLoadingPromise = new Promise((res, rej) => {
+                    const existing = document.getElementById('gmaps-js-sdk');
+                    if (existing) existing.remove();
+                    const script = document.createElement('script');
+                    script.id = 'gmaps-js-sdk';
+                    script.src = `https://maps.googleapis.com/maps/api/js?key=${encodeURIComponent(apiKey)}&libraries=places&language=zh-TW`;
+                    script.async = true;
+                    script.onload = () => {
+                        if (window.google && window.google.maps) res(window.google.maps);
+                        else rej(new Error('Google Maps SDK 載入失敗'));
+                    };
+                    script.onerror = () => rej(new Error('無法載入 Google Maps JS SDK（請檢查金鑰或網域限制）'));
+                    document.head.appendChild(script);
+                });
+                window._gmapsSdkLoadingPromise.then(resolve).catch(err => {
+                    window._gmapsSdkLoadingPromise = null;
+                    reject(err);
+                });
+            });
+        }
+
         async function fetchGoogleRouteEstimate(fromPlace, toPlace, cacheKey) {
             try {
                 const isDrive = appState.drivingMode;
+                // 1. 優先使用瀏覽器端無 CORS 限制的 Google Maps JS DirectionsService（門到門含步行轉乘）
+                try {
+                    const gmaps = await ensureGoogleMapsSdkLoaded(userConfig.gmapsKey);
+                    const svc = new gmaps.DirectionsService();
+                    const result = await new Promise((resolve, reject) => {
+                        svc.route({
+                            origin: `${fromPlace} 日本`,
+                            destination: `${toPlace} 日本`,
+                            travelMode: isDrive ? gmaps.TravelMode.DRIVING : gmaps.TravelMode.TRANSIT
+                        }, (res, status) => {
+                            if (status === 'OK' && res?.routes?.[0]?.legs?.[0]) resolve(res);
+                            else reject(new Error(status));
+                        });
+                    });
+                    const leg = result.routes[0].legs[0];
+                    const mins = Math.max(5, Math.round((leg.duration?.value || 0) / 60));
+                    const kmText = leg.distance?.text ? `（${leg.distance.text}）` : '';
+                    const transitLines = (leg.steps || [])
+                        .map(st => st.transit?.line?.short_name || st.transit?.line?.name)
+                        .filter(Boolean);
+                    const lineText = transitLines.length
+                        ? `🚆 ${Array.from(new Set(transitLines)).join(' ➔ ')}${kmText}`
+                        : (isDrive ? `🚗 Google Maps 自駕${kmText}` : `🚇 Google Maps 大眾運輸${kmText}`);
+
+                    appState.routeCache = appState.routeCache || {};
+                    appState.routeCache[cacheKey] = { minutes: mins, modeLabel: lineText };
+                    saveState();
+                    renderTimeline();
+                    return;
+                } catch (_) {}
+
+                // 2. 備援：Routes v2 REST API
                 const resp = await fetch('https://routes.googleapis.com/directions/v2:computeRoutes', {
                     method: 'POST',
                     headers: {
@@ -2362,7 +2429,91 @@
                     ? `🟢 GitHub 雙向同步已就緒 (${userConfig.syncCode || DEFAULT_SYNC_CODE})`
                     : `🟡 僅唯讀模式（填入 GitHub Token 即可上傳同步）`;
             }
+            document.getElementById('gmaps-test-result')?.classList.add('hidden');
+            document.getElementById('gemini-test-result')?.classList.add('hidden');
             document.getElementById('api-key-modal')?.classList.remove('hidden');
+        }
+
+        async function testGoogleMapsApiKey() {
+            const key = (document.getElementById('modal-gmaps-key')?.value || '').trim();
+            const resEl = document.getElementById('gmaps-test-result');
+            const btn = document.getElementById('btn-test-gmaps');
+            if (!resEl) return;
+            resEl.classList.remove('hidden');
+            if (!key) {
+                resEl.className = 'text-[11px] font-bold px-2.5 py-1 rounded-lg bg-amber-100 text-amber-900';
+                resEl.textContent = '⚠️ 請先輸入 Google Maps API Key 再測試';
+                return;
+            }
+            if (btn) btn.textContent = '⏳ 測試中...';
+            resEl.className = 'text-[11px] font-bold px-2.5 py-1 rounded-lg bg-slate-100 text-slate-700';
+            resEl.textContent = '正在實測「東橫INN 大阪難波西 ➔ 東橫INN 新大阪東口」路線與 Places 權限...';
+            try {
+                window._gmapsSdkLoadingPromise = null;
+                const gmaps = await ensureGoogleMapsSdkLoaded(key);
+                const svc = new gmaps.DirectionsService();
+                const routeRes = await new Promise((resolve, reject) => {
+                    svc.route({
+                        origin: '東橫INN 大阪難波西 日本',
+                        destination: '東橫INN 新大阪東口 日本',
+                        travelMode: gmaps.TravelMode.TRANSIT
+                    }, (r, status) => {
+                        if (status === 'OK' && r?.routes?.[0]?.legs?.[0]) resolve(r);
+                        else reject(new Error(`Directions 狀態: ${status}`));
+                    });
+                });
+                const mins = Math.round((routeRes.routes[0].legs[0].duration?.value || 0) / 60);
+                userConfig.gmapsKey = key;
+                appState.routeCache = {};
+                saveConfig();
+                saveState();
+                renderTimeline();
+                resEl.className = 'text-[11px] font-bold px-2.5 py-1 rounded-lg bg-emerald-100 text-emerald-900';
+                resEl.textContent = `✅ Google Maps 連線成功！實測門到門路線約 ${mins} 分鐘，已自動重新計算時間軸。`;
+            } catch (err) {
+                resEl.className = 'text-[11px] font-bold px-2.5 py-1 rounded-lg bg-red-100 text-red-800';
+                resEl.textContent = `❌ 測試失敗：${err.message}（請確認 Google Cloud 已啟用 Maps JavaScript API 與 Directions API）`;
+            } finally {
+                if (btn) btn.textContent = '🧪 測試連線';
+            }
+        }
+
+        async function testGeminiApiKey() {
+            const key = (document.getElementById('modal-gemini-key')?.value || '').trim();
+            const resEl = document.getElementById('gemini-test-result');
+            const btn = document.getElementById('btn-test-gemini');
+            if (!resEl) return;
+            resEl.classList.remove('hidden');
+            if (!key) {
+                resEl.className = 'text-[11px] font-bold px-2.5 py-1 rounded-lg bg-amber-100 text-amber-900';
+                resEl.textContent = '⚠️ 請先輸入 Gemini API Key 再測試';
+                return;
+            }
+            if (btn) btn.textContent = '⏳ 測試中...';
+            resEl.className = 'text-[11px] font-bold px-2.5 py-1 rounded-lg bg-slate-100 text-slate-700';
+            resEl.textContent = '正在連線測試 Gemini API 金鑰...';
+            try {
+                const resp = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${encodeURIComponent(key)}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        contents: [{ parts: [{ text: '請只回覆 OK 兩個字' }] }]
+                    })
+                });
+                const data = await resp.json();
+                if (!resp.ok) {
+                    throw new Error(data?.error?.message || `HTTP ${resp.status}`);
+                }
+                userConfig.geminiKey = key;
+                saveConfig();
+                resEl.className = 'text-[11px] font-bold px-2.5 py-1 rounded-lg bg-emerald-100 text-emerald-900';
+                resEl.textContent = '✅ Gemini API 連線成功！金鑰有效並已儲存。';
+            } catch (err) {
+                resEl.className = 'text-[11px] font-bold px-2.5 py-1 rounded-lg bg-red-100 text-red-800';
+                resEl.textContent = `❌ Gemini 測試失敗：${err.message}`;
+            } finally {
+                if (btn) btn.textContent = '🧪 測試連線';
+            }
         }
         function closeApiKeyModal() {
             document.getElementById('api-key-modal')?.classList.add('hidden');
