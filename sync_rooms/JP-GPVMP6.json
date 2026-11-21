@@ -1,7 +1,7 @@
 {
   "syncCode": "JP-GPVMP6",
-  "updatedStamp": "1795235483818-sh74",
-  "updatedAt": "2026-11-21T04:31:23.818Z",
+  "updatedStamp": "1795235492218-qd8z",
+  "updatedAt": "2026-11-21T04:31:32.218Z",
   "appState": {
     "startDate": "2026-12-18",
     "endDate": "2026-12-21",
@@ -138,23 +138,6 @@
       ],
       "3": [
         {
-          "id": "act-init-5",
-          "title": "宇治平等院鳳凰堂＆抹茶表參道",
-          "type": "周邊順遊",
-          "duration": 150,
-          "isIndoor": false,
-          "note": "JR 奈良線順遊宇治抹茶聖代"
-        },
-        {
-          "id": "act-1795165412465-nml2",
-          "title": "京都清水寺＆二年坂三年坂",
-          "type": "傳統祭典",
-          "duration": 150,
-          "isIndoor": false,
-          "note": "京都市東山區（祇園四條站步行15分）",
-          "imageUrl": ""
-        },
-        {
           "id": "act-1795235482057-hakt",
           "title": "京都車站",
           "type": "經典景點",
@@ -216,6 +199,33 @@
       "21": []
     },
     "deletedPuzzleBin": [
+      {
+        "trashId": "trash-1795235490543-7w4r",
+        "originalDay": 3,
+        "deletedAt": "12:31",
+        "piece": {
+          "id": "act-1795165412465-nml2",
+          "title": "京都清水寺＆二年坂三年坂",
+          "type": "傳統祭典",
+          "duration": 150,
+          "isIndoor": false,
+          "note": "京都市東山區（祇園四條站步行15分）",
+          "imageUrl": ""
+        }
+      },
+      {
+        "trashId": "trash-1795235489605-dk28",
+        "originalDay": 3,
+        "deletedAt": "12:31",
+        "piece": {
+          "id": "act-init-5",
+          "title": "宇治平等院鳳凰堂＆抹茶表參道",
+          "type": "周邊順遊",
+          "duration": 150,
+          "isIndoor": false,
+          "note": "JR 奈良線順遊宇治抹茶聖代"
+        }
+      },
       {
         "trashId": "trash-1795228244843-epjo",
         "originalDay": 2,
