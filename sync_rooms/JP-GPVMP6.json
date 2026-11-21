@@ -1,7 +1,7 @@
 {
   "syncCode": "JP-GPVMP6",
-  "updatedStamp": "1795234096806-hudn",
-  "updatedAt": "2026-11-21T04:08:16.806Z",
+  "updatedStamp": "1795235483818-sh74",
+  "updatedAt": "2026-11-21T04:31:23.818Z",
   "appState": {
     "startDate": "2026-12-18",
     "endDate": "2026-12-21",
@@ -33,7 +33,7 @@
     "useSecondJrPass": false,
     "jrPassId2": "jr-kansai-wide-5",
     "jrPassStartDay2": 4,
-    "activeDay": 2,
+    "activeDay": 3,
     "dayStartTimes": {
       "1": "20:45",
       "2": "09:00",
@@ -153,6 +153,14 @@
           "isIndoor": false,
           "note": "京都市東山區（祇園四條站步行15分）",
           "imageUrl": ""
+        },
+        {
+          "id": "act-1795235482057-hakt",
+          "title": "京都車站",
+          "type": "經典景點",
+          "duration": 60,
+          "isIndoor": false,
+          "note": ""
         }
       ],
       "4": [
