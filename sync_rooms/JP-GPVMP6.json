@@ -1,7 +1,7 @@
 {
   "syncCode": "JP-GPVMP6",
-  "updatedStamp": "1795238064754-sybq",
-  "updatedAt": "2026-11-21T05:14:24.754Z",
+  "updatedStamp": "1795238069326-jfsj",
+  "updatedAt": "2026-11-21T05:14:29.326Z",
   "appState": {
     "startDate": "2026-12-18",
     "endDate": "2026-12-21",
@@ -96,14 +96,6 @@
           "note": "搭乘空中纜車俯瞰神戶港景與溫室花房"
         },
         {
-          "id": "act-1795229839376-i54o",
-          "title": "Blue Bottle Coffee - Kobe Cafe",
-          "type": "季節美食",
-          "duration": 45,
-          "isIndoor": false,
-          "note": ""
-        },
-        {
           "id": "act-1795233992814-ra0v",
           "title": "Kinton Kōbe",
           "type": "季節美食",
@@ -134,6 +126,14 @@
           "duration": 90,
           "isIndoor": false,
           "note": "傍晚點燈浪漫散步"
+        },
+        {
+          "id": "act-1795229839376-i54o",
+          "title": "Blue Bottle Coffee - Kobe Cafe",
+          "type": "季節美食",
+          "duration": 45,
+          "isIndoor": false,
+          "note": ""
         }
       ],
       "3": [
