@@ -101,7 +101,7 @@
                 <div>
                     <div class="flex items-center flex-wrap gap-1.5">
                         <h1 class="font-serif text-base sm:text-lg font-bold text-indigoJp tracking-wide">旅遊拼圖 Travel Puzzle</h1>
-                        <span id="app-version-badge" class="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-indigoJp/10 text-indigoJp">v1.30</span>
+                        <span id="app-version-badge" class="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-indigoJp/10 text-indigoJp">v1.31</span>
                         <span id="cloud-db-version-badge" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-stone-100 text-stone-500">🌐 雲端庫就緒</span>
                         <span id="auto-save-status" class="text-[11px] text-stone-400 font-medium">☁️ 已自動儲存</span>
                     </div>
@@ -723,7 +723,7 @@
     </div>
 
     <script>
-        const APP_VERSION = 'v1.30';
+        const APP_VERSION = 'v1.31';
         const STORAGE_KEY = 'travel_puzzle_jp_state_v1';
         const CONFIG_KEY = 'travel_puzzle_jp_config_v1';
         const LEGACY_CONFIG_KEYS = ['travel_puzzle_config', 'jp_travel_config_v1', 'travelPuzzleConfig', 'travel_puzzle_api_keys', 'travel_puzzle_settings', 'tp_config_v1'];
@@ -1293,6 +1293,21 @@
                 return { minutes: 10, modeLabel: '🚶 步行／站內轉乘', isManual: false };
             }
 
+            const cacheKey = `${appState.drivingMode ? 'DRIVE' : 'TRANSIT'}|${fromPlace}|${toPlace}`;
+            if (appState.routeCache && appState.routeCache[cacheKey]) {
+                return {
+                    minutes: appState.routeCache[cacheKey].minutes,
+                    modeLabel: appState.routeCache[cacheKey].modeLabel,
+                    isManual: false
+                };
+            }
+
+            if (userConfig.gmapsKey && !window._pendingRoutes?.[cacheKey]) {
+                window._pendingRoutes = window._pendingRoutes || {};
+                window._pendingRoutes[cacheKey] = true;
+                fetchGoogleRouteEstimate(fromPlace, toPlace, cacheKey);
+            }
+
             const s1 = findStationCoord(fromPlace);
             const s2 = findStationCoord(toPlace);
             const passActive = isPassActiveOnDay(dayNum);
@@ -1327,6 +1342,41 @@
                 modeLabel: appState.drivingMode ? '🚗 自駕預估移動' : (passActive ? '🚆 JR／鐵道預估移動' : '🚇 大眾運輸預估移動'),
                 isManual: false
             };
+        }
+
+        async function fetchGoogleRouteEstimate(fromPlace, toPlace, cacheKey) {
+            try {
+                const isDrive = appState.drivingMode;
+                const resp = await fetch('https://routes.googleapis.com/directions/v2:computeRoutes', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Goog-Api-Key': userConfig.gmapsKey,
+                        'X-Goog-FieldMask': 'routes.duration,routes.distanceMeters,routes.legs.steps.transitDetails'
+                    },
+                    body: JSON.stringify({
+                        origin: { address: `${fromPlace} 日本` },
+                        destination: { address: `${toPlace} 日本` },
+                        travelMode: isDrive ? 'DRIVE' : 'TRANSIT',
+                        languageCode: 'zh-TW'
+                    })
+                });
+                const data = await resp.json();
+                const route = data?.routes?.[0];
+                if (route && route.duration) {
+                    const mins = Math.max(5, Math.round(parseInt(route.duration, 10) / 60));
+                    const km = route.distanceMeters ? `（${(route.distanceMeters / 1000).toFixed(1)} km）` : '';
+                    const steps = route.legs?.[0]?.steps || [];
+                    const transitLines = steps
+                        .map(s => s.transitDetails?.transitLine?.nameShort || s.transitDetails?.transitLine?.name)
+                        .filter(Boolean);
+                    const lineText = transitLines.length ? `搭乘 ${Array.from(new Set(transitLines)).join(' ➔ ')}` : (isDrive ? `🚗 Google Maps 自駕${km}` : `🚆 Google Maps 大眾運輸${km}`);
+                    appState.routeCache = appState.routeCache || {};
+                    appState.routeCache[cacheKey] = { minutes: mins, modeLabel: lineText };
+                    saveState();
+                    renderTimeline();
+                }
+            } catch (e) {}
         }
 
         function buildDaySegments(dayNum) {
@@ -1633,10 +1683,10 @@
             const d = appState.activeDay || 1;
             const segments = buildDaySegments(d);
 
-            container.innerHTML = segments.map(seg => {
+            container.innerHTML = segments.map((seg, segIdx) => {
                 const transitHtml = seg.transit ? `
                     <div class="ml-11 my-1.5 flex flex-wrap items-center gap-2 text-xs text-stone-600 bg-washi/90 border border-stone-200/80 rounded-xl px-3 py-1.5">
-                        <span>${seg.transit.modeLabel}</span>
+                        <span class="font-medium text-indigoJp">${seg.transit.modeLabel}</span>
                         <div class="inline-flex items-center gap-1">
                             <span>約</span>
                             <input type="number" min="1" max="600" value="${seg.transit.minutes}"
@@ -1658,21 +1708,33 @@
                     `;
                 }
 
+                const tlBgId = `tl-card-bg-${d}-${segIdx}`;
+                const initialBg = photoCache[seg.title] || getGuaranteedFallbackPhoto(seg, segIdx);
+                if (userConfig.gmapsKey && photoCache[seg.title] === undefined) {
+                    fetchPlacePhotoForCard(seg.title, tlBgId);
+                }
+
                 return `
                     ${transitHtml}
-                    <div class="puzzle-card relative z-10 bg-white border-2 border-indigoJp/20 hover:border-vermilion/60 rounded-2xl p-4 shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                        <div class="flex items-start gap-3">
+                    <div class="puzzle-card relative z-10 bg-white border-2 border-indigoJp/20 hover:border-vermilion/60 rounded-2xl p-4 shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-3 overflow-hidden">
+                        <!-- 右側淡入地點實景背景圖片 -->
+                        <div class="pointer-events-none absolute inset-0 rounded-2xl overflow-hidden z-0">
+                            <div id="${tlBgId}" class="absolute inset-y-0 right-0 w-[48%] sm:w-[42%] bg-cover bg-center opacity-45 transition-opacity duration-500" style="background-image:url('${initialBg}')"></div>
+                            <div class="absolute inset-0 bg-gradient-to-r from-white via-white/95 to-white/20"></div>
+                        </div>
+
+                        <div class="relative z-10 flex items-start gap-3">
                             <span class="font-mono font-bold text-xs text-white bg-vermilion px-2.5 py-1 rounded-lg shrink-0 mt-0.5">${seg.arriveTime}</span>
                             <div class="space-y-1">
                                 <div class="flex items-center gap-1.5 flex-wrap">
                                     <span class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-sakura text-vermilion">${seg.tag}</span>
                                     <h4 class="font-serif font-bold text-sm sm:text-base text-indigoJp">${seg.title}</h4>
                                 </div>
-                                ${seg.note ? `<p class="text-xs text-stone-500">${seg.note}</p>` : ''}
+                                ${seg.note ? `<p class="text-xs text-stone-600">${seg.note}</p>` : ''}
                             </div>
                         </div>
-                        <div class="flex items-center gap-1.5 self-end sm:self-center shrink-0">
-                            <label class="inline-flex items-center gap-1 text-[11px] text-stone-500 bg-washi px-2 py-1 rounded-lg border border-stone-200">
+                        <div class="relative z-10 flex items-center gap-1.5 self-end sm:self-center shrink-0 bg-white/80 backdrop-blur-2xs px-2 py-1 rounded-xl border border-stone-200/70">
+                            <label class="inline-flex items-center gap-1 text-[11px] text-stone-600 px-1.5 py-0.5">
                                 <span>停留</span>
                                 <input type="number" min="15" step="15" value="${seg.duration}" onchange="updateActivityDuration(${d}, ${seg.actIndex}, this.value)" class="w-12 bg-white border border-stone-300 rounded px-1 text-center font-mono font-bold text-indigoJp">
                                 <span>分</span>
