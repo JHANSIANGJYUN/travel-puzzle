@@ -2147,8 +2147,19 @@
                     if (dRoute?.duration) {
                         const driveSecs = parseInt(String(dRoute.duration).replace('s', ''), 10) || 1800;
                         const driveMins = Math.max(5, Math.round(driveSecs / 60));
-                        const km = ((dRoute.distanceMeters || 0) / 1000).toFixed(1);
-                        const estTransitMins = isDriving ? driveMins : Math.max(12, Math.round(driveMins * 0.92) + 8);
+                        const kmNum = (dRoute.distanceMeters || 0) / 1000;
+                        const km = kmNum.toFixed(1);
+                        let estTransitMins = driveMins;
+                        if (!isDriving) {
+                            // 日本 JR 快速/特急列車在跨區中長距離（>18km）遠快於汽車道路行駛，加上兩端車站步行轉乘
+                            if (kmNum >= 18) {
+                                estTransitMins = Math.max(25, Math.round(kmNum * 0.53) + 12);
+                            } else if (kmNum >= 5) {
+                                estTransitMins = Math.max(15, Math.round(kmNum * 1.35) + 10);
+                            } else {
+                                estTransitMins = Math.max(8, Math.round(kmNum * 4.5) + 5);
+                            }
+                        }
                         gmapsRouteCache.set(routeKey, {
                             mins: estTransitMins,
                             fareJpy: 0,
