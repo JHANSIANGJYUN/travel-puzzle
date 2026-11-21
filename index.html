@@ -101,7 +101,7 @@
                 <div>
                     <div class="flex items-center flex-wrap gap-1.5">
                         <h1 class="font-serif text-base sm:text-lg font-bold text-indigoJp tracking-wide">旅遊拼圖 Travel Puzzle</h1>
-                        <span id="app-version-badge" class="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-indigoJp/10 text-indigoJp">v1.41</span>
+                        <span id="app-version-badge" class="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-indigoJp/10 text-indigoJp">v1.42</span>
                         <span id="cloud-db-version-badge" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-stone-100 text-stone-500">🌐 雲端庫就緒</span>
                         <span id="auto-save-status" class="text-[11px] text-stone-400 font-medium">☁️ 已自動儲存</span>
                     </div>
@@ -174,14 +174,14 @@
                         <span class="text-base">🗾</span>
                         <label class="text-sm font-bold text-indigoJp">日本列島互動地圖・點選主要旅遊區域</label>
                     </div>
-                    <span id="region-desc-text" class="text-xs font-medium text-indigoJp bg-white px-3 py-1 rounded-full border border-stone-200">大阪・京都・神戶・奈良・和歌山與城崎溫泉</span>
+                    <span id="region-desc-text" class="text-xs font-medium text-indigoJp bg-white px-3 py-1 rounded-full border border-stone-200">滋賀・京都・大阪・兵庫・奈良・和歌山</span>
                 </div>
 
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-3.5 items-stretch">
-                    <!-- 左側：高精度寫實海岸線日本 11 大分區向量互動地圖（北陸/中部、山陰/山陽獨立分區，無任何殘留 PNG 底圖） -->
+                    <!-- 左側：優先讀取 GitHub japan.svg (47都道府縣自動 11 分區著色)，離線時無縫顯示保底向量地圖 -->
                     <div class="lg:col-span-7 bg-gradient-to-br from-[#EDF5FB] via-[#F8FBFE] to-[#E3EFF8] rounded-2xl border border-sky-200/90 px-3 py-2.5 relative overflow-hidden shadow-inner flex flex-col justify-between">
                         <div class="flex items-center justify-between text-[11px] text-slate-600 px-1 mb-1">
-                            <span>👆 點擊日本列島區域切換（支援外部 japan.svg 47 都道府縣自動 11 分區著色）</span>
+                            <span>👆 點擊日本列島區域切換（北陸／中部、山陰／山陽已獨立分區）</span>
                             <div class="flex items-center gap-2.5 font-bold shrink-0">
                                 <span class="inline-flex items-center gap-1 text-vermilion"><span class="w-2.5 h-2.5 rounded-full bg-vermilion inline-block shadow-xs"></span>主選發光</span>
                                 <span class="inline-flex items-center gap-1 text-matcha"><span class="w-2.5 h-2.5 rounded-full bg-matcha inline-block"></span>跨區延伸</span>
@@ -196,13 +196,11 @@
                                 <filter id="jp-extra-glow" x="-25%" y="-25%" width="150%" height="150%">
                                     <feDropShadow dx="0" dy="0" stdDeviation="4" flood-color="#4A7C59" flood-opacity="0.65"/>
                                 </filter>
-                                <!-- 高精度本州主島寫實海岸線裁切遮罩（確保 7 大本州分區共界處嚴絲合縫且保留所有細膩海灣與半島） -->
                                 <clipPath id="honshu-coast-clip">
                                     <path d="M477,121 L481,115 L485,118 L488,123 L493,122 L494,114 L501,112 L506,115 L505,121 L500,124 L503,131 L509,142 L513,153 L515,166 L512,176 L508,185 L503,191 L506,197 L502,201 L498,200 L497,214 L496,229 L496,245 L503,249 L501,254 L496,260 L493,272 L489,280 L483,281 L481,274 L483,265 L481,260 L477,263 L476,271 L472,273 L469,269 L466,265 L460,268 L456,266 L454,274 L455,282 L449,284 L447,277 L446,271 L441,275 L433,280 L423,282 L414,285 L414,279 L411,275 L406,276 L405,283 L401,289 L394,295 L388,303 L385,311 L378,311 L377,304 L381,294 L383,286 L378,285 L376,294 L374,305 L370,315 L363,318 L357,316 L354,309 L349,303 L348,294 L348,287 L342,286 L335,285 L331,289 L318,292 L304,295 L290,299 L275,303 L260,305 L245,306 L233,305 L228,300 L232,293 L238,288 L244,278 L254,271 L266,266 L280,263 L294,262 L308,262 L322,262 L332,261 L339,256 L345,256 L351,261 L360,265 L370,267 L380,268 L389,265 L398,258 L404,250 L400,242 L399,232 L402,222 L408,217 L413,221 L412,229 L409,234 L417,233 L426,227 L436,219 L445,209 L451,197 L454,191 L462,193 L463,182 L466,170 L468,161 L461,158 L462,152 L469,151 L472,140 L474,129 Z"/>
                                 </clipPath>
                             </defs>
 
-                            <!-- 經緯度海圖參考網格 -->
                             <g stroke="#CBD5E1" stroke-width="0.6" stroke-dasharray="3 4" opacity="0.45">
                                 <line x1="12" y1="95" x2="668" y2="95"/>
                                 <line x1="12" y1="195" x2="668" y2="195"/>
@@ -212,12 +210,9 @@
                                 <line x1="510" y1="10" x2="510" y2="380"/>
                             </g>
 
-                            <!-- 1. 沖繩 okinawa（左上插圖框：沖繩本島＋慶良間・久米島＋宮古島＋石垣島・西表島） -->
                             <g data-map-region="okinawa" onclick="selectRegion('okinawa')" class="jp-map-part cursor-pointer transition-all duration-200">
                                 <rect x="16" y="16" width="146" height="92" rx="12" fill="rgba(255,255,255,0.86)" stroke="#94A3B8" stroke-width="1.1" stroke-dasharray="3 3"/>
-                                <!-- 沖繩本島寫實海岸線（邊戶岬～本部半島～恩納～那霸～知念半島） -->
                                 <path d="M126,26 L131,28 L135,31 L130,36 L126,42 L121,45 L116,44 L114,48 L119,51 L115,56 L109,62 L105,68 L101,73 L95,76 L90,74 L89,70 L94,65 L99,59 L103,53 L108,46 L113,40 L119,34 L123,28 Z" stroke="#FFFFFF" stroke-width="1.4" stroke-linejoin="round"/>
-                                <!-- 久米島・宮古島・伊良部島・石垣島・西表島 -->
                                 <circle cx="77" cy="59" r="2.6" stroke="#FFFFFF" stroke-width="1"/>
                                 <path d="M62,77 L68,74 L71,78 L69,82 L63,82 Z" stroke="#FFFFFF" stroke-width="1.1" stroke-linejoin="round"/>
                                 <path d="M44,86 L50,82 L53,86 L49,90 L45,90 Z" stroke="#FFFFFF" stroke-width="1.1" stroke-linejoin="round"/>
@@ -225,17 +220,14 @@
                                 <text x="89" y="102" text-anchor="middle" font-size="11" font-weight="700" pointer-events="none">沖繩列島</text>
                             </g>
 
-                            <!-- 2. 北海道 hokkaido（高精度寫實海岸線：宗谷岬、知床半島、根室半島、襟裳岬、積丹半島、渡島半島、利尻禮文島） -->
                             <g data-map-region="hokkaido" onclick="selectRegion('hokkaido')" class="jp-map-part cursor-pointer transition-all duration-200">
                                 <path d="M518,11 L523,19 L531,28 L541,37 L553,44 L566,46 L577,46 L588,40 L598,34 L603,37 L594,45 L586,51 L592,56 L601,55 L609,54 L610,58 L598,63 L586,68 L575,73 L564,75 L557,78 L553,88 L550,99 L547,106 L543,104 L539,94 L533,86 L525,80 L517,77 L509,79 L502,85 L496,92 L502,98 L499,105 L493,110 L486,113 L481,108 L484,99 L482,91 L486,84 L491,78 L481,74 L481,68 L489,65 L496,64 L500,56 L505,46 L510,34 L514,21 Z" stroke="#FFFFFF" stroke-width="1.6" stroke-linejoin="round"/>
-                                <!-- 利尻島・禮文島・奧尻島 -->
                                 <circle cx="508" cy="17" r="2.3" stroke="#FFFFFF" stroke-width="1"/>
                                 <circle cx="505" cy="11" r="1.8" stroke="#FFFFFF" stroke-width="0.9"/>
                                 <circle cx="475" cy="99" r="1.9" stroke="#FFFFFF" stroke-width="0.9"/>
                                 <text x="540" y="61" text-anchor="middle" font-size="12" font-weight="700" pointer-events="none">北海道</text>
                             </g>
 
-                            <!-- 3. 東北 tohoku（津輕半島、陸奧灣、下北半島、男鹿半島、三陸海岸、牡鹿半島） -->
                             <g data-map-region="tohoku" onclick="selectRegion('tohoku')" class="jp-map-part cursor-pointer transition-all duration-200">
                                 <g clip-path="url(#honshu-coast-clip)">
                                     <polygon points="455,108 525,108 525,215 496,216 466,213 455,192" stroke="#FFFFFF" stroke-width="1.4" stroke-linejoin="round"/>
@@ -243,7 +235,6 @@
                                 <text x="485" y="168" text-anchor="middle" font-size="12" font-weight="700" pointer-events="none">東北</text>
                             </g>
 
-                            <!-- 4. 關東 kanto（鹿島灘、犬吠埼、房總半島、東京灣、三浦半島、相模灣） -->
                             <g data-map-region="kanto" onclick="selectRegion('kanto')" class="jp-map-part cursor-pointer transition-all duration-200">
                                 <g clip-path="url(#honshu-coast-clip)">
                                     <polygon points="466,213 512,213 512,288 456,288 455,264 451,246 452,231" stroke="#FFFFFF" stroke-width="1.4" stroke-linejoin="round"/>
@@ -251,17 +242,14 @@
                                 <text x="476" y="246" text-anchor="middle" font-size="11.5" font-weight="700" pointer-events="none">關東</text>
                             </g>
 
-                            <!-- 5. 北陸 hokuriku（新潟・富山灣・石川能登半島・福井若狹灣＋佐渡島） -->
                             <g data-map-region="hokuriku" onclick="selectRegion('hokuriku')" class="jp-map-part cursor-pointer transition-all duration-200">
                                 <g clip-path="url(#honshu-coast-clip)">
                                     <polygon points="455,192 466,213 452,231 434,238 417,246 415,253 402,266 388,270 377,269 377,210 435,190" stroke="#FFFFFF" stroke-width="1.4" stroke-linejoin="round"/>
                                 </g>
-                                <!-- 佐渡島寫實雙半島輪廓 -->
                                 <path d="M437,194 L444,188 L446,193 L442,196 L445,199 L439,203 L436,199 Z" stroke="#FFFFFF" stroke-width="1.2" stroke-linejoin="round"/>
                                 <text x="428" y="232" text-anchor="middle" font-size="10.5" font-weight="700" pointer-events="none">北陸</text>
                             </g>
 
-                            <!-- 6. 中部 chubu（長野・山梨・靜岡伊豆半島/駿河灣・岐阜・愛知渥美/知多半島・三重紀伊東岸） -->
                             <g data-map-region="chubu" onclick="selectRegion('chubu')" class="jp-map-part cursor-pointer transition-all duration-200">
                                 <g clip-path="url(#honshu-coast-clip)">
                                     <polygon points="452,231 451,246 455,264 456,288 377,316 376,294 383,286 388,270 402,266 415,253 417,246 434,238" stroke="#FFFFFF" stroke-width="1.4" stroke-linejoin="round"/>
@@ -269,30 +257,24 @@
                                 <text x="426" y="264" text-anchor="middle" font-size="10.5" font-weight="700" pointer-events="none">中部</text>
                             </g>
 
-                            <!-- 7. 關西 kansai（滋賀琵琶湖・京都丹後半島・大阪灣・兵庫・奈良・和歌山潮岬＋淡路島） -->
                             <g data-map-region="kansai" onclick="selectRegion('kansai')" class="jp-map-part cursor-pointer transition-all duration-200">
                                 <g clip-path="url(#honshu-coast-clip)">
                                     <polygon points="330,252 388,252 388,270 383,286 376,294 377,322 330,322 329,274" stroke="#FFFFFF" stroke-width="1.4" stroke-linejoin="round"/>
                                 </g>
-                                <!-- 琵琶湖細膩剪影 -->
                                 <path d="M366,271 L370,273 L369,281 L365,282 L364,276 Z" fill="#E3EFF8" stroke="#FFFFFF" stroke-width="0.7" pointer-events="none"/>
-                                <!-- 淡路島 -->
                                 <path d="M336,288 L342,287 L340,298 L334,297 Z" stroke="#FFFFFF" stroke-width="1.2" stroke-linejoin="round"/>
                                 <text x="358" y="294" text-anchor="middle" font-size="11.5" font-weight="700" pointer-events="none">關西</text>
                             </g>
 
-                            <!-- 8. 山陰 sanin（鳥取・島根・島根半島＋隱岐群島） -->
                             <g data-map-region="sanin" onclick="selectRegion('sanin')" class="jp-map-part cursor-pointer transition-all duration-200">
                                 <g clip-path="url(#honshu-coast-clip)">
                                     <polygon points="225,255 332,255 329,274 298,277 268,283 238,290 225,288" stroke="#FFFFFF" stroke-width="1.4" stroke-linejoin="round"/>
                                 </g>
-                                <!-- 隱岐諸島（島後・島前） -->
                                 <circle cx="282" cy="249" r="3" stroke="#FFFFFF" stroke-width="1.1"/>
                                 <circle cx="289" cy="245" r="2.3" stroke="#FFFFFF" stroke-width="1"/>
                                 <text x="285" y="274" text-anchor="middle" font-size="10.5" font-weight="700" pointer-events="none">山陰</text>
                             </g>
 
-                            <!-- 9. 山陽 sanyo（岡山・廣島・山口下關） -->
                             <g data-map-region="sanyo" onclick="selectRegion('sanyo')" class="jp-map-part cursor-pointer transition-all duration-200">
                                 <g clip-path="url(#honshu-coast-clip)">
                                     <polygon points="225,288 238,290 268,283 298,277 329,274 332,312 225,312" stroke="#FFFFFF" stroke-width="1.4" stroke-linejoin="round"/>
@@ -300,16 +282,13 @@
                                 <text x="280" y="294" text-anchor="middle" font-size="10.5" font-weight="700" pointer-events="none">山陽</text>
                             </g>
 
-                            <!-- 10. 四國 shikoku（香川・德島・愛媛佐田岬・高知室戶岬/足摺岬） -->
                             <g data-map-region="shikoku" onclick="selectRegion('shikoku')" class="jp-map-part cursor-pointer transition-all duration-200">
                                 <path d="M274,312 L288,309 L302,307 L316,307 L326,308 L332,316 L328,325 L324,333 L319,326 L310,323 L301,325 L293,332 L287,338 L280,336 L277,327 L268,325 L258,325 L264,317 Z" stroke="#FFFFFF" stroke-width="1.6" stroke-linejoin="round"/>
                                 <text x="298" y="322" text-anchor="middle" font-size="11" font-weight="700" pointer-events="none">四國</text>
                             </g>
 
-                            <!-- 11. 九州 kyushu（福岡・佐賀・長崎島原/五島・大分國東半島・熊本天草・宮崎・鹿兒島薩摩/大隅半島＋種子屋久島） -->
                             <g data-map-region="kyushu" onclick="selectRegion('kyushu')" class="jp-map-part cursor-pointer transition-all duration-200">
                                 <path d="M192,306 L208,305 L222,305 L231,311 L234,318 L232,331 L227,345 L220,359 L212,373 L204,374 L204,361 L199,357 L195,363 L191,371 L184,369 L186,356 L184,344 L176,338 L169,330 L170,322 L178,318 L175,311 L184,309 Z" stroke="#FFFFFF" stroke-width="1.6" stroke-linejoin="round"/>
-                                <!-- 五島列島・平戶・天草・種子島・屋久島 -->
                                 <circle cx="158" cy="324" r="2.4" stroke="#FFFFFF" stroke-width="1"/>
                                 <circle cx="162" cy="318" r="2.1" stroke="#FFFFFF" stroke-width="1"/>
                                 <circle cx="176" cy="346" r="2.3" stroke="#FFFFFF" stroke-width="1"/>
@@ -677,7 +656,7 @@
         </div>
     </div>
 
-    <!-- API 與 GitHub 雲端資料庫設定彈窗（完整恢復 GitHub Token 雙向同步與所有金鑰欄位） -->
+    <!-- API 與 GitHub 雲端資料庫設定彈窗 -->
     <div id="api-key-modal" class="fixed inset-0 z-50 hidden bg-black/50 backdrop-blur-xs flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl max-w-lg w-full p-5 space-y-4 shadow-xl border border-stone-200 max-h-[90vh] overflow-y-auto">
             <div class="flex items-center justify-between border-b border-stone-100 pb-2.5">
@@ -685,7 +664,6 @@
                 <button type="button" onclick="closeApiKeyModal()" class="text-stone-400 hover:text-sumi text-lg font-bold cursor-pointer">✕</button>
             </div>
 
-            <!-- 1. GitHub 跨裝置雙向雲端同步 -->
             <div class="bg-slate-50 p-3.5 rounded-2xl border border-slate-200 space-y-2.5 text-xs">
                 <div class="flex items-center justify-between">
                     <span class="font-bold text-indigoJp">☁️ 跨裝置雲端同步（手機／平板／電腦共用同一份行程）</span>
@@ -707,7 +685,6 @@
                 </div>
             </div>
 
-            <!-- 2. GitHub 每日自動更新資料庫 -->
             <div class="bg-emerald-50/70 p-3.5 rounded-2xl border border-emerald-200 space-y-2.5 text-xs">
                 <div class="flex items-center justify-between gap-2">
                     <span class="font-bold text-emerald-950">🌐 GitHub 每日自動更新資料庫（db.json）</span>
@@ -729,7 +706,6 @@
                 </div>
             </div>
 
-            <!-- 3. Google Maps 與 Gemini API Key（含即時測試按鈕） -->
             <div class="bg-washi p-3.5 rounded-2xl border border-stone-200 space-y-3 text-xs">
                 <div class="space-y-1.5">
                     <div class="flex items-center justify-between gap-2">
@@ -784,7 +760,7 @@
     </div>
 
     <script>
-        const APP_VERSION = 'v1.41';
+        const APP_VERSION = 'v1.42';
         const STORAGE_KEY = 'travel_puzzle_jp_state_v1';
         const CONFIG_KEY = 'travel_puzzle_jp_config_v1';
         const LEGACY_CONFIG_KEYS = ['travel_puzzle_config', 'jp_travel_config_v1', 'travelPuzzleConfig', 'travel_puzzle_api_keys', 'travel_puzzle_settings', 'tp_config_v1'];
@@ -983,7 +959,7 @@
         const googleTopSpotsLoading = {};
         let externalJapanSvgLoaded = false;
 
-        // 自動載入同目錄下的 japan.svg（47 都道府縣），依地理座標與都道府県編號自動著色為 11 大分區（絕不變全黑）
+        // 自動載入同目錄或 GitHub 倉庫的 japan.svg（47 都道府縣），依地理座標與都道府県編號自動著色為 11 大分區（絕不變全黑）
         const PREF_TO_REGION_11 = [
             'hokkaido',
             'tohoku','tohoku','tohoku','tohoku','tohoku','tohoku',
@@ -1012,7 +988,6 @@
             if (/fukuoka|saga|nagasaki|kumamoto|oita|miyazaki|kagoshima|九州/.test(rawAttr)) return 'kyushu';
             if (/okinawa|沖繩|沖縄/.test(rawAttr)) return 'okinawa';
 
-            // 若無文字屬性但剛好為 47 都道府縣順序（JIS 01~47）
             const jisMatch = rawAttr.match(/(?:pref|jp|p)[-_]?0?([1-9]|[1-3][0-9]|4[0-7])(?:\D|$)/);
             if (jisMatch) {
                 return PREF_TO_REGION_11[Number(jisMatch[1]) - 1] || 'kansai';
@@ -1021,7 +996,6 @@
                 return PREF_TO_REGION_11[idx];
             }
 
-            // 依元素在整個日本地圖中的正規化重心座標 (nx: 0西~1東, ny: 0北~1南) 自動判斷 11 分區
             try {
                 const bb = el.getBBox();
                 const cx = bb.x + bb.width / 2;
@@ -1049,44 +1023,194 @@
             const host = document.getElementById('external-japan-svg-host');
             const fallbackSvg = document.getElementById('japan-interactive-map');
             if (!host || !fallbackSvg) return;
-            try {
-                const resp = await fetch(`japan.svg?t=${Date.now()}`, { cache: 'no-store' });
-                if (!resp.ok) return;
-                const svgText = await resp.text();
-                if (!svgText.includes('<svg')) return;
 
-                host.innerHTML = svgText;
-                const extSvg = host.querySelector('svg');
-                if (!extSvg) return;
+            const owner = (userConfig.githubUser || 'JHANSIANGJYUN').trim();
+            const repo = (userConfig.githubRepo || 'travel-puzzle').trim();
+            const candidateUrls = [
+                `japan.svg?t=${Date.now()}`,
+                `https://raw.githubusercontent.com/${owner}/${repo}/main/japan.svg?t=${Date.now()}`
+            ];
 
-                extSvg.classList.add('w-full', 'h-full', 'max-h-[270px]');
-                extSvg.removeAttribute('width');
-                extSvg.removeAttribute('height');
-                if (!extSvg.getAttribute('viewBox')) {
-                    extSvg.setAttribute('viewBox', '0 0 1000 1000');
+            for (const url of candidateUrls) {
+                try {
+                    const resp = await fetch(url, { cache: 'no-store' });
+                    if (!resp.ok) continue;
+                    const svgText = await resp.text();
+                    if (!svgText.includes('<svg')) continue;
+
+                    host.innerHTML = svgText;
+                    const extSvg = host.querySelector('svg');
+                    if (!extSvg) continue;
+
+                    const origW = parseFloat(extSvg.getAttribute('width')) || 437.33;
+                    const origH = parseFloat(extSvg.getAttribute('height')) || 516.02;
+                    extSvg.classList.add('w-full', 'h-full', 'max-h-[270px]');
+                    extSvg.removeAttribute('width');
+                    extSvg.removeAttribute('height');
+                    if (!extSvg.getAttribute('viewBox')) {
+                        extSvg.setAttribute('viewBox', `0 0 ${origW} ${origH}`);
+                    }
+
+                    // 左上角加入沖繩列島插圖框，將離得很遠的 JP-47 移入放大檢視
+                    const ns = 'http://www.w3.org/2000/svg';
+                    const insetRect = document.createElementNS(ns, 'rect');
+                    insetRect.setAttribute('x', '10');
+                    insetRect.setAttribute('y', '12');
+                    insetRect.setAttribute('width', '132');
+                    insetRect.setAttribute('height', '110');
+                    insetRect.setAttribute('rx', '14');
+                    insetRect.setAttribute('fill', 'rgba(255,255,255,0.88)');
+                    insetRect.setAttribute('stroke', '#94A3B8');
+                    insetRect.setAttribute('stroke-width', '1.2');
+                    insetRect.setAttribute('stroke-dasharray', '4 3');
+                    extSvg.insertBefore(insetRect, extSvg.firstChild);
+
+                    const insetText = document.createElementNS(ns, 'text');
+                    insetText.setAttribute('x', '76');
+                    insetText.setAttribute('y', '114');
+                    insetText.setAttribute('text-anchor', 'middle');
+                    insetText.setAttribute('font-size', '11');
+                    insetText.setAttribute('fill', '#475569');
+                    insetText.setAttribute('font-weight', 'bold');
+                    insetText.textContent = '沖繩列島';
+                    extSvg.insertBefore(insetText, insetRect.nextSibling);
+
+                    host.classList.remove('hidden');
+                    fallbackSvg.classList.add('hidden');
+
+                    const vb = extSvg.viewBox?.baseVal || { x: 0, y: 0, width: origW, height: origH };
+                    const shapes = Array.from(extSvg.querySelectorAll('path, polygon'));
+                    shapes.forEach((shape, idx) => {
+                        const parentReg = shape.closest('[data-map-region]');
+                        const regId = parentReg
+                            ? parentReg.getAttribute('data-map-region')
+                            : classifySvgNodeToRegion(shape, idx, shapes.length, vb);
+                        shape.setAttribute('data-map-region', regId);
+                        shape.style.cursor = 'pointer';
+                        shape.style.transition = 'fill 0.2s ease, filter 0.2s ease';
+                        shape.setAttribute('stroke', '#FFFFFF');
+                        shape.setAttribute('stroke-width', String(Math.max(0.65, (vb.width || 437) / 620)));
+
+                        if (shape.id === 'JP-47' || regId === 'okinawa') {
+                            shape.setAttribute('transform', 'translate(-12, -445) scale(1.12)');
+                        }
+
+                        shape.addEventListener('click', () => selectRegion(regId));
+                    });
+
+                    externalJapanSvgLoaded = true;
+                    renderRegionMapAndButtons();
+                    return;
+                } catch (e) {}
+            }
+        }
+
+        // =========================================================
+        // 表單與互動事件處理器（補齊日期、人數、飯店、自駕與 PASS）
+        // =========================================================
+        function handleDateRangeChange(changedSide) {
+            const sEl = document.getElementById('start-date');
+            const eEl = document.getElementById('end-date');
+            if (!sEl || !eEl) return;
+            if (sEl.value) appState.startDate = sEl.value;
+            if (eEl.value) appState.endDate = eEl.value;
+            if (appState.endDate < appState.startDate) {
+                if (changedSide === 'start') {
+                    appState.endDate = appState.startDate;
+                    eEl.value = appState.endDate;
+                } else {
+                    appState.startDate = appState.endDate;
+                    sEl.value = appState.startDate;
                 }
+            }
+            saveState();
+            renderAll();
+        }
 
-                host.classList.remove('hidden');
-                fallbackSvg.classList.add('hidden');
+        function handleTravelerCountChange(val) {
+            appState.travelers = Math.max(1, Number(val) || 2);
+            saveState();
+            renderAll();
+        }
 
-                const vb = extSvg.viewBox?.baseVal || { x: 0, y: 0, width: 1000, height: 1000 };
-                const shapes = Array.from(extSvg.querySelectorAll('path, polygon'));
-                shapes.forEach((shape, idx) => {
-                    const parentReg = shape.closest('[data-map-region]');
-                    const regId = parentReg
-                        ? parentReg.getAttribute('data-map-region')
-                        : classifySvgNodeToRegion(shape, idx, shapes.length, vb);
-                    shape.setAttribute('data-map-region', regId);
-                    shape.style.cursor = 'pointer';
-                    shape.style.transition = 'fill 0.2s ease, filter 0.2s ease';
-                    shape.setAttribute('stroke', '#FFFFFF');
-                    shape.setAttribute('stroke-width', String(Math.max(0.6, (vb.width || 1000) / 900)));
-                    shape.addEventListener('click', () => selectRegion(regId));
-                });
+        function toggleDrivingMode(checked) {
+            appState.drivingMode = Boolean(checked);
+            saveState();
+            renderAll();
+        }
 
-                externalJapanSvgLoaded = true;
-                renderRegionMapAndButtons();
-            } catch (e) {}
+        function handleRentalCostChange() {
+            appState.rentalCost = Math.max(0, Number(document.getElementById('rental-car-cost')?.value || 0));
+            appState.tollFuelCost = Math.max(0, Number(document.getElementById('rental-toll-fuel')?.value || 0));
+            saveState();
+            renderJrPassAndDrivingSection();
+            renderExpenseSummary();
+        }
+
+        function toggleJrPass(checked) {
+            appState.useJrPass = Boolean(checked);
+            saveState();
+            renderAll();
+        }
+
+        function toggleSecondJrPass(checked) {
+            appState.useSecondJrPass = Boolean(checked);
+            saveState();
+            renderAll();
+        }
+
+        function handleJrPassConfigChange() {
+            appState.jrPassId = document.getElementById('jr-pass-select')?.value || appState.jrPassId;
+            appState.jrPassStartDay = Number(document.getElementById('jr-pass-start-day')?.value || 1);
+            appState.jrPassId2 = document.getElementById('jr-pass-select-2')?.value || appState.jrPassId2;
+            appState.jrPassStartDay2 = Number(document.getElementById('jr-pass-start-day-2')?.value || 1);
+            saveState();
+            renderAll();
+        }
+
+        function updateDayStartTime(val) {
+            const d = appState.activeDay || 1;
+            appState.dayStartTimes[d] = val || '09:30';
+            saveState();
+            renderTimeline();
+        }
+
+        function saveDayHotel(val) {
+            const d = appState.activeDay || 1;
+            const totalDays = getTotalDays();
+            const clean = String(val || '').trim();
+            for (let day = d; day < totalDays; day++) {
+                appState.dayHotels[day] = clean;
+            }
+            saveState();
+            renderAll();
+        }
+
+        function toggleDropLuggageFirst(checked) {
+            const d = appState.activeDay || 1;
+            appState.dropLuggageFirst[d] = Boolean(checked);
+            saveState();
+            renderTimeline();
+        }
+
+        function handleManualDaySwap() {
+            const d1 = appState.activeDay || 1;
+            const d2 = Number(document.getElementById('swap-target-day')?.value || 0);
+            if (!d2 || d1 === d2) return;
+            const tmp = appState.activitiesByDay[d1] || [];
+            appState.activitiesByDay[d1] = appState.activitiesByDay[d2] || [];
+            appState.activitiesByDay[d2] = tmp;
+            saveState();
+            renderAll();
+        }
+
+        function updateJpyRate(val) {
+            const r = Number(val);
+            if (r > 0) {
+                appState.jpyRate = r;
+                saveState();
+                renderExpenseSummary();
+            }
         }
 
         // =========================================================
@@ -1149,7 +1273,6 @@
         function saveConfig() {
             try {
                 localStorage.setItem(CONFIG_KEY, JSON.stringify(userConfig));
-                // 同步寫入相容鍵名，確保跨版本更新永不遺失設定
                 if (userConfig.gmapsKey) localStorage.setItem('gmaps_api_key', userConfig.gmapsKey);
                 if (userConfig.geminiKey) localStorage.setItem('gemini_api_key', userConfig.geminiKey);
                 if (userConfig.githubToken) localStorage.setItem('github_token', userConfig.githubToken);
@@ -1159,7 +1282,6 @@
 
         function loadSavedData() {
             try {
-                // 1. 解析 #setup= 一鍵分享連結（支援短鍵名 c/p/m/g/d 與完整鍵名）
                 const hash = window.location.hash || '';
                 if (hash.startsWith('#setup=')) {
                     const encodedPart = decodeURIComponent(hash.slice(7));
@@ -1175,7 +1297,6 @@
                     history.replaceState(null, '', window.location.pathname + window.location.search);
                 }
 
-                // 2. 掃描相容 v1.21 與舊版所有可能儲存過的設定物件（含短鍵名 c/p/m/g/d）
                 for (const legacyKey of LEGACY_CONFIG_KEYS) {
                     const legacyRaw = localStorage.getItem(legacyKey);
                     if (legacyRaw) {
@@ -1187,7 +1308,6 @@
                 const savedCfg = JSON.parse(localStorage.getItem(CONFIG_KEY) || '{}');
                 applyConfigObjectWithAliases(savedCfg);
 
-                // 3. 逐欄補齊獨立儲存的 API Key 與同步代碼
                 if (!userConfig.gmapsKey) {
                     userConfig.gmapsKey = localStorage.getItem('gmaps_api_key') || localStorage.getItem('google_maps_api_key') || localStorage.getItem('googleMapsApiKey') || '';
                 }
@@ -1270,7 +1390,6 @@
             const descEl = document.getElementById('region-desc-text');
             if (descEl) descEl.textContent = meta.desc;
 
-            // 清新分區預設底色（未選中時清楚區分北陸/中部、山陰/山陽邊界，選中時整塊亮起朱紅/抹茶綠）
             const BASE_REGION_COLORS = {
                 hokkaido: '#7BA3C7',
                 tohoku: '#8BB3D6',
@@ -1301,7 +1420,6 @@
                 });
             });
 
-            // 同步著色外部 japan.svg（47 都道府縣按 11 大分區著色，完全取代黑色）
             document.querySelectorAll('#external-japan-svg-host [data-map-region]').forEach(shape => {
                 const rid = shape.getAttribute('data-map-region');
                 const isMain = rid === activeReg;
@@ -1309,7 +1427,7 @@
                 const fill = isMain ? '#D94E34' : (isExtra ? '#4A7C59' : (BASE_REGION_COLORS[rid] || '#94A3B8'));
                 shape.style.fill = fill;
                 shape.setAttribute('fill', fill);
-                shape.style.filter = isMain ? 'url(#jp-region-glow)' : (isExtra ? 'url(#jp-extra-glow)' : 'none');
+                shape.style.filter = isMain ? 'drop-shadow(0 0 6px rgba(217,78,52,0.75))' : (isExtra ? 'drop-shadow(0 0 5px rgba(74,124,89,0.65))' : 'none');
             });
 
             const selectorEl = document.getElementById('region-selector');
@@ -1515,7 +1633,6 @@
             const s2 = findStationCoord(toPlace);
             const passActive = isPassActiveOnDay(dayNum);
 
-            // 若起訖點含飯店或具體景點，需計入進出站步行＋月台轉乘時間（約 18～22 分鐘），避免只算純乘車時間
             const hasDoorWalk1 = s1 && fromPlace.trim() !== s1.name && !fromPlace.includes('機場') && !fromPlace.includes('空港');
             const hasDoorWalk2 = s2 && toPlace.trim() !== s2.name && !toPlace.includes('機場') && !toPlace.includes('空港');
             const doorBufferMins = (hasDoorWalk1 ? 11 : 0) + (hasDoorWalk2 ? 11 : 0);
@@ -1577,7 +1694,6 @@
                 resolvePlaceLocation(apiKey, toPlace)
             ]);
 
-            // 設定未來日間標準出發時間（次日早上 10:00 JST），避免深夜查無電車班次而退回籠統路線
             const tomorrow = new Date(Date.now() + 86400000);
             const yyyy = tomorrow.getUTCFullYear();
             const mm = String(tomorrow.getUTCMonth() + 1).padStart(2, '0');
@@ -1612,7 +1728,6 @@
                 return { route: data.routes[0], fallbackFromDrive: false };
             }
 
-            // 若短距離步行即可抵達，改查 WALK 模式取得精準步行時間
             if (!isDrive) {
                 const walkResp = await fetch('https://routes.googleapis.com/directions/v2:computeRoutes', {
                     method: 'POST',
@@ -1945,7 +2060,6 @@
                 }).join('');
             }
 
-            // 更新出發時間、住宿飯店與對調選單
             const startInput = document.getElementById('day-start-time');
             const hotelDayNum = document.getElementById('hotel-day-num');
             const hotelInput = document.getElementById('day-hotel-input');
@@ -2031,18 +2145,16 @@
                 if (seg.type === 'anchor' || seg.type === 'luggage') {
                     const anchorBgId = `tl-anchor-bg-${d}-${segIdx}`;
                     const qName = seg.placeQuery || seg.title.replace(/^[^：]+：/, '').replace(/（.*$/, '').trim();
-                    const anchorBg = photoCache[qName] || (qName.includes('機場') || qName.includes('空港')
-                        ? 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=640&q=80'
-                        : 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=640&q=80');
+                    const realAnchorBg = photoCache[qName] || '';
                     if (userConfig.gmapsKey && photoCache[qName] === undefined) {
                         fetchPlacePhotoForCard(qName, anchorBgId);
                     }
                     return `
                         ${transitHtml}
-                        <div class="relative z-10 flex items-center gap-3 bg-slate-50 border border-slate-200 rounded-2xl px-4 py-3 overflow-hidden">
-                            <div class="pointer-events-none absolute inset-0 rounded-2xl overflow-hidden z-0">
-                                <div id="${anchorBgId}" class="absolute inset-y-0 right-0 w-[58%] bg-cover bg-center opacity-65 transition-opacity duration-500" style="background-image:url('${anchorBg}'); -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.45) 40%, black 100%); mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.45) 40%, black 100%);"></div>
-                                <div class="absolute inset-0 bg-gradient-to-r from-slate-50 via-slate-50/80 to-transparent"></div>
+                        <div class="relative z-10 flex items-center gap-3 bg-slate-50 border border-slate-200 rounded-2xl px-4 ${realAnchorBg ? 'py-4' : 'py-3'} overflow-hidden">
+                            <div class="${realAnchorBg ? '' : 'hidden'} pointer-events-none absolute inset-0 rounded-2xl overflow-hidden z-0">
+                                <div id="${anchorBgId}" class="absolute inset-y-0 right-0 w-[68%] bg-cover bg-center opacity-85 transition-opacity duration-500" style="${realAnchorBg ? `background-image:url('${realAnchorBg}');` : ''} -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.45) 35%, black 100%); mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.45) 35%, black 100%);"></div>
+                                <div class="absolute inset-0 bg-gradient-to-r from-slate-50 via-slate-50/75 to-transparent"></div>
                             </div>
                             <span class="relative z-10 font-mono font-bold text-xs text-indigoJp bg-white/95 border border-slate-200 px-2.5 py-1 rounded-lg shrink-0">${seg.arriveTime}</span>
                             <span class="relative z-10 text-xs sm:text-sm font-bold text-slate-800">${seg.title}</span>
@@ -2051,7 +2163,7 @@
                 }
 
                 const tlBgId = `tl-card-bg-${d}-${segIdx}`;
-                const initialBg = photoCache[seg.title] || getGuaranteedFallbackPhoto(seg, segIdx);
+                const initialBg = photoCache[seg.title] || '';
                 if (userConfig.gmapsKey && photoCache[seg.title] === undefined) {
                     fetchPlacePhotoForCard(seg.title, tlBgId);
                 }
@@ -2059,10 +2171,10 @@
 
                 return `
                     ${transitHtml}
-                    <div data-act-id="${seg.id}" class="puzzle-card ${isJustInserted ? 'puzzle-entering ring-2 ring-vermilion/50' : ''} relative z-10 bg-white border-2 border-indigoJp/20 hover:border-vermilion/60 rounded-2xl p-4 shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-3 overflow-hidden">
-                        <!-- 右側淡入地點實景背景圖片 -->
-                        <div class="pointer-events-none absolute inset-0 rounded-2xl overflow-hidden z-0">
-                            <div id="${tlBgId}" class="absolute inset-y-0 right-0 w-[68%] sm:w-[62%] bg-cover bg-center opacity-75 transition-opacity duration-500" style="background-image:url('${initialBg}'); -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.45) 38%, black 100%); mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.45) 38%, black 100%);"></div>
+                    <div data-act-id="${seg.id}" class="puzzle-card ${isJustInserted ? 'puzzle-entering ring-2 ring-vermilion/50' : ''} relative z-10 bg-white border-2 border-indigoJp/20 hover:border-vermilion/60 rounded-2xl ${initialBg ? 'p-4 sm:p-5' : 'p-4'} shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-3 overflow-hidden">
+                        <!-- 右側淡入地點實景背景圖片（僅在抓到真實 Google Maps 實景照時顯示，絕不放無關假圖） -->
+                        <div class="${initialBg ? '' : 'hidden'} pointer-events-none absolute inset-0 rounded-2xl overflow-hidden z-0">
+                            <div id="${tlBgId}" class="absolute inset-y-0 right-0 w-[72%] sm:w-[68%] bg-cover bg-center opacity-85 transition-opacity duration-500" style="${initialBg ? `background-image:url('${initialBg}');` : ''} -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.45) 35%, black 100%); mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.45) 35%, black 100%);"></div>
                             <div class="absolute inset-0 bg-gradient-to-r from-white via-white/75 to-transparent"></div>
                         </div>
 
@@ -2125,7 +2237,6 @@
             }, 320);
         }
 
-        // 全行程看板與拖曳支援
         let draggedPuzzleInfo = null;
         function handlePuzzleDragStart(dayNum, idx) { draggedPuzzleInfo = { dayNum, idx }; }
         function handlePuzzleDragOver(e) { e.preventDefault(); }
@@ -2214,7 +2325,7 @@
         }
 
         // =========================================================
-        // 區塊三：立體拼圖推薦卡片渲染（三層實景圖片保底 + 完整設計樣式）
+        // 區塊三：立體拼圖推薦卡片渲染
         // =========================================================
         const FALLBACK_SCENE_PHOTOS = {
             event: [
@@ -2279,10 +2390,13 @@
                 const data = await resp.json();
                 const photoName = data?.places?.[0]?.photos?.[0]?.name;
                 if (photoName) {
-                    const photoUrl = `https://places.googleapis.com/v1/${photoName}/media?maxWidthPx=600&key=${userConfig.gmapsKey}`;
+                    const photoUrl = `https://places.googleapis.com/v1/${photoName}/media?maxWidthPx=800&key=${userConfig.gmapsKey}`;
                     photoCache[queryTitle] = photoUrl;
                     const el = document.getElementById(domId);
-                    if (el) el.style.backgroundImage = `url('${photoUrl}')`;
+                    if (el) {
+                        el.style.backgroundImage = `url('${photoUrl}')`;
+                        if (el.parentElement) el.parentElement.classList.remove('hidden');
+                    }
                 }
             } catch (e) {}
         }
@@ -2295,7 +2409,6 @@
             const tripMonth = Number((appState.startDate || '2026-12-18').split('-')[1]) || 12;
             const totalDays = getTotalDays();
 
-            // 若有設定 Google Maps API Key，背景自動抓取所選區域 4.0★ 以上高分景點
             if (userConfig.gmapsKey) {
                 targetRegs.forEach(regId => {
                     if (!googleTopSpotsCache[regId] && !googleTopSpotsLoading[regId]) {
@@ -2318,7 +2431,6 @@
                 ...BUILTIN_EVENTS_DB
             ];
 
-            // 去重並篩選所選區域
             const seen = new Set();
             const filtered = [];
             for (const item of allItems) {
@@ -2330,7 +2442,6 @@
                 filtered.push(item);
             }
 
-            // 當季月份活動優先排最前
             filtered.sort((a, b) => {
                 const aSeason = (a.months || []).includes(tripMonth) ? 1 : 0;
                 const bSeason = (b.months || []).includes(tripMonth) ? 1 : 0;
@@ -2360,12 +2471,9 @@
 
                 return `
                     <div id="${cardId}" class="jigsaw-tile relative bg-white rounded-2xl border-2 ${isSeasonal ? 'border-[#E8B84B]' : 'border-stone-200'} p-4 flex flex-col justify-between gap-3.5 shadow-xs overflow-visible">
-                        <!-- 立體拼圖上凸耳 -->
                         <span aria-hidden="true" class="pointer-events-none absolute -top-3 left-1/2 -translate-x-1/2 w-6 h-6 rounded-full bg-white border-2 ${isSeasonal ? 'border-[#E8B84B]' : 'border-stone-200'} z-20"></span>
-                        <!-- 立體拼圖右凹槽 -->
                         <span aria-hidden="true" class="pointer-events-none absolute top-1/2 -right-3 -translate-y-1/2 w-6 h-6 rounded-full bg-[#FAF8F5] border-l-2 ${isSeasonal ? 'border-[#E8B84B]' : 'border-stone-200'} z-20"></span>
 
-                        <!-- 右側淡入實景背景圖層（三層保底永不空白） -->
                         <div class="pointer-events-none absolute inset-0 rounded-2xl overflow-hidden z-0">
                             <div id="${bgImgId}" class="absolute inset-y-0 right-0 w-[72%] bg-cover bg-center opacity-80 transition-opacity duration-500" style="background-image:url('${initialBg}'); -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.45) 38%, black 100%); mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.45) 38%, black 100%);"></div>
                             <div class="absolute inset-0 bg-gradient-to-r from-white via-white/75 to-transparent"></div>
@@ -2712,7 +2820,7 @@
             const area = document.getElementById('export-text-area');
             if (area) {
                 area.select();
-                navigator.clipboard?.writeText(area.value);
+                document.execCommand('copy');
             }
         }
 
@@ -2832,8 +2940,11 @@
             }
         }
         function copySyncCodeText() {
-            const code = (document.getElementById('modal-sync-code-input')?.value || '').trim().toUpperCase();
-            if (code) navigator.clipboard?.writeText(code);
+            const codeEl = document.getElementById('modal-sync-code-input');
+            if (codeEl && codeEl.value.trim()) {
+                codeEl.select();
+                document.execCommand('copy');
+            }
         }
         function applySyncCodeFromModal() {
             const code = (document.getElementById('modal-sync-code-input')?.value || '').trim().toUpperCase();
@@ -2930,7 +3041,6 @@
                     if (data) break;
                 }
 
-                // 若固定路徑皆未命中，透過 GitHub Trees API 自動在倉庫內搜尋包含代碼的 JSON 檔
                 if (!data) {
                     for (const branch of ['main', 'master']) {
                         const treeUrl = `https://api.github.com/repos/${owner}/${repo}/git/trees/${branch}?recursive=1`;
@@ -2956,7 +3066,6 @@
                     throw new Error(`在 ${owner}/${repo} 找不到代碼 ${code} 的雲端行程檔`);
                 }
 
-                // 自動相容舊版各種外層欄位結構（appState / state / trip / 根層）
                 const loadedState = data.appState || data.state || data.trip || (data.activitiesByDay ? data : null);
                 if (!loadedState) throw new Error('雲端檔案格式無法辨識');
 
@@ -2986,6 +3095,7 @@
             if (shouldClose) {
                 closeApiKeyModal();
                 syncCloudDatabase();
+                renderAll();
             }
         }
         function copyShareSetupLink() {
@@ -2999,7 +3109,12 @@
             };
             const encoded = btoa(encodeURIComponent(JSON.stringify(compactPayload)));
             const shareUrl = `${window.location.origin}${window.location.pathname}#setup=${encoded}`;
-            navigator.clipboard?.writeText(shareUrl);
+            const tempInput = document.createElement('input');
+            tempInput.value = shareUrl;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
             const statusLine = document.getElementById('github-sync-status-line');
             if (statusLine) statusLine.textContent = '🔗 已複製一鍵自動設定連結！貼到手機打開即可免重打金鑰';
         }
@@ -3050,10 +3165,8 @@
             loadBuiltinRecommendations();
         }
 
-        // 初始化啟動
         document.addEventListener('DOMContentLoaded', () => {
             loadSavedData();
-            // 清除舊版籠統路線字樣快取，確保重新抓取具體鐵道／巴士／步行方式
             if (appState.routeCache) {
                 Object.keys(appState.routeCache).forEach(k => {
                     if ((appState.routeCache[k]?.modeLabel || '').includes('門到門路線')) {
