@@ -355,6 +355,8 @@
                     <h2 class="font-serif text-lg font-bold text-indigoJp">每日行程拼圖時間軸</h2>
                 </div>
                 <div class="flex items-center gap-2 flex-wrap">
+                    <button type="button" id="optimize-route-btn" onclick="optimizeActiveDayRoute()" class="px-2.5 py-1 rounded-xl bg-amber-50 hover:bg-amber-500 text-amber-900 hover:text-white border border-amber-300 text-xs font-bold transition-colors cursor-pointer" title="固定頭尾機場與飯店，自動計算移動時間最少且兼顧夜間點燈、用餐與營業時間的順序">✨ 智慧排最順路線</button>
+                    <button type="button" id="undo-optimize-btn" onclick="undoLastRouteOptimization()" class="hidden px-2.5 py-1 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-700 border border-stone-300 text-xs font-bold transition-colors cursor-pointer" title="還原最佳化之前的行程順序">↩️ 還原排序</button>
                     <button type="button" onclick="forceRecalculateAllGoogleMaps()" class="px-2.5 py-1 rounded-xl bg-sky-50 hover:bg-sky-100 text-indigoJp border border-sky-200 text-xs font-bold transition-colors cursor-pointer" title="清除快取與手動覆寫，向 Google Maps 重新取得路線時間">🗺️ Google Maps 重新計算</button>
                     <div class="inline-flex bg-washi p-1 rounded-xl border border-stone-200 text-xs font-bold">
                         <button type="button" id="view-mode-single-btn" onclick="setTimelineViewMode('single')" class="px-3 py-1 rounded-lg bg-indigoJp text-white shadow-2xs transition-all cursor-pointer">📋 單日精算詳情</button>
@@ -764,7 +766,7 @@
         // ==========================================
         // 1. 儲存鍵值與日本 10 大地區 / JR PASS / 航班 / 季節祭典資料庫
         // ==========================================
-        const APP_VERSION = 'v1.18';
+        const APP_VERSION = 'v1.19';
         const APP_BUILD_DATE = '2026-11-21';
         const STATE_STORAGE_KEY = 'travel_puzzle_jp_state_v4';
         const SYNC_CODE_STORAGE_KEY = 'travel_puzzle_device_sync_code';
@@ -890,6 +892,7 @@
         let timelineViewMode = 'single';
         let draggedPuzzlePayload = null;
         let touchDragState = null;
+        let lastRouteOptimizationSnapshot = null;
 
         let appState = {
             startDate: '2026-12-18',
@@ -2009,6 +2012,225 @@
             renderTimeline();
             if (timelineViewMode === 'overview') renderOverviewPuzzleBoard();
             showToast('🗺️ 已向 Google Maps 重新取得所有路段時間！');
+        }
+
+        function classifyActivityScheduleConstraint(act) {
+            const text = `${act?.title || ''} ${act?.type || ''} ${act?.note || ''}`.toLowerCase();
+            // 1. 夜間限定行程（點燈、夜景、花燈路、屋台等）
+            if (/點燈|夜景|花燈路|光之|luminarie|燈樹節|屋台|harukas|展望台|晴空塔夜景|六本木夜景/.test(text)) {
+                return 'night';
+            }
+            // 2. 早市／傳統市場（多數 15:00～17:00 前打烊，適合白天或午餐）
+            if (/市場|黑門|錦市場|近江町|築地|朝市/.test(text)) {
+                return 'market';
+            }
+            // 3. 餐飲美食（優先排在午餐 11:30-14:00 或晚餐 17:30-20:30）
+            if (act?.type === '季節美食' || /拉麵|牛排|燒肉|壽司|烏龍麵|蕎麥麵|串炸|海鮮丼|餐廳|美食|咖啡|甜點|鍋/.test(text)) {
+                return 'meal';
+            }
+            // 4. 神社寺院、城郭、庭園、美術館（多數 16:30～17:30 停止入場）
+            if (/寺|神社|大社|神宮|城|天守閣|兼六園|後樂園|美術館|博物館|水族館|合掌村/.test(text)) {
+                return 'daytime_attraction';
+            }
+            return 'flexible';
+        }
+
+        function estimatePairTransitMinutesFast(origin, dest, dayNum) {
+            const isDriving = Boolean(appState.drivingMode);
+            const routeKey = `${dayNum}|${origin}|${dest}|${isDriving ? 'D' : 'T'}`;
+            const customMins = appState.customTransitMinutes?.[routeKey];
+            if (customMins > 0) return customMins;
+            if (gmapsRouteCache.has(routeKey)) {
+                return gmapsRouteCache.get(routeKey).mins;
+            }
+            const seg = estimateTransitSegment(origin, dest, dayNum, 540);
+            return seg.mins;
+        }
+
+        function evaluateCandidateSequenceScore(seq, startOrigin, endDest, startMins, dayNum) {
+            let curMins = startMins;
+            let prevPlace = startOrigin;
+            let totalTransitMins = 0;
+            let penaltyMins = 0;
+
+            for (let i = 0; i < seq.length; i++) {
+                const act = seq[i];
+                const moveMins = estimatePairTransitMinutesFast(prevPlace, act.title, dayNum);
+                totalTransitMins += moveMins;
+                curMins += moveMins;
+
+                const arriveMins = curMins;
+                const leaveMins = arriveMins + (act.duration || 90);
+                const role = classifyActivityScheduleConstraint(act);
+
+                if (role === 'night') {
+                    // 夜間點燈／夜景建議 17:00 (1020分) 後抵達，太早去還沒點燈給予高懲罰
+                    if (arriveMins < 990) {
+                        penaltyMins += (1020 - arriveMins) * 1.4;
+                    }
+                } else if (role === 'meal') {
+                    // 午餐黃金窗 11:30(690)~14:00(840)、晚餐黃金窗 17:30(1050)~20:30(1230)
+                    const inLunch = arriveMins >= 675 && arriveMins <= 855;
+                    const inDinner = arriveMins >= 1035 && arriveMins <= 1245;
+                    if (!inLunch && !inDinner) {
+                        const distLunch = Math.min(Math.abs(arriveMins - 720), Math.abs(arriveMins - 810));
+                        const distDinner = Math.min(Math.abs(arriveMins - 1080), Math.abs(arriveMins - 1170));
+                        penaltyMins += Math.min(distLunch, distDinner) * 0.75;
+                    }
+                } else if (role === 'market') {
+                    // 傳統市場多在 16:30(990) 後陸續收攤
+                    if (arriveMins > 960) {
+                        penaltyMins += (arriveMins - 960) * 1.3;
+                    }
+                } else if (role === 'daytime_attraction') {
+                    // 寺社、城郭、美術館多在 17:00(1020) 閉館
+                    if (arriveMins > 990) {
+                        penaltyMins += (arriveMins - 990) * 1.25;
+                    }
+                }
+
+                curMins = leaveMins;
+                prevPlace = act.title;
+            }
+
+            const backMoveMins = estimatePairTransitMinutesFast(prevPlace, endDest, dayNum);
+            totalTransitMins += backMoveMins;
+
+            return {
+                score: totalTransitMins + penaltyMins,
+                totalTransitMins
+            };
+        }
+
+        function optimizeActiveDayRoute() {
+            const d = appState.activeDay;
+            const total = getTotalDaysCount();
+            const acts = appState.activitiesByDay[d] || [];
+            if (acts.length < 2) {
+                showToast('當日至少需要 2 個景點拼圖才能進行路線最佳化！');
+                return;
+            }
+
+            // 保存一鍵還原快照
+            lastRouteOptimizationSnapshot = {
+                day: d,
+                activities: acts.map(a => ({ ...a }))
+            };
+
+            let startMins = parseClockToMinutes(appState.dayStartTimes[d] || '09:30');
+            let startOrigin = d === 1
+                ? appState.outboundFlight.airport
+                : (appState.dayHotels[d - 1] || appState.dayHotels[d] || '住宿飯店');
+
+            if (d < total && appState.dropLuggageFirst?.[d] && appState.dayHotels[d]) {
+                const tonightHotel = appState.dayHotels[d];
+                startMins += estimatePairTransitMinutesFast(startOrigin, tonightHotel, d) + 20;
+                startOrigin = tonightHotel;
+            }
+
+            const endDest = d < total
+                ? (appState.dayHotels[d] || '今晚住宿飯店')
+                : appState.inboundFlight.airport;
+
+            const beforeEval = evaluateCandidateSequenceScore(acts, startOrigin, endDest, startMins, d);
+            let bestSeq = [...acts];
+            let bestEval = beforeEval;
+
+            if (acts.length <= 7) {
+                // 7 個景點以內：全排列搜尋精準最佳解（兼顧移動時間＋夜間點燈＋用餐＋營業時間）
+                const used = new Array(acts.length).fill(false);
+                const current = [];
+                const dfs = () => {
+                    if (current.length === acts.length) {
+                        const ev = evaluateCandidateSequenceScore(current, startOrigin, endDest, startMins, d);
+                        if (ev.score < bestEval.score - 0.01) {
+                            bestEval = ev;
+                            bestSeq = [...current];
+                        }
+                        return;
+                    }
+                    for (let i = 0; i < acts.length; i++) {
+                        if (used[i]) continue;
+                        used[i] = true;
+                        current.push(acts[i]);
+                        dfs();
+                        current.pop();
+                        used[i] = false;
+                    }
+                };
+                dfs();
+            } else {
+                // 超過 7 個景點：先貪婪建構初始解，再跑 2-opt 局部交換優化
+                let remaining = [...acts];
+                let greedy = [];
+                while (remaining.length > 0) {
+                    let pickIdx = 0;
+                    let pickScore = Infinity;
+                    for (let i = 0; i < remaining.length; i++) {
+                        const trial = [...greedy, remaining[i]];
+                        const ev = evaluateCandidateSequenceScore(trial, startOrigin, endDest, startMins, d);
+                        if (ev.score < pickScore) {
+                            pickScore = ev.score;
+                            pickIdx = i;
+                        }
+                    }
+                    greedy.push(remaining.splice(pickIdx, 1)[0]);
+                }
+                bestSeq = greedy;
+                bestEval = evaluateCandidateSequenceScore(bestSeq, startOrigin, endDest, startMins, d);
+                let improved = true;
+                while (improved) {
+                    improved = false;
+                    for (let i = 0; i < bestSeq.length - 1; i++) {
+                        for (let j = i + 1; j < bestSeq.length; j++) {
+                            const candidate = [...bestSeq];
+                            const swapped = candidate[i];
+                            candidate[i] = candidate[j];
+                            candidate[j] = swapped;
+                            const ev = evaluateCandidateSequenceScore(candidate, startOrigin, endDest, startMins, d);
+                            if (ev.score < bestEval.score - 0.01) {
+                                bestSeq = candidate;
+                                bestEval = ev;
+                                improved = true;
+                            }
+                        }
+                    }
+                }
+            }
+
+            appState.activitiesByDay[d] = bestSeq;
+            saveStateToLocal();
+            renderTimeline();
+            if (timelineViewMode === 'overview') renderOverviewPuzzleBoard();
+
+            const undoBtn = document.getElementById('undo-optimize-btn');
+            if (undoBtn) undoBtn.classList.remove('hidden');
+
+            const savedMins = Math.max(0, Math.round(beforeEval.totalTransitMins - bestEval.totalTransitMins));
+            const nightCount = bestSeq.filter(a => classifyActivityScheduleConstraint(a) === 'night').length;
+            const extraNote = nightCount > 0 ? '（已將夜間點燈/夜景排入傍晚後時段）' : '';
+            if (savedMins > 0) {
+                showToast(`✨ 已完成 Day ${d} 智慧重排！節省約 ${savedMins} 分鐘移動時間${extraNote}`);
+            } else {
+                showToast(`✨ 已依移動距離、用餐與夜間/營業時間最佳化 Day ${d} 順序${extraNote}！`);
+            }
+        }
+
+        function undoLastRouteOptimization() {
+            if (!lastRouteOptimizationSnapshot) return;
+            const { day, activities } = lastRouteOptimizationSnapshot;
+            appState.activitiesByDay[day] = activities.map(a => ({ ...a }));
+            appState.activeDay = day;
+            lastRouteOptimizationSnapshot = null;
+
+            const undoBtn = document.getElementById('undo-optimize-btn');
+            if (undoBtn) undoBtn.classList.add('hidden');
+
+            saveStateToLocal();
+            renderDayTabs();
+            renderTimeline();
+            if (timelineViewMode === 'overview') renderOverviewPuzzleBoard();
+            showToast(`↩️ 已還原 Day ${day} 最佳化前的原本順序！`);
         }
 
         function estimateTransitSegment(origin, dest, dayNum, segmentDepartMins = 540) {
@@ -4190,6 +4412,8 @@ category 只能從這 5 個中選一：「周邊順遊」、「傳統祭典」�
             pushCurrentStateToCloud,
             saveGithubPatToken,
             forceRecalculateAllGoogleMaps,
+            optimizeActiveDayRoute,
+            undoLastRouteOptimization,
             openResetConfirmModal,
             closeResetConfirmModal,
             confirmResetAll
