@@ -766,7 +766,7 @@
         // ==========================================
         // 1. 儲存鍵值與日本 10 大地區 / JR PASS / 航班 / 季節祭典資料庫
         // ==========================================
-        const APP_VERSION = 'v1.19';
+        const APP_VERSION = 'v1.20';
         const APP_BUILD_DATE = '2026-11-21';
         const STATE_STORAGE_KEY = 'travel_puzzle_jp_state_v4';
         const SYNC_CODE_STORAGE_KEY = 'travel_puzzle_device_sync_code';
@@ -834,49 +834,32 @@
             'AK177': { airline: 'AirAsia 亞洲航空', airport: '關西國際機場 (KIX)', terminal: 'T1', time: '20:45', aircraft: 'A321neo', region: 'kansai' }
         };
 
+        // 精簡版離線核心保底庫（每區保留當季限定重點＋經典代表，其餘由 db.json 與 Google Maps Places 自動補充）
         const BUILTIN_EVENTS_DB = [
             { id: 'ev-ks-dec-1', region: 'kansai', months: [11,12], category: '光影花火', title: '京都車站大樓冬季點燈・大階段光之階梯', location: '京都市下京區（JR京都車站中央口大階段）', dateLabel: '11月～12月25日冬季限定', duration: 60, isIndoor: false, desc: '171階巨大階梯化身為聖誕樹與四季光影動畫，免費入場且搭車超順路。' },
             { id: 'ev-ks-dec-2', region: 'kansai', months: [11,12], category: '光影花火', title: '道頓堀・御堂筋光之饗宴＆中之島光之文藝復興', location: '道頓堀戎橋～御堂筋・中之島公園', dateLabel: '11月～12月31日冬季限定', duration: 90, isIndoor: false, desc: '全長4公里金黃香檳樹海點燈串聯道頓堀運河夜景，逛街吃美食同步賞燈。' },
             { id: 'ev-ks-dec-3', region: 'kansai', months: [12,1], category: '光影花火', title: '神戶 Luminarie 光之雕刻與美利堅港區點燈', location: '神戶市中央區（舊居留地・東遊園地・美利堅公園）', dateLabel: '冬季限定光雕盛典', duration: 90, isIndoor: false, desc: '義大利匠人手工打造的壯麗彩繪光廊，結合神戶港夜景與冬季市集。' },
-            { id: 'ev-ks-dec-4', region: 'kansai', months: [12], category: '傳統祭典', title: '京都嵐山花燈路＆竹林夜間點燈', location: '京都市右京區（嵐山渡月橋・竹林小徑）', dateLabel: '12月冬季夜間限定', duration: 120, isIndoor: false, desc: '渡月橋與竹林小徑在暖黃燈火映照下展現靜謐夢幻的冬夜古都風情。' },
             { id: 'ev-ks-1', region: 'kansai', months: [1,2,3,4,5,6,7,8,9,10,11,12], category: '傳統祭典', title: '京都清水寺＆二年坂三年坂', location: '京都市東山區（祇園四條站步行15分）', dateLabel: '世界遺產・四季必訪', duration: 150, isIndoor: false, desc: '懸空清水舞台遠眺京都市景，沿石坂古街品嚐抹茶與八橋。' },
-            { id: 'ev-ks-2', region: 'kansai', months: [1,2,3,4,5,6,7,8,9,10,11,12], category: '周邊順遊', title: '大阪通天閣＆新世界串炸老街', location: '大阪市浪速區（恵美須町/動物園前站）', dateLabel: '大阪經典地標・高人氣', duration: 120, isIndoor: false, desc: '登展望台俯瞰大阪市景，品嚐新世界元祖炸串與昭和懷舊風情。' },
-            { id: 'ev-ks-3', region: 'kansai', months: [1,2,3,4,5,6,7,8,9,10,11,12], category: '傳統祭典', title: '伏見稻荷大社・千本鳥居', location: '京都市伏見區（JR稻荷站步行1分）', dateLabel: 'JR奈良線直達・全天開放', duration: 120, isIndoor: false, desc: '綿延山頭的朱紅色千本鳥居隧道，清晨光影最為迷人。' },
-            { id: 'ev-ks-4', region: 'kansai', months: [1,2,3,4,5,6,7,8,9,10,11,12], category: '周邊順遊', title: '大阪城天守閣＆大阪城公園', location: '大阪市中央區（JR大阪城公園站）', dateLabel: '日本三大名城・春櫻秋銀杏', duration: 120, isIndoor: true, desc: '登頂金碧輝煌天守閣俯瞰大阪全景，歷史博物館雨天也適合。' },
-            { id: 'ev-ks-5', region: 'kansai', months: [1,2,3,4,5,6,7,8,9,10,11,12], category: '傳統祭典', title: '金閣寺（鹿苑寺）金箔舍利殿', location: '京都市北區（巴士金閣寺道站）', dateLabel: '世界遺產・鏡湖池倒影', duration: 90, isIndoor: false, desc: '貼滿純金箔的舍利殿倒映在鏡湖池面，京都最具代表性絕景。' },
-            { id: 'ev-ks-6', region: 'kansai', months: [1,2,3,4,5,6,7,8,9,10,11,12], category: '周邊順遊', title: '日本環球影城 USJ 瑪利歐樂園', location: '大阪市此花區（JR環球城站直達）', dateLabel: '持JR PASS可搭夢咲線直達', duration: 360, isIndoor: false, desc: '超級任天堂世界、哈利波特魔法世界與好萊塢美夢乘車遊。' },
-            { id: 'ev-ks-7', region: 'kansai', months: [1,2,3,4,5,6,7,8,9,10,11,12], category: '周邊順遊', title: '奈良公園小鹿＆東大寺大佛殿', location: '奈良市雜司町（JR/近鐵奈良站）', dateLabel: '全年順遊・餵鹿體驗', duration: 180, isIndoor: false, desc: '與可愛神鹿互動並參拜世界最大木造建築東大寺盧舍那佛。' },
-            { id: 'ev-ks-8', region: 'kansai', months: [1,2,3,4,5,6,7,8,9,10,11,12], category: '周邊順遊', title: '日本國寶・姬路城白鷺城巡禮', location: '兵庫縣姬路市（JR姬路站步行15分）', dateLabel: '世界遺產・JR新快速直達', duration: 150, isIndoor: false, desc: '日本現存最完整木造天守閣，搭 JR 新快速從大阪直達僅1小時。' },
-            { id: 'ev-ks-9', region: 'kansai', months: [1,2,3,4,5,6,7,8,9,10,11,12], category: '季節美食', title: '京都錦市場＆新京極美食巡禮', location: '京都市中京區（烏丸/河原町站）', dateLabel: '雨天備案首選・京都廚房', duration: 120, isIndoor: true, desc: '有遮雨棚的百年市場，現烤玉子燒、豆乳甜甜圈與海鮮串燒。' },
-            { id: 'ev-ks-10', region: 'kansai', months: [1,2,3,4,5,6,7,8,9,10,11,12], category: '光影花火', title: '阿倍野 HARUKAS 300 展望台', location: '大阪市阿倍野區（JR天王寺站直結）', dateLabel: '室內300公尺高空夜景', duration: 90, isIndoor: true, desc: '全玻璃幕牆高空俯瞰大阪與神戶港夜景，樓下即大型百貨。' },
-            { id: 'ev-ks-12', region: 'kansai', months: [1,2,3,4,5,6,7,8,9,10,11,12], category: '季節美食', title: '神戶南京町＆A5神戶牛鐵板燒', location: '神戶市中央區（JR元町站步行3分）', dateLabel: '午餐晚餐皆宜', duration: 120, isIndoor: true, desc: '逛日本三大中華街小吃，再品嚐入口即化的頂級A5神戶牛。' },
+            { id: 'ev-ks-2', region: 'kansai', months: [1,2,3,4,5,6,7,8,9,10,11,12], category: '周邊順遊', title: '大阪城天守閣＆大阪城公園', location: '大阪市中央區（JR大阪城公園站）', dateLabel: '日本三大名城', duration: 120, isIndoor: true, desc: '登頂金碧輝煌天守閣俯瞰大阪全景，歷史博物館雨天也適合。' },
+            { id: 'ev-ks-3', region: 'kansai', months: [1,2,3,4,5,6,7,8,9,10,11,12], category: '周邊順遊', title: '奈良公園小鹿＆東大寺大佛殿', location: '奈良市雜司町（JR/近鐵奈良站）', dateLabel: '全年順遊・餵鹿體驗', duration: 180, isIndoor: false, desc: '與可愛神鹿互動並參拜世界最大木造建築東大寺盧舍那佛。' },
             { id: 'ev-kt-dec-1', region: 'kanto', months: [11,12,1,2], category: '光影花火', title: '東京丸之內香檳金點燈＆東京車站紅磚夜景', location: '東京都千代田區（JR東京站丸之內口）', dateLabel: '11月～2月中旬冬季限定', duration: 90, isIndoor: false, desc: '超過百萬顆香檳金LED燈飾點亮丸之內仲通，搭配百年紅磚站舍超浪漫。' },
             { id: 'ev-kt-1', region: 'kanto', months: [1,2,3,4,5,6,7,8,9,10,11,12], category: '傳統祭典', title: '淺草寺雷門＆仲見世通老街', location: '東京都台東區（淺草站步行3分）', dateLabel: '東京必訪地標', duration: 120, isIndoor: false, desc: '東京最古老寺院雷門大燈籠打卡，順遊隅田川遠眺晴空塔。' },
             { id: 'ev-kt-2', region: 'kanto', months: [1,2,3,4,5,6,7,8,9,10,11,12], category: '光影花火', title: '東京晴空塔＆墨田水族館', location: '東京都墨田區（押上站直結）', dateLabel: '室內高空展望', duration: 150, isIndoor: true, desc: '登上450公尺天望回廊俯瞰東京灣，雨天也能逛晴空街道商場。' },
-            { id: 'ev-kt-3', region: 'kanto', months: [1,2,3,4,5,6,7,8,9,10,11,12], category: '周邊順遊', title: '鎌倉大佛＆江之島湘南海岸', location: '神奈川縣鎌倉市（JR橫須賀線）', dateLabel: '東京近郊一日遊', duration: 240, isIndoor: false, desc: '搭乘江之電穿梭海岸線與平交道，傍晚登上江之島遠眺富士山。' },
-            { id: 'ev-kt-4', region: 'kanto', months: [1,2,3,4,5,6,7,8,9,10,11,12], category: '周邊順遊', title: '河口湖大石公園＆富士回遊列車', location: '山梨縣富士河口湖町', dateLabel: '持東京廣域券可搭', duration: 240, isIndoor: false, desc: '搭特急富士回遊直達河口湖，無遮蔽拍攝逆富士與季節花海。' },
             { id: 'ev-hk-dec-1', region: 'hokkaido', months: [11,12,1,2,3], category: '光影花火', title: '札幌白色燈樹節＆慕尼黑聖誕市集', location: '札幌市中央區（大通公園・站前通）', dateLabel: '11月下旬～12月25日限定', duration: 120, isIndoor: false, desc: '雪白大通公園閃耀巨型光雕樹海，順逛熱紅酒與德國聖誕市集攤位。' },
             { id: 'ev-hk-1', region: 'hokkaido', months: [1,2,3,4,5,6,7,8,9,10,11,12], category: '周邊順遊', title: '小樽運河煤氣燈＆堺町通玻璃街', location: '北海道小樽市（JR小樽站步行8分）', dateLabel: 'JR快速35分直達', duration: 180, isIndoor: false, desc: '紅磚倉庫倒映運河水面，品嚐六花亭、北菓樓與鮮甜海鮮丼。' },
-            { id: 'ev-hk-2', region: 'hokkaido', months: [1,2,3,4,5,6,7,8,9,10,11,12], category: '光影花火', title: '函館山百萬夜景＆金森紅磚倉庫', location: '北海道函館市（函館市電十字街站）', dateLabel: '世界三大夜景', duration: 150, isIndoor: false, desc: '搭纜車登頂俯瞰雙海灣沙漏形璀璨燈海，傍晚藍調時刻最夢幻。' },
             { id: 'ev-ky-1', region: 'kyushu', months: [1,2,3,4,5,6,7,8,9,10,11,12], category: '周邊順遊', title: '由布院溫泉街＆金鱗湖晨霧散策', location: '大分縣由布市（JR由布院站）', dateLabel: '搭由布院之森直達', duration: 210, isIndoor: false, desc: '搭乘觀光特急由布院之森抵達，漫步湯之坪街道與夢幻金鱗湖。' },
             { id: 'ev-ky-2', region: 'kyushu', months: [1,2,3,4,5,6,7,8,9,10,11,12], category: '季節美食', title: '福岡中洲屋台街＆博多運河城', location: '福岡市博多區（地鐵中洲川端站）', dateLabel: '夜晚必體驗路邊攤', duration: 120, isIndoor: false, desc: '體驗道地博多豚骨拉麵、明太子玉子燒與水炊雞肉鍋文化。' },
-            { id: 'ev-ky-3', region: 'kyushu', months: [1,2,3,4,5,6,7,8,9,10,11,12], category: '周邊順遊', title: '熊本城特別公開見學＆城彩苑', location: '熊本市中央區（熊本市電熊本城前）', dateLabel: '日本三大名城', duration: 150, isIndoor: false, desc: '走上空中見學步道近距離欣賞武者返石垣與修復後壯麗天守閣。' },
             { id: 'ev-ok-1', region: 'okinawa', months: [1,2,3,4,5,6,7,8,9,10,11,12], category: '周邊順遊', title: '沖繩美麗海水族館＆黑潮之海', location: '沖繩縣本部町（海洋博公園內）', dateLabel: '沖繩必訪王牌景點', duration: 180, isIndoor: true, desc: '世界級巨大水槽近距離觀賞鯨鯊與鬼蝠魟悠游，雨天也超適合。' },
             { id: 'ev-ok-2', region: 'okinawa', months: [1,2,3,4,5,6,7,8,9,10,11,12], category: '季節美食', title: '那霸國際通＆牧志第一公設市場', location: '那霸市牧志（單軌牧志站/縣廳前站）', dateLabel: '夜晚逛街美食首選', duration: 150, isIndoor: true, desc: '現挑夜光貝與沖繩阿古豬料理，順買紅芋塔與雪鹽伴手禮。' },
-            { id: 'ev-ok-3', region: 'okinawa', months: [1,2,3,4,5,6,7,8,9,10,11,12], category: '光影花火', title: '北谷美國村日落海灘＆港區夜景', location: '沖繩縣北谷町美濱', dateLabel: '美式海濱度假風情', duration: 150, isIndoor: false, desc: '傍晚欣賞西海岸橘紅夕陽，夜晚逛色彩繽紛的美式霓虹街區。' },
-            { id: 'ev-ok-4', region: 'okinawa', months: [1,2,3,4,5,6,7,8,9,10,11,12], category: '周邊順遊', title: '古宇利大橋跨海兜風＆心形岩', location: '沖繩縣今歸仁村古宇利島', dateLabel: '自駕必走翡翠海景橋', duration: 120, isIndoor: false, desc: '橫越兩公里湛藍翡翠海面，品嚐超人氣蝦蝦飯餐車。' },
             { id: 'ev-cb-1', region: 'chubu', months: [1,2,3,4,5,6,7,8,9,10,11,12], category: '賞花紅葉', title: '金澤兼六園＆近江町海鮮市場', location: '石川縣金澤市（金澤站巴士15分）', dateLabel: '日本三大名園', duration: 150, isIndoor: false, desc: '冬季雪吊景觀與春櫻秋楓皆為絕景，順遊近江町市場海鮮丼。' },
             { id: 'ev-cb-2', region: 'chubu', months: [1,2,3,4,5,6,7,8,9,10,11,12], category: '周邊順遊', title: '世界遺產・白川鄉合掌村展望台', location: '岐阜縣白川村（濃飛巴士直達）', dateLabel: '童話薑餅屋聚落', duration: 180, isIndoor: false, desc: '登上城山展望台俯瞰百年茅草屋聚落，走入和田家參觀內部構造。' },
             { id: 'ev-th-1', region: 'tohoku', months: [1,2,3,4,5,6,7,8,9,10,11,12], category: '周邊順遊', title: '日本三景・松島灣遊船＆瑞嚴寺', location: '宮城縣松島町（JR松島海岸站）', dateLabel: '仙台出發40分直達', duration: 180, isIndoor: false, desc: '搭觀光船穿梭260座奇岩小島，現烤肥美松島牡蠣與毛豆奶昔。' },
             { id: 'ev-sy-1', region: 'sanyo', months: [1,2,3,4,5,6,7,8,9,10,11,12], category: '傳統祭典', title: '宮島嚴島神社＆海上大鳥居', location: '廣島縣廿日市市（JR宮島口轉渡輪）', dateLabel: 'JR渡輪PASS涵蓋', duration: 210, isIndoor: false, desc: '退潮走近朱紅海上大鳥居，漲潮欣賞漂浮海面的迴廊奇景。' },
             { id: 'ev-sy-2', region: 'sanyo', months: [1,2,3,4,5,6,7,8,9,10,11,12], category: '周邊順遊', title: '倉敷美觀地區・白壁柳樹運河散策', location: '岡山縣倉敷市（JR倉敷站步行10分）', dateLabel: '江戶風情水鄉古街', duration: 150, isIndoor: false, desc: '搭乘倉敷川小舟穿梭白壁黑瓦倉庫群，逛紙膠帶與丹寧文創店。' },
-            { id: 'ev-sy-3', region: 'sanyo', months: [1,2,3,4,5,6,7,8,9,10,11,12], category: '周邊順遊', title: '尾道千光寺纜車＆貓之細道', location: '廣島縣尾道市（JR尾道站步行15分）', dateLabel: '瀨戶內海山城絕景', duration: 150, isIndoor: false, desc: '搭纜車登頂俯瞰瀨戶內海島波海道，沿坡道尋找可愛福石貓。' },
             { id: 'ev-si-1', region: 'sanin', months: [1,2,3,4,5,6,7,8,9,10,11,12], category: '周邊順遊', title: '鳥取砂丘＆砂之美術館壯麗沙雕', location: '鳥取市福部町（JR鳥取站巴士20分）', dateLabel: '日本最大海岸砂丘', duration: 150, isIndoor: false, desc: '赤腳走上馬背沙丘眺望日本海，順遊世界頂級室內沙雕美術館。' },
             { id: 'ev-si-2', region: 'sanin', months: [1,2,3,4,5,6,7,8,9,10,11,12], category: '傳統祭典', title: '出雲大社・巨型注連繩結緣參拜', location: '島根縣出雲市（一畑電車出雲大社前）', dateLabel: '日本最強結緣聖地', duration: 150, isIndoor: false, desc: '參拜神樂殿重達5噸的震撼巨型注連繩，品嚐出雲割子蕎麥麵。' },
-            { id: 'ev-si-3', region: 'sanin', months: [1,2,3,4,5,6,7,8,9,10,11,12], category: '賞花紅葉', title: '足立美術館・連續蟬聯日本第一庭園', location: '島根縣安來市（JR安來站免費接駁）', dateLabel: '窗框如畫的枯山水', duration: 150, isIndoor: true, desc: '透過館內「生之掛軸」落地窗欣賞如畫般精緻的枯山水與横山大觀名作。' },
             { id: 'ev-sk-1', region: 'shikoku', months: [1,2,3,4,5,6,7,8,9,10,11,12], category: '傳統祭典', title: '金刀比羅宮・785階石段參拜與讚岐烏龍麵', location: '香川縣琴平町（JR琴平站步行15分）', dateLabel: '一生必參拜一次', duration: 180, isIndoor: false, desc: '挑戰785階石階登上本宮俯瞰讚岐平原，山腳下現煮烏龍麵超彈牙。' },
-            { id: 'ev-sk-2', region: 'shikoku', months: [1,2,3,4,5,6,7,8,9,10,11,12], category: '周邊順遊', title: '愛媛道後溫泉本館＆少爺機關鐘', location: '愛媛縣松山市（伊予鐵道後溫泉站）', dateLabel: '日本最古老溫泉之一', duration: 150, isIndoor: true, desc: '泡完神隱少女湯屋原型名湯後，穿浴衣逛道後商店街喝橘子汁。' },
-            { id: 'ev-sk-3', region: 'shikoku', months: [1,2,3,4,5,6,7,8,9,10,11,12], category: '周邊順遊', title: '香川小豆島天使之路＆橄欖公園', location: '香川縣小豆島町（高松港搭渡輪60分）', dateLabel: '瀨戶內海跳島首選', duration: 240, isIndoor: false, desc: '退潮時漫步浪漫天使散步道，在希臘風車前騎掃把拍魔女宅急便美照。' }
+            { id: 'ev-sk-2', region: 'shikoku', months: [1,2,3,4,5,6,7,8,9,10,11,12], category: '周邊順遊', title: '愛媛道後溫泉本館＆少爺機關鐘', location: '愛媛縣松山市（伊予鐵道後溫泉站）', dateLabel: '日本最古老溫泉之一', duration: 150, isIndoor: true, desc: '泡完神隱少女湯屋原型名湯後，穿浴衣逛道後商店街喝橘子汁。' }
         ];
 
         // ==========================================
@@ -1062,8 +1045,7 @@
             updateSyncCodeBadgeUI();
             gmapsRouteCache.clear();
             gmapsPlacesPoolByRegion.clear();
-            renderTimeline();
-            loadBuiltinRecommendations();
+            renderAll({ refreshRecs: true });
             closeApiKeyModal();
             showToast('✅ 已儲存 API 金鑰與雲端同步設定！');
         }
@@ -1083,8 +1065,7 @@
             updateApiKeyHeaderStatus();
             gmapsRouteCache.clear();
             gmapsPlacesPoolByRegion.clear();
-            renderTimeline();
-            loadBuiltinRecommendations();
+            renderAll({ refreshRecs: true });
             showToast('已清除 Google Maps API Key');
         }
 
@@ -1245,8 +1226,7 @@
                 isApplyingRemoteSnapshot = true;
                 appState = { ...appState, ...parsed };
                 localStorage.setItem(STATE_STORAGE_KEY, JSON.stringify(appState));
-                syncInputsFromState();
-                loadBuiltinRecommendations();
+                renderAll({ refreshRecs: true });
                 isApplyingRemoteSnapshot = false;
             } catch (e) {
                 isApplyingRemoteSnapshot = false;
@@ -1622,8 +1602,7 @@
                 if (!appState.dayStartTimes[d]) appState.dayStartTimes[d] = d === 1 ? computeDay1StartTimeFromFlight() : '09:30';
             }
             saveStateToLocal();
-            syncInputsFromState();
-            loadBuiltinRecommendations();
+            renderAll({ refreshRecs: true });
         }
 
         function handleTravelerCountChange(val) {
@@ -1633,7 +1612,7 @@
                 appState.drivingMode = false;
             }
             saveStateToLocal();
-            syncInputsFromState();
+            renderAll();
         }
 
         function renderRegionSelector() {
@@ -1674,8 +1653,7 @@
                 appState.jrPassId = matchingPasses[0].id;
             }
             saveStateToLocal();
-            syncInputsFromState();
-            loadBuiltinRecommendations();
+            renderAll({ refreshRecs: true });
         }
 
         function toggleExtraRegion(regionId) {
@@ -1684,8 +1662,7 @@
             else set.add(regionId);
             appState.extraRegions = Array.from(set);
             saveStateToLocal();
-            syncInputsFromState();
-            loadBuiltinRecommendations();
+            renderAll({ refreshRecs: true });
         }
 
         function renderFlightBanner() {
@@ -1743,7 +1720,7 @@
             document.getElementById('flight-status-tip')?.classList.add('hidden');
             gmapsRouteCache.clear();
             saveStateToLocal();
-            syncInputsFromState();
+            renderAll();
             showToast('✅ 已更新航班時刻與 Day 1 銜接時間');
         }
 
@@ -1798,8 +1775,7 @@
 
             gmapsRouteCache.clear();
             saveStateToLocal();
-            syncInputsFromState();
-            loadBuiltinRecommendations();
+            renderAll({ refreshRecs: true });
 
             if (tip) {
                 if (foundOut || foundIn) {
@@ -1823,27 +1799,26 @@
             appState.drivingMode = Boolean(checked);
             gmapsRouteCache.clear();
             saveStateToLocal();
-            syncInputsFromState();
+            renderAll();
         }
 
         function handleRentalCostChange() {
             appState.rentalCarCostJpy = Math.max(0, parseInt(document.getElementById('rental-car-cost')?.value, 10) || 0);
             appState.rentalTollFuelJpy = Math.max(0, parseInt(document.getElementById('rental-toll-fuel')?.value, 10) || 0);
             saveStateToLocal();
-            updateJrPassSummaryUI();
-            renderExpenseSummary();
+            renderAll();
         }
 
         function toggleJrPass(checked) {
             appState.useJrPass = Boolean(checked);
             saveStateToLocal();
-            syncInputsFromState();
+            renderAll();
         }
 
         function toggleSecondJrPass(checked) {
             appState.useSecondJrPass = Boolean(checked);
             saveStateToLocal();
-            syncInputsFromState();
+            renderAll();
         }
 
         function handleJrPassConfigChange() {
@@ -1856,7 +1831,7 @@
             if (p2) appState.jrPassId2 = p2;
             if (d2 >= 1) appState.jrPassStartDay2 = d2;
             saveStateToLocal();
-            syncInputsFromState();
+            renderAll();
         }
 
         function getFilteredJrPassesForCurrentRegions() {
@@ -2009,8 +1984,7 @@
             pendingGmapsRouteKeys.clear();
             appState.customTransitMinutes = {};
             saveStateToLocal();
-            renderTimeline();
-            if (timelineViewMode === 'overview') renderOverviewPuzzleBoard();
+            renderAll();
             showToast('🗺️ 已向 Google Maps 重新取得所有路段時間！');
         }
 
@@ -2200,8 +2174,7 @@
 
             appState.activitiesByDay[d] = bestSeq;
             saveStateToLocal();
-            renderTimeline();
-            if (timelineViewMode === 'overview') renderOverviewPuzzleBoard();
+            renderAll();
 
             const undoBtn = document.getElementById('undo-optimize-btn');
             if (undoBtn) undoBtn.classList.remove('hidden');
@@ -2227,9 +2200,7 @@
             if (undoBtn) undoBtn.classList.add('hidden');
 
             saveStateToLocal();
-            renderDayTabs();
-            renderTimeline();
-            if (timelineViewMode === 'overview') renderOverviewPuzzleBoard();
+            renderAll();
             showToast(`↩️ 已還原 Day ${day} 最佳化前的原本順序！`);
         }
 
@@ -2468,7 +2439,7 @@
         function switchActiveDay(dayNum) {
             appState.activeDay = dayNum;
             saveStateToLocal();
-            syncInputsFromState();
+            renderAll();
         }
 
         function updateActivityDuration(actId, newMins) {
@@ -2477,7 +2448,7 @@
             if (item) {
                 item.duration = parseInt(newMins, 10) || 90;
                 saveStateToLocal();
-                renderTimeline();
+                renderAll();
             }
         }
 
@@ -2491,7 +2462,7 @@
             list[idx] = list[targetIdx];
             list[targetIdx] = temp;
             saveStateToLocal();
-            renderTimeline();
+            renderAll();
         }
 
         function removeActivity(actId) {
@@ -2506,12 +2477,7 @@
                 }
                 appState.activitiesByDay[d] = list.filter(a => a.id !== actId);
                 saveStateToLocal();
-                renderDayTabs();
-                renderWeatherCountdownPanel();
-                renderTimeline();
-                renderOverviewPuzzleBoard();
-                renderTrashBinUI();
-                loadBuiltinRecommendations();
+                renderAll({ refreshRecs: true });
                 showToast('🗑️ 已移入拼圖回收桶，可隨時點擊上方回收桶復原！');
             }, 420);
         }
@@ -2557,12 +2523,7 @@
 
             gmapsRouteCache.clear();
             saveStateToLocal();
-            renderDayTabs();
-            renderWeatherCountdownPanel();
-            renderTimeline();
-            renderOverviewPuzzleBoard();
-            renderTrashBinUI();
-            loadBuiltinRecommendations();
+            renderAll({ refreshRecs: true });
             showToast(`↩️ 已將「${restoredPiece.title}」復原至 Day ${destDay} 行程！`);
         }
 
@@ -2570,7 +2531,7 @@
             appState.deletedPuzzleBin = [];
             isTrashBinExpanded = false;
             saveStateToLocal();
-            renderTrashBinUI();
+            renderAll();
             showToast('🧹 已清空拼圖回收桶');
         }
 
@@ -2739,9 +2700,7 @@
 
             gmapsRouteCache.clear();
             saveStateToLocal();
-            renderDayTabs();
-            renderOverviewPuzzleBoard();
-            if (timelineViewMode === 'single') renderTimeline();
+            renderAll();
             showToast(`🧩 已將「${movedItem.title}」調整至 Day ${toDay} 第 ${insertAt + 1} 站！`);
         }
 
@@ -2805,12 +2764,7 @@
             pushPieceToTrashBin(removed, dayNum);
             gmapsRouteCache.clear();
             saveStateToLocal();
-            renderDayTabs();
-            renderWeatherCountdownPanel();
-            renderOverviewPuzzleBoard();
-            renderTrashBinUI();
-            if (timelineViewMode === 'single') renderTimeline();
-            loadBuiltinRecommendations();
+            renderAll({ refreshRecs: true });
             showToast(`🗑️ 已將「${removed.title}」移入拼圖回收桶，隨時可復原！`);
         }
 
@@ -3165,7 +3119,7 @@
             if (d === 1) return;
             appState.dayStartTimes[d] = newTime || '09:30';
             saveStateToLocal();
-            renderTimeline();
+            renderAll();
         }
 
         function saveDayHotel(hotelName) {
@@ -3181,7 +3135,7 @@
             }
             gmapsRouteCache.clear();
             saveStateToLocal();
-            syncInputsFromState();
+            renderAll();
             if (cleaned) {
                 showToast(`🏨 已設定 Day ${d} 住宿「${cleaned}」並自動串接隔日起點`);
             }
@@ -3192,7 +3146,7 @@
             if (!appState.dropLuggageFirst) appState.dropLuggageFirst = {};
             appState.dropLuggageFirst[d] = Boolean(checked);
             saveStateToLocal();
-            renderTimeline();
+            renderAll();
         }
 
         function updateCustomTransitMinutes(routeKey, minsVal) {
@@ -3204,7 +3158,7 @@
                 delete appState.customTransitMinutes[routeKey];
             }
             saveStateToLocal();
-            renderTimeline();
+            renderAll();
         }
 
         function swapTwoDaysActivities(dayA, dayB) {
@@ -3215,7 +3169,7 @@
             appState.activitiesByDay[dayB] = tempActs;
             gmapsRouteCache.clear();
             saveStateToLocal();
-            syncInputsFromState();
+            renderAll();
             showToast(`🔄 已將 Day ${dayA} 與 Day ${dayB} 的行程拼圖完整對調（住宿維持不變）！`);
         }
 
@@ -3372,12 +3326,7 @@
 
             closeCustomPieceModal();
             saveStateToLocal();
-            renderDayTabs();
-            renderWeatherCountdownPanel();
-            renderTimeline();
-            renderOverviewPuzzleBoard();
-            renderTrashBinUI();
-            renderExpenseSummary();
+            renderAll();
         }
 
         function updateJpyRate(val) {
@@ -3559,8 +3508,76 @@
         // ==========================================
         // 11. 區塊三：AI 季節祭典、Google Maps 高評價景點與去重推薦拼圖
         // ==========================================
+        const spotPhotoCache = new Map();
+        const pendingSpotPhotoQueries = new Set();
         const gmapsPlacesPoolByRegion = new Map();
         const pendingGmapsPlacesRegions = new Set();
+
+        function applySpotPhotoToDom(domId, url) {
+            if (!domId || !url) return;
+            const cardEl = document.getElementById(domId);
+            const bgEl = cardEl?.querySelector('.puzzle-photo-bg');
+            if (!bgEl) return;
+            const img = new Image();
+            img.onload = () => {
+                bgEl.style.backgroundImage = `url("${url.replace(/"/g, '\\"')}")`;
+                bgEl.classList.remove('opacity-0');
+                bgEl.classList.add('opacity-35');
+            };
+            img.src = url;
+        }
+
+        async function requestSpotPhotoBackground(query, domId, directUrl = '') {
+            if (!domId) return;
+            if (directUrl) {
+                applySpotPhotoToDom(domId, directUrl);
+                return;
+            }
+            const cleanQuery = String(query || '').trim();
+            if (!cleanQuery) return;
+            if (spotPhotoCache.has(cleanQuery)) {
+                const cachedUrl = spotPhotoCache.get(cleanQuery);
+                if (cachedUrl) applySpotPhotoToDom(domId, cachedUrl);
+                return;
+            }
+            const apiKey = getGoogleMapsApiKey();
+            if (!apiKey || pendingSpotPhotoQueries.has(cleanQuery)) return;
+
+            pendingSpotPhotoQueries.add(cleanQuery);
+            try {
+                const res = await fetch('https://places.googleapis.com/v1/places:searchText', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Goog-Api-Key': apiKey,
+                        'X-Goog-FieldMask': 'places.photos'
+                    },
+                    body: JSON.stringify({
+                        textQuery: sanitizePlaceForMaps(cleanQuery),
+                        languageCode: 'zh-TW',
+                        regionCode: 'JP',
+                        maxResultCount: 1
+                    })
+                });
+                if (!res.ok) {
+                    spotPhotoCache.set(cleanQuery, '');
+                    return;
+                }
+                const data = await res.json();
+                const photoName = data?.places?.[0]?.photos?.[0]?.name;
+                if (photoName) {
+                    const photoUrl = `https://places.googleapis.com/v1/${photoName}/media?maxHeightPx=320&maxWidthPx=480&key=${encodeURIComponent(apiKey)}`;
+                    spotPhotoCache.set(cleanQuery, photoUrl);
+                    applySpotPhotoToDom(domId, photoUrl);
+                } else {
+                    spotPhotoCache.set(cleanQuery, '');
+                }
+            } catch (e) {
+                spotPhotoCache.set(cleanQuery, '');
+            } finally {
+                pendingSpotPhotoQueries.delete(cleanQuery);
+            }
+        }
 
         function getAllAlreadyAddedTitles() {
             const set = new Set();
@@ -3893,10 +3910,7 @@ category 只能從這 5 個中選一：「周邊順遊」、「傳統祭典」�
             });
             appState.activeDay = targetDay;
             saveStateToLocal();
-            renderDayTabs();
-            renderWeatherCountdownPanel();
-            renderTimeline();
-            renderOverviewPuzzleBoard();
+            renderAll();
             showToast(`🧩 已將「${rec.title}」嵌入 Day ${targetDay} 時間軸！`);
 
             const grid = document.getElementById('recommendations-grid');
@@ -4069,6 +4083,8 @@ category 只能從這 5 個中選一：「周邊順遊」、「傳統祭典」�
             updateJrPassSummaryUI();
 
             const d = appState.activeDay;
+            const optBtn = document.getElementById('optimize-route-btn');
+            if (optBtn) optBtn.textContent = `✨ 智慧順排 Day ${d}`;
             const passBadge = document.getElementById('active-day-pass-badge');
             if (passBadge) {
                 if (appState.drivingMode) {
@@ -4136,185 +4152,22 @@ category 只能從這 5 個中選一：「周邊順遊」、「傳統祭典」�
 
             const jpyInput = document.getElementById('jpy-rate-input');
             if (jpyInput) jpyInput.value = appState.jpyRate;
+        }
 
+        // 統一全局渲染管線：整合所有區塊與狀態同步，減少重複 DOM 重繪
+        function renderAll(options = {}) {
+            syncInputsFromState();
             renderDayTabs();
             renderWeatherCountdownPanel();
-            renderTimeline();
-            renderOverviewPuzzleBoard();
+            if (timelineViewMode === 'overview') {
+                renderOverviewPuzzleBoard();
+            } else {
+                renderTimeline();
+            }
             renderTrashBinUI();
             renderExpenseSummary();
-        }
-
-        // ==========================================
-        // 13. 工具函式、景點實景背景圖庫引擎與啟動初始化
-        // ==========================================
-        const spotPhotoCache = new Map();
-        const pendingSpotPhotoQueries = new Map();
-
-        const JAPAN_LANDMARK_WIKI_MAP = [
-            { kw: ['布引', '香草園'], wikiTitle: '神戸布引ハーブ園', lang: 'ja', fallbackTitle: '新神戸駅' },
-            { kw: ['luminarie', '光之雕刻'], wikiTitle: '神戸ルミナリエ', lang: 'ja', fallbackTitle: 'メリケンパーク' },
-            { kw: ['通天閣', '新世界'], wikiTitle: '通天閣', lang: 'ja' },
-            { kw: ['北野異人館'], wikiTitle: '北野町山本通', lang: 'ja' },
-            { kw: ['神戶港', '美利堅'], wikiTitle: '神戸ポートタワー', lang: 'ja' },
-            { kw: ['關西國際機場', '關西機場', 'kix'], wikiTitle: '関西国際空港', lang: 'ja' },
-            { kw: ['成田機場', 'nrt'], wikiTitle: '成田国際空港', lang: 'ja' },
-            { kw: ['羽田機場', 'hnd'], wikiTitle: '東京国際空港', lang: 'ja' },
-            { kw: ['新千歲機場', 'cts'], wikiTitle: '新千歳空港', lang: 'ja' },
-            { kw: ['福岡機場', 'fuk'], wikiTitle: '福岡空港', lang: 'ja' },
-            { kw: ['小松機場', 'kmq'], wikiTitle: '小松飛行場', lang: 'ja' },
-            { kw: ['東橫inn', '難波', '道頓堀', '心齋橋'], wikiTitle: '道頓堀', lang: 'ja' },
-            { kw: ['御堂筋', '大阪光之饗宴', '中之島'], wikiTitle: 'OSAKA光のルネサンス', lang: 'ja', fallbackTitle: '御堂筋' },
-            { kw: ['新大阪'], wikiTitle: '新大阪駅', lang: 'ja' },
-            { kw: ['梅田', '大阪站'], wikiTitle: '梅田', lang: 'ja' },
-            { kw: ['大阪城'], wikiTitle: '大坂城', lang: 'ja' },
-            { kw: ['環球影城', 'usj'], wikiTitle: 'ユニバーサル・スタジオ・ジャパン', lang: 'ja' },
-            { kw: ['黑門市場'], wikiTitle: '黒門市場', lang: 'ja' },
-            { kw: ['阿倍野', 'harukas', "q's"], wikiTitle: 'あべのハルカス', lang: 'ja' },
-            { kw: ['宇治', '平等院'], wikiTitle: '平等院', lang: 'ja' },
-            { kw: ['伏見稻荷', '千本鳥居'], wikiTitle: '伏見稲荷大社', lang: 'ja' },
-            { kw: ['清水寺'], wikiTitle: '清水寺', lang: 'ja' },
-            { kw: ['金閣寺'], wikiTitle: '鹿苑寺', lang: 'ja' },
-            { kw: ['銀閣寺'], wikiTitle: '慈照寺', lang: 'ja' },
-            { kw: ['嵐山', '渡月橋'], wikiTitle: '嵐山', lang: 'ja' },
-            { kw: ['東福寺'], wikiTitle: '東福寺', lang: 'ja' },
-            { kw: ['京都車站', '京都站'], wikiTitle: '京都駅', lang: 'ja' },
-            { kw: ['錦市場'], wikiTitle: '錦市場', lang: 'ja' },
-            { kw: ['奈良', '春日大社', '東大寺'], wikiTitle: '東大寺', lang: 'ja' },
-            { kw: ['嚴島', '宮島'], wikiTitle: '厳島神社', lang: 'ja' },
-            { kw: ['岡山後樂園', '後樂園'], wikiTitle: '後楽園', lang: 'ja' },
-            { kw: ['倉敷'], wikiTitle: '倉敷美観地区', lang: 'ja' },
-            { kw: ['尾道', '千光寺'], wikiTitle: '千光寺 (尾道市)', lang: 'ja' },
-            { kw: ['廣島', '夢幻彩燈'], wikiTitle: 'ひろしまドリミネーション', lang: 'ja', fallbackTitle: '原爆ドーム' },
-            { kw: ['淺草', '雷門'], wikiTitle: '浅草寺', lang: 'ja' },
-            { kw: ['晴空塔'], wikiTitle: '東京スカイツリー', lang: 'ja' },
-            { kw: ['東京車站', '丸之內'], wikiTitle: '東京駅', lang: 'ja' },
-            { kw: ['鎌倉'], wikiTitle: '鎌倉大仏', lang: 'ja' },
-            { kw: ['江之島'], wikiTitle: '江の島', lang: 'ja' },
-            { kw: ['箱根'], wikiTitle: '箱根温泉', lang: 'ja' },
-            { kw: ['河口湖', '富士山'], wikiTitle: '河口湖', lang: 'ja' },
-            { kw: ['輕井澤'], wikiTitle: '軽井沢町', lang: 'ja' },
-            { kw: ['札幌', '大通公園'], wikiTitle: 'さっぽろホワイトイルミネーション', lang: 'ja', fallbackTitle: '大通公園' },
-            { kw: ['小樽'], wikiTitle: '小樽運河', lang: 'ja' },
-            { kw: ['函館'], wikiTitle: '函館山', lang: 'ja' },
-            { kw: ['富良野', '美瑛'], wikiTitle: '美瑛町', lang: 'ja' },
-            { kw: ['金澤', '兼六園'], wikiTitle: '兼六園', lang: 'ja' },
-            { kw: ['白川鄉', '合掌村'], wikiTitle: '白川郷', lang: 'ja' },
-            { kw: ['高山'], wikiTitle: '高山市', lang: 'ja' },
-            { kw: ['福岡', '中洲', '屋台'], wikiTitle: '中洲', lang: 'ja' },
-            { kw: ['由布院', '湯布院'], wikiTitle: '由布院温泉', lang: 'ja' },
-            { kw: ['熊本城'], wikiTitle: '熊本城', lang: 'ja' },
-            { kw: ['姬路城'], wikiTitle: '姫路城', lang: 'ja' },
-            { kw: ['箕面'], wikiTitle: '箕面滝', lang: 'ja' },
-            { kw: ['南京町'], wikiTitle: '南京町 (神戸市)', lang: 'ja' },
-            { kw: ['祇園祭'], wikiTitle: '祇園祭', lang: 'ja' }
-        ];
-
-        function isValidScenicPhotoUrl(url) {
-            if (!url) return false;
-            const lower = url.toLowerCase();
-            if (!/\.(jpg|jpeg|png|webp)(\?|$)/i.test(lower) && !lower.includes('/thumb/')) return false;
-            if (lower.endsWith('.svg') || lower.includes('.svg/')) return false;
-            const badTokens = ['map', 'logo', 'icon', 'flag', 'diagram', 'chart', 'locator', 'blank', 'symbol', 'emblem', 'commons-logo', 'question_book', 'ambox', 'wikivoyage', 'wikidata'];
-            return !badTokens.some(tok => lower.includes(tok));
-        }
-
-        function resolveWikiLookup(rawQuery) {
-            const clean = String(rawQuery || '')
-                .replace(/抵達|出發|先前往飯店寄放行李：|從住宿飯店出發：|（.*?）|\(.*?\)/g, '')
-                .split('・')[0]
-                .split('＆')[0]
-                .trim();
-            const lower = clean.toLowerCase();
-            for (const item of JAPAN_LANDMARK_WIKI_MAP) {
-                if (item.kw.some(k => lower.includes(k))) {
-                    return { title: item.wikiTitle, lang: item.lang, fallbackTitle: item.fallbackTitle || '' };
-                }
-            }
-            return { title: clean, lang: 'zh', fallbackTitle: '' };
-        }
-
-        async function fetchWikiThumbnailUrl(title, lang) {
-            if (!title) return null;
-            try {
-                const endpoint = `https://${lang}.wikipedia.org/w/api.php?action=query&titles=${encodeURIComponent(title)}&redirects=1&prop=pageimages&format=json&pithumbsize=900&origin=*`;
-                const res = await fetch(endpoint);
-                if (res.ok) {
-                    const data = await res.json();
-                    const pages = data?.query?.pages || {};
-                    for (const pid of Object.keys(pages)) {
-                        if (pid === '-1') continue;
-                        const src = pages[pid]?.thumbnail?.source;
-                        if (isValidScenicPhotoUrl(src)) {
-                            return src;
-                        }
-                    }
-                }
-
-                const searchUrl = `https://${lang}.wikipedia.org/w/api.php?action=query&generator=search&gsrsearch=${encodeURIComponent(title)}&gsrlimit=3&prop=pageimages&format=json&pithumbsize=900&origin=*`;
-                const sRes = await fetch(searchUrl);
-                if (sRes.ok) {
-                    const sData = await sRes.json();
-                    const sPages = sData?.query?.pages || {};
-                    for (const pid of Object.keys(sPages)) {
-                        const src = sPages[pid]?.thumbnail?.source;
-                        if (isValidScenicPhotoUrl(src)) {
-                            return src;
-                        }
-                    }
-                }
-            } catch (e) {}
-            return null;
-        }
-
-        function applyPhotoToDom(domId, imgUrl) {
-            if (!domId || !imgUrl) return;
-            const hostEl = document.getElementById(domId);
-            if (!hostEl) return;
-            const bgEl = hostEl.querySelector('.puzzle-photo-bg');
-            if (!bgEl) return;
-            bgEl.style.backgroundImage = `url("${imgUrl}")`;
-            requestAnimationFrame(() => {
-                bgEl.classList.remove('opacity-0');
-                bgEl.classList.add('opacity-90');
-            });
-        }
-
-        async function requestSpotPhotoBackground(queryText, domId, directUrl = '') {
-            if (!domId) return;
-            if (directUrl && isValidScenicPhotoUrl(directUrl)) {
-                applyPhotoToDom(domId, directUrl);
-                return;
-            }
-            if (!queryText) return;
-            const lookup = resolveWikiLookup(queryText);
-            const cacheKey = `${lookup.lang}:${lookup.title}`;
-
-            if (spotPhotoCache.has(cacheKey)) {
-                const cachedUrl = spotPhotoCache.get(cacheKey);
-                if (cachedUrl) applyPhotoToDom(domId, cachedUrl);
-                return;
-            }
-
-            if (pendingSpotPhotoQueries.has(cacheKey)) {
-                pendingSpotPhotoQueries.get(cacheKey).push(domId);
-                return;
-            }
-
-            pendingSpotPhotoQueries.set(cacheKey, [domId]);
-            let imgUrl = await fetchWikiThumbnailUrl(lookup.title, lookup.lang);
-            if (!imgUrl && lookup.fallbackTitle) {
-                imgUrl = await fetchWikiThumbnailUrl(lookup.fallbackTitle, lookup.lang);
-            }
-            if (!imgUrl && lookup.lang !== 'ja') {
-                imgUrl = await fetchWikiThumbnailUrl(lookup.title, 'ja');
-            }
-            spotPhotoCache.set(cacheKey, imgUrl || '');
-            const waitingIds = pendingSpotPhotoQueries.get(cacheKey) || [];
-            pendingSpotPhotoQueries.delete(cacheKey);
-
-            if (imgUrl) {
-                waitingIds.forEach(id => applyPhotoToDom(id, imgUrl));
+            if (options.refreshRecs) {
+                loadBuiltinRecommendations();
             }
         }
 
@@ -4428,8 +4281,7 @@ category 只能從這 5 個中選一：「周邊順遊」、「傳統祭典」�
             const appliedMagic = applyMagicSetupFromHash();
             updateApiKeyHeaderStatus();
             loadSavedState();
-            syncInputsFromState();
-            loadBuiltinRecommendations();
+            renderAll({ refreshRecs: true });
             await initRealtimeCloudSync();
             if (appliedMagic && activeSyncCode) {
                 if (fbDb && fbUser) {
@@ -4438,9 +4290,6 @@ category 只能從這 5 個中選一：「周邊順遊」、「傳統祭典」�
                     await pullStateFromGithubRepo(activeSyncCode);
                 }
                 showToast('✨ 已透過專屬連結自動載入全部金鑰與同步代碼！');
-            }
-            if (getGoogleMapsApiKey()) {
-                renderTimeline();
             }
             if (getCloudDbUrl()) {
                 await syncCloudDatabase(true);
