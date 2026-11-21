@@ -766,7 +766,7 @@
         // ==========================================
         // 1. 儲存鍵值與日本 10 大地區 / JR PASS / 航班 / 季節祭典資料庫
         // ==========================================
-        const APP_VERSION = 'v1.20';
+        const APP_VERSION = 'v1.21';
         const APP_BUILD_DATE = '2026-11-21';
         const STATE_STORAGE_KEY = 'travel_puzzle_jp_state_v4';
         const SYNC_CODE_STORAGE_KEY = 'travel_puzzle_device_sync_code';
@@ -831,35 +831,82 @@
 
         const KNOWN_FLIGHTS_DB = {
             'AK176': { airline: 'AirAsia 亞洲航空', airport: '關西國際機場 (KIX)', terminal: 'T1', time: '19:30', aircraft: 'A321neo', region: 'kansai' },
-            'AK177': { airline: 'AirAsia 亞洲航空', airport: '關西國際機場 (KIX)', terminal: 'T1', time: '20:45', aircraft: 'A321neo', region: 'kansai' }
+            'AK177': { airline: 'AirAsia 亞洲航空', airport: '關西國際機場 (KIX)', terminal: 'T1', time: '20:45', aircraft: 'A321neo', region: 'kansai' },
+            'IT210': { airline: '台灣虎航 Tigerair', airport: '關西國際機場 (KIX)', terminal: 'T1', time: '10:15', aircraft: 'A320neo', region: 'kansai' },
+            'IT211': { airline: '台灣虎航 Tigerair', airport: '關西國際機場 (KIX)', terminal: 'T1', time: '11:15', aircraft: 'A320neo', region: 'kansai' },
+            'MM24': { airline: '樂桃航空 Peach', airport: '關西國際機場 (KIX)', terminal: 'T2', time: '13:15', aircraft: 'A321LR', region: 'kansai' },
+            'MM27': { airline: '樂桃航空 Peach', airport: '關西國際機場 (KIX)', terminal: 'T2', time: '15:55', aircraft: 'A321LR', region: 'kansai' },
+            'JX820': { airline: '星宇航空 STARLUX', airport: '關西國際機場 (KIX)', terminal: 'T1', time: '11:10', aircraft: 'A330neo', region: 'kansai' },
+            'JX821': { airline: '星宇航空 STARLUX', airport: '關西國際機場 (KIX)', terminal: 'T1', time: '12:20', aircraft: 'A330neo', region: 'kansai' },
+            'BR132': { airline: '長榮航空 EVA Air', airport: '關西國際機場 (KIX)', terminal: 'T1', time: '11:55', aircraft: 'B787-10', region: 'kansai' },
+            'BR131': { airline: '長榮航空 EVA Air', airport: '關西國際機場 (KIX)', terminal: 'T1', time: '13:10', aircraft: 'B787-10', region: 'kansai' },
+            'CI156': { airline: '中華航空 China Airlines', airport: '關西國際機場 (KIX)', terminal: 'T1', time: '11:35', aircraft: 'A350-900', region: 'kansai' },
+            'CI157': { airline: '中華航空 China Airlines', airport: '關西國際機場 (KIX)', terminal: 'T1', time: '12:50', aircraft: 'A350-900', region: 'kansai' },
+            'IT200': { airline: '台灣虎航 Tigerair', airport: '成田國際機場 (NRT)', terminal: 'T2', time: '10:35', aircraft: 'A320neo', region: 'kanto' },
+            'IT201': { airline: '台灣虎航 Tigerair', airport: '成田國際機場 (NRT)', terminal: 'T2', time: '12:00', aircraft: 'A320neo', region: 'kanto' },
+            'IT234': { airline: '台灣虎航 Tigerair', airport: '新千歲機場 (CTS)', terminal: 'I', time: '11:05', aircraft: 'A320neo', region: 'hokkaido' },
+            'IT235': { airline: '台灣虎航 Tigerair', airport: '新千歲機場 (CTS)', terminal: 'I', time: '12:05', aircraft: 'A320neo', region: 'hokkaido' },
+            'IT240': { airline: '台灣虎航 Tigerair', airport: '福岡機場 (FUK)', terminal: 'I', time: '10:00', aircraft: 'A320', region: 'kyushu' },
+            'IT241': { airline: '台灣虎航 Tigerair', airport: '福岡機場 (FUK)', terminal: 'I', time: '10:55', aircraft: 'A320', region: 'kyushu' },
+            'IT230': { airline: '台灣虎航 Tigerair', airport: '那霸機場 (OKA)', terminal: 'I', time: '09:20', aircraft: 'A320', region: 'okinawa' },
+            'IT231': { airline: '台灣虎航 Tigerair', airport: '那霸機場 (OKA)', terminal: 'I', time: '10:10', aircraft: 'A320', region: 'okinawa' }
         };
 
-        // 精簡版離線核心保底庫（每區保留當季限定重點＋經典代表，其餘由 db.json 與 Google Maps Places 自動補充）
+        // 日本主要觀光樞紐車站與機場精準座標庫（與 db.json stations 欄位同步合併）
+        const CORE_STATIONS_DB = [
+            { name: '関西国際空港', aliases: ['關西國際機場', 'KIX', '關西機場'], lat: 34.4347, lng: 135.2440 },
+            { name: '新大阪', aliases: ['新大阪駅', '新大阪站', '東橫INN新大阪東口'], lat: 34.7335, lng: 135.5003 },
+            { name: '大阪', aliases: ['大阪駅', '大阪車站', '梅田'], lat: 34.7025, lng: 135.4959 },
+            { name: '難波', aliases: ['なんば', '道頓堀', '心齋橋', '東橫INN大阪難波西'], lat: 34.6669, lng: 135.5003 },
+            { name: '天王寺', aliases: ['天王寺駅', '阿倍野', 'HARUKAS'], lat: 34.6476, lng: 135.5133 },
+            { name: '京都', aliases: ['京都駅', '京都車站', '京都站'], lat: 34.9858, lng: 135.7588 },
+            { name: '祇園四条', aliases: ['清水寺', '二年坂', '祇園', '河原町'], lat: 35.0037, lng: 135.7720 },
+            { name: '嵯峨嵐山', aliases: ['嵐山', '渡月橋'], lat: 35.0185, lng: 135.6812 },
+            { name: '稲荷', aliases: ['伏見稻荷', '千本鳥居'], lat: 34.9671, lng: 135.7727 },
+            { name: '三ノ宮', aliases: ['三宮', '神戶', '元町', '美利堅'], lat: 34.6947, lng: 135.1955 },
+            { name: '姫路', aliases: ['姬路', '姬路城'], lat: 34.8276, lng: 134.6908 },
+            { name: '奈良', aliases: ['奈良公園', '東大寺', '近鐵奈良'], lat: 34.6810, lng: 135.8190 },
+            { name: '宇治', aliases: ['平等院'], lat: 34.8906, lng: 135.8008 },
+            { name: '成田空港', aliases: ['成田國際機場', 'NRT'], lat: 35.7719, lng: 140.3929 },
+            { name: '羽田空港', aliases: ['羽田機場', 'HND'], lat: 35.5494, lng: 139.7798 },
+            { name: '東京', aliases: ['東京駅', '東京車站', '丸之內'], lat: 35.6812, lng: 139.7671 },
+            { name: '新宿', aliases: ['新宿駅', '歌舞伎町'], lat: 35.6896, lng: 139.7006 },
+            { name: '渋谷', aliases: ['澀谷', 'SHIBUYA SKY'], lat: 35.6580, lng: 139.7016 },
+            { name: '上野', aliases: ['上野駅', '上野公園', '阿美橫丁'], lat: 35.7141, lng: 139.7774 },
+            { name: '浅草', aliases: ['淺草', '雷門', '淺草寺'], lat: 35.7118, lng: 139.7983 },
+            { name: '押上', aliases: ['晴空塔', '東京晴空塔'], lat: 35.7101, lng: 139.8107 },
+            { name: '新千歳空港', aliases: ['新千歲機場', 'CTS'], lat: 42.7752, lng: 141.6923 },
+            { name: '札幌', aliases: ['札幌駅', '大通公園', '狸小路'], lat: 43.0686, lng: 141.3508 },
+            { name: '小樽', aliases: ['小樽運河'], lat: 43.1977, lng: 140.9937 },
+            { name: '函館', aliases: ['函館山', '五稜郭'], lat: 41.7737, lng: 140.7264 },
+            { name: '博多', aliases: ['福岡機場', 'FUK', '天神', '中洲'], lat: 33.5897, lng: 130.4207 },
+            { name: '由布院', aliases: ['湯布院', '金鱗湖'], lat: 33.2624, lng: 131.3550 },
+            { name: '熊本', aliases: ['熊本城'], lat: 32.7900, lng: 130.6886 },
+            { name: '那覇空港', aliases: ['那霸機場', 'OKA', '國際通'], lat: 26.2064, lng: 127.6465 },
+            { name: '名古屋', aliases: ['中部國際機場', 'NGO', '榮'], lat: 35.1709, lng: 136.8815 },
+            { name: '金沢', aliases: ['金澤', '兼六園', '近江町'], lat: 36.5781, lng: 136.6482 },
+            { name: '仙台', aliases: ['仙台機場', 'SDJ', '松島'], lat: 38.2601, lng: 140.8824 },
+            { name: '広島', aliases: ['廣島', '宮島', '嚴島神社'], lat: 34.3977, lng: 132.4754 },
+            { name: '岡山', aliases: ['倉敷', '美觀地區'], lat: 34.6665, lng: 133.9181 },
+            { name: '高松', aliases: ['琴平', '金刀比羅宮', '小豆島'], lat: 34.3513, lng: 134.0466 }
+        ];
+
+        // 離線與初次開啟保底精選活動庫（與 db.json events 欄位自動合併去重）
         const BUILTIN_EVENTS_DB = [
-            { id: 'ev-ks-dec-1', region: 'kansai', months: [11,12], category: '光影花火', title: '京都車站大樓冬季點燈・大階段光之階梯', location: '京都市下京區（JR京都車站中央口大階段）', dateLabel: '11月～12月25日冬季限定', duration: 60, isIndoor: false, desc: '171階巨大階梯化身為聖誕樹與四季光影動畫，免費入場且搭車超順路。' },
-            { id: 'ev-ks-dec-2', region: 'kansai', months: [11,12], category: '光影花火', title: '道頓堀・御堂筋光之饗宴＆中之島光之文藝復興', location: '道頓堀戎橋～御堂筋・中之島公園', dateLabel: '11月～12月31日冬季限定', duration: 90, isIndoor: false, desc: '全長4公里金黃香檳樹海點燈串聯道頓堀運河夜景，逛街吃美食同步賞燈。' },
-            { id: 'ev-ks-dec-3', region: 'kansai', months: [12,1], category: '光影花火', title: '神戶 Luminarie 光之雕刻與美利堅港區點燈', location: '神戶市中央區（舊居留地・東遊園地・美利堅公園）', dateLabel: '冬季限定光雕盛典', duration: 90, isIndoor: false, desc: '義大利匠人手工打造的壯麗彩繪光廊，結合神戶港夜景與冬季市集。' },
-            { id: 'ev-ks-1', region: 'kansai', months: [1,2,3,4,5,6,7,8,9,10,11,12], category: '傳統祭典', title: '京都清水寺＆二年坂三年坂', location: '京都市東山區（祇園四條站步行15分）', dateLabel: '世界遺產・四季必訪', duration: 150, isIndoor: false, desc: '懸空清水舞台遠眺京都市景，沿石坂古街品嚐抹茶與八橋。' },
-            { id: 'ev-ks-2', region: 'kansai', months: [1,2,3,4,5,6,7,8,9,10,11,12], category: '周邊順遊', title: '大阪城天守閣＆大阪城公園', location: '大阪市中央區（JR大阪城公園站）', dateLabel: '日本三大名城', duration: 120, isIndoor: true, desc: '登頂金碧輝煌天守閣俯瞰大阪全景，歷史博物館雨天也適合。' },
-            { id: 'ev-ks-3', region: 'kansai', months: [1,2,3,4,5,6,7,8,9,10,11,12], category: '周邊順遊', title: '奈良公園小鹿＆東大寺大佛殿', location: '奈良市雜司町（JR/近鐵奈良站）', dateLabel: '全年順遊・餵鹿體驗', duration: 180, isIndoor: false, desc: '與可愛神鹿互動並參拜世界最大木造建築東大寺盧舍那佛。' },
-            { id: 'ev-kt-dec-1', region: 'kanto', months: [11,12,1,2], category: '光影花火', title: '東京丸之內香檳金點燈＆東京車站紅磚夜景', location: '東京都千代田區（JR東京站丸之內口）', dateLabel: '11月～2月中旬冬季限定', duration: 90, isIndoor: false, desc: '超過百萬顆香檳金LED燈飾點亮丸之內仲通，搭配百年紅磚站舍超浪漫。' },
-            { id: 'ev-kt-1', region: 'kanto', months: [1,2,3,4,5,6,7,8,9,10,11,12], category: '傳統祭典', title: '淺草寺雷門＆仲見世通老街', location: '東京都台東區（淺草站步行3分）', dateLabel: '東京必訪地標', duration: 120, isIndoor: false, desc: '東京最古老寺院雷門大燈籠打卡，順遊隅田川遠眺晴空塔。' },
-            { id: 'ev-kt-2', region: 'kanto', months: [1,2,3,4,5,6,7,8,9,10,11,12], category: '光影花火', title: '東京晴空塔＆墨田水族館', location: '東京都墨田區（押上站直結）', dateLabel: '室內高空展望', duration: 150, isIndoor: true, desc: '登上450公尺天望回廊俯瞰東京灣，雨天也能逛晴空街道商場。' },
-            { id: 'ev-hk-dec-1', region: 'hokkaido', months: [11,12,1,2,3], category: '光影花火', title: '札幌白色燈樹節＆慕尼黑聖誕市集', location: '札幌市中央區（大通公園・站前通）', dateLabel: '11月下旬～12月25日限定', duration: 120, isIndoor: false, desc: '雪白大通公園閃耀巨型光雕樹海，順逛熱紅酒與德國聖誕市集攤位。' },
-            { id: 'ev-hk-1', region: 'hokkaido', months: [1,2,3,4,5,6,7,8,9,10,11,12], category: '周邊順遊', title: '小樽運河煤氣燈＆堺町通玻璃街', location: '北海道小樽市（JR小樽站步行8分）', dateLabel: 'JR快速35分直達', duration: 180, isIndoor: false, desc: '紅磚倉庫倒映運河水面，品嚐六花亭、北菓樓與鮮甜海鮮丼。' },
-            { id: 'ev-ky-1', region: 'kyushu', months: [1,2,3,4,5,6,7,8,9,10,11,12], category: '周邊順遊', title: '由布院溫泉街＆金鱗湖晨霧散策', location: '大分縣由布市（JR由布院站）', dateLabel: '搭由布院之森直達', duration: 210, isIndoor: false, desc: '搭乘觀光特急由布院之森抵達，漫步湯之坪街道與夢幻金鱗湖。' },
-            { id: 'ev-ky-2', region: 'kyushu', months: [1,2,3,4,5,6,7,8,9,10,11,12], category: '季節美食', title: '福岡中洲屋台街＆博多運河城', location: '福岡市博多區（地鐵中洲川端站）', dateLabel: '夜晚必體驗路邊攤', duration: 120, isIndoor: false, desc: '體驗道地博多豚骨拉麵、明太子玉子燒與水炊雞肉鍋文化。' },
-            { id: 'ev-ok-1', region: 'okinawa', months: [1,2,3,4,5,6,7,8,9,10,11,12], category: '周邊順遊', title: '沖繩美麗海水族館＆黑潮之海', location: '沖繩縣本部町（海洋博公園內）', dateLabel: '沖繩必訪王牌景點', duration: 180, isIndoor: true, desc: '世界級巨大水槽近距離觀賞鯨鯊與鬼蝠魟悠游，雨天也超適合。' },
-            { id: 'ev-ok-2', region: 'okinawa', months: [1,2,3,4,5,6,7,8,9,10,11,12], category: '季節美食', title: '那霸國際通＆牧志第一公設市場', location: '那霸市牧志（單軌牧志站/縣廳前站）', dateLabel: '夜晚逛街美食首選', duration: 150, isIndoor: true, desc: '現挑夜光貝與沖繩阿古豬料理，順買紅芋塔與雪鹽伴手禮。' },
-            { id: 'ev-cb-1', region: 'chubu', months: [1,2,3,4,5,6,7,8,9,10,11,12], category: '賞花紅葉', title: '金澤兼六園＆近江町海鮮市場', location: '石川縣金澤市（金澤站巴士15分）', dateLabel: '日本三大名園', duration: 150, isIndoor: false, desc: '冬季雪吊景觀與春櫻秋楓皆為絕景，順遊近江町市場海鮮丼。' },
-            { id: 'ev-cb-2', region: 'chubu', months: [1,2,3,4,5,6,7,8,9,10,11,12], category: '周邊順遊', title: '世界遺產・白川鄉合掌村展望台', location: '岐阜縣白川村（濃飛巴士直達）', dateLabel: '童話薑餅屋聚落', duration: 180, isIndoor: false, desc: '登上城山展望台俯瞰百年茅草屋聚落，走入和田家參觀內部構造。' },
-            { id: 'ev-th-1', region: 'tohoku', months: [1,2,3,4,5,6,7,8,9,10,11,12], category: '周邊順遊', title: '日本三景・松島灣遊船＆瑞嚴寺', location: '宮城縣松島町（JR松島海岸站）', dateLabel: '仙台出發40分直達', duration: 180, isIndoor: false, desc: '搭觀光船穿梭260座奇岩小島，現烤肥美松島牡蠣與毛豆奶昔。' },
-            { id: 'ev-sy-1', region: 'sanyo', months: [1,2,3,4,5,6,7,8,9,10,11,12], category: '傳統祭典', title: '宮島嚴島神社＆海上大鳥居', location: '廣島縣廿日市市（JR宮島口轉渡輪）', dateLabel: 'JR渡輪PASS涵蓋', duration: 210, isIndoor: false, desc: '退潮走近朱紅海上大鳥居，漲潮欣賞漂浮海面的迴廊奇景。' },
-            { id: 'ev-sy-2', region: 'sanyo', months: [1,2,3,4,5,6,7,8,9,10,11,12], category: '周邊順遊', title: '倉敷美觀地區・白壁柳樹運河散策', location: '岡山縣倉敷市（JR倉敷站步行10分）', dateLabel: '江戶風情水鄉古街', duration: 150, isIndoor: false, desc: '搭乘倉敷川小舟穿梭白壁黑瓦倉庫群，逛紙膠帶與丹寧文創店。' },
-            { id: 'ev-si-1', region: 'sanin', months: [1,2,3,4,5,6,7,8,9,10,11,12], category: '周邊順遊', title: '鳥取砂丘＆砂之美術館壯麗沙雕', location: '鳥取市福部町（JR鳥取站巴士20分）', dateLabel: '日本最大海岸砂丘', duration: 150, isIndoor: false, desc: '赤腳走上馬背沙丘眺望日本海，順遊世界頂級室內沙雕美術館。' },
-            { id: 'ev-si-2', region: 'sanin', months: [1,2,3,4,5,6,7,8,9,10,11,12], category: '傳統祭典', title: '出雲大社・巨型注連繩結緣參拜', location: '島根縣出雲市（一畑電車出雲大社前）', dateLabel: '日本最強結緣聖地', duration: 150, isIndoor: false, desc: '參拜神樂殿重達5噸的震撼巨型注連繩，品嚐出雲割子蕎麥麵。' },
-            { id: 'ev-sk-1', region: 'shikoku', months: [1,2,3,4,5,6,7,8,9,10,11,12], category: '傳統祭典', title: '金刀比羅宮・785階石段參拜與讚岐烏龍麵', location: '香川縣琴平町（JR琴平站步行15分）', dateLabel: '一生必參拜一次', duration: 180, isIndoor: false, desc: '挑戰785階石階登上本宮俯瞰讚岐平原，山腳下現煮烏龍麵超彈牙。' },
-            { id: 'ev-sk-2', region: 'shikoku', months: [1,2,3,4,5,6,7,8,9,10,11,12], category: '周邊順遊', title: '愛媛道後溫泉本館＆少爺機關鐘', location: '愛媛縣松山市（伊予鐵道後溫泉站）', dateLabel: '日本最古老溫泉之一', duration: 150, isIndoor: true, desc: '泡完神隱少女湯屋原型名湯後，穿浴衣逛道後商店街喝橘子汁。' }
+            { id: 'ev-ks-1', region: 'kansai', months: [11, 12, 1], category: '光影花火', title: '京都車站大樓冬季點燈・大階段光之階梯', location: 'JR 京都車站大階段（京都站直達）', dateLabel: '11月～12月冬季限定', duration: 60, isIndoor: false, desc: '125段大階段化為巨型聖誕樹與冬季光影藝術，傍晚後免費觀賞。' },
+            { id: 'ev-ks-2', region: 'kansai', months: [11, 12, 1], category: '光影花火', title: '大阪光之饗宴・御堂筋燈飾＆中之島水都光影', location: '御堂筋～中之島公園（淀屋橋／難波站）', dateLabel: '11月～12月冬季限定', duration: 90, isIndoor: false, desc: '全長4公里銀杏大道點亮璀璨燈海，結合中央公會堂光雕投影。' },
+            { id: 'ev-ks-3', region: 'kansai', months: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], category: '周邊順遊', title: '清水寺・二年坂與祇園花見小路散策', location: '京都市東山區（祇園四條／京都站搭巴士）', dateLabel: '全年經典世界遺產', duration: 150, isIndoor: false, desc: '從清水舞台俯瞰京都市景，沿二年坂、三年坂漫步至祇園傳統町家。' },
+            { id: 'ev-ks-4', region: 'kansai', months: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], category: '季節美食', title: '道頓堀＆黑門市場・大阪章魚燒與和牛海鮮巡禮', location: '大阪市中央區（難波／日本橋站）', dateLabel: '全年美食必訪', duration: 120, isIndoor: true, desc: '現烤和牛串、黑門市場鮮美海膽與道頓堀跑跑人夜景一次滿足。' },
+            { id: 'ev-kt-1', region: 'kanto', months: [11, 12, 1, 2], category: '光影花火', title: '六本木之丘・櫸坂通冬季雪白點燈與東京鐵塔', location: '六本木新城櫸坂通（六本木站）', dateLabel: '11月～12月冬季限定', duration: 75, isIndoor: false, desc: '約80萬顆白藍色LED燈海襯托正前方亮燈的東京鐵塔，冬季最浪漫機位。' },
+            { id: 'ev-kt-2', region: 'kanto', months: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], category: '傳統祭典', title: '淺草寺雷門・仲見世通與東京晴空塔順遊', location: '東京都台東區（淺草／押上站）', dateLabel: '全年江戶經典', duration: 150, isIndoor: false, desc: '參拜東京最古老寺院並品嚐人形燒，步行過隅田川即達晴空塔。' },
+            { id: 'ev-hk-1', region: 'hokkaido', months: [11, 12, 1, 2, 3], category: '光影花火', title: '札幌白色燈樹節＆慕尼黑聖誕市集', location: '札幌大通公園（大通／札幌站）', dateLabel: '11月下旬～冬季限定', duration: 90, isIndoor: false, desc: '銀白雪景與巨型光影藝術裝置交織，可順道品嚐熱紅酒與北海道美食。' },
+            { id: 'ev-ky-1', region: 'kyushu', months: [11, 12, 1], category: '光影花火', title: 'JR 博多站前廣場・光之街博多冬季點燈', location: 'JR 博多車站博多口前廣場', dateLabel: '11月～1月上旬限定', duration: 60, isIndoor: false, desc: '約64萬顆燈泡打造藍色星河與聖誕市集，轉乘新幹線超順路。' },
+            { id: 'ev-ok-1', region: 'okinawa', months: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], category: '周邊順遊', title: '沖繩美麗海水族館＆古宇利島跨海大橋', location: '沖繩縣本部町（建議自駕或觀光巴士）', dateLabel: '全年親子與海景首選', duration: 180, isIndoor: true, desc: '近距離觀賞巨大鯨鯊悠游黑潮之海，順遊翡翠綠古宇利大橋。' },
+            { id: 'ev-cb-1', region: 'chubu', months: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], category: '周邊順遊', title: '金澤兼六園・近江町市場海鮮丼與東茶屋街', location: '石川縣金澤市（金澤站轉乘周遊巴士）', dateLabel: '四季名園與北陸美食', duration: 180, isIndoor: false, desc: '日本三大名園之一，冬季雪吊與春櫻秋楓皆美，順訪海鮮市場。' },
+            { id: 'ev-th-1', region: 'tohoku', months: [12, 1, 2], category: '光影花火', title: '仙台光之樂章・定禪寺通櫸樹林蔭點燈', location: '宮城縣仙台市定禪寺通（勾當台公園站）', dateLabel: '12月冬季限定', duration: 75, isIndoor: false, desc: '數十萬顆暖金色燈泡點亮定禪寺通櫸木大道，感受東北冬夜魅力。' },
+            { id: 'ev-sy-1', region: 'sanyo', months: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], category: '傳統祭典', title: '宮島嚴島神社・海上大鳥居與廣島牡蠣美食', location: '廣島縣廿日市市（JR 宮島口轉乘渡輪）', dateLabel: '世界遺產日本三景', duration: 180, isIndoor: false, desc: '搭乘 JR 渡輪前往神之島，欣賞漲退潮不同風貌的朱紅海上大鳥居。' },
+            { id: 'ev-sn-1', region: 'sanin', months: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], category: '周邊順遊', title: '鳥取砂丘＆砂之美術館・壯麗海岸沙丘巡禮', location: '鳥取縣鳥取市（鳥取站搭路線巴士）', dateLabel: '日本最大級海岸砂丘', duration: 150, isIndoor: false, desc: '漫步日本海側壯闊砂丘，並參觀每年更換主題的世界級精緻沙雕展。' },
+            { id: 'ev-sk-1', region: 'shikoku', months: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], category: '傳統祭典', title: '金刀比羅宮表參道石階參拜＆讚岐烏龍麵巡禮', location: '香川縣琴平町（JR 琴平站步行）', dateLabel: '一生必參拜海上守護神', duration: 150, isIndoor: false, desc: '挑戰785階石階參拜本宮，下山後品嚐現打Q彈正宗讚岐烏龍麵。' }
         ];
 
         // ==========================================
@@ -867,6 +914,7 @@
         // ==========================================
         let dynamicJrPasses = [...JR_PASS_CATALOG];
         let dynamicFlightsDb = { ...KNOWN_FLIGHTS_DB };
+        let dynamicStationsDb = [...CORE_STATIONS_DB];
         let cloudEventsPool = [];
         let cloudUpdatedAt = '';
         let currentRecommendations = [];
@@ -1470,6 +1518,17 @@
                 }
                 if (Array.isArray(data.events)) {
                     cloudEventsPool = data.events;
+                }
+                if (Array.isArray(data.stations) && data.stations.length > 0) {
+                    const mergedStations = [...CORE_STATIONS_DB];
+                    const seenNames = new Set(mergedStations.map(s => s.name));
+                    data.stations.forEach(st => {
+                        if (st?.name && typeof st.lat === 'number' && typeof st.lng === 'number' && !seenNames.has(st.name)) {
+                            seenNames.add(st.name);
+                            mergedStations.push({ name: st.name, aliases: [st.name, `${st.name}駅`, `${st.name}站`], lat: st.lat, lng: st.lng, line: st.line || '' });
+                        }
+                    });
+                    dynamicStationsDb = mergedStations;
                 }
                 cloudUpdatedAt = data.updatedAt || '';
                 const formattedDate = formatCloudDateShort(cloudUpdatedAt);
@@ -2204,6 +2263,35 @@
             showToast(`↩️ 已還原 Day ${day} 最佳化前的原本順序！`);
         }
 
+        function findNearestHubStation(placeName) {
+            const raw = String(placeName || '').trim();
+            if (!raw) return null;
+            for (const st of dynamicStationsDb) {
+                const candidates = [st.name, ...(st.aliases || [])];
+                if (candidates.some(alias => alias && (raw.includes(alias) || alias.includes(raw)))) {
+                    return st;
+                }
+            }
+            return null;
+        }
+
+        function computeHaversineKm(lat1, lng1, lat2, lng2) {
+            const toRad = deg => (deg * Math.PI) / 180;
+            const R = 6371;
+            const dLat = toRad(lat2 - lat1);
+            const dLng = toRad(lng2 - lng1);
+            const a = Math.sin(dLat / 2) ** 2 + Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLng / 2) ** 2;
+            return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        }
+
+        function computeRailMinsFromKm(kmNum, isDriving) {
+            if (kmNum <= 2.2) return Math.max(5, Math.round(kmNum * 13.5));
+            if (isDriving) return Math.max(10, Math.round((kmNum / 42) * 60 + 8));
+            if (kmNum <= 22) return Math.round((kmNum / 28) * 60 + 16);
+            if (kmNum <= 110) return Math.round((kmNum / 105) * 60 + 13);
+            return Math.round((kmNum / 175) * 60 + 18);
+        }
+
         function estimateTransitSegment(origin, dest, dayNum, segmentDepartMins = 540) {
             const routeKey = `${dayNum}|${origin}|${dest}|${appState.drivingMode ? 'D' : 'T'}`;
             const customMins = appState.customTransitMinutes?.[routeKey];
@@ -2217,8 +2305,22 @@
             let modeLabel = isDriving ? '🚗 自駕導航路線' : '🚇 地鐵／市區電車路線';
             let detailText = hasGmapsKey
                 ? '⏳ 正在向 Google Maps 取得預估路線時間...'
-                : '依據站間距離與兩端步行進出站時間預估（設定 Google Maps API 可自動查詢）';
+                : '依據日本開放資料車站座標與鐵道均速模型預估';
             let isMetroFaster = false;
+
+            const stA = findNearestHubStation(origin);
+            const stB = findNearestHubStation(dest);
+            if (stA && stB && stA.name !== stB.name) {
+                const railKm = computeHaversineKm(stA.lat, stA.lng, stB.lat, stB.lng) * 1.22;
+                mins = computeRailMinsFromKm(railKm, isDriving);
+                fareJpy = railKm <= 15 ? 290 : (railKm <= 60 ? 580 : Math.round(railKm * 18));
+                modeLabel = isDriving
+                    ? '🚗 導航自駕路線'
+                    : (railKm <= 22 ? '🚇 地鐵／市區電車路線' : (railKm <= 110 ? '🚄 JR 快速／特急路線' : '🚅 新幹線／特急幹線'));
+                if (!hasGmapsKey) {
+                    detailText = `依據開放車站座標（${stA.name} ➔ ${stB.name}，約 ${railKm.toFixed(1)} km）預估`;
+                }
+            }
 
             if (/機場|KIX|NRT|HND|CTS|FUK|NGO|OKA/i.test(pair)) {
                 mins = isDriving ? 55 : 52;
