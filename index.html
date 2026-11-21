@@ -1602,23 +1602,58 @@
 
         function estimateTransitSegment(fromPlace, toPlace, dayNum) {
             const key = `${dayNum}|${fromPlace}|${toPlace}`;
+            const passActive = isPassActiveOnDay(dayNum);
+
+            function buildPassFareNote(fareJpy, jrEligible, jrAltText = '') {
+                if (appState.drivingMode) return `預估油資＋過路費約 ¥${fareJpy.toLocaleString()}`;
+                if (jrEligible === 'full') {
+                    return passActive
+                        ? `原價車資 ¥${fareJpy.toLocaleString()}（持 JR PASS 可全額折抵）`
+                        : `預估車資 ¥${fareJpy.toLocaleString()}（JR 路線・未啟用 PASS 需購票）`;
+                }
+                if (jrEligible === 'alt') {
+                    return passActive
+                        ? `原價車資 ¥${fareJpy.toLocaleString()}（${jrAltText || '地鐵需自付／若改搭 JR 轉乘可用 PASS'}）`
+                        : `預估車資 ¥${fareJpy.toLocaleString()}（私鐵／地鐵路線）`;
+                }
+                return `預估車資 ¥${fareJpy.toLocaleString()}（非 JR 路線・需使用 IC 卡自付）`;
+            }
+
             if (appState.manualTransitMinutes[key]) {
+                const m = Number(appState.manualTransitMinutes[key]);
                 return {
-                    minutes: Number(appState.manualTransitMinutes[key]),
-                    modeLabel: appState.drivingMode ? '🚗 自駕導航（手動微調）' : '🚆 大眾運輸（手動微調）',
+                    minutes: m,
+                    modeBadge: appState.drivingMode ? '🚗 自駕導航（手動微調）' : '🚆 大眾運輸（手動微調）',
+                    detailDesc: `已手動微調門到門移動時間為 ${m} 分鐘`,
+                    fareText: buildPassFareNote(320, 'full'),
+                    fareJpy: 320,
+                    jrCovered: true,
                     isManual: true
                 };
             }
 
             if (!fromPlace || !toPlace || fromPlace === toPlace) {
-                return { minutes: 10, modeLabel: '🚶 步行／站內轉乘', isManual: false };
+                return {
+                    minutes: 10,
+                    modeBadge: '🚶 步行／站內轉乘',
+                    detailDesc: '同區域步行或站內轉乘約 10 分',
+                    fareText: '免費步行（¥0）',
+                    fareJpy: 0,
+                    jrCovered: true,
+                    isManual: false
+                };
             }
 
             const cacheKey = `${appState.drivingMode ? 'DRIVE' : 'TRANSIT'}|${fromPlace}|${toPlace}`;
-            if (appState.routeCache && appState.routeCache[cacheKey]) {
+            if (appState.routeCache && appState.routeCache[cacheKey] && appState.routeCache[cacheKey].modeBadge) {
+                const cached = appState.routeCache[cacheKey];
                 return {
-                    minutes: appState.routeCache[cacheKey].minutes,
-                    modeLabel: appState.routeCache[cacheKey].modeLabel,
+                    minutes: cached.minutes,
+                    modeBadge: cached.modeBadge,
+                    detailDesc: cached.detailDesc,
+                    fareText: buildPassFareNote(cached.fareJpy || 320, cached.jrEligible || 'full', cached.jrAltText || ''),
+                    fareJpy: cached.fareJpy || 320,
+                    jrCovered: cached.jrEligible === 'full',
                     isManual: false
                 };
             }
@@ -1631,41 +1666,149 @@
 
             const s1 = findStationCoord(fromPlace);
             const s2 = findStationCoord(toPlace);
-            const passActive = isPassActiveOnDay(dayNum);
-
             const hasDoorWalk1 = s1 && fromPlace.trim() !== s1.name && !fromPlace.includes('機場') && !fromPlace.includes('空港');
             const hasDoorWalk2 = s2 && toPlace.trim() !== s2.name && !toPlace.includes('機場') && !toPlace.includes('空港');
             const doorBufferMins = (hasDoorWalk1 ? 11 : 0) + (hasDoorWalk2 ? 11 : 0);
 
             if (s1 && s2) {
                 if (s1.name === s2.name) {
-                    return { minutes: 14, modeLabel: appState.drivingMode ? '🚗 市區短程移動' : '🚶 步行散策', isManual: false };
+                    return {
+                        minutes: 14,
+                        modeBadge: appState.drivingMode ? '🚗 市區短程移動' : '🚶 步行散策直達',
+                        detailDesc: '同商圈步行即可抵達，加計進出站約 14 分',
+                        fareText: '免費步行（¥0）',
+                        fareJpy: 0,
+                        jrCovered: true,
+                        isManual: false
+                    };
                 }
+                const pair = `${s1.name}->${s2.name}`;
+                const revPair = `${s2.name}->${s1.name}`;
                 const railKm = calcHaversineKm(s1.lat, s1.lng, s2.lat, s2.lng) * 1.22;
+
                 if (appState.drivingMode) {
                     const mins = Math.max(18, Math.round((railKm / 42) * 60 + 12));
-                    return { minutes: mins, modeLabel: `🚗 自駕約 ${Math.round(railKm)} km`, isManual: false };
+                    const toll = Math.max(300, Math.round(railKm * 28));
+                    return {
+                        minutes: mins,
+                        modeBadge: `🚗 高速／市區自駕導航（約 ${Math.round(railKm)} km）`,
+                        detailDesc: `自駕門到門含停車步行約 ${mins} 分`,
+                        fareText: buildPassFareNote(toll, 'none'),
+                        fareJpy: toll,
+                        jrCovered: false,
+                        isManual: false
+                    };
                 }
+
+                // 常見黃金路線智慧推薦（明確指出哪條最快＋JR PASS 是否適用）
+                if (pair === '難波->新大阪' || revPair === '難波->新大阪') {
+                    return {
+                        minutes: 40,
+                        modeBadge: '🚇 地鐵御堂筋線直達最快（亦可搭 JR 轉乘）',
+                        detailDesc: '地鐵一班車直達加兩端步行約 40 分（若改搭 JR 轉乘約需 48 分）',
+                        fareText: buildPassFareNote(290, 'alt', '地鐵需自付／若改搭 JR 轉乘可用 PASS'),
+                        fareJpy: 290,
+                        jrCovered: false,
+                        isManual: false
+                    };
+                }
+                if (pair === '新大阪->三ノ宮' || revPair === '新大阪->三ノ宮' || pair === '大阪->三ノ宮' || revPair === '大阪->三ノ宮') {
+                    const m = pair.includes('新大阪') ? 48 : 42;
+                    return {
+                        minutes: m,
+                        modeBadge: '🚄 JR 神戶線新快速直達最快',
+                        detailDesc: `JR 新快速直達神戶三宮／元町，含兩端步行約 ${m} 分`,
+                        fareText: buildPassFareNote(420, 'full'),
+                        fareJpy: 420,
+                        jrCovered: true,
+                        isManual: false
+                    };
+                }
+                if (pair === '関西国際空港->難波' || revPair === '関西国際空港->難波') {
+                    return {
+                        minutes: 56,
+                        modeBadge: '🚆 南海電鐵空港急行直達最快（亦可搭 JR 轉乘）',
+                        detailDesc: '南海電鐵直達難波站加步行約 56 分（若持 JR PASS 搭 JR 至今宮／難波約 68 分）',
+                        fareText: buildPassFareNote(970, 'alt', '南海電鐵需自付／若改搭 JR 路線可用 PASS'),
+                        fareJpy: 970,
+                        jrCovered: false,
+                        isManual: false
+                    };
+                }
+                if (pair === '関西国際空港->新大阪' || revPair === '関西国際空港->新大阪' || pair === '関西国際空港->京都' || revPair === '関西国際空港->京都') {
+                    const isKyoto = pair.includes('京都');
+                    const m = isKyoto ? 92 : 64;
+                    const fare = isKyoto ? 3110 : 2590;
+                    return {
+                        minutes: m,
+                        modeBadge: `🚄 JR 特急 HARUKA 直達最快`,
+                        detailDesc: `關西機場特快 HARUKA 一班車直達${isKyoto ? '京都' : '新大阪'}，含兩端步行約 ${m} 分`,
+                        fareText: buildPassFareNote(fare, 'full'),
+                        fareJpy: fare,
+                        jrCovered: true,
+                        isManual: false
+                    };
+                }
+                if (pair === '新大阪->京都' || revPair === '新大阪->京都' || pair === '大阪->京都' || revPair === '大阪->京都') {
+                    const m = pair.includes('新大阪') ? 44 : 49;
+                    return {
+                        minutes: m,
+                        modeBadge: '🚄 JR 京都線新快速直達最快',
+                        detailDesc: `JR 新快速直達京都站，含兩端步行約 ${m} 分（比私鐵更省時）`,
+                        fareText: buildPassFareNote(580, 'full'),
+                        fareJpy: 580,
+                        jrCovered: true,
+                        isManual: false
+                    };
+                }
+
                 if (railKm < 2.5) {
-                    return { minutes: Math.max(12, Math.round(railKm * 13)), modeLabel: '🚶 步行移動', isManual: false };
+                    const m = Math.max(12, Math.round(railKm * 13));
+                    return {
+                        minutes: m,
+                        modeBadge: '🚶 步行移動最順路',
+                        detailDesc: `距離僅約 ${railKm.toFixed(1)} km，步行約 ${m} 分即可抵達`,
+                        fareText: '免費步行（¥0）',
+                        fareJpy: 0,
+                        jrCovered: true,
+                        isManual: false
+                    };
                 }
                 if (railKm <= 18) {
                     const rideMins = Math.round((railKm / 28) * 60 + 5);
                     const totalMins = Math.max(20, rideMins + doorBufferMins);
-                    return { minutes: totalMins, modeLabel: passActive ? '🚃 JR 在來線／地鐵（含步行）' : '🚇 地鐵／私鐵（含步行）', isManual: false };
+                    const fare = Math.max(210, Math.round(railKm * 22 / 10) * 10);
+                    return {
+                        minutes: totalMins,
+                        modeBadge: passActive ? '🚃 JR 在來線直達（亦可搭地鐵）' : '🚇 地鐵／私鐵直達最快',
+                        detailDesc: `乘車加兩端車站步行轉乘約 ${totalMins} 分（約 ${railKm.toFixed(1)} km）`,
+                        fareText: buildPassFareNote(fare, passActive ? 'full' : 'alt', '地鐵私鐵需自付／搭 JR 路線可用 PASS'),
+                        fareJpy: fare,
+                        jrCovered: passActive,
+                        isManual: false
+                    };
                 }
                 const speed = railKm > 120 ? 175 : 95;
                 const mins = Math.max(28, Math.round((railKm / speed) * 60 + 10 + doorBufferMins));
+                const fare = Math.max(580, Math.round(railKm * 24 / 10) * 10);
                 return {
                     minutes: mins,
-                    modeLabel: passActive ? `🚄 JR 特急／新快速（約 ${Math.round(railKm)} km）` : `🚆 鐵道特急（約 ${Math.round(railKm)} km）`,
+                    modeBadge: `🚄 JR 特急／新快速直達最快`,
+                    detailDesc: `JR 幹線快速移動約 ${Math.round(railKm)} km，含兩端步行約 ${mins} 分`,
+                    fareText: buildPassFareNote(fare, 'full'),
+                    fareJpy: fare,
+                    jrCovered: true,
                     isManual: false
                 };
             }
 
             return {
-                minutes: appState.drivingMode ? 35 : 40,
-                modeLabel: appState.drivingMode ? '🚗 自駕預估移動' : (passActive ? '🚆 JR／鐵道預估移動' : '🚇 大眾運輸預估移動'),
+                minutes: appState.drivingMode ? 35 : 38,
+                modeBadge: appState.drivingMode ? '🚗 自駕導航移動' : (passActive ? '🚆 JR／地鐵轉乘最快' : '🚇 地鐵／巴士轉乘最快'),
+                detailDesc: '含車站進出步行與轉乘等待約 38 分',
+                fareText: buildPassFareNote(320, passActive ? 'full' : 'alt'),
+                fareJpy: 320,
+                jrCovered: passActive,
                 isManual: false
             };
         }
@@ -1801,19 +1944,50 @@
                 });
 
                 let lineText = '';
+                let detailDesc = '';
+                let jrEligible = 'full';
+                let jrAltText = '';
+                const estimatedFareJpy = Math.max(200, Math.round((distMeters / 1000) * 23 / 10) * 10);
+
                 if (isDrive) {
-                    lineText = `🚗 Google Maps 自駕導航${km}`;
+                    lineText = `🚗 Google Maps 自駕導航最快${km}`;
+                    detailDesc = `自駕門到門行車時間約 ${mins} 分`;
+                    jrEligible = 'none';
                 } else if (result.isWalkOnly || (steps.length > 0 && transitDetailsList.length === 0 && distMeters <= 1600)) {
-                    lineText = `🚶 步行前往${km}`;
+                    lineText = `🚶 步行前往最順路${km}`;
+                    detailDesc = `短距離步行約 ${mins} 分即可直達`;
+                    jrEligible = 'full';
                 } else if (transitDetailsList.length > 0) {
-                    const walkNote = walkMinsTotal > 0 ? `＋步行約${walkMinsTotal}分` : '';
-                    lineText = `🚆 搭乘 ${Array.from(new Set(transitDetailsList)).join(' ➔ ')}${walkNote}${km}`;
+                    const uniqueLines = Array.from(new Set(transitDetailsList));
+                    const hasJr = uniqueLines.some(l => /JR|新快速|はるか|HARUKA|新幹線/i.test(l));
+                    const hasSubwayOrPrivate = uniqueLines.some(l => /線|メトロ|地鐵|南海|阪急|阪神|京阪|近鐵|私鐵/i.test(l) && !/JR/i.test(l));
+                    const walkNote = walkMinsTotal > 0 ? `，含兩端步行約 ${walkMinsTotal} 分` : '';
+                    lineText = `${hasJr ? '🚄' : '🚇'} 搭乘 ${uniqueLines[0]} 最快`;
+                    detailDesc = `${uniqueLines.join(' ➔ ')}${walkNote}，約 ${mins} 分`;
+                    if (hasJr && !hasSubwayOrPrivate) {
+                        jrEligible = 'full';
+                    } else if (!hasJr && hasSubwayOrPrivate) {
+                        jrEligible = 'alt';
+                        jrAltText = '私鐵／地鐵需自付（若改搭 JR 路線可用 PASS）';
+                    } else {
+                        jrEligible = 'alt';
+                        jrAltText = 'JR 區段可用 PASS／私鐵地鐵區段需自付';
+                    }
                 } else {
-                    lineText = `🚃 電車／巴士轉乘${km}`;
+                    lineText = `🚃 電車／巴士轉乘最快${km}`;
+                    detailDesc = `大眾運輸含步行轉乘約 ${mins} 分`;
+                    jrEligible = 'alt';
                 }
 
                 appState.routeCache = appState.routeCache || {};
-                appState.routeCache[cacheKey] = { minutes: mins, modeLabel: lineText };
+                appState.routeCache[cacheKey] = {
+                    minutes: mins,
+                    modeBadge: lineText,
+                    detailDesc,
+                    fareJpy: (result.isWalkOnly || distMeters <= 1600) ? 0 : estimatedFareJpy,
+                    jrEligible,
+                    jrAltText
+                };
                 saveState();
                 renderTimeline();
             } catch (e) {}
@@ -2129,16 +2303,27 @@
 
             container.innerHTML = segments.map((seg, segIdx) => {
                 const transitHtml = seg.transit ? `
-                    <div class="ml-11 my-1.5 flex flex-wrap items-center gap-2 text-xs text-stone-600 bg-washi/90 border border-stone-200/80 rounded-xl px-3 py-1.5">
-                        <span class="font-medium text-indigoJp">${seg.transit.modeLabel}</span>
-                        <div class="inline-flex items-center gap-1">
-                            <span>約</span>
-                            <input type="number" min="1" max="600" value="${seg.transit.minutes}"
-                                onchange="updateManualTransit(${d}, '${seg.transit.from.replace(/'/g, "\\'")}', '${seg.transit.to.replace(/'/g, "\\'")}', this.value)"
-                                class="w-14 bg-white border border-stone-300 rounded-md px-1.5 py-0.5 text-center font-mono font-bold text-indigoJp">
-                            <span>分鐘</span>
+                    <div class="ml-8 sm:ml-11 my-2 bg-washi/95 border border-stone-200/90 rounded-2xl p-3.5 sm:p-4 space-y-2 shadow-2xs">
+                        <div class="flex flex-wrap items-center justify-between gap-2">
+                            <div class="flex flex-wrap items-center gap-2">
+                                <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-bold ${seg.transit.jrCovered ? 'bg-emerald-100/90 text-emerald-950' : 'bg-sky-100/90 text-indigoJp'}">
+                                    ${seg.transit.modeBadge}
+                                </span>
+                                <span class="text-xs sm:text-sm font-bold text-sumi">${seg.transit.from} ➔ ${seg.transit.to}</span>
+                            </div>
+                            <a href="https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(seg.transit.from)}&destination=${encodeURIComponent(seg.transit.to)}&travelmode=${appState.drivingMode ? 'driving' : 'transit'}" target="_blank" rel="noopener" class="shrink-0 px-3 py-1 rounded-xl bg-white hover:bg-indigoJp text-indigoJp hover:text-white border border-stone-300 text-xs font-bold transition-colors">Google Maps ↗</a>
                         </div>
-                        <a href="https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(seg.transit.from)}&destination=${encodeURIComponent(seg.transit.to)}&travelmode=${appState.drivingMode ? 'driving' : 'transit'}" target="_blank" rel="noopener" class="ml-auto text-[11px] font-bold text-indigoJp hover:text-vermilion underline">Google Maps ↗</a>
+                        <p class="text-xs text-stone-600">${seg.transit.detailDesc}</p>
+                        <div class="flex flex-wrap items-center justify-between gap-2 pt-1 text-xs">
+                            <div class="inline-flex items-center gap-1.5 text-stone-700 font-medium">
+                                <span>約</span>
+                                <input type="number" min="1" max="600" value="${seg.transit.minutes}"
+                                    onchange="updateManualTransit(${d}, '${seg.transit.from.replace(/'/g, "\\'")}', '${seg.transit.to.replace(/'/g, "\\'")}', this.value)"
+                                    class="w-16 bg-white border border-stone-300 rounded-lg px-2 py-1 text-center font-mono font-bold text-indigoJp">
+                                <span>分鐘</span>
+                            </div>
+                            <span class="font-bold ${seg.transit.jrCovered ? 'text-matcha' : 'text-indigoJp'}">${seg.transit.fareText}</span>
+                        </div>
                     </div>
                 ` : '';
 
@@ -2151,13 +2336,13 @@
                     }
                     return `
                         ${transitHtml}
-                        <div class="relative z-10 flex items-center gap-3 bg-slate-50 border border-slate-200 rounded-2xl px-4 ${realAnchorBg ? 'py-4' : 'py-3'} overflow-hidden">
+                        <div class="relative z-10 flex items-center gap-3.5 bg-slate-50 border border-slate-200 rounded-2xl px-4 sm:px-5 ${realAnchorBg ? 'min-h-[104px] py-5' : 'min-h-[64px] py-3.5'} overflow-hidden">
                             <div class="${realAnchorBg ? '' : 'hidden'} pointer-events-none absolute inset-0 rounded-2xl overflow-hidden z-0">
-                                <div id="${anchorBgId}" class="absolute inset-y-0 right-0 w-[68%] bg-cover bg-center opacity-85 transition-opacity duration-500" style="${realAnchorBg ? `background-image:url('${realAnchorBg}');` : ''} -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.45) 35%, black 100%); mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.45) 35%, black 100%);"></div>
+                                <div id="${anchorBgId}" class="absolute inset-y-0 right-0 w-[62%] bg-cover bg-center opacity-90 transition-opacity duration-500" style="${realAnchorBg ? `background-image:url('${realAnchorBg}');` : ''} -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.45) 32%, black 100%); mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.45) 32%, black 100%);"></div>
                                 <div class="absolute inset-0 bg-gradient-to-r from-slate-50 via-slate-50/75 to-transparent"></div>
                             </div>
-                            <span class="relative z-10 font-mono font-bold text-xs text-indigoJp bg-white/95 border border-slate-200 px-2.5 py-1 rounded-lg shrink-0">${seg.arriveTime}</span>
-                            <span class="relative z-10 text-xs sm:text-sm font-bold text-slate-800">${seg.title}</span>
+                            <span class="relative z-10 font-mono font-bold text-xs text-indigoJp bg-white/95 border border-slate-200 px-3 py-1.5 rounded-lg shrink-0 shadow-2xs">${seg.arriveTime}</span>
+                            <span class="relative z-10 text-sm sm:text-base font-bold text-slate-800">${seg.title}</span>
                         </div>
                     `;
                 }
@@ -2171,27 +2356,27 @@
 
                 return `
                     ${transitHtml}
-                    <div data-act-id="${seg.id}" class="puzzle-card ${isJustInserted ? 'puzzle-entering ring-2 ring-vermilion/50' : ''} relative z-10 bg-white border-2 border-indigoJp/20 hover:border-vermilion/60 rounded-2xl ${initialBg ? 'p-4 sm:p-5' : 'p-4'} shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-3 overflow-hidden">
-                        <!-- 右側淡入地點實景背景圖片（僅在抓到真實 Google Maps 實景照時顯示，絕不放無關假圖） -->
+                    <div data-act-id="${seg.id}" class="puzzle-card ${isJustInserted ? 'puzzle-entering ring-2 ring-vermilion/50' : ''} relative z-10 bg-white border-2 border-indigoJp/20 hover:border-vermilion/60 rounded-2xl ${initialBg ? 'min-h-[116px] p-5' : 'min-h-[84px] p-4'} shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-3 overflow-hidden">
+                        <!-- 右側淡入地點實景背景圖片（加高卡片讓圖片完整舒展不壓縮） -->
                         <div class="${initialBg ? '' : 'hidden'} pointer-events-none absolute inset-0 rounded-2xl overflow-hidden z-0">
-                            <div id="${tlBgId}" class="absolute inset-y-0 right-0 w-[72%] sm:w-[68%] bg-cover bg-center opacity-85 transition-opacity duration-500" style="${initialBg ? `background-image:url('${initialBg}');` : ''} -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.45) 35%, black 100%); mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.45) 35%, black 100%);"></div>
+                            <div id="${tlBgId}" class="absolute inset-y-0 right-0 w-[68%] sm:w-[64%] bg-cover bg-center opacity-90 transition-opacity duration-500" style="${initialBg ? `background-image:url('${initialBg}');` : ''} -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.45) 32%, black 100%); mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.45) 32%, black 100%);"></div>
                             <div class="absolute inset-0 bg-gradient-to-r from-white via-white/75 to-transparent"></div>
                         </div>
 
-                        <div class="relative z-10 flex items-start gap-3">
-                            <span class="font-mono font-bold text-xs text-white bg-vermilion px-2.5 py-1 rounded-lg shrink-0 mt-0.5">${seg.arriveTime}</span>
-                            <div class="space-y-1">
-                                <div class="flex items-center gap-1.5 flex-wrap">
-                                    <span class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-sakura text-vermilion">${seg.tag}</span>
-                                    <h4 class="font-serif font-bold text-sm sm:text-base text-indigoJp">${seg.title}</h4>
+                        <div class="relative z-10 flex items-start gap-3.5">
+                            <span class="font-mono font-bold text-xs text-white bg-vermilion px-3 py-1.5 rounded-lg shrink-0 mt-0.5 shadow-2xs">${seg.arriveTime}</span>
+                            <div class="space-y-1.5">
+                                <div class="flex items-center gap-2 flex-wrap">
+                                    <span class="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-sakura text-vermilion">${seg.tag}</span>
+                                    <h4 class="font-serif font-bold text-base sm:text-lg text-indigoJp">${seg.title}</h4>
                                 </div>
-                                ${seg.note ? `<p class="text-xs text-stone-600">${seg.note}</p>` : ''}
+                                ${seg.note ? `<p class="text-xs sm:text-sm text-stone-600">${seg.note}</p>` : ''}
                             </div>
                         </div>
-                        <div class="relative z-10 flex items-center gap-1.5 self-end sm:self-center shrink-0 bg-white/80 backdrop-blur-2xs px-2 py-1 rounded-xl border border-stone-200/70">
-                            <label class="inline-flex items-center gap-1 text-[11px] text-stone-600 px-1.5 py-0.5">
+                        <div class="relative z-10 flex items-center gap-1.5 self-end sm:self-center shrink-0 bg-white/85 backdrop-blur-2xs px-2.5 py-1.5 rounded-xl border border-stone-200/80 shadow-2xs">
+                            <label class="inline-flex items-center gap-1 text-xs text-stone-600 px-1.5 py-0.5">
                                 <span>停留</span>
-                                <input type="number" min="15" step="15" value="${seg.duration}" onchange="updateActivityDuration(${d}, ${seg.actIndex}, this.value)" class="w-12 bg-white border border-stone-300 rounded px-1 text-center font-mono font-bold text-indigoJp">
+                                <input type="number" min="15" step="15" value="${seg.duration}" onchange="updateActivityDuration(${d}, ${seg.actIndex}, this.value)" class="w-14 bg-white border border-stone-300 rounded-lg px-1.5 py-0.5 text-center font-mono font-bold text-indigoJp">
                                 <span>分</span>
                             </label>
                             <button type="button" onclick="moveActivityOrder(${d}, ${seg.actIndex}, -1)" title="上移" class="px-2 py-1 rounded-lg bg-washi hover:bg-stone-200 text-xs font-bold text-stone-600 cursor-pointer">↑</button>
@@ -2396,6 +2581,10 @@
                     if (el) {
                         el.style.backgroundImage = `url('${photoUrl}')`;
                         if (el.parentElement) el.parentElement.classList.remove('hidden');
+                        const card = el.parentElement?.parentElement;
+                        if (card) {
+                            card.classList.add('min-h-[108px]');
+                        }
                     }
                 }
             } catch (e) {}
@@ -2804,7 +2993,7 @@
                 lines.push(`=== Day ${d} (${getDateLabelForDay(d)}) ===`);
                 const nodes = buildDaySegments(d);
                 nodes.forEach(n => {
-                    if (n.transit) lines.push(`   ↳ ${n.transit.modeLabel}（約 ${n.transit.minutes} 分）`);
+                    if (n.transit) lines.push(`   ↳ ${n.transit.modeBadge}（約 ${n.transit.minutes} 分｜${n.transit.fareText}）`);
                     lines.push(`${n.arriveTime} ${n.title}`);
                 });
                 lines.push('');
@@ -3169,7 +3358,7 @@
             loadSavedData();
             if (appState.routeCache) {
                 Object.keys(appState.routeCache).forEach(k => {
-                    if ((appState.routeCache[k]?.modeLabel || '').includes('門到門路線')) {
+                    if (!appState.routeCache[k]?.modeBadge || (appState.routeCache[k]?.modeLabel || '').includes('門到門路線')) {
                         delete appState.routeCache[k];
                     }
                 });
