@@ -1,7 +1,7 @@
 {
   "syncCode": "JP-GPVMP6",
-  "updatedStamp": "1795237469174-gpet",
-  "updatedAt": "2026-11-21T05:04:29.174Z",
+  "updatedStamp": "1795237472619-wq3l",
+  "updatedAt": "2026-11-21T05:04:32.619Z",
   "appState": {
     "startDate": "2026-12-18",
     "endDate": "2026-12-21",
@@ -136,7 +136,17 @@
           "note": "傍晚點燈浪漫散步"
         }
       ],
-      "3": [],
+      "3": [
+        {
+          "id": "act-1795237470927-fn76",
+          "title": "京都車站大樓冬季點燈・大階段光之階梯",
+          "type": "經典景點",
+          "duration": 60,
+          "isIndoor": false,
+          "note": "京都市下京區（JR京都車站中央口大階段）",
+          "imageUrl": ""
+        }
+      ],
       "4": [
         {
           "id": "act-1795095428598-8j0o",
