@@ -101,7 +101,7 @@
                 <div>
                     <div class="flex items-center flex-wrap gap-1.5">
                         <h1 class="font-serif text-base sm:text-lg font-bold text-indigoJp tracking-wide">旅遊拼圖 Travel Puzzle</h1>
-                        <span id="app-version-badge" class="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-indigoJp/10 text-indigoJp">v1.42</span>
+                        <span id="app-version-badge" class="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-indigoJp/10 text-indigoJp">v1.43</span>
                         <span id="cloud-db-version-badge" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-stone-100 text-stone-500">🌐 雲端庫就緒</span>
                         <span id="auto-save-status" class="text-[11px] text-stone-400 font-medium">☁️ 已自動儲存</span>
                     </div>
@@ -187,8 +187,10 @@
                                 <span class="inline-flex items-center gap-1 text-matcha"><span class="w-2.5 h-2.5 rounded-full bg-matcha inline-block"></span>跨區延伸</span>
                             </div>
                         </div>
-                        <div id="external-japan-svg-host" class="hidden w-full h-[330px] sm:h-[385px] select-none flex items-center justify-center"></div>
-                        <svg id="japan-interactive-map" viewBox="0 0 680 390" class="w-full h-[330px] sm:h-[385px] select-none" role="img" aria-label="高精度日本列島 11 分區向量互動地圖">
+                        <div id="external-japan-svg-host" class="w-full h-[330px] sm:h-[385px] select-none flex items-center justify-center text-xs text-slate-400">
+                            <span>🗺️ 載入高精度日本地圖中...</span>
+                        </div>
+                        <svg id="japan-interactive-map" viewBox="0 0 680 390" class="hidden w-full h-[330px] sm:h-[385px] select-none" role="img" aria-label="高精度日本列島 11 分區向量互動地圖">
                             <defs>
                                 <filter id="jp-region-glow" x="-30%" y="-30%" width="160%" height="160%">
                                     <feDropShadow dx="0" dy="0" stdDeviation="5" flood-color="#D94E34" flood-opacity="0.78"/>
@@ -760,7 +762,7 @@
     </div>
 
     <script>
-        const APP_VERSION = 'v1.42';
+        const APP_VERSION = 'v1.43';
         const STORAGE_KEY = 'travel_puzzle_jp_state_v1';
         const CONFIG_KEY = 'travel_puzzle_jp_config_v1';
         const LEGACY_CONFIG_KEYS = ['travel_puzzle_config', 'jp_travel_config_v1', 'travelPuzzleConfig', 'travel_puzzle_api_keys', 'travel_puzzle_settings', 'tp_config_v1'];
@@ -1103,6 +1105,9 @@
                     return;
                 } catch (e) {}
             }
+            // 若無法取得外部 japan.svg（例如完全離線），才顯示內建保底地圖
+            host.classList.add('hidden');
+            fallbackSvg.classList.remove('hidden');
         }
 
         // =========================================================
@@ -1963,7 +1968,7 @@
                     const hasSubwayOrPrivate = uniqueLines.some(l => /線|メトロ|地鐵|南海|阪急|阪神|京阪|近鐵|私鐵/i.test(l) && !/JR/i.test(l));
                     const walkNote = walkMinsTotal > 0 ? `，含兩端步行約 ${walkMinsTotal} 分` : '';
                     lineText = `${hasJr ? '🚄' : '🚇'} 搭乘 ${uniqueLines[0]} 最快`;
-                    detailDesc = `${uniqueLines.join(' ➔ ')}${walkNote}，約 ${mins} 分`;
+                    detailDesc = `${uniqueLines.join(' ➔ ')}${walkNote}，門到門約 ${mins} 分`;
                     if (hasJr && !hasSubwayOrPrivate) {
                         jrEligible = 'full';
                     } else if (!hasJr && hasSubwayOrPrivate) {
@@ -1975,7 +1980,7 @@
                     }
                 } else {
                     lineText = `🚃 電車／巴士轉乘最快${km}`;
-                    detailDesc = `大眾運輸含步行轉乘約 ${mins} 分`;
+                    detailDesc = `大眾運輸含步行轉乘門到門約 ${mins} 分`;
                     jrEligible = 'alt';
                 }
 
@@ -2316,7 +2321,7 @@
                         <p class="text-xs text-stone-600">${seg.transit.detailDesc}</p>
                         <div class="flex flex-wrap items-center justify-between gap-2 pt-1 text-xs">
                             <div class="inline-flex items-center gap-1.5 text-stone-700 font-medium">
-                                <span>約</span>
+                                <span>門到門約</span>
                                 <input type="number" min="1" max="600" value="${seg.transit.minutes}"
                                     onchange="updateManualTransit(${d}, '${seg.transit.from.replace(/'/g, "\\'")}', '${seg.transit.to.replace(/'/g, "\\'")}', this.value)"
                                     class="w-16 bg-white border border-stone-300 rounded-lg px-2 py-1 text-center font-mono font-bold text-indigoJp">
@@ -2993,7 +2998,7 @@
                 lines.push(`=== Day ${d} (${getDateLabelForDay(d)}) ===`);
                 const nodes = buildDaySegments(d);
                 nodes.forEach(n => {
-                    if (n.transit) lines.push(`   ↳ ${n.transit.modeBadge}（約 ${n.transit.minutes} 分｜${n.transit.fareText}）`);
+                    if (n.transit) lines.push(`   ↳ ${n.transit.modeBadge}（門到門約 ${n.transit.minutes} 分｜${n.transit.fareText}）`);
                     lines.push(`${n.arriveTime} ${n.title}`);
                 });
                 lines.push('');
