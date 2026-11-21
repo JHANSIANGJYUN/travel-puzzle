@@ -1,7 +1,7 @@
 {
   "syncCode": "JP-GPVMP6",
-  "updatedStamp": "1795235515289-7o90",
-  "updatedAt": "2026-11-21T04:31:55.289Z",
+  "updatedStamp": "1795235903511-893n",
+  "updatedAt": "2026-11-21T04:38:23.511Z",
   "appState": {
     "startDate": "2026-12-18",
     "endDate": "2026-12-21",
@@ -33,7 +33,7 @@
     "useSecondJrPass": false,
     "jrPassId2": "jr-kansai-wide-5",
     "jrPassStartDay2": 4,
-    "activeDay": 3,
+    "activeDay": 2,
     "dayStartTimes": {
       "1": "20:45",
       "2": "09:00",
