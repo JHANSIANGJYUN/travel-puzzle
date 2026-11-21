@@ -1,7 +1,7 @@
 {
   "syncCode": "JP-GPVMP6",
-  "updatedStamp": "1795231462678-lrf2",
-  "updatedAt": "2026-11-21T03:24:22.678Z",
+  "updatedStamp": "1795233994538-06qr",
+  "updatedAt": "2026-11-21T04:06:34.538Z",
   "appState": {
     "startDate": "2026-12-18",
     "endDate": "2026-12-21",
@@ -123,6 +123,14 @@
           "id": "act-1795231455992-12om",
           "title": "遊びトレジャー本店",
           "type": "經典景點",
+          "duration": 60,
+          "isIndoor": false,
+          "note": ""
+        },
+        {
+          "id": "act-1795233992814-ra0v",
+          "title": "Kinton Kōbe",
+          "type": "季節美食",
           "duration": 60,
           "isIndoor": false,
           "note": ""
