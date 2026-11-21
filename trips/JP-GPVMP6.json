@@ -1,0 +1,480 @@
+{
+  "updatedAt": "2026-11-21T12:07:30.410Z",
+  "syncCode": "JP-GPVMP6",
+  "appState": {
+    "startDate": "2026-12-18",
+    "endDate": "2026-12-21",
+    "travelers": 2,
+    "region": "kansai",
+    "extraRegions": [],
+    "outboundFlight": {
+      "code": "AK176",
+      "airline": "AirAsia 亞洲航空",
+      "airport": "關西國際機場 (KIX)",
+      "terminal": "T1",
+      "time": "19:30",
+      "aircraft": "A321neo",
+      "region": "kansai"
+    },
+    "inboundFlight": {
+      "code": "AK177",
+      "airline": "AirAsia 亞洲航空",
+      "airport": "關西國際機場 (KIX)",
+      "terminal": "T1",
+      "time": "20:45",
+      "aircraft": "A321neo",
+      "region": "kansai"
+    },
+    "drivingMode": false,
+    "rentalCost": 32000,
+    "tollFuelCost": 8500,
+    "useJrPass": true,
+    "jrPassId": "jr-kansai-mini-3",
+    "jrPassStartDay": 2,
+    "useSecondJrPass": false,
+    "jrPassId2": "jr-kansai-wide-5",
+    "jrPassStartDay2": 4,
+    "activeDay": 1,
+    "timelineViewMode": "single",
+    "dayStartTimes": {
+      "1": "20:15",
+      "2": "09:00",
+      "3": "09:00",
+      "4": "09:30",
+      "5": "09:30",
+      "6": "09:30",
+      "7": "09:30",
+      "8": "09:30",
+      "9": "09:30",
+      "10": "09:30",
+      "11": "09:30",
+      "12": "09:30",
+      "13": "09:30",
+      "14": "09:30",
+      "15": "09:30",
+      "16": "09:30",
+      "17": "09:30",
+      "18": "09:30",
+      "19": "09:30",
+      "20": "09:30",
+      "21": "09:30"
+    },
+    "dayHotels": {
+      "1": "東橫INN 大阪難波西",
+      "2": "東橫INN 新大阪東口",
+      "3": "東橫INN 新大阪東口"
+    },
+    "dropLuggageFirst": {
+      "1": true,
+      "2": true,
+      "3": false
+    },
+    "activitiesByDay": {
+      "1": [
+        {
+          "id": "act-1795166785907-y6nb",
+          "title": "道頓堀一蘭拉麵",
+          "type": "季節美食",
+          "duration": 60,
+          "isIndoor": true,
+          "note": ""
+        },
+        {
+          "id": "act-1795262834618",
+          "title": "道頓堀＆心齋橋晚餐逛街（固力果跑跑人）",
+          "tag": "美食逛街",
+          "duration": 120,
+          "note": "章魚燒、大阪燒、串炸與藥妝採買集中地，越夜越熱鬧。"
+        }
+      ],
+      "2": [
+        {
+          "id": "act-init-2",
+          "title": "神戶布引香草園",
+          "type": "經典景點",
+          "duration": 180,
+          "isIndoor": false,
+          "note": "搭乘空中纜車俯瞰神戶港景與溫室花房"
+        },
+        {
+          "id": "act-1795233992814-ra0v",
+          "title": "Kinton Kōbe",
+          "type": "季節美食",
+          "duration": 60,
+          "isIndoor": false,
+          "note": ""
+        },
+        {
+          "id": "act-1795231455992-12om",
+          "title": "遊びトレジャー本店",
+          "type": "經典景點",
+          "duration": 45,
+          "isIndoor": false,
+          "note": ""
+        },
+        {
+          "id": "act-1795229839376-i54o",
+          "title": "Blue Bottle Coffee - Kobe Cafe",
+          "type": "季節美食",
+          "duration": 45,
+          "isIndoor": false,
+          "note": ""
+        },
+        {
+          "id": "act-1795262805916",
+          "title": "神戶港塔＆美利堅公園海濱夜景",
+          "tag": "景點",
+          "duration": 90,
+          "note": ""
+        }
+      ],
+      "3": [
+        {
+          "id": "act-1795237470927-fn76",
+          "title": "京都車站大樓冬季點燈・大階段光之階梯",
+          "type": "經典景點",
+          "duration": 60,
+          "isIndoor": false,
+          "note": "京都市下京區（JR京都車站中央口大階段）",
+          "imageUrl": ""
+        }
+      ],
+      "4": [
+        {
+          "id": "act-1795095428598-8j0o",
+          "title": "通天閣",
+          "type": "經典景點",
+          "duration": 90,
+          "isIndoor": false,
+          "note": ""
+        },
+        {
+          "id": "act-1795094560212-k57r",
+          "title": "阿倍野 Q's Mall",
+          "type": "購物散策",
+          "duration": 180,
+          "isIndoor": true,
+          "note": ""
+        },
+        {
+          "id": "act-1795095463998-2cik",
+          "title": "天王寺MIO",
+          "type": "購物散策",
+          "duration": 60,
+          "isIndoor": false,
+          "note": ""
+        },
+        {
+          "id": "act-1795095375473-xybj",
+          "title": "Harukas300展望台",
+          "type": "經典景點",
+          "duration": 60,
+          "isIndoor": false,
+          "note": ""
+        }
+      ],
+      "5": [],
+      "6": [],
+      "7": [],
+      "8": [],
+      "9": [],
+      "10": [],
+      "11": [],
+      "12": [],
+      "13": [],
+      "14": [],
+      "15": [],
+      "16": [],
+      "17": [],
+      "18": [],
+      "19": [],
+      "20": [],
+      "21": []
+    },
+    "manualTransitMinutes": {},
+    "routeCache": {
+      "TRANSIT|遊びトレジャー本店|Blue Bottle Coffee - Kobe Cafe": {
+        "minutes": 8,
+        "modeBadge": "🚶 步行前往最順路（0.6 km）",
+        "detailDesc": "短距離步行約 8 分即可直達",
+        "fareJpy": 0,
+        "jrEligible": "full",
+        "jrAltText": ""
+      },
+      "TRANSIT|Kinton Kōbe|遊びトレジャー本店": {
+        "minutes": 4,
+        "modeBadge": "🚶 步行前往最順路（0.1 km）",
+        "detailDesc": "短距離步行約 4 分即可直達",
+        "fareJpy": 0,
+        "jrEligible": "full",
+        "jrAltText": ""
+      },
+      "TRANSIT|神戶布引香草園|Kinton Kōbe": {
+        "minutes": 24,
+        "modeBadge": "🚃 電車／巴士轉乘最快（1.7 km）",
+        "detailDesc": "大眾運輸含步行轉乘約 24 分",
+        "fareJpy": 200,
+        "jrEligible": "alt",
+        "jrAltText": ""
+      },
+      "TRANSIT|東橫INN 新大阪東口|神戶布引香草園": {
+        "minutes": 74,
+        "modeBadge": "🚃 電車／巴士轉乘最快（36.0 km）",
+        "detailDesc": "大眾運輸含步行轉乘約 74 分",
+        "fareJpy": 830,
+        "jrEligible": "alt",
+        "jrAltText": ""
+      },
+      "TRANSIT|神戶港|東橫INN 新大阪東口": {
+        "minutes": 70,
+        "modeBadge": "🚃 電車／巴士轉乘最快（44.7 km）",
+        "detailDesc": "大眾運輸含步行轉乘約 70 分",
+        "fareJpy": 1030,
+        "jrEligible": "alt",
+        "jrAltText": ""
+      },
+      "TRANSIT|Blue Bottle Coffee - Kobe Cafe|神戶港": {
+        "minutes": 28,
+        "modeBadge": "🚃 電車／巴士轉乘最快（5.1 km）",
+        "detailDesc": "大眾運輸含步行轉乘約 28 分",
+        "fareJpy": 200,
+        "jrEligible": "alt",
+        "jrAltText": ""
+      },
+      "TRANSIT|東橫INN 大阪難波西|東橫INN 新大阪東口": {
+        "minutes": 37,
+        "modeBadge": "🚃 電車／巴士轉乘最快（10.6 km）",
+        "detailDesc": "大眾運輸含步行轉乘約 37 分",
+        "fareJpy": 240,
+        "jrEligible": "alt",
+        "jrAltText": ""
+      },
+      "TRANSIT|道頓堀＆心齋橋筋商店街|東橫INN 大阪難波西": {
+        "minutes": 21,
+        "modeBadge": "🚶 步行前往最順路（1.4 km）",
+        "detailDesc": "短距離步行約 21 分即可直達",
+        "fareJpy": 0,
+        "jrEligible": "full",
+        "jrAltText": ""
+      },
+      "TRANSIT|道頓堀一蘭拉麵|道頓堀＆心齋橋筋商店街": {
+        "minutes": 8,
+        "modeBadge": "🚶 步行前往最順路（0.6 km）",
+        "detailDesc": "短距離步行約 8 分即可直達",
+        "fareJpy": 0,
+        "jrEligible": "full",
+        "jrAltText": ""
+      },
+      "TRANSIT|東橫INN 大阪難波西|道頓堀一蘭拉麵": {
+        "minutes": 17,
+        "modeBadge": "🚶 步行前往最順路（1.1 km）",
+        "detailDesc": "短距離步行約 17 分即可直達",
+        "fareJpy": 0,
+        "jrEligible": "full",
+        "jrAltText": ""
+      },
+      "TRANSIT|關西國際機場 (KIX)|東橫INN 大阪難波西": {
+        "minutes": 73,
+        "modeBadge": "🚃 電車／巴士轉乘最快（49.1 km）",
+        "detailDesc": "大眾運輸含步行轉乘門到門約 73 分",
+        "fareJpy": 1130,
+        "jrEligible": "alt",
+        "jrAltText": ""
+      },
+      "TRANSIT|神戶港|神戶港塔＆美利堅公園海濱夜景": {
+        "minutes": 29,
+        "modeBadge": "🚃 電車／巴士轉乘最快（5.9 km）",
+        "detailDesc": "大眾運輸含步行轉乘門到門約 29 分",
+        "fareJpy": 200,
+        "jrEligible": "alt",
+        "jrAltText": ""
+      },
+      "TRANSIT|神戶港塔＆美利堅公園海濱夜景|東橫INN 新大阪東口": {
+        "minutes": 68,
+        "modeBadge": "🚃 電車／巴士轉乘最快（36.4 km）",
+        "detailDesc": "大眾運輸含步行轉乘門到門約 68 分",
+        "fareJpy": 840,
+        "jrEligible": "alt",
+        "jrAltText": ""
+      },
+      "TRANSIT|Blue Bottle Coffee - Kobe Cafe|神戶港塔＆美利堅公園海濱夜景": {
+        "minutes": 13,
+        "modeBadge": "🚶 步行前往最順路（0.9 km）",
+        "detailDesc": "短距離步行約 13 分即可直達",
+        "fareJpy": 0,
+        "jrEligible": "full",
+        "jrAltText": ""
+      },
+      "TRANSIT|道頓堀＆心齋橋晚餐逛街（固力果跑跑人）|東橫INN 大阪難波西": {
+        "minutes": 16,
+        "modeBadge": "🚶 步行前往最順路（1.1 km）",
+        "detailDesc": "短距離步行約 16 分即可直達",
+        "fareJpy": 0,
+        "jrEligible": "full",
+        "jrAltText": ""
+      },
+      "TRANSIT|道頓堀＆心齋橋筋商店街|道頓堀＆心齋橋晚餐逛街（固力果跑跑人）": {
+        "minutes": 6,
+        "modeBadge": "🚶 步行前往最順路（0.4 km）",
+        "detailDesc": "短距離步行約 6 分即可直達",
+        "fareJpy": 0,
+        "jrEligible": "full",
+        "jrAltText": ""
+      },
+      "TRANSIT|道頓堀一蘭拉麵|道頓堀＆心齋橋晚餐逛街（固力果跑跑人）": {
+        "minutes": 4,
+        "modeBadge": "🚶 步行前往最順路（0.2 km）",
+        "detailDesc": "短距離步行約 4 分即可直達",
+        "fareJpy": 0,
+        "jrEligible": "full",
+        "jrAltText": ""
+      }
+    },
+    "trashBin": [
+      {
+        "id": "act-init-1",
+        "title": "道頓堀＆心齋橋筋商店街",
+        "type": "購物散策",
+        "duration": 120,
+        "isIndoor": false,
+        "note": "跑跑人看板拍照＋章魚燒大阪燒晚餐",
+        "originalDay": 1
+      },
+      {
+        "id": "act-1795228269800-dk7e",
+        "title": "神戶港",
+        "type": "經典景點",
+        "duration": 90,
+        "isIndoor": false,
+        "note": "",
+        "originalDay": 2
+      },
+      {
+        "id": "act-1795261304267",
+        "title": "大阪城天守閣＆西之丸庭園",
+        "tag": "景點",
+        "duration": 120,
+        "note": "",
+        "originalDay": 1
+      }
+    ],
+    "trashDrawerOpen": true,
+    "jpyRate": 0.215,
+    "fixedExpenses": [
+      {
+        "id": "fexp-1795239095007",
+        "type": "機票費用",
+        "item": "機票",
+        "currency": "TWD",
+        "amount": 5000
+      },
+      {
+        "id": "fexp-1795239106566",
+        "type": "住宿費用",
+        "item": "東橫",
+        "currency": "JPY",
+        "amount": 25000
+      }
+    ],
+    "expensesByDay": {
+      "1": [
+        {
+          "id": "ex-1",
+          "category": "🍜 美食餐飲",
+          "item": "道頓堀章魚燒＆拉麵",
+          "amountJpy": 3200
+        }
+      ]
+    },
+    "recFilter": "all",
+    "customRecItems": [],
+    "expenseSelectedDay": 1,
+    "travelerCount": 2,
+    "regionId": "kansai",
+    "rentalCarCostJpy": 32000,
+    "rentalTollFuelJpy": 8500,
+    "deletedPuzzleBin": [
+      {
+        "trashId": "trash-1795238154028-szjb",
+        "originalDay": 2,
+        "deletedAt": "13:15",
+        "piece": {
+          "id": "act-init-3",
+          "title": "神戶 Luminarie 光之雕刻盛典",
+          "type": "光影花火",
+          "duration": 90,
+          "isIndoor": false,
+          "note": "傍晚點燈浪漫散步"
+        }
+      },
+      {
+        "trashId": "trash-1795237467526-pws9",
+        "originalDay": 3,
+        "deletedAt": "13:04",
+        "piece": {
+          "id": "act-1795235482057-hakt",
+          "title": "京都車站",
+          "type": "經典景點",
+          "duration": 60,
+          "isIndoor": false,
+          "note": ""
+        }
+      },
+      {
+        "trashId": "trash-1795235513641-5fcr",
+        "originalDay": 3,
+        "deletedAt": "12:31",
+        "piece": {
+          "id": "act-1795235510184-upc6",
+          "title": "京都清水寺＆二年坂三年坂",
+          "type": "傳統祭典",
+          "duration": 150,
+          "isIndoor": false,
+          "note": "京都市東山區（祇園四條站步行15分）",
+          "imageUrl": ""
+        }
+      },
+      {
+        "trashId": "trash-1795235489605-dk28",
+        "originalDay": 3,
+        "deletedAt": "12:31",
+        "piece": {
+          "id": "act-init-5",
+          "title": "宇治平等院鳳凰堂＆抹茶表參道",
+          "type": "周邊順遊",
+          "duration": 150,
+          "isIndoor": false,
+          "note": "JR 奈良線順遊宇治抹茶聖代"
+        }
+      },
+      {
+        "trashId": "trash-1795228244843-epjo",
+        "originalDay": 2,
+        "deletedAt": "10:30",
+        "piece": {
+          "id": "act-init-4",
+          "title": "京都嵐山渡月橋＆竹林小徑",
+          "type": "經典景點",
+          "duration": 180,
+          "isIndoor": false,
+          "note": "持 JR PASS 搭 JR 嵯峨野線直達"
+        }
+      },
+      {
+        "trashId": "trash-1795228026914-ur3c",
+        "originalDay": 1,
+        "deletedAt": "10:27",
+        "piece": {
+          "id": "act-1795092571758-7nmc",
+          "title": "大阪光之文藝復興",
+          "type": "經典景點",
+          "duration": 60,
+          "isIndoor": false,
+          "note": "大阪市役所至中之島公園 (淀屋橋站)"
+        }
+      }
+    ],
+    "customTransitMinutes": {},
+    "expenses": []
+  }
+}
