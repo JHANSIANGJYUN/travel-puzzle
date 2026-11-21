@@ -1,7 +1,7 @@
 {
   "syncCode": "JP-GPVMP6",
-  "updatedStamp": "1795238182023-fb41",
-  "updatedAt": "2026-11-21T05:16:22.023Z",
+  "updatedStamp": "1795238189276-76lv",
+  "updatedAt": "2026-11-21T05:16:29.276Z",
   "appState": {
     "startDate": "2026-12-18",
     "endDate": "2026-12-21",
@@ -96,14 +96,6 @@
           "note": "搭乘空中纜車俯瞰神戶港景與溫室花房"
         },
         {
-          "id": "act-1795228269800-dk7e",
-          "title": "神戶港",
-          "type": "經典景點",
-          "duration": 90,
-          "isIndoor": false,
-          "note": ""
-        },
-        {
           "id": "act-1795231455992-12om",
           "title": "遊びトレジャー本店",
           "type": "經典景點",
@@ -116,6 +108,14 @@
           "title": "Kinton Kōbe",
           "type": "季節美食",
           "duration": 60,
+          "isIndoor": false,
+          "note": ""
+        },
+        {
+          "id": "act-1795228269800-dk7e",
+          "title": "神戶港",
+          "type": "經典景點",
+          "duration": 90,
           "isIndoor": false,
           "note": ""
         },
