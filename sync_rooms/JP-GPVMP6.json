@@ -1,7 +1,7 @@
 {
   "syncCode": "JP-GPVMP6",
-  "updatedStamp": "1795237055754-2pnf",
-  "updatedAt": "2026-11-21T04:57:35.754Z",
+  "updatedStamp": "1795237098281-zfe0",
+  "updatedAt": "2026-11-21T04:58:18.281Z",
   "appState": {
     "startDate": "2026-12-18",
     "endDate": "2026-12-21",
@@ -253,7 +253,9 @@
         }
       }
     ],
-    "customTransitMinutes": {},
+    "customTransitMinutes": {
+      "3|東橫INN 新大阪東口|京都車站|T": 61
+    },
     "jpyRate": 0.215,
     "fixedExpenses": [],
     "expenses": []
