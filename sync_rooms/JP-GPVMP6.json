@@ -1,7 +1,7 @@
 {
   "syncCode": "JP-GPVMP6",
-  "updatedStamp": "1795235511856-wtam",
-  "updatedAt": "2026-11-21T04:31:51.856Z",
+  "updatedStamp": "1795235515289-7o90",
+  "updatedAt": "2026-11-21T04:31:55.289Z",
   "appState": {
     "startDate": "2026-12-18",
     "endDate": "2026-12-21",
@@ -144,15 +144,6 @@
           "duration": 60,
           "isIndoor": false,
           "note": ""
-        },
-        {
-          "id": "act-1795235510184-upc6",
-          "title": "京都清水寺＆二年坂三年坂",
-          "type": "傳統祭典",
-          "duration": 150,
-          "isIndoor": false,
-          "note": "京都市東山區（祇園四條站步行15分）",
-          "imageUrl": ""
         }
       ],
       "4": [
@@ -208,6 +199,20 @@
       "21": []
     },
     "deletedPuzzleBin": [
+      {
+        "trashId": "trash-1795235513641-5fcr",
+        "originalDay": 3,
+        "deletedAt": "12:31",
+        "piece": {
+          "id": "act-1795235510184-upc6",
+          "title": "京都清水寺＆二年坂三年坂",
+          "type": "傳統祭典",
+          "duration": 150,
+          "isIndoor": false,
+          "note": "京都市東山區（祇園四條站步行15分）",
+          "imageUrl": ""
+        }
+      },
       {
         "trashId": "trash-1795235489605-dk28",
         "originalDay": 3,
