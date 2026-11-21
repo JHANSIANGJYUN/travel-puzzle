@@ -166,8 +166,10 @@
                     旅
                 </div>
                 <div>
-                    <div class="flex items-center gap-2">
+                    <div class="flex items-center flex-wrap gap-1.5">
                         <h1 class="font-serif text-base sm:text-lg font-bold text-indigoJp tracking-wide">旅遊拼圖 Travel Puzzle</h1>
+                        <span id="app-version-badge" class="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-indigoJp/10 text-indigoJp" title="網頁程式版本號">v1.18</span>
+                        <span id="cloud-db-version-badge" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-stone-100 text-stone-500">🌐 雲端庫檢查中</span>
                         <span id="auto-save-status" class="text-[11px] text-stone-400 font-medium">☁️ 已自動儲存</span>
                     </div>
                     <p class="text-[11px] text-stone-500">日本祭典・智慧交通精算與跨裝置行程拼圖<span id="cloud-sync-header-badge" class="text-matcha font-bold"></span></p>
@@ -762,6 +764,8 @@
         // ==========================================
         // 1. 儲存鍵值與日本 10 大地區 / JR PASS / 航班 / 季節祭典資料庫
         // ==========================================
+        const APP_VERSION = 'v1.18';
+        const APP_BUILD_DATE = '2026-11-21';
         const STATE_STORAGE_KEY = 'travel_puzzle_jp_state_v4';
         const SYNC_CODE_STORAGE_KEY = 'travel_puzzle_device_sync_code';
         const GITHUB_PAT_STORAGE_KEY = 'travel_puzzle_github_pat_v1';
@@ -1463,7 +1467,14 @@
             const url = getCloudDbUrl();
             const statusEl = document.getElementById('cloud-db-modal-status');
             const headerBadge = document.getElementById('cloud-sync-header-badge');
-            if (!url) return false;
+            const dbVerBadge = document.getElementById('cloud-db-version-badge');
+            if (!url) {
+                if (dbVerBadge) {
+                    dbVerBadge.textContent = '📦 內建資料庫';
+                    dbVerBadge.className = 'text-[10px] font-bold px-2 py-0.5 rounded-full bg-stone-100 text-stone-500';
+                }
+                return false;
+            }
             try {
                 const res = await fetch(`${url}${url.includes('?') ? '&' : '?'}t=${Date.now()}`, { cache: 'no-store' });
                 if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -1478,18 +1489,42 @@
                     cloudEventsPool = data.events;
                 }
                 cloudUpdatedAt = data.updatedAt || '';
+                const formattedDate = formatCloudDateShort(cloudUpdatedAt);
                 if (statusEl) statusEl.textContent = `🟢 已同步 (${cloudUpdatedAt || '最新'})`;
                 if (headerBadge) headerBadge.textContent = '・🌐 雲端庫已同步';
+                if (dbVerBadge) {
+                    dbVerBadge.textContent = formattedDate ? `🌐 雲端庫 ${formattedDate} 更新` : '🌐 雲端庫已同步';
+                    dbVerBadge.className = 'text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800';
+                    dbVerBadge.title = `雲端資料庫最後更新時間：${cloudUpdatedAt || '最新'}`;
+                }
                 populateJrPassDropdowns();
                 updateJrPassSummaryUI();
                 loadBuiltinRecommendations();
-                if (!silent) showToast('✅ 已成功從 GitHub 雲端庫同步最新景點、航班與 JR PASS！');
+                if (!silent) showToast(`✅ 已成功從 GitHub 雲端庫同步（${formattedDate || '最新'}版本）！`);
                 return true;
             } catch (e) {
                 if (statusEl) statusEl.textContent = '⚠️ 讀取失敗（使用內建資料庫）';
+                if (dbVerBadge) {
+                    dbVerBadge.textContent = '📦 內建保底庫';
+                    dbVerBadge.className = 'text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-800';
+                }
                 if (!silent) showToast(`⚠️ 雲端資料庫尚未建立或讀取失敗，目前使用內建資料庫`);
                 return false;
             }
+        }
+
+        function formatCloudDateShort(rawDateStr) {
+            if (!rawDateStr) return '';
+            const str = String(rawDateStr).trim();
+            const m = str.match(/(\d{4})[-/](\d{1,2})[-/](\d{1,2})/);
+            if (m) {
+                return `${parseInt(m[2], 10)}月${parseInt(m[3], 10)}日`;
+            }
+            const parsed = new Date(str);
+            if (!isNaN(parsed.getTime())) {
+                return `${parsed.getMonth() + 1}月${parsed.getDate()}日`;
+            }
+            return str;
         }
 
         async function saveAndSyncCloudDb() {
@@ -2151,19 +2186,41 @@
                         const km = kmNum.toFixed(1);
                         let estTransitMins = driveMins;
                         if (!isDriving) {
-                            // 日本 JR 快速/特急列車在跨區中長距離（>18km）遠快於汽車道路行駛，加上兩端車站步行轉乘
-                            if (kmNum >= 18) {
-                                estTransitMins = Math.max(25, Math.round(kmNum * 0.53) + 12);
-                            } else if (kmNum >= 5) {
-                                estTransitMins = Math.max(15, Math.round(kmNum * 1.35) + 10);
+                            // 全日本通用三段式物理交通模型（依真實路網距離計算乘車時間＋兩端步行與候車緩衝）
+                            if (kmNum <= 2.2) {
+                                // 短距離直接查詢 Google Maps WALK 真實步行時間
+                                const walkRes = await callRoutesApi('WALK', false);
+                                if (walkRes.ok) {
+                                    const wData = await walkRes.json();
+                                    const wRoute = wData?.routes?.[0];
+                                    if (wRoute?.duration) {
+                                        const walkMins = Math.max(2, Math.round((parseInt(String(wRoute.duration).replace('s', ''), 10) || 600) / 60));
+                                        gmapsRouteCache.set(routeKey, {
+                                            mins: walkMins,
+                                            fareJpy: 0,
+                                            detailText: `✅ Google Maps 步行實測 ${walkMins} 分鐘（距離 ${km} km，短距離步行最快）`
+                                        });
+                                        renderTimeline();
+                                        if (timelineViewMode === 'overview') renderOverviewPuzzleBoard();
+                                        return;
+                                    }
+                                }
+                                estTransitMins = Math.max(4, Math.round(kmNum * 13.5));
+                            } else if (kmNum <= 22) {
+                                // 市區地鐵／市區電車（平均停站均速約 28 km/h ＋ 兩端進站步行/候車 16 分鐘）
+                                estTransitMins = Math.round((kmNum / 28) * 60 + 16);
+                            } else if (kmNum <= 110) {
+                                // 跨城鎮 JR 新快速／特急（平均運行均速約 105 km/h ＋ 兩端進站轉乘 13 分鐘）
+                                estTransitMins = Math.round((kmNum / 105) * 60 + 13);
                             } else {
-                                estTransitMins = Math.max(8, Math.round(kmNum * 4.5) + 5);
+                                // 長距離新幹線／特急（平均運行均速約 175 km/h ＋ 兩端進站轉乘 18 分鐘）
+                                estTransitMins = Math.round((kmNum / 175) * 60 + 18);
                             }
                         }
                         gmapsRouteCache.set(routeKey, {
                             mins: estTransitMins,
                             fareJpy: 0,
-                            detailText: `✅ Google Maps 距離 ${km} km（預估約 ${estTransitMins} 分，可點右側 Google Maps ↗ 確認班次）`
+                            detailText: `✅ Google Maps 距離 ${km} km（預估約 ${estTransitMins} 分，含兩端步行與候車時間）`
                         });
                         renderTimeline();
                         if (timelineViewMode === 'overview') renderOverviewPuzzleBoard();
@@ -4139,6 +4196,11 @@ category 只能從這 5 個中選一：「周邊順遊」、「傳統祭典」�
         });
 
         async function bootApp() {
+            const verBadge = document.getElementById('app-version-badge');
+            if (verBadge) {
+                verBadge.textContent = APP_VERSION;
+                verBadge.title = `網頁版本：${APP_VERSION}（發佈日期：${APP_BUILD_DATE}）`;
+            }
             const appliedMagic = applyMagicSetupFromHash();
             updateApiKeyHeaderStatus();
             loadSavedState();
