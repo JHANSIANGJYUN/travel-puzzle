@@ -101,7 +101,7 @@
                 <div>
                     <div class="flex items-center flex-wrap gap-1.5">
                         <h1 class="font-serif text-base sm:text-lg font-bold text-indigoJp tracking-wide">旅遊拼圖 Travel Puzzle</h1>
-                        <span id="app-version-badge" class="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-indigoJp/10 text-indigoJp">v1.35</span>
+                        <span id="app-version-badge" class="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-indigoJp/10 text-indigoJp">v1.37</span>
                         <span id="cloud-db-version-badge" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-stone-100 text-stone-500">🌐 雲端庫就緒</span>
                         <span id="auto-save-status" class="text-[11px] text-stone-400 font-medium">☁️ 已自動儲存</span>
                     </div>
@@ -178,94 +178,174 @@
                 </div>
 
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-3.5 items-stretch">
-                    <!-- 左側：真實地理輪廓日本 10 大區域互動發光地圖（沖繩置於左上日本海空白區） -->
-                    <div class="lg:col-span-7 bg-gradient-to-br from-[#EBF4FA] via-[#F7FBFE] to-[#E2EEF7] rounded-2xl border border-sky-200/90 px-3 py-2 relative overflow-hidden shadow-inner flex flex-col justify-between">
+                    <!-- 左側：精緻日本全圖 11 大分區互動發光地圖（含都道府縣界線、北陸/中部獨立、山陰/山陽獨立、沖繩置於左上空白區） -->
+                    <div class="lg:col-span-7 bg-[#FAF9F6] rounded-2xl border border-stone-200/90 px-3 py-2 relative overflow-hidden shadow-inner flex flex-col justify-between">
                         <div class="flex items-center justify-between text-[11px] text-slate-600 px-1">
-                            <span>👆 點擊日本地圖區域切換主選地區</span>
-                            <div class="flex items-center gap-2.5 font-bold">
+                            <span>👆 點擊地圖板塊切換主要旅遊分區（山陰／山陽、北陸／中部已獨立分區）</span>
+                            <div class="flex items-center gap-2.5 font-bold shrink-0">
                                 <span class="inline-flex items-center gap-1 text-vermilion"><span class="w-2.5 h-2.5 rounded-full bg-vermilion inline-block shadow-xs"></span>主選發光</span>
                                 <span class="inline-flex items-center gap-1 text-matcha"><span class="w-2.5 h-2.5 rounded-full bg-matcha inline-block"></span>跨區延伸</span>
                             </div>
                         </div>
-                        <svg id="japan-interactive-map" viewBox="0 0 640 330" class="w-full h-[215px] sm:h-[238px] select-none" role="img" aria-label="日本列島分區互動地圖">
+                        <svg id="japan-interactive-map" viewBox="0 0 680 350" class="w-full h-[235px] sm:h-[260px] select-none" role="img" aria-label="日本列島分區互動地圖">
                             <defs>
                                 <filter id="jp-region-glow" x="-30%" y="-30%" width="160%" height="160%">
-                                    <feDropShadow dx="0" dy="0" stdDeviation="5" flood-color="#D94E34" flood-opacity="0.72"/>
+                                    <feDropShadow dx="0" dy="0" stdDeviation="5" flood-color="#D94E34" flood-opacity="0.78"/>
                                 </filter>
                                 <filter id="jp-extra-glow" x="-25%" y="-25%" width="150%" height="150%">
-                                    <feDropShadow dx="0" dy="0" stdDeviation="4" flood-color="#4A7C59" flood-opacity="0.58"/>
+                                    <feDropShadow dx="0" dy="0" stdDeviation="4" flood-color="#4A7C59" flood-opacity="0.62"/>
                                 </filter>
                             </defs>
-                            <g stroke="#CBD5E1" stroke-width="0.6" stroke-dasharray="3 4" opacity="0.5">
-                                <line x1="12" y1="82" x2="628" y2="82"/>
-                                <line x1="12" y1="165" x2="628" y2="165"/>
-                                <line x1="12" y1="248" x2="628" y2="248"/>
-                                <line x1="160" y1="10" x2="160" y2="320"/>
-                                <line x1="320" y1="10" x2="320" y2="320"/>
-                                <line x1="480" y1="10" x2="480" y2="320"/>
+
+                            <!-- 左上裝飾標題印章與沖繩列島插圖框 -->
+                            <g transform="translate(16, 12)">
+                                <rect x="3" y="3" width="118" height="44" rx="4" fill="#B45309" opacity="0.25"/>
+                                <rect x="0" y="0" width="118" height="44" rx="4" fill="#FFFFFF" stroke="#B45309" stroke-width="1.3"/>
+                                <text x="59" y="19" text-anchor="middle" font-size="14" font-weight="800" fill="#1E293B" letter-spacing="4">日本</text>
+                                <text x="59" y="36" text-anchor="middle" font-size="11.5" font-weight="700" fill="#334155" letter-spacing="1.5">地圖全圖</text>
                             </g>
 
-                            <!-- 沖繩 okinawa（左上日本海空白區） -->
-                            <g data-map-region="okinawa" onclick="selectRegion('okinawa')" class="jp-map-part cursor-pointer transition-all duration-200">
-                                <rect x="16" y="14" width="128" height="76" rx="12" fill="rgba(255,255,255,0.78)" stroke="#94A3B8" stroke-width="1.1" stroke-dasharray="3 3"/>
-                                <path d="M84,54 L100,40 L116,28 L123,33 L106,47 L90,61 Z" stroke="#FFFFFF" stroke-width="1.6" stroke-linejoin="round"/>
-                                <circle cx="62" cy="68" r="4" stroke="#FFFFFF" stroke-width="1.2"/>
-                                <circle cx="42" cy="76" r="4.5" stroke="#FFFFFF" stroke-width="1.2"/>
-                                <text x="80" y="82" text-anchor="middle" font-size="11" font-weight="700" pointer-events="none">沖繩列島</text>
+                            <!-- 沖繩 okinawa（左上日本海空白區，附標註框） -->
+                            <g data-map-region="okinawa" data-base-fill="#EA580C" onclick="selectRegion('okinawa')" class="jp-map-part cursor-pointer transition-all duration-200">
+                                <rect x="16" y="64" width="124" height="72" rx="10" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.2"/>
+                                <rect x="44" y="56" width="68" height="16" rx="8" fill="#EA580C"/>
+                                <text x="78" y="67.5" text-anchor="middle" font-size="9.5" font-weight="700" fill="#FFFFFF" pointer-events="none">沖繩</text>
+                                <path d="M88,104 L103,92 L117,81 L123,86 L108,98 L93,110 Z" stroke="#FFFFFF" stroke-width="1.3" stroke-linejoin="round"/>
+                                <circle cx="65" cy="117" r="3.6" stroke="#FFFFFF" stroke-width="1.1"/>
+                                <circle cx="46" cy="124" r="4.2" stroke="#FFFFFF" stroke-width="1.1"/>
+                                <text x="78" y="131" text-anchor="middle" font-size="10" font-weight="700" pointer-events="none">沖繩縣</text>
                             </g>
 
-                            <!-- 北海道 hokkaido -->
-                            <g data-map-region="hokkaido" onclick="selectRegion('hokkaido')" class="jp-map-part cursor-pointer transition-all duration-200">
-                                <path d="M484,10 L498,26 L526,38 L556,30 L546,45 L560,51 L542,66 L520,68 L510,85 L494,74 L482,66 L468,74 L458,88 L446,82 L452,66 L464,61 L465,45 L476,34 L480,18 Z" stroke="#FFFFFF" stroke-width="1.7" stroke-linejoin="round"/>
-                                <text x="506" y="52" text-anchor="middle" font-size="11.5" font-weight="700" pointer-events="none">北海道</text>
+                            <!-- 北海道 hokkaido（精緻斜角道北/道東/道南輪廓） -->
+                            <g data-map-region="hokkaido" data-base-fill="#6A9AC4" onclick="selectRegion('hokkaido')" class="jp-map-part cursor-pointer transition-all duration-200">
+                                <path d="M518,10 L531,28 L556,41 L586,33 L576,48 L592,54 L573,70 L551,72 L541,91 L523,79 L510,70 L495,78 L486,94 L473,88 L479,71 L492,65 L493,48 L506,36 L512,18 Z" stroke="#FFFFFF" stroke-width="1.5" stroke-linejoin="round"/>
+                                <text x="537" y="56" text-anchor="middle" font-size="11.5" font-weight="800" pointer-events="none">北海道</text>
                             </g>
 
-                            <!-- 東北 tohoku -->
-                            <g data-map-region="tohoku" onclick="selectRegion('tohoku')" class="jp-map-part cursor-pointer transition-all duration-200">
-                                <path d="M446,95 L455,91 L463,97 L470,92 L476,110 L484,128 L478,150 L468,168 L462,185 L432,183 L430,164 L436,140 L440,116 Z" stroke="#FFFFFF" stroke-width="1.7" stroke-linejoin="round"/>
-                                <text x="454" y="144" text-anchor="middle" font-size="11.5" font-weight="700" pointer-events="none">東北</text>
+                            <!-- 東北 tohoku（青森・岩手・秋田・宮城・山形・福島 6 縣細分） -->
+                            <g data-map-region="tohoku" data-base-fill="#89B4D8" onclick="selectRegion('tohoku')" class="jp-map-part cursor-pointer transition-all duration-200">
+                                <!-- 青森 -->
+                                <path d="M473,101 L483,96 L491,103 L499,97 L503,112 L475,114 Z" stroke="#FFFFFF" stroke-width="1.2" stroke-linejoin="round"/>
+                                <!-- 秋田 & 岩手 -->
+                                <path d="M475,114 L490,113 L488,142 L470,141 Z" stroke="#FFFFFF" stroke-width="1.2" stroke-linejoin="round"/>
+                                <path d="M490,113 L503,112 L512,132 L506,146 L488,142 Z" stroke="#FFFFFF" stroke-width="1.2" stroke-linejoin="round"/>
+                                <!-- 山形 & 宮城 -->
+                                <path d="M470,141 L487,142 L485,168 L466,166 Z" stroke="#FFFFFF" stroke-width="1.2" stroke-linejoin="round"/>
+                                <path d="M487,142 L506,146 L499,169 L485,168 Z" stroke="#FFFFFF" stroke-width="1.2" stroke-linejoin="round"/>
+                                <!-- 福島 -->
+                                <path d="M466,166 L499,169 L495,191 L460,189 Z" stroke="#FFFFFF" stroke-width="1.2" stroke-linejoin="round"/>
+                                <text x="486" y="150" text-anchor="middle" font-size="11.5" font-weight="800" pointer-events="none">東北</text>
                             </g>
 
-                            <!-- 關東 kanto -->
-                            <g data-map-region="kanto" onclick="selectRegion('kanto')" class="jp-map-part cursor-pointer transition-all duration-200">
-                                <path d="M432,183 L462,185 L466,204 L462,222 L470,238 L458,245 L452,230 L442,236 L434,238 L422,232 L420,214 L424,196 Z" stroke="#FFFFFF" stroke-width="1.7" stroke-linejoin="round"/>
-                                <text x="444" y="214" text-anchor="middle" font-size="11.5" font-weight="700" pointer-events="none">關東</text>
+                            <!-- 關東 kanto（茨城・栃木・群馬・埼玉・千葉・東京・神奈川 1 都 6 縣） -->
+                            <g data-map-region="kanto" data-base-fill="#BDD7EE" onclick="selectRegion('kanto')" class="jp-map-part cursor-pointer transition-all duration-200">
+                                <!-- 群馬 & 栃木 -->
+                                <path d="M454,190 L474,190 L473,210 L452,209 Z" stroke="#FFFFFF" stroke-width="1.2" stroke-linejoin="round"/>
+                                <path d="M474,190 L488,191 L487,211 L473,210 Z" stroke="#FFFFFF" stroke-width="1.2" stroke-linejoin="round"/>
+                                <!-- 茨城 -->
+                                <path d="M488,191 L497,191 L500,217 L486,216 L487,211 Z" stroke="#FFFFFF" stroke-width="1.2" stroke-linejoin="round"/>
+                                <!-- 埼玉 -->
+                                <path d="M452,209 L486,211 L485,223 L453,222 Z" stroke="#FFFFFF" stroke-width="1.2" stroke-linejoin="round"/>
+                                <!-- 東京 & 神奈川 -->
+                                <path d="M453,222 L483,223 L481,231 L454,230 Z" stroke="#FFFFFF" stroke-width="1.2" stroke-linejoin="round"/>
+                                <path d="M454,230 L478,231 L474,242 L456,240 Z" stroke="#FFFFFF" stroke-width="1.2" stroke-linejoin="round"/>
+                                <!-- 千葉半島 -->
+                                <path d="M485,216 L500,217 L502,237 L492,248 L484,243 L487,228 Z" stroke="#FFFFFF" stroke-width="1.2" stroke-linejoin="round"/>
+                                <text x="476" y="218" text-anchor="middle" font-size="11.5" font-weight="800" pointer-events="none">關東</text>
                             </g>
 
-                            <!-- 中部・北陸 chubu -->
-                            <g data-map-region="chubu" onclick="selectRegion('chubu')" class="jp-map-part cursor-pointer transition-all duration-200">
-                                <path d="M410,171 L430,164 L432,183 L424,196 L420,214 L422,232 L430,244 L422,250 L412,242 L396,248 L382,244 L374,252 L366,242 L354,234 L342,232 L354,220 L366,212 L362,194 L372,188 L374,204 L388,198 L402,185 Z" stroke="#FFFFFF" stroke-width="1.7" stroke-linejoin="round"/>
-                                <text x="392" y="222" text-anchor="middle" font-size="11" font-weight="700" pointer-events="none">中部・北陸</text>
+                            <!-- 北陸 hokuriku（新潟・富山・石川能登半島・福井 獨立分區） -->
+                            <g data-map-region="hokuriku" data-base-fill="#B87A3D" onclick="selectRegion('hokuriku')" class="jp-map-part cursor-pointer transition-all duration-200">
+                                <!-- 新潟 -->
+                                <path d="M432,175 L460,162 L466,166 L460,189 L454,190 L438,196 L426,192 Z" stroke="#FFFFFF" stroke-width="1.2" stroke-linejoin="round"/>
+                                <!-- 富山 -->
+                                <path d="M408,193 L426,192 L425,210 L407,209 Z" stroke="#FFFFFF" stroke-width="1.2" stroke-linejoin="round"/>
+                                <!-- 石川（含能登半島） -->
+                                <path d="M393,216 L396,184 L407,180 L408,193 L407,209 L400,221 Z" stroke="#FFFFFF" stroke-width="1.2" stroke-linejoin="round"/>
+                                <!-- 福井 -->
+                                <path d="M372,233 L393,216 L400,221 L392,235 L374,239 Z" stroke="#FFFFFF" stroke-width="1.2" stroke-linejoin="round"/>
+                                <text x="419" y="198" text-anchor="middle" font-size="11" font-weight="800" pointer-events="none">北陸</text>
                             </g>
 
-                            <!-- 關西 kansai -->
-                            <g data-map-region="kansai" onclick="selectRegion('kansai')" class="jp-map-part cursor-pointer transition-all duration-200">
-                                <path d="M304,220 L328,222 L342,232 L354,234 L366,242 L360,258 L348,264 L342,282 L326,286 L318,270 L316,252 L300,246 L296,232 Z" stroke="#FFFFFF" stroke-width="1.7" stroke-linejoin="round"/>
-                                <text x="332" y="253" text-anchor="middle" font-size="11.5" font-weight="700" pointer-events="none">關西</text>
+                            <!-- 中部 chubu（長野・山梨・靜岡・岐阜・愛知・三重 獨立分區） -->
+                            <g data-map-region="chubu" data-base-fill="#D99B52" onclick="selectRegion('chubu')" class="jp-map-part cursor-pointer transition-all duration-200">
+                                <!-- 長野 -->
+                                <path d="M426,192 L454,190 L452,209 L444,226 L425,224 L425,210 Z" stroke="#FFFFFF" stroke-width="1.2" stroke-linejoin="round"/>
+                                <!-- 山梨 -->
+                                <path d="M444,218 L454,218 L454,234 L442,234 Z" stroke="#FFFFFF" stroke-width="1.2" stroke-linejoin="round"/>
+                                <!-- 岐阜 -->
+                                <path d="M400,209 L425,210 L425,231 L396,232 L392,223 Z" stroke="#FFFFFF" stroke-width="1.2" stroke-linejoin="round"/>
+                                <!-- 靜岡（含伊豆半島） -->
+                                <path d="M425,231 L454,234 L461,247 L453,252 L448,242 L423,249 Z" stroke="#FFFFFF" stroke-width="1.2" stroke-linejoin="round"/>
+                                <!-- 愛知 -->
+                                <path d="M398,232 L425,231 L423,249 L402,251 Z" stroke="#FFFFFF" stroke-width="1.2" stroke-linejoin="round"/>
+                                <!-- 三重 -->
+                                <path d="M384,242 L402,242 L396,274 L382,272 Z" stroke="#FFFFFF" stroke-width="1.2" stroke-linejoin="round"/>
+                                <text x="424" y="233" text-anchor="middle" font-size="11" font-weight="800" pointer-events="none">中部</text>
                             </g>
 
-                            <!-- 山陰 sanin -->
-                            <g data-map-region="sanin" onclick="selectRegion('sanin')" class="jp-map-part cursor-pointer transition-all duration-200">
-                                <path d="M214,234 L246,224 L280,220 L304,220 L296,234 L266,238 L234,244 L210,248 Z" stroke="#FFFFFF" stroke-width="1.7" stroke-linejoin="round"/>
-                                <text x="256" y="234" text-anchor="middle" font-size="10.5" font-weight="700" pointer-events="none">山陰</text>
+                            <!-- 關西 kansai（滋賀・京都・大阪・兵庫・奈良・和歌山 2 府 4 縣） -->
+                            <g data-map-region="kansai" data-base-fill="#E6DF7A" onclick="selectRegion('kansai')" class="jp-map-part cursor-pointer transition-all duration-200">
+                                <!-- 滋賀 -->
+                                <path d="M372,233 L392,228 L394,244 L374,246 Z" stroke="#FFFFFF" stroke-width="1.2" stroke-linejoin="round"/>
+                                <!-- 京都 -->
+                                <path d="M348,225 L372,233 L374,250 L356,250 L350,238 Z" stroke="#FFFFFF" stroke-width="1.2" stroke-linejoin="round"/>
+                                <!-- 兵庫 -->
+                                <path d="M322,224 L348,225 L350,252 L324,254 L320,238 Z" stroke="#FFFFFF" stroke-width="1.2" stroke-linejoin="round"/>
+                                <!-- 大阪 -->
+                                <path d="M348,250 L362,250 L360,267 L346,266 Z" stroke="#FFFFFF" stroke-width="1.2" stroke-linejoin="round"/>
+                                <!-- 奈良 -->
+                                <path d="M362,246 L384,244 L382,274 L364,274 Z" stroke="#FFFFFF" stroke-width="1.2" stroke-linejoin="round"/>
+                                <!-- 和歌山 -->
+                                <path d="M346,266 L382,274 L376,292 L354,292 L346,278 Z" stroke="#FFFFFF" stroke-width="1.2" stroke-linejoin="round"/>
+                                <text x="357" y="256" text-anchor="middle" font-size="11.5" font-weight="800" pointer-events="none">關西</text>
                             </g>
 
-                            <!-- 山陽 sanyo -->
-                            <g data-map-region="sanyo" onclick="selectRegion('sanyo')" class="jp-map-part cursor-pointer transition-all duration-200">
-                                <path d="M210,248 L234,244 L266,238 L296,234 L298,252 L268,258 L234,264 L202,264 L200,254 Z" stroke="#FFFFFF" stroke-width="1.7" stroke-linejoin="round"/>
-                                <text x="250" y="254" text-anchor="middle" font-size="10.5" font-weight="700" pointer-events="none">山陽</text>
+                            <!-- 山陰 sanin（鳥取・島根 獨立分區） -->
+                            <g data-map-region="sanin" data-base-fill="#D896A4" onclick="selectRegion('sanin')" class="jp-map-part cursor-pointer transition-all duration-200">
+                                <!-- 鳥取 -->
+                                <path d="M292,226 L322,224 L321,239 L290,240 Z" stroke="#FFFFFF" stroke-width="1.2" stroke-linejoin="round"/>
+                                <!-- 島根 -->
+                                <path d="M236,244 L266,232 L292,226 L290,240 L258,248 L234,255 Z" stroke="#FFFFFF" stroke-width="1.2" stroke-linejoin="round"/>
+                                <text x="284" y="236" text-anchor="middle" font-size="10.5" font-weight="800" pointer-events="none">山陰</text>
                             </g>
 
-                            <!-- 四國 shikoku -->
-                            <g data-map-region="shikoku" onclick="selectRegion('shikoku')" class="jp-map-part cursor-pointer transition-all duration-200">
-                                <path d="M240,272 L270,266 L296,270 L302,284 L286,294 L270,286 L252,298 L232,292 L226,282 Z" stroke="#FFFFFF" stroke-width="1.7" stroke-linejoin="round"/>
-                                <text x="264" y="284" text-anchor="middle" font-size="11" font-weight="700" pointer-events="none">四國</text>
+                            <!-- 山陽 sanyo（岡山・廣島・山口 獨立分區） -->
+                            <g data-map-region="sanyo" data-base-fill="#C27D8C" onclick="selectRegion('sanyo')" class="jp-map-part cursor-pointer transition-all duration-200">
+                                <!-- 岡山 -->
+                                <path d="M290,240 L321,239 L322,257 L292,259 Z" stroke="#FFFFFF" stroke-width="1.2" stroke-linejoin="round"/>
+                                <!-- 廣島 -->
+                                <path d="M258,248 L290,240 L292,259 L256,265 Z" stroke="#FFFFFF" stroke-width="1.2" stroke-linejoin="round"/>
+                                <!-- 山口 -->
+                                <path d="M222,256 L258,248 L256,265 L220,270 Z" stroke="#FFFFFF" stroke-width="1.2" stroke-linejoin="round"/>
+                                <text x="276" y="255" text-anchor="middle" font-size="10.5" font-weight="800" pointer-events="none">山陽</text>
                             </g>
 
-                            <!-- 九州 kyushu -->
-                            <g data-map-region="kyushu" onclick="selectRegion('kyushu')" class="jp-map-part cursor-pointer transition-all duration-200">
-                                <path d="M158,266 L190,266 L200,284 L196,308 L184,324 L170,328 L168,314 L158,322 L150,310 L156,294 L144,284 L148,274 Z" stroke="#FFFFFF" stroke-width="1.7" stroke-linejoin="round"/>
-                                <text x="174" y="296" text-anchor="middle" font-size="11.5" font-weight="700" pointer-events="none">九州</text>
+                            <!-- 四國 shikoku（香川・德島・愛媛・高知 4 縣細分） -->
+                            <g data-map-region="shikoku" data-base-fill="#DCE396" onclick="selectRegion('shikoku')" class="jp-map-part cursor-pointer transition-all duration-200">
+                                <!-- 香川 & 德島 -->
+                                <path d="M284,268 L314,266 L314,276 L284,278 Z" stroke="#FFFFFF" stroke-width="1.2" stroke-linejoin="round"/>
+                                <path d="M286,278 L318,276 L316,292 L288,290 Z" stroke="#FFFFFF" stroke-width="1.2" stroke-linejoin="round"/>
+                                <!-- 愛媛 & 高知 -->
+                                <path d="M250,282 L284,268 L286,284 L254,294 Z" stroke="#FFFFFF" stroke-width="1.2" stroke-linejoin="round"/>
+                                <path d="M254,294 L288,284 L296,304 L276,296 L258,306 Z" stroke="#FFFFFF" stroke-width="1.2" stroke-linejoin="round"/>
+                                <text x="285" y="286" text-anchor="middle" font-size="11" font-weight="800" pointer-events="none">四國</text>
+                            </g>
+
+                            <!-- 九州 kyushu（福岡・佐賀・長崎・大分・熊本・宮崎・鹿兒島 7 縣細分） -->
+                            <g data-map-region="kyushu" data-base-fill="#C87584" onclick="selectRegion('kyushu')" class="jp-map-part cursor-pointer transition-all duration-200">
+                                <!-- 福岡 & 佐賀 & 長崎 -->
+                                <path d="M192,272 L218,272 L216,288 L192,288 Z" stroke="#FFFFFF" stroke-width="1.2" stroke-linejoin="round"/>
+                                <path d="M174,276 L192,276 L192,292 L172,292 Z" stroke="#FFFFFF" stroke-width="1.2" stroke-linejoin="round"/>
+                                <!-- 大分 -->
+                                <path d="M206,286 L228,286 L226,304 L204,304 Z" stroke="#FFFFFF" stroke-width="1.2" stroke-linejoin="round"/>
+                                <!-- 熊本 -->
+                                <path d="M184,292 L206,292 L206,318 L184,316 Z" stroke="#FFFFFF" stroke-width="1.2" stroke-linejoin="round"/>
+                                <!-- 宮崎 -->
+                                <path d="M206,304 L225,304 L218,330 L202,328 Z" stroke="#FFFFFF" stroke-width="1.2" stroke-linejoin="round"/>
+                                <!-- 鹿兒島 -->
+                                <path d="M180,316 L204,318 L200,342 L188,344 L186,330 L176,338 L172,326 Z" stroke="#FFFFFF" stroke-width="1.2" stroke-linejoin="round"/>
+                                <text x="200" y="308" text-anchor="middle" font-size="11.5" font-weight="800" pointer-events="none">九州</text>
                             </g>
                         </svg>
                     </div>
@@ -273,7 +353,7 @@
                     <!-- 右側：快速切換鈕與跨區順遊延伸（複選） -->
                     <div class="lg:col-span-5 flex flex-col justify-between gap-2.5">
                         <div class="bg-white p-3 rounded-xl border border-stone-200/80 space-y-2 flex-1">
-                            <span class="block text-xs font-bold text-indigoJp">📍 快速點選主要區域（與左側地圖連動）：</span>
+                            <span class="block text-xs font-bold text-indigoJp">📍 快速點選主要區域（與左側地圖 11 分區連動）：</span>
                             <div id="region-selector" class="flex flex-wrap gap-1.5"></div>
                         </div>
                         <div class="bg-white p-3 rounded-xl border border-stone-200/80 space-y-2 flex-1">
@@ -734,23 +814,24 @@
     </div>
 
     <script>
-        const APP_VERSION = 'v1.35';
+        const APP_VERSION = 'v1.37';
         const STORAGE_KEY = 'travel_puzzle_jp_state_v1';
         const CONFIG_KEY = 'travel_puzzle_jp_config_v1';
         const LEGACY_CONFIG_KEYS = ['travel_puzzle_config', 'jp_travel_config_v1', 'travelPuzzleConfig', 'travel_puzzle_api_keys', 'travel_puzzle_settings', 'tp_config_v1'];
         const DEFAULT_SYNC_CODE = 'JP-GPVMP6';
 
         const REGIONS_META = [
-            { id: 'kansai', name: '關西地區', desc: '大阪・京都・神戶・奈良・和歌山與城崎溫泉', defaultHotel: '東橫INN 大阪難波西', weatherTip: '12月關西白天約 8–12°C，早晚偏冷建議洋蔥式穿搭；雨天可優先安排地下街或京都車站室內景點。' },
-            { id: 'kanto', name: '關東地區', desc: '東京・橫濱・鎌倉・箱根・日光與輕井澤', defaultHotel: '東橫INN 東京站新大橋前', weatherTip: '12月東京晴朗乾燥約 6–13°C，風大建議攜帶防風外套與護唇膏。' },
+            { id: 'kansai', name: '關西地區', desc: '滋賀・京都・大阪・兵庫・奈良・和歌山', defaultHotel: '東橫INN 大阪難波西', weatherTip: '12月關西白天約 8–12°C，早晚偏冷建議洋蔥式穿搭；雨天可優先安排地下街或京都車站室內景點。' },
+            { id: 'kanto', name: '關東地區', desc: '茨城・栃木・群馬・埼玉・千葉・東京・神奈川', defaultHotel: '東橫INN 東京站新大橋前', weatherTip: '12月東京晴朗乾燥約 6–13°C，風大建議攜帶防風外套與護唇膏。' },
             { id: 'hokkaido', name: '北海道', desc: '札幌・小樽・函館・富良野・美瑛與登別溫泉', defaultHotel: 'JR Inn 札幌駅南口', weatherTip: '冬季零下積雪路面易滑，務必穿著防滑防水雪靴與發熱衣。' },
-            { id: 'kyushu', name: '九州地區', desc: '福岡博多・由布院・別府・熊本・阿蘇與鹿兒島', defaultHotel: '東橫INN 博多口站前', weatherTip: '北九州冬季海風較強約 7–13°C，阿蘇山區氣溫更低需注意保暖。' },
-            { id: 'okinawa', name: '沖繩地區', desc: '那霸國際通・美國村・美麗海水族館與古宇利島', defaultHotel: '東橫INN 那霸旭橋站前', weatherTip: '沖繩冬季約 17–21°C 舒適宜人，海邊風大建議帶件薄風衣。' },
-            { id: 'chubu', name: '中部・北陸', desc: '名古屋・金澤・白川鄉合掌村・高山與立山黑部', defaultHotel: 'Via Inn 金澤（JR金澤站直結）', weatherTip: '北陸冬季多雨雪且濕冷，建議攜帶折疊傘與防水鞋款。' },
-            { id: 'tohoku', name: '東北地區', desc: '仙台・松島・銀山溫泉・藏王樹冰與青森', defaultHotel: '東橫INN 仙台站西口中央', weatherTip: '東北山區冬季降雪豐沛，搭乘地方 JR 線路請預留班次緩衝。' },
-            { id: 'sanyo', name: '山陽地區', desc: '岡山・倉敷美觀・廣島・宮島嚴島神社與尾道', defaultHotel: 'Via Inn 廣島新幹線口', weatherTip: '瀨戶內海沿岸晴天率高、氣候溫和，非常適合鐵道跳島漫遊。' },
-            { id: 'sanin', name: '山陰地區', desc: '鳥取砂丘・松江城・出雲大社與足立美術館', defaultHotel: 'Dormy Inn 出雲', weatherTip: '日本海側冬季雲量較多偶有陣雪，建議備妥雨具與保暖衣物。' },
-            { id: 'shikoku', name: '四國地區', desc: '高松栗林公園・小豆島・松山道後溫泉與高知', defaultHotel: 'JR Clement Inn 高松', weatherTip: '四國瀨戶內側溫暖少雨，適合搭配 JR 四國周遊券慢活巡禮。' }
+            { id: 'tohoku', name: '東北地區', desc: '青森・岩手・秋田・宮城・山形・福島', defaultHotel: '東橫INN 仙台站西口中央', weatherTip: '東北山區冬季降雪豐沛，搭乘地方 JR 線路請預留班次緩衝。' },
+            { id: 'hokuriku', name: '北陸地區', desc: '新潟・富山・石川（金澤／能登）・福井', defaultHotel: 'Via Inn 金澤（JR金澤站直結）', weatherTip: '北陸冬季多雨雪且濕冷，建議攜帶折疊傘與防水鞋款。' },
+            { id: 'chubu', name: '中部地區', desc: '長野・山梨・靜岡・岐阜・愛知・三重', defaultHotel: '東橫INN 名古屋站新幹線口', weatherTip: '中部山區（高山／白川鄉）氣溫較低，市區名古屋晴朗乾爽。' },
+            { id: 'sanin', name: '山陰地區', desc: '鳥取縣（砂丘／柯南小鎮）・島根縣（出雲大社／松江城）', defaultHotel: 'Dormy Inn 出雲', weatherTip: '日本海側冬季雲量較多偶有陣雪，建議備妥雨具與保暖衣物。' },
+            { id: 'sanyo', name: '山陽地區', desc: '岡山縣（倉敷）・廣島縣（宮島）・山口縣（下關／角島）', defaultHotel: 'Via Inn 廣島新幹線口', weatherTip: '瀨戶內海沿岸晴天率高、氣候溫和，非常適合鐵道跳島漫遊。' },
+            { id: 'shikoku', name: '四國地區', desc: '香川・德島・愛媛・高知', defaultHotel: 'JR Clement Inn 高松', weatherTip: '四國瀨戶內側溫暖少雨，適合搭配 JR 四國周遊券慢活巡禮。' },
+            { id: 'kyushu', name: '九州地區', desc: '福岡・佐賀・長崎・大分・熊本・宮崎・鹿兒島', defaultHotel: '東橫INN 博多口站前', weatherTip: '北九州冬季海風較強約 7–13°C，阿蘇山區氣溫更低需注意保暖。' },
+            { id: 'okinawa', name: '沖繩地區', desc: '沖繩本島（那霸／美國村／美麗海水族館）與離島', defaultHotel: '東橫INN 那霸旭橋站前', weatherTip: '沖繩冬季約 17–21°C 舒適宜人，海邊風大建議帶件薄風衣。' }
         ];
 
         const DEFAULT_JR_PASSES = [
@@ -763,17 +844,17 @@
             { id: 'jr-haruka-roundtrip', name: 'JR 關西機場特快 HARUKA 車票 (來回)', priceJpy: 3600, days: 14, regions: ['kansai'], airportCovered: true },
             { id: 'jr-kansai-wide-5', name: 'JR 關西廣域鐵路周遊券 (5日)', priceJpy: 12000, days: 5, regions: ['kansai', 'sanyo', 'sanin'], airportCovered: true },
             { id: 'jr-kansai-hiroshima-5', name: 'JR 關西＆廣島地區周遊券 (5日)', priceJpy: 17000, days: 5, regions: ['kansai', 'sanyo'], airportCovered: true },
-            { id: 'jr-kansai-hokuriku-7', name: 'JR 關西＆北陸地區鐵路周遊券 (7日)', priceJpy: 19000, days: 7, regions: ['kansai', 'chubu'], airportCovered: true },
+            { id: 'jr-kansai-hokuriku-7', name: 'JR 關西＆北陸地區鐵路周遊券 (7日)', priceJpy: 19000, days: 7, regions: ['kansai', 'hokuriku', 'chubu'], airportCovered: true },
             { id: 'jr-sanyo-sanin-7', name: 'JR 山陽＆山陰地區鐵路周遊券 (7日)', priceJpy: 23000, days: 7, regions: ['kansai', 'sanyo', 'sanin'], airportCovered: true },
             { id: 'jr-tokyo-wide-3', name: 'JR 東京廣域周遊券 (3日)', priceJpy: 15000, days: 3, regions: ['kanto'], airportCovered: true },
             { id: 'jr-hokkaido-5', name: 'JR 北海道鐵路周遊券 (5日)', priceJpy: 21000, days: 5, regions: ['hokkaido'], airportCovered: true },
             { id: 'jr-north-kyushu-3', name: 'JR 北九州鐵路周遊券 (3日)', priceJpy: 12000, days: 3, regions: ['kyushu'], airportCovered: true },
             { id: 'jr-all-kyushu-5', name: 'JR 全九州鐵路周遊券 (5日)', priceJpy: 22500, days: 5, regions: ['kyushu'], airportCovered: true },
             { id: 'okinawa-yui-rail-2', name: '沖繩都市單軌電車 Yui-Rail 2日券（沖繩無JR）', priceJpy: 1400, days: 2, regions: ['okinawa'], airportCovered: true },
-            { id: 'jr-takayama-hokuriku-5', name: 'JR 高山・北陸地區周遊券 (5日)', priceJpy: 19800, days: 5, regions: ['kansai', 'chubu'], airportCovered: true },
+            { id: 'jr-takayama-hokuriku-5', name: 'JR 高山・北陸地區周遊券 (5日)', priceJpy: 19800, days: 5, regions: ['kansai', 'hokuriku', 'chubu'], airportCovered: true },
             { id: 'jr-east-tohoku-5', name: 'JR 東日本鐵路周遊券・東北地區 (5日)', priceJpy: 30000, days: 5, regions: ['kanto', 'tohoku'], airportCovered: true },
             { id: 'jr-all-shikoku-3', name: 'JR 四國鐵路周遊券 (3日)', priceJpy: 12000, days: 3, regions: ['shikoku'], airportCovered: false },
-            { id: 'jr-whole-japan-7', name: 'JR 全日本鐵路通票 (7日普通車)', priceJpy: 50000, days: 7, regions: ['kansai', 'kanto', 'hokkaido', 'kyushu', 'chubu', 'tohoku', 'sanyo', 'sanin', 'shikoku'], airportCovered: true }
+            { id: 'jr-whole-japan-7', name: 'JR 全日本鐵路通票 (7日普通車)', priceJpy: 50000, days: 7, regions: ['kansai', 'kanto', 'hokkaido', 'kyushu', 'hokuriku', 'chubu', 'tohoku', 'sanyo', 'sanin', 'shikoku'], airportCovered: true }
         ];
 
         const DEFAULT_FLIGHTS_DB = {
@@ -845,7 +926,8 @@
             { id: 'ev-hakata-light', region: 'kyushu', type: 'event', months: [11, 12, 1], tag: '光影花火', periodText: '11月～1月冬季限定', location: 'JR博多站前廣場（博多口）', title: 'JR 博多站前「光之街・博多」冬季點燈', duration: 75, note: '約80萬顆藍白星光點亮博多站前，伴隨聖誕市集與現場音樂演出。', fallbackImg: 'https://images.unsplash.com/photo-1542051841857-5f90071e7989?auto=format&fit=crop&w=600&q=75' },
             { id: 'sp-yufuin', region: 'kyushu', type: 'spot', months: [1,2,3,4,5,6,7,8,9,10,11,12], tag: '溫泉散策', periodText: '全年皆宜', location: '大分縣由布市（JR久大本線由布院站）', title: '由布院湯之坪街道＆金鱗湖晨霧', duration: 180, note: '人氣甜點小店林立，清晨金鱗湖溫泉霧氣繚繞如夢似幻。', fallbackImg: 'https://images.unsplash.com/photo-1528360983277-13d401cdc186?auto=format&fit=crop&w=600&q=75' },
             { id: 'sp-churaumi', region: 'okinawa', type: 'spot', months: [1,2,3,4,5,6,7,8,9,10,11,12], tag: '親子海景', periodText: '全年皆宜', location: '沖繩縣本部町・海洋博公園', title: '沖繩美麗海水族館＆黑潮之海', duration: 150, note: '巨大水槽觀賞鯨鯊與鬼蝠魟悠游，建議自駕或搭高速巴士前往。', fallbackImg: 'https://images.unsplash.com/photo-1542051841857-5f90071e7989?auto=format&fit=crop&w=600&q=75' },
-            { id: 'sp-kenrokuen', region: 'chubu', type: 'spot', months: [1,2,3,4,5,6,7,8,9,10,11,12], tag: '經典名勝', periodText: '全年皆宜', location: '石川縣金澤市（JR金澤站轉巴士）', title: '金澤兼六園（冬季雪吊）＆近江町市場海鮮', duration: 150, note: '日本三大名園之一，冬季傳統「雪吊」松樹景觀極具北陸風情。', fallbackImg: 'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=600&q=75' },
+            { id: 'sp-kenrokuen', region: 'hokuriku', type: 'spot', months: [1,2,3,4,5,6,7,8,9,10,11,12], tag: '經典名勝', periodText: '全年皆宜', location: '石川縣金澤市（JR金澤站轉巴士）', title: '金澤兼六園（冬季雪吊）＆近江町市場海鮮', duration: 150, note: '日本三大名園之一，冬季傳統「雪吊」松樹景觀極具北陸風情。', fallbackImg: 'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=600&q=75' },
+            { id: 'sp-shirakawago', region: 'chubu', type: 'spot', months: [1,2,3,4,5,6,7,8,9,10,11,12], tag: '經典名勝', periodText: '全年皆宜', location: '岐阜縣大野郡白川村（濃飛巴士直達）', title: '白川鄉合掌村童話聚落＆飛驒高山老街', duration: 180, note: '世界遺產合掌造建築聚落，冬季雪景與點燈季尤為夢幻。', fallbackImg: 'https://images.unsplash.com/photo-1528360983277-13d401cdc186?auto=format&fit=crop&w=600&q=75' },
             { id: 'ev-sendai-pageant', region: 'tohoku', type: 'event', months: [12], tag: '光影花火', periodText: '12月冬季限定', location: '宮城縣仙台市・定禪寺通（勾當台公園站）', title: '仙台光之樂章（定禪寺通櫸樹林道點燈）', duration: 90, note: '數十萬顆暖黃燈泡包覆櫸樹林蔭道，東北最具代表性冬季光廊。', fallbackImg: 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?auto=format&fit=crop&w=600&q=75' },
             { id: 'sp-miyajima', region: 'sanyo', type: 'spot', months: [1,2,3,4,5,6,7,8,9,10,11,12], tag: '經典名勝', periodText: '全年皆宜', location: '廣島縣廿日市市（JR宮島口轉渡輪）', title: '宮島嚴島神社海上大鳥居＆牡蠣料理', duration: 180, note: '持 JR PASS 可免費搭乘 JR 西日本宮島渡輪，建議查詢潮汐時刻。', fallbackImg: 'https://images.unsplash.com/photo-1478436127897-769e1b3f0f36?auto=format&fit=crop&w=600&q=75' },
             { id: 'sp-izumo', region: 'sanin', type: 'spot', months: [1,2,3,4,5,6,7,8,9,10,11,12], tag: '經典名勝', periodText: '全年皆宜', location: '島根縣出雲市（一畑電車出雲大社前站）', title: '出雲大社結緣參拜＆出雲蕎麥麵', duration: 150, note: '日本神話結緣聖地，神樂殿巨型注連繩極具氣勢。', fallbackImg: 'https://images.unsplash.com/photo-1528360983277-13d401cdc186?auto=format&fit=crop&w=600&q=75' },
@@ -1108,20 +1190,20 @@
             const meta = REGIONS_META.find(r => r.id === activeReg) || REGIONS_META[0];
 
             const descEl = document.getElementById('region-desc-text');
-            if (descEl) descEl.textContent = meta.desc;
-
-            // 更新 SVG 地圖板塊顏色與發光特效
+            // 更新 SVG 地圖板塊顏色與發光特效（平時呈現各區柔和原色，主選亮朱紅光暈、跨區延伸亮抹茶綠光暈）
             document.querySelectorAll('#japan-interactive-map [data-map-region]').forEach(group => {
                 const rid = group.getAttribute('data-map-region');
+                const baseFill = group.getAttribute('data-base-fill') || '#94A3B8';
                 const isMain = rid === activeReg;
                 const isExtra = extras.has(rid);
-                const fill = isMain ? '#D94E34' : (isExtra ? '#4A7C59' : '#94A3B8');
-                const textFill = (isMain || isExtra) ? '#1E293B' : '#334155';
+                const fill = isMain ? '#D94E34' : (isExtra ? '#4A7C59' : baseFill);
+                const textFill = (isMain || isExtra) ? '#FFFFFF' : '#1E293B';
                 group.style.filter = isMain ? 'url(#jp-region-glow)' : (isExtra ? 'url(#jp-extra-glow)' : 'none');
                 group.querySelectorAll('path, circle').forEach(shape => {
                     shape.setAttribute('fill', fill);
                 });
                 group.querySelectorAll('text').forEach(txt => {
+                    if (rid === 'okinawa' && txt.textContent === '沖繩') return;
                     txt.setAttribute('fill', textFill);
                 });
             });
@@ -1399,38 +1481,7 @@
         async function fetchGoogleRouteEstimate(fromPlace, toPlace, cacheKey) {
             try {
                 const isDrive = appState.drivingMode;
-                // 1. 優先使用瀏覽器端無 CORS 限制的 Google Maps JS DirectionsService（門到門含步行轉乘）
-                try {
-                    const gmaps = await ensureGoogleMapsSdkLoaded(userConfig.gmapsKey);
-                    const svc = new gmaps.DirectionsService();
-                    const result = await new Promise((resolve, reject) => {
-                        svc.route({
-                            origin: `${fromPlace} 日本`,
-                            destination: `${toPlace} 日本`,
-                            travelMode: isDrive ? gmaps.TravelMode.DRIVING : gmaps.TravelMode.TRANSIT
-                        }, (res, status) => {
-                            if (status === 'OK' && res?.routes?.[0]?.legs?.[0]) resolve(res);
-                            else reject(new Error(status));
-                        });
-                    });
-                    const leg = result.routes[0].legs[0];
-                    const mins = Math.max(5, Math.round((leg.duration?.value || 0) / 60));
-                    const kmText = leg.distance?.text ? `（${leg.distance.text}）` : '';
-                    const transitLines = (leg.steps || [])
-                        .map(st => st.transit?.line?.short_name || st.transit?.line?.name)
-                        .filter(Boolean);
-                    const lineText = transitLines.length
-                        ? `🚆 ${Array.from(new Set(transitLines)).join(' ➔ ')}${kmText}`
-                        : (isDrive ? `🚗 Google Maps 自駕${kmText}` : `🚇 Google Maps 大眾運輸${kmText}`);
-
-                    appState.routeCache = appState.routeCache || {};
-                    appState.routeCache[cacheKey] = { minutes: mins, modeLabel: lineText };
-                    saveState();
-                    renderTimeline();
-                    return;
-                } catch (_) {}
-
-                // 2. 備援：Routes v2 REST API
+                // 1. 優先呼叫新版 Routes v2 REST API（對應 Google Cloud 啟用的 Routes API）
                 const resp = await fetch('https://routes.googleapis.com/directions/v2:computeRoutes', {
                     method: 'POST',
                     headers: {
@@ -1454,12 +1505,34 @@
                     const transitLines = steps
                         .map(s => s.transitDetails?.transitLine?.nameShort || s.transitDetails?.transitLine?.name)
                         .filter(Boolean);
-                    const lineText = transitLines.length ? `搭乘 ${Array.from(new Set(transitLines)).join(' ➔ ')}` : (isDrive ? `🚗 Google Maps 自駕${km}` : `🚆 Google Maps 大眾運輸${km}`);
+                    const lineText = transitLines.length ? `🚆 搭乘 ${Array.from(new Set(transitLines)).join(' ➔ ')}${km}` : (isDrive ? `🚗 Google Maps 自駕${km}` : `🚇 Google Maps 大眾運輸${km}`);
                     appState.routeCache = appState.routeCache || {};
                     appState.routeCache[cacheKey] = { minutes: mins, modeLabel: lineText };
                     saveState();
                     renderTimeline();
+                    return;
                 }
+
+                // 2. 備援：舊版 JS DirectionsService
+                const gmaps = await ensureGoogleMapsSdkLoaded(userConfig.gmapsKey);
+                const svc = new gmaps.DirectionsService();
+                const result = await new Promise((resolve, reject) => {
+                    svc.route({
+                        origin: `${fromPlace} 日本`,
+                        destination: `${toPlace} 日本`,
+                        travelMode: isDrive ? gmaps.TravelMode.DRIVING : gmaps.TravelMode.TRANSIT
+                    }, (res, status) => {
+                        if (status === 'OK' && res?.routes?.[0]?.legs?.[0]) resolve(res);
+                        else reject(new Error(status));
+                    });
+                });
+                const leg = result.routes[0].legs[0];
+                const mins = Math.max(5, Math.round((leg.duration?.value || 0) / 60));
+                const kmText = leg.distance?.text ? `（${leg.distance.text}）` : '';
+                appState.routeCache = appState.routeCache || {};
+                appState.routeCache[cacheKey] = { minutes: mins, modeLabel: isDrive ? `🚗 Google Maps 自駕${kmText}` : `🚇 Google Maps 大眾運輸${kmText}` };
+                saveState();
+                renderTimeline();
             } catch (e) {}
         }
 
@@ -2455,35 +2528,76 @@
             }
             if (btn) btn.textContent = '⏳ 測試中...';
             resEl.className = 'text-[11px] font-bold px-2.5 py-1 rounded-lg bg-slate-100 text-slate-700';
-            resEl.textContent = '正在實測「東橫INN 大阪難波西 ➔ 東橫INN 新大阪東口」路線與 Places 權限...';
+            resEl.textContent = '正在實測新版 Routes API 與 Places API (New) 連線...';
             try {
-                window._gmapsSdkLoadingPromise = null;
-                const gmaps = await ensureGoogleMapsSdkLoaded(key);
-                const svc = new gmaps.DirectionsService();
-                const routeRes = await new Promise((resolve, reject) => {
-                    svc.route({
-                        origin: '東橫INN 大阪難波西 日本',
-                        destination: '東橫INN 新大阪東口 日本',
-                        travelMode: gmaps.TravelMode.TRANSIT
-                    }, (r, status) => {
-                        if (status === 'OK' && r?.routes?.[0]?.legs?.[0]) resolve(r);
-                        else reject(new Error(`Directions 狀態: ${status}`));
-                    });
+                // 優先測試新版 Routes API (v2)
+                const routeResp = await fetch('https://routes.googleapis.com/directions/v2:computeRoutes', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Goog-Api-Key': key,
+                        'X-Goog-FieldMask': 'routes.duration,routes.distanceMeters'
+                    },
+                    body: JSON.stringify({
+                        origin: { address: '東橫INN 大阪難波西 日本' },
+                        destination: { address: '東橫INN 新大阪東口 日本' },
+                        travelMode: 'TRANSIT',
+                        languageCode: 'zh-TW'
+                    })
                 });
-                const mins = Math.round((routeRes.routes[0].legs[0].duration?.value || 0) / 60);
+                const routeData = await routeResp.json();
+                if (!routeResp.ok || !routeData?.routes?.[0]?.duration) {
+                    const errMsg = routeData?.error?.message || `HTTP ${routeResp.status}`;
+                    throw new Error(`Routes API 錯誤：${errMsg}`);
+                }
+                const mins = Math.round(parseInt(routeData.routes[0].duration, 10) / 60);
+
+                // 同時驗證 Places API (New)
+                const placeResp = await fetch('https://places.googleapis.com/v1/places:searchText', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Goog-Api-Key': key,
+                        'X-Goog-FieldMask': 'places.displayName'
+                    },
+                    body: JSON.stringify({ textQuery: '大阪城', maxResultCount: 1 })
+                });
+                const placeOk = placeResp.ok;
+
                 userConfig.gmapsKey = key;
                 appState.routeCache = {};
                 saveConfig();
                 saveState();
                 renderTimeline();
                 resEl.className = 'text-[11px] font-bold px-2.5 py-1 rounded-lg bg-emerald-100 text-emerald-900';
-                resEl.textContent = `✅ Google Maps 連線成功！實測門到門路線約 ${mins} 分鐘，已自動重新計算時間軸。`;
+                resEl.textContent = `✅ Routes API 連線成功（實測路線 ${mins} 分鐘）${placeOk ? '・Places API (New) 正常' : '・建議一併開啟 Places API (New)'}`;
             } catch (err) {
                 resEl.className = 'text-[11px] font-bold px-2.5 py-1 rounded-lg bg-red-100 text-red-800';
-                resEl.textContent = `❌ 測試失敗：${err.message}（請確認 Google Cloud 已啟用 Maps JavaScript API 與 Directions API）`;
+                resEl.textContent = `❌ ${err.message}（請確認 Google Cloud 已啟用 Routes API）`;
             } finally {
                 if (btn) btn.textContent = '🧪 測試連線';
             }
+        }
+
+        async function callGeminiWithAutoModel(apiKey, promptText) {
+            const candidateModels = ['gemini-3.8-flash', 'gemini-3-flash-preview', 'gemini-2.5-flash'];
+            let lastErr = '無法連線 Gemini';
+            for (const model of candidateModels) {
+                const resp = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${encodeURIComponent(apiKey)}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        contents: [{ parts: [{ text: promptText }] }]
+                    })
+                });
+                const data = await resp.json();
+                if (resp.ok && data?.candidates?.[0]?.content?.parts?.[0]?.text) {
+                    return { model, text: data.candidates[0].content.parts[0].text };
+                }
+                lastErr = data?.error?.message || `HTTP ${resp.status}`;
+                if (resp.status === 400 || resp.status === 401 || resp.status === 403) break;
+            }
+            throw new Error(lastErr);
         }
 
         async function testGeminiApiKey() {
@@ -2499,23 +2613,13 @@
             }
             if (btn) btn.textContent = '⏳ 測試中...';
             resEl.className = 'text-[11px] font-bold px-2.5 py-1 rounded-lg bg-slate-100 text-slate-700';
-            resEl.textContent = '正在連線測試 Gemini API 金鑰...';
+            resEl.textContent = '正在連線測試 Gemini 3.8 Flash 模型...';
             try {
-                const resp = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${encodeURIComponent(key)}`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        contents: [{ parts: [{ text: '請只回覆 OK 兩個字' }] }]
-                    })
-                });
-                const data = await resp.json();
-                if (!resp.ok) {
-                    throw new Error(data?.error?.message || `HTTP ${resp.status}`);
-                }
+                const { model } = await callGeminiWithAutoModel(key, '請只回覆 OK 兩個字');
                 userConfig.geminiKey = key;
                 saveConfig();
                 resEl.className = 'text-[11px] font-bold px-2.5 py-1 rounded-lg bg-emerald-100 text-emerald-900';
-                resEl.textContent = '✅ Gemini API 連線成功！金鑰有效並已儲存。';
+                resEl.textContent = `✅ Gemini API 連線成功（使用模型：${model}）！已自動儲存。`;
             } catch (err) {
                 resEl.className = 'text-[11px] font-bold px-2.5 py-1 rounded-lg bg-red-100 text-red-800';
                 resEl.textContent = `❌ Gemini 測試失敗：${err.message}`;
