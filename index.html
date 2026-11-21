@@ -101,7 +101,7 @@
                 <div>
                     <div class="flex items-center flex-wrap gap-1.5">
                         <h1 class="font-serif text-base sm:text-lg font-bold text-indigoJp tracking-wide">旅遊拼圖 Travel Puzzle</h1>
-                        <span id="app-version-badge" class="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-indigoJp/10 text-indigoJp">v1.28</span>
+                        <span id="app-version-badge" class="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-indigoJp/10 text-indigoJp">v1.29</span>
                         <span id="cloud-db-version-badge" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-stone-100 text-stone-500">🌐 雲端庫就緒</span>
                         <span id="auto-save-status" class="text-[11px] text-stone-400 font-medium">☁️ 已自動儲存</span>
                     </div>
@@ -723,10 +723,10 @@
     </div>
 
     <script>
-        const APP_VERSION = 'v1.28';
+        const APP_VERSION = 'v1.29';
         const STORAGE_KEY = 'travel_puzzle_jp_state_v1';
         const CONFIG_KEY = 'travel_puzzle_jp_config_v1';
-        const LEGACY_CONFIG_KEYS = ['travel_puzzle_config', 'jp_travel_config_v1', 'travelPuzzleConfig'];
+        const LEGACY_CONFIG_KEYS = ['travel_puzzle_config', 'jp_travel_config_v1', 'travelPuzzleConfig', 'travel_puzzle_api_keys', 'travel_puzzle_settings', 'tp_config_v1'];
         const DEFAULT_SYNC_CODE = 'JP-GPVMP6';
 
         const REGIONS_META = [
@@ -2323,28 +2323,82 @@
             const owner = (userConfig.githubUser || 'JHANSIANGJYUN').trim();
             const repo = (userConfig.githubRepo || 'travel-puzzle').trim();
             const code = (userConfig.syncCode || 'JP-GPVMP6').trim().toUpperCase();
-            if (statusLine) statusLine.textContent = `⏳ 正在從 GitHub 讀取 ${code}...`;
-            try {
-                let data = null;
+            if (statusLine) statusLine.textContent = `⏳ 正在從 GitHub 搜尋並讀取 ${code}...`;
+
+            const candidatePaths = [
+                `trips/${code}.json`,
+                `sync/${code}.json`,
+                `data/${code}.json`,
+                `${code}.json`,
+                `trips/trip-${code}.json`,
+                `trips/${code.toLowerCase()}.json`
+            ];
+
+            async function tryFetchPath(filePath) {
                 if (userConfig.githubToken) {
-                    const apiUrl = `https://api.github.com/repos/${owner}/${repo}/contents/trips/${code}.json`;
+                    const apiUrl = `https://api.github.com/repos/${owner}/${repo}/contents/${filePath}`;
                     const resp = await fetch(apiUrl, { headers: { Authorization: `Bearer ${userConfig.githubToken}`, Accept: 'application/vnd.github+json' } });
                     if (resp.ok) {
                         const fileMeta = await resp.json();
                         const decodedStr = decodeURIComponent(escape(atob(fileMeta.content.replace(/\n/g, ''))));
-                        data = JSON.parse(decodedStr);
+                        return JSON.parse(decodedStr);
                     }
                 }
-                if (!data) {
-                    const rawUrl = `https://raw.githubusercontent.com/${owner}/${repo}/main/trips/${code}.json?t=${Date.now()}`;
+                for (const branch of ['main', 'master']) {
+                    const rawUrl = `https://raw.githubusercontent.com/${owner}/${repo}/${branch}/${filePath}?t=${Date.now()}`;
                     const resp = await fetch(rawUrl, { cache: 'no-store' });
-                    if (resp.ok) data = await resp.json();
+                    if (resp.ok) return await resp.json();
                 }
-                if (!data || !data.appState) throw new Error('找不到該代碼的雲端行程檔');
-                Object.assign(appState, data.appState);
+                return null;
+            }
+
+            try {
+                let data = null;
+                for (const p of candidatePaths) {
+                    data = await tryFetchPath(p);
+                    if (data) break;
+                }
+
+                // 若固定路徑皆未命中，透過 GitHub Trees API 自動在倉庫內搜尋包含代碼的 JSON 檔
+                if (!data) {
+                    for (const branch of ['main', 'master']) {
+                        const treeUrl = `https://api.github.com/repos/${owner}/${repo}/git/trees/${branch}?recursive=1`;
+                        const headers = { Accept: 'application/vnd.github+json' };
+                        if (userConfig.githubToken) headers.Authorization = `Bearer ${userConfig.githubToken}`;
+                        const treeResp = await fetch(treeUrl, { headers });
+                        if (treeResp.ok) {
+                            const treeJson = await treeResp.json();
+                            const matched = (treeJson.tree || []).find(node =>
+                                node.type === 'blob' &&
+                                node.path.toLowerCase().includes(code.toLowerCase()) &&
+                                node.path.endsWith('.json')
+                            );
+                            if (matched) {
+                                data = await tryFetchPath(matched.path);
+                                if (data) break;
+                            }
+                        }
+                    }
+                }
+
+                if (!data || typeof data !== 'object') {
+                    throw new Error(`在 ${owner}/${repo} 找不到代碼 ${code} 的雲端行程檔`);
+                }
+
+                // 自動相容舊版各種外層欄位結構（appState / state / trip / 根層）
+                const loadedState = data.appState || data.state || data.trip || (data.activitiesByDay ? data : null);
+                if (!loadedState) throw new Error('雲端檔案格式無法辨識');
+
+                Object.assign(appState, loadedState);
+                if (data.config && typeof data.config === 'object') {
+                    Object.assign(userConfig, data.config);
+                    saveConfig();
+                }
                 saveState();
                 renderAll();
                 if (statusLine) statusLine.textContent = `✅ 已成功載入雲端行程 (${code})！`;
+                const hdrBadge = document.getElementById('cloud-sync-header-badge');
+                if (hdrBadge) hdrBadge.textContent = `・☁️ ${code} 已載入`;
             } catch (err) {
                 if (statusLine) statusLine.textContent = `⚠️ 讀取失敗：${err.message}`;
             }
