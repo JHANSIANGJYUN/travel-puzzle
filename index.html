@@ -353,7 +353,7 @@
                     <h2 class="font-serif text-lg font-bold text-indigoJp">每日行程拼圖時間軸</h2>
                 </div>
                 <div class="flex items-center gap-2 flex-wrap">
-                    <button type="button" onclick="forceRecalculateAllGoogleMaps()" class="px-2.5 py-1 rounded-xl bg-sky-50 hover:bg-sky-100 text-indigoJp border border-sky-200 text-xs font-bold transition-colors cursor-pointer" title="清除快取與手動覆寫，強制向 Google Maps 重新取得真實車程">🗺️ 強制用 Google Maps 重算</button>
+                    <button type="button" onclick="forceRecalculateAllGoogleMaps()" class="px-2.5 py-1 rounded-xl bg-sky-50 hover:bg-sky-100 text-indigoJp border border-sky-200 text-xs font-bold transition-colors cursor-pointer" title="清除快取與手動覆寫，向 Google Maps 重新取得路線時間">🗺️ Google Maps 重新計算</button>
                     <div class="inline-flex bg-washi p-1 rounded-xl border border-stone-200 text-xs font-bold">
                         <button type="button" id="view-mode-single-btn" onclick="setTimelineViewMode('single')" class="px-3 py-1 rounded-lg bg-indigoJp text-white shadow-2xs transition-all cursor-pointer">📋 單日精算詳情</button>
                         <button type="button" id="view-mode-overview-btn" onclick="setTimelineViewMode('overview')" class="px-3 py-1 rounded-lg text-stone-600 hover:text-indigoJp transition-all cursor-pointer">🧩 全行程總覽看板（自由拖曳）</button>
@@ -760,7 +760,7 @@
         import { getFirestore, doc, getDoc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         // ==========================================
-        // 1. 儲存鍵值與日本 7 大地區 / JR PASS / 航班 / 季節祭典資料庫
+        // 1. 儲存鍵值與日本 10 大地區 / JR PASS / 航班 / 季節祭典資料庫
         // ==========================================
         const STATE_STORAGE_KEY = 'travel_puzzle_jp_state_v4';
         const SYNC_CODE_STORAGE_KEY = 'travel_puzzle_device_sync_code';
@@ -1001,7 +1001,7 @@
             const fBadge = document.getElementById('flight-ai-status-badge');
             const gModal = document.getElementById('gmaps-modal-status');
             if (gBadge) {
-                gBadge.textContent = gmapsKey ? '🟢 Routes API 實測中' : '⚪ Maps 內建估算';
+                gBadge.textContent = gmapsKey ? '🟢 Google Maps 已連線' : '⚪ Maps 內建估算';
                 gBadge.className = gmapsKey
                     ? 'text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800'
                     : 'text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-stone-200/80 text-stone-600';
@@ -1940,6 +1940,13 @@
 
         function sanitizePlaceForMaps(placeName) {
             let s = String(placeName || '').trim();
+            s = s.replace(/\s*\([A-Z]{3}\)\s*/g, '');
+            s = s.replace(/關西國際機場/g, '関西国際空港');
+            s = s.replace(/成田國際機場/g, '成田国際空港');
+            s = s.replace(/羽田機場/g, '羽田空港');
+            s = s.replace(/新千歲機場/g, '新千歳空港');
+            s = s.replace(/福岡機場/g, '福岡空港');
+            s = s.replace(/那霸機場/g, '那覇空港');
             s = s.replace(/東橫INN\s*新大阪東口/gi, '東横INN新大阪東口');
             s = s.replace(/東橫INN\s*大阪難波西/gi, '東横INN大阪なんば西');
             s = s.replace(/京都車站/g, '京都駅');
@@ -1966,7 +1973,7 @@
             saveStateToLocal();
             renderTimeline();
             if (timelineViewMode === 'overview') renderOverviewPuzzleBoard();
-            showToast('🗺️ 已強制向 Google Maps Routes API 重新抓取所有路段真實時間！');
+            showToast('🗺️ 已向 Google Maps 重新取得所有路段時間！');
         }
 
         function estimateTransitSegment(origin, dest, dayNum, segmentDepartMins = 540) {
@@ -1981,8 +1988,8 @@
             let fareJpy = 290;
             let modeLabel = isDriving ? '🚗 自駕導航路線' : '🚇 地鐵／市區電車路線';
             let detailText = hasGmapsKey
-                ? '⏳ 正在向 Google Maps 取得真實門到門路線時間...'
-                : '依據站間距離與兩端步行進出站時間估算（設定 Google Maps API 可強制自動精算）';
+                ? '⏳ 正在向 Google Maps 取得預估路線時間...'
+                : '依據站間距離與兩端步行進出站時間預估（設定 Google Maps API 可自動查詢）';
             let isMetroFaster = false;
 
             if (/機場|KIX|NRT|HND|CTS|FUK|NGO|OKA/i.test(pair)) {
@@ -2000,7 +2007,7 @@
                 mins = isDriving ? 50 : 35;
                 fareJpy = 580;
                 modeLabel = isDriving ? '🚗 名神高速自駕' : '🚄 JR 京都線新快速直達';
-                if (!hasGmapsKey) detailText = '新大阪搭 JR 新快速至京都車站僅 24 分，含步行進站門到門約 35 分';
+                if (!hasGmapsKey) detailText = '新大阪搭 JR 新快速至京都車站僅 24 分，含步行進站預估約 35 分';
             } else if (/新大阪/.test(pair) && /京都|清水|伏見|嵐山|金閣/.test(pair)) {
                 mins = isDriving ? 55 : 46;
                 fareJpy = 580;
@@ -2023,13 +2030,15 @@
                 if (!hasGmapsKey) detailText = '近鐵直達奈良站步行至公園約 52 分';
             }
 
+            const fallbackEstimatedMins = mins;
+
             if (gmapsRouteCache.has(routeKey)) {
                 const cached = gmapsRouteCache.get(routeKey);
                 mins = cached.mins;
                 detailText = cached.detailText;
                 if (cached.fareJpy > 0) fareJpy = cached.fareJpy;
             } else if (hasGmapsKey && !pendingGmapsRouteKeys.has(routeKey)) {
-                fetchRealGoogleRoute(routeKey, origin, dest, isDriving, dayNum, segmentDepartMins);
+                fetchRealGoogleRoute(routeKey, origin, dest, isDriving, dayNum, segmentDepartMins, fallbackEstimatedMins);
             }
 
             if (customMins > 0) {
@@ -2040,42 +2049,67 @@
                 routeKey,
                 mins,
                 fareJpy,
-                passActive,
-                isMetroFaster,
                 modeLabel,
                 detailText,
+                passActive,
+                isMetroFaster,
                 mapsUrl: buildGoogleMapsDirectionsUrl(origin, dest, isDriving)
             };
         }
 
-        async function fetchRealGoogleRoute(routeKey, origin, dest, isDriving, dayNum = 1, segmentDepartMins = 540) {
+        function buildNearFutureDepartureIso(dayNum, segmentDepartMins) {
+            const targetDate = new Date((appState.startDate || '2026-12-18') + 'T00:00:00+09:00');
+            const targetDow = isNaN(targetDate.getTime()) ? 5 : (targetDate.getDay() + Math.max(0, dayNum - 1)) % 7;
+
+            const now = new Date();
+            const jstNow = new Date(now.getTime() + 9 * 3600 * 1000);
+            const curDow = jstNow.getUTCDay();
+            let daysAhead = (targetDow - curDow + 7) % 7;
+            if (daysAhead === 0) daysAhead = 7;
+
+            const hrs = Math.floor(Math.max(0, segmentDepartMins) / 60) % 24;
+            const mins = Math.max(0, segmentDepartMins) % 60;
+            const candidate = new Date(Date.UTC(
+                jstNow.getUTCFullYear(),
+                jstNow.getUTCMonth(),
+                jstNow.getUTCDate() + daysAhead,
+                hrs - 9,
+                mins,
+                0
+            ));
+            return candidate.toISOString();
+        }
+
+        async function fetchRealGoogleRoute(routeKey, origin, dest, isDriving, dayNum = 1, segmentDepartMins = 540, fallbackEstimatedMins = 35) {
             const apiKey = getGoogleMapsApiKey();
             if (!apiKey) return;
             pendingGmapsRouteKeys.add(routeKey);
-            try {
-                const sDate = new Date((appState.startDate || '2026-12-18') + 'T00:00:00+09:00');
-                if (!isNaN(sDate.getTime())) {
-                    sDate.setDate(sDate.getDate() + Math.max(0, dayNum - 1));
-                    sDate.setMinutes(sDate.getMinutes() + Math.max(0, segmentDepartMins));
-                }
-                const nowPlusBuffer = new Date(Date.now() + 1800 * 1000);
-                const departureDate = (!isNaN(sDate.getTime()) && sDate > nowPlusBuffer) ? sDate : nowPlusBuffer;
+            const cleanOrigin = sanitizePlaceForMaps(origin);
+            const cleanDest = sanitizePlaceForMaps(dest);
+            const departureIso = buildNearFutureDepartureIso(dayNum, segmentDepartMins);
 
-                const res = await fetch('https://routes.googleapis.com/directions/v2:computeRoutes', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-Goog-Api-Key': apiKey,
-                        'X-Goog-FieldMask': 'routes.duration,routes.distanceMeters,routes.travelAdvisory.transitFare'
-                    },
-                    body: JSON.stringify({
-                        origin: { address: sanitizePlaceForMaps(origin) + ', Japan' },
-                        destination: { address: sanitizePlaceForMaps(dest) + ', Japan' },
-                        travelMode: isDriving ? 'DRIVE' : 'TRANSIT',
-                        departureTime: departureDate.toISOString(),
-                        languageCode: 'zh-TW'
-                    })
-                });
+            try {
+                const callRoutesApi = async (mode, withDeparture) => {
+                    const body = {
+                        origin: { address: cleanOrigin },
+                        destination: { address: cleanDest },
+                        travelMode: mode,
+                        languageCode: 'zh-TW',
+                        regionCode: 'JP'
+                    };
+                    if (withDeparture) body.departureTime = departureIso;
+                    return fetch('https://routes.googleapis.com/directions/v2:computeRoutes', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-Goog-Api-Key': apiKey,
+                            'X-Goog-FieldMask': 'routes.duration,routes.distanceMeters,routes.travelAdvisory.transitFare'
+                        },
+                        body: JSON.stringify(body)
+                    });
+                };
+
+                let res = await callRoutesApi(isDriving ? 'DRIVE' : 'TRANSIT', true);
                 if (res.ok) {
                     const data = await res.json();
                     const route = data?.routes?.[0];
@@ -2087,28 +2121,51 @@
                         gmapsRouteCache.set(routeKey, {
                             mins,
                             fareJpy: fareUnits,
-                            detailText: `✅ Google Maps 強制精算：門到門 ${mins} 分鐘（距離 ${km} km，含步行與實際班次轉乘）`
+                            detailText: `✅ Google Maps：預估 ${mins} 分鐘（距離 ${km} km，含步行與實際班次）`
                         });
                         renderTimeline();
                         if (timelineViewMode === 'overview') renderOverviewPuzzleBoard();
-                    } else {
-                        gmapsRouteCache.set(routeKey, {
-                            mins: 35,
-                            fareJpy: 0,
-                            detailText: `⚠️ Google Maps 未回傳此時段大眾運輸班次（已使用備援估算，可點右側 Google Maps ↗ 查看）`
-                        });
-                        renderTimeline();
+                        return;
                     }
                 } else {
                     const errData = await res.json().catch(() => ({}));
                     const errMsg = errData?.error?.message || `HTTP ${res.status}`;
                     gmapsRouteCache.set(routeKey, {
-                        mins: 35,
+                        mins: fallbackEstimatedMins,
                         fareJpy: 0,
-                        detailText: `⚠️ Google Maps API 回應異常（${errMsg}），請檢查金鑰權限`
+                        detailText: `⚠️ Google Maps API 拒絕請求（${errMsg}）`
                     });
                     renderTimeline();
+                    return;
                 }
+
+                // 若日本部分私鐵未開放 TRANSIT 時刻表，改用 Google Maps 真實道路距離估算
+                const driveRes = await callRoutesApi('DRIVE', false);
+                if (driveRes.ok) {
+                    const dData = await driveRes.json();
+                    const dRoute = dData?.routes?.[0];
+                    if (dRoute?.duration) {
+                        const driveSecs = parseInt(String(dRoute.duration).replace('s', ''), 10) || 1800;
+                        const driveMins = Math.max(5, Math.round(driveSecs / 60));
+                        const km = ((dRoute.distanceMeters || 0) / 1000).toFixed(1);
+                        const estTransitMins = isDriving ? driveMins : Math.max(12, Math.round(driveMins * 0.92) + 8);
+                        gmapsRouteCache.set(routeKey, {
+                            mins: estTransitMins,
+                            fareJpy: 0,
+                            detailText: `✅ Google Maps 距離 ${km} km（預估約 ${estTransitMins} 分，可點右側 Google Maps ↗ 確認班次）`
+                        });
+                        renderTimeline();
+                        if (timelineViewMode === 'overview') renderOverviewPuzzleBoard();
+                        return;
+                    }
+                }
+
+                gmapsRouteCache.set(routeKey, {
+                    mins: fallbackEstimatedMins,
+                    fareJpy: 0,
+                    detailText: `⚠️ Google Maps 查無此地標路線（預估 ${fallbackEstimatedMins} 分，可點右側 Google Maps ↗ 查看）`
+                });
+                renderTimeline();
             } catch (e) {
             } finally {
                 pendingGmapsRouteKeys.delete(routeKey);
@@ -2682,7 +2739,7 @@
                             <p class="text-[11px] text-stone-500">${escapeHtml(seg.detailText)}</p>
                             <div class="flex flex-wrap items-center justify-between gap-2 pt-1 text-xs">
                                 <div class="flex items-center gap-1.5 text-stone-600">
-                                    <span>門到門約</span>
+                                    <span>預估約</span>
                                     <input type="number" min="1" max="480" value="${seg.mins}" onchange="updateCustomTransitMinutes('${seg.routeKey.replace(/'/g, "\\'")}', this.value)" class="w-14 bg-white border border-stone-300 rounded-md px-1.5 py-0.5 font-mono font-bold text-center text-indigoJp">
                                     <span>分鐘</span>
                                 </div>
