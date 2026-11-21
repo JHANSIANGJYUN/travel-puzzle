@@ -101,7 +101,7 @@
                 <div>
                     <div class="flex items-center flex-wrap gap-1.5">
                         <h1 class="font-serif text-base sm:text-lg font-bold text-indigoJp tracking-wide">旅遊拼圖 Travel Puzzle</h1>
-                        <span id="app-version-badge" class="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-indigoJp/10 text-indigoJp">v1.29</span>
+                        <span id="app-version-badge" class="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-indigoJp/10 text-indigoJp">v1.30</span>
                         <span id="cloud-db-version-badge" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-stone-100 text-stone-500">🌐 雲端庫就緒</span>
                         <span id="auto-save-status" class="text-[11px] text-stone-400 font-medium">☁️ 已自動儲存</span>
                     </div>
@@ -723,7 +723,7 @@
     </div>
 
     <script>
-        const APP_VERSION = 'v1.29';
+        const APP_VERSION = 'v1.30';
         const STORAGE_KEY = 'travel_puzzle_jp_state_v1';
         const CONFIG_KEY = 'travel_puzzle_jp_config_v1';
         const LEGACY_CONFIG_KEYS = ['travel_puzzle_config', 'jp_travel_config_v1', 'travelPuzzleConfig', 'travel_puzzle_api_keys', 'travel_puzzle_settings', 'tp_config_v1'];
@@ -841,7 +841,6 @@
             { id: 'sp-ritsurin', region: 'shikoku', type: 'spot', months: [1,2,3,4,5,6,7,8,9,10,11,12], tag: '經典名勝', periodText: '全年皆宜', location: '香川縣高松市（JR栗林公園北口站）', title: '高松栗林公園＆讚岐烏龍麵巡禮', duration: 120, note: '米其林三星迴遊式大名庭園，可搭乘和船遊覽南湖。', fallbackImg: 'https://images.unsplash.com/photo-1536098561742-ca998e48cbcc?auto=format&fit=crop&w=600&q=75' }
         ];
 
-        // 狀態管理
         let userConfig = {
             gmapsKey: '',
             geminiKey: '',
@@ -916,13 +915,27 @@
         let lastRouteSnapshot = null;
         const photoCache = {};
 
-        // =========================================================
-        // 基礎時間、日期與資料持久化工具
-        // =========================================================
         function parseClockToMinutes(clockStr) {
             const m = String(clockStr || '09:00').match(/^(\d{1,2}):(\d{2})$/);
             if (!m) return 540;
             return Math.min(23, Math.max(0, Number(m[1]))) * 60 + Math.min(59, Math.max(0, Number(m[2])));
+        }
+
+        function applyConfigObjectWithAliases(rawObj) {
+            if (!rawObj || typeof rawObj !== 'object') return;
+            if (rawObj.c) userConfig.syncCode = String(rawObj.c).trim().toUpperCase();
+            if (rawObj.p) userConfig.githubToken = String(rawObj.p).trim();
+            if (rawObj.m) userConfig.gmapsKey = String(rawObj.m).trim();
+            if (rawObj.g) userConfig.geminiKey = String(rawObj.g).trim();
+            if (rawObj.d) userConfig.cloudDbUrl = String(rawObj.d).trim();
+
+            if (rawObj.syncCode) userConfig.syncCode = String(rawObj.syncCode).trim().toUpperCase();
+            if (rawObj.githubToken) userConfig.githubToken = String(rawObj.githubToken).trim();
+            if (rawObj.gmapsKey) userConfig.gmapsKey = String(rawObj.gmapsKey).trim();
+            if (rawObj.geminiKey) userConfig.geminiKey = String(rawObj.geminiKey).trim();
+            if (rawObj.cloudDbUrl) userConfig.cloudDbUrl = String(rawObj.cloudDbUrl).trim();
+            if (rawObj.githubUser) userConfig.githubUser = String(rawObj.githubUser).trim();
+            if (rawObj.githubRepo) userConfig.githubRepo = String(rawObj.githubRepo).trim();
         }
 
         function formatMinutesToClock(totalMins) {
@@ -969,29 +982,33 @@
 
         function loadSavedData() {
             try {
-                // 1. 解析 #setup= 一鍵分享連結
+                // 1. 解析 #setup= 一鍵分享連結（支援短鍵名 c/p/m/g/d 與完整鍵名）
                 const hash = window.location.hash || '';
                 if (hash.startsWith('#setup=')) {
-                    const raw = decodeURIComponent(atob(hash.slice(7)));
-                    const parsedSetup = JSON.parse(raw);
-                    Object.assign(userConfig, parsedSetup);
+                    const encodedPart = decodeURIComponent(hash.slice(7));
+                    let rawStr = '';
+                    try {
+                        rawStr = decodeURIComponent(atob(encodedPart));
+                    } catch (_) {
+                        rawStr = atob(encodedPart);
+                    }
+                    const parsedSetup = JSON.parse(rawStr);
+                    applyConfigObjectWithAliases(parsedSetup);
                     saveConfig();
                     history.replaceState(null, '', window.location.pathname + window.location.search);
                 }
 
-                // 2. 掃描相容 v1.21 與舊版所有可能儲存過的設定物件
+                // 2. 掃描相容 v1.21 與舊版所有可能儲存過的設定物件（含短鍵名 c/p/m/g/d）
                 for (const legacyKey of LEGACY_CONFIG_KEYS) {
                     const legacyRaw = localStorage.getItem(legacyKey);
                     if (legacyRaw) {
                         const legacyObj = JSON.parse(legacyRaw);
-                        if (legacyObj && typeof legacyObj === 'object') {
-                            Object.assign(userConfig, legacyObj);
-                        }
+                        applyConfigObjectWithAliases(legacyObj);
                     }
                 }
 
                 const savedCfg = JSON.parse(localStorage.getItem(CONFIG_KEY) || '{}');
-                Object.assign(userConfig, savedCfg);
+                applyConfigObjectWithAliases(savedCfg);
 
                 // 3. 逐欄補齊獨立儲存的 API Key 與同步代碼
                 if (!userConfig.gmapsKey) {
@@ -2419,7 +2436,14 @@
         }
         function copyShareSetupLink() {
             saveApiAndCloudSettings(false);
-            const encoded = btoa(encodeURIComponent(JSON.stringify(userConfig)));
+            const compactPayload = {
+                c: userConfig.syncCode || DEFAULT_SYNC_CODE,
+                p: userConfig.githubToken || '',
+                m: userConfig.gmapsKey || '',
+                g: userConfig.geminiKey || '',
+                d: userConfig.cloudDbUrl || ''
+            };
+            const encoded = btoa(encodeURIComponent(JSON.stringify(compactPayload)));
             const shareUrl = `${window.location.origin}${window.location.pathname}#setup=${encoded}`;
             navigator.clipboard?.writeText(shareUrl);
             const statusLine = document.getElementById('github-sync-status-line');
