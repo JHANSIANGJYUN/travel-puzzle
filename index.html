@@ -101,7 +101,7 @@
                 <div>
                     <div class="flex items-center flex-wrap gap-1.5">
                         <h1 class="font-serif text-base sm:text-lg font-bold text-indigoJp tracking-wide">旅遊拼圖 Travel Puzzle</h1>
-                        <span id="app-version-badge" class="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-indigoJp/10 text-indigoJp">v1.24</span>
+                        <span id="app-version-badge" class="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-indigoJp/10 text-indigoJp">v1.27</span>
                         <span id="cloud-db-version-badge" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-stone-100 text-stone-500">🌐 雲端庫就緒</span>
                         <span id="auto-save-status" class="text-[11px] text-stone-400 font-medium">☁️ 已自動儲存</span>
                     </div>
@@ -565,28 +565,27 @@
                 <div class="flex items-center gap-2">
                     <span class="w-6 h-6 rounded-full bg-matcha text-white text-xs font-bold flex items-center justify-center">3</span>
                     <div>
-                        <h2 class="font-serif text-lg font-bold text-indigoJp">當季限定祭典・點燈與順遊景點拼圖庫</h2>
-                        <p id="rec-region-subtitle" class="text-xs text-stone-500">依據所選地區與出發月份，優先顯示當季點燈與代表景點</p>
+                        <h2 class="font-serif text-lg font-bold text-indigoJp">當季限定祭典、點燈與順遊景點拼圖庫</h2>
+                        <p class="text-[11px] text-stone-500">自動優先置頂出發月份限定活動・選擇天數即可一鍵嵌入行程</p>
                     </div>
                 </div>
                 <div class="flex items-center gap-1.5 flex-wrap">
-                    <button type="button" onclick="setRecFilter('all')" id="rec-filter-all" class="px-3 py-1 rounded-full text-xs font-bold bg-indigoJp text-white cursor-pointer">全部推薦</button>
-                    <button type="button" onclick="setRecFilter('event')" id="rec-filter-event" class="px-3 py-1 rounded-full text-xs font-bold bg-washi text-stone-600 hover:text-indigoJp border border-stone-200 cursor-pointer">🏮 祭典／點燈</button>
-                    <button type="button" onclick="setRecFilter('spot')" id="rec-filter-spot" class="px-3 py-1 rounded-full text-xs font-bold bg-washi text-stone-600 hover:text-indigoJp border border-stone-200 cursor-pointer">⛩️ 熱門景點／美食</button>
+                    <button type="button" id="rec-filter-all" onclick="setRecFilter('all')" class="px-3 py-1 rounded-full text-xs font-bold bg-indigoJp text-white cursor-pointer">全部推薦</button>
+                    <button type="button" id="rec-filter-event" onclick="setRecFilter('event')" class="px-3 py-1 rounded-full text-xs font-bold bg-washi text-stone-600 hover:text-indigoJp border border-stone-200 cursor-pointer">🔥 祭典點燈</button>
+                    <button type="button" id="rec-filter-spot" onclick="setRecFilter('spot')" class="px-3 py-1 rounded-full text-xs font-bold bg-washi text-stone-600 hover:text-indigoJp border border-stone-200 cursor-pointer">⛩️ 順遊名勝</button>
                 </div>
             </div>
 
-            <div class="flex flex-col sm:flex-row gap-2 bg-washi p-3 rounded-xl border border-stone-200/80">
-                <input type="text" id="spot-search-input" placeholder="輸入日本景點、餐廳或車站名稱（例如：京都塔、錦市場、道頓堀）..." onkeydown="if(event.key==='Enter') searchCustomPlaceOrQuickAdd()" class="flex-1 bg-white border border-stone-300 rounded-xl px-3.5 py-2 text-xs focus:outline-none focus:border-indigoJp">
-                <button type="button" onclick="searchCustomPlaceOrQuickAdd()" class="bg-indigoJp hover:bg-vermilion text-white font-bold text-xs px-4 py-2 rounded-xl transition-colors cursor-pointer shrink-0">🔍 搜尋並加入推薦拼圖</button>
+            <div class="flex flex-col sm:flex-row gap-2">
+                <input type="text" id="spot-search-input" onkeydown="if(event.key==='Enter') searchCustomPlaceOrQuickAdd()" placeholder="輸入想去的日本景點、餐廳或車站名稱（例如：黑門市場、神戶動物王國）..." class="flex-1 bg-washi border border-stone-300 rounded-xl px-3.5 py-2 text-xs sm:text-sm focus:outline-none focus:border-indigoJp">
+                <button type="button" onclick="searchCustomPlaceOrQuickAdd()" class="bg-indigoJp hover:bg-vermilion text-white font-bold text-xs px-4 py-2 rounded-xl shadow-2xs transition-colors cursor-pointer shrink-0">＋ 新增至推薦拼圖庫</button>
             </div>
 
-            <div id="recommendations-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 pt-2"></div>
+            <div id="recommendations-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pt-1"></div>
         </section>
-
     </main>
 
-    <!-- 自訂拼圖彈窗 -->
+    <!-- 自行新增行程拼圖彈窗 -->
     <div id="custom-piece-modal" class="fixed inset-0 z-50 hidden bg-black/50 backdrop-blur-xs flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl max-w-md w-full p-5 space-y-4 shadow-xl border border-stone-200">
             <div class="flex items-center justify-between border-b border-stone-100 pb-2.5">
@@ -595,18 +594,17 @@
             </div>
             <div class="space-y-3 text-xs">
                 <div>
-                    <label class="block font-bold text-stone-700 mb-1">地點／活動名稱 *</label>
-                    <input type="text" id="custom-piece-title" placeholder="例如：清水寺夜間特別拜觀、一蘭拉麵 道頓堀店" class="w-full border border-stone-300 rounded-xl px-3 py-2 text-sm">
+                    <label class="block font-bold text-stone-700 mb-1">地點或活動名稱</label>
+                    <input type="text" id="custom-piece-title" placeholder="例如：心齋橋 PARCO 寶可夢中心、一蘭拉麵" class="w-full border border-stone-300 rounded-xl px-3 py-2 text-sm">
                 </div>
-                <div class="grid grid-cols-2 gap-2.5">
+                <div class="grid grid-cols-2 gap-2">
                     <div>
                         <label class="block font-bold text-stone-700 mb-1">類型標籤</label>
-                        <select id="custom-piece-tag" class="w-full border border-stone-300 rounded-xl px-2.5 py-2">
-                            <option value="景點">⛩️ 熱門景點</option>
-                            <option value="夜間點燈">✨ 夜間點燈／夜景</option>
-                            <option value="美食">🍜 美食餐飲</option>
-                            <option value="購物">🛍️ 逛街購物</option>
-                            <option value="祭典">🏮 季節祭典</option>
+                        <select id="custom-piece-tag" class="w-full border border-stone-300 rounded-xl px-2.5 py-2 font-bold">
+                            <option value="經典名勝">⛩️ 經典名勝</option>
+                            <option value="光影花火">✨ 光影花火</option>
+                            <option value="美食逛街">🍜 美食逛街</option>
+                            <option value="溫泉散策">♨️ 溫泉散策</option>
                         </select>
                     </div>
                     <div>
@@ -615,13 +613,84 @@
                     </div>
                 </div>
                 <div>
-                    <label class="block font-bold text-stone-700 mb-1">備註小提醒（選填）</label>
-                    <input type="text" id="custom-piece-note" placeholder="例如：建議提前預約、必吃抹茶甜點" class="w-full border border-stone-300 rounded-xl px-3 py-2">
+                    <label class="block font-bold text-stone-700 mb-1">備註或交通提醒（選填）</label>
+                    <input type="text" id="custom-piece-note" placeholder="例如：需提前預約、傍晚點燈後造訪" class="w-full border border-stone-300 rounded-xl px-3 py-2">
                 </div>
             </div>
-            <div class="flex justify-end gap-2 pt-2">
+            <div class="flex justify-end gap-2 pt-1">
                 <button type="button" onclick="closeCustomPieceModal()" class="px-4 py-2 rounded-xl border border-stone-300 text-xs font-bold text-stone-600 cursor-pointer">取消</button>
-                <button type="button" onclick="submitCustomPiece()" class="px-4 py-2 rounded-xl bg-vermilion text-white text-xs font-bold cursor-pointer">加入當日時間軸</button>
+                <button type="button" onclick="submitCustomPiece()" class="px-4 py-2 rounded-xl bg-vermilion text-white text-xs font-bold cursor-pointer">嵌入當日行程</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- API 與 GitHub 雲端資料庫設定彈窗（完整恢復 GitHub Token 雙向同步與所有金鑰欄位） -->
+    <div id="api-key-modal" class="fixed inset-0 z-50 hidden bg-black/50 backdrop-blur-xs flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-lg w-full p-5 space-y-4 shadow-xl border border-stone-200 max-h-[90vh] overflow-y-auto">
+            <div class="flex items-center justify-between border-b border-stone-100 pb-2.5">
+                <h3 class="font-serif font-bold text-base text-indigoJp">🔑 跨裝置同步・API 金鑰與雲端資料庫</h3>
+                <button type="button" onclick="closeApiKeyModal()" class="text-stone-400 hover:text-sumi text-lg font-bold cursor-pointer">✕</button>
+            </div>
+
+            <!-- 1. GitHub 跨裝置雙向雲端同步 -->
+            <div class="bg-slate-50 p-3.5 rounded-2xl border border-slate-200 space-y-2.5 text-xs">
+                <div class="flex items-center justify-between">
+                    <span class="font-bold text-indigoJp">☁️ 跨裝置雲端同步（手機／平板／電腦共用同一份行程）</span>
+                </div>
+                <div id="github-sync-status-line" class="text-[11px] font-bold text-emerald-700">🟢 準備就緒</div>
+                <p class="text-[11px] text-stone-500 leading-relaxed">手機讀取免設 Token：電腦填入下方 GitHub Token 並按「⬆️ 上傳」後，手機只要輸入相同「同步代碼」並按「📥 讀取」即可載入最新行程！</p>
+                <div class="flex flex-wrap items-center gap-1.5">
+                    <input type="text" id="modal-sync-code-input" placeholder="JP-GPVMP6" class="w-32 bg-white border border-stone-300 rounded-xl px-2.5 py-1.5 font-mono font-bold uppercase text-indigoJp">
+                    <button type="button" onclick="copySyncCodeText()" class="px-2.5 py-1.5 rounded-xl bg-white hover:bg-stone-100 border border-stone-300 font-bold text-stone-700 cursor-pointer">複製</button>
+                    <button type="button" id="btn-pull-github-trip" onclick="pullTripFromGitHub()" class="px-3 py-1.5 rounded-xl bg-indigoJp hover:bg-indigoJp/90 text-white font-bold cursor-pointer">📥 讀取此代碼</button>
+                    <button type="button" id="btn-push-github-trip" onclick="pushTripToGitHub()" class="px-3 py-1.5 rounded-xl bg-matcha hover:bg-matcha/90 text-white font-bold cursor-pointer">⬆️ 上傳</button>
+                </div>
+                <div>
+                    <button type="button" onclick="copyShareSetupLink()" class="px-3 py-1.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-white font-bold shadow-2xs cursor-pointer">🔗 複製一鍵自動設定連結（免重打金鑰）</button>
+                </div>
+                <div>
+                    <label class="block font-bold text-indigoJp mb-1">🔑 GitHub 寫入權杖 Personal Access Token（上傳行程必填，手機僅讀取可留空）</label>
+                    <input type="password" id="modal-github-token" placeholder="ghp_... 或 github_pat_..." class="w-full bg-white border border-stone-300 rounded-xl px-3 py-2 font-mono">
+                </div>
+            </div>
+
+            <!-- 2. GitHub 每日自動更新資料庫 -->
+            <div class="bg-emerald-50/70 p-3.5 rounded-2xl border border-emerald-200 space-y-2.5 text-xs">
+                <div class="flex items-center justify-between gap-2">
+                    <span class="font-bold text-emerald-950">🌐 GitHub 每日自動更新資料庫（db.json）</span>
+                    <span id="modal-cloud-db-status" class="text-[11px] font-bold text-emerald-700">🟢 就緒</span>
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="block text-[11px] font-bold text-emerald-900 mb-0.5">GitHub 帳號</label>
+                        <input type="text" id="modal-github-user" value="JHANSIANGJYUN" oninput="updateCloudUrlPreview()" placeholder="JHANSIANGJYUN" class="w-full bg-white border border-emerald-300 rounded-xl px-2.5 py-1.5 font-mono">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-bold text-emerald-900 mb-0.5">倉庫名稱</label>
+                        <input type="text" id="modal-github-repo" value="travel-puzzle" oninput="updateCloudUrlPreview()" placeholder="travel-puzzle" class="w-full bg-white border border-emerald-300 rounded-xl px-2.5 py-1.5 font-mono">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-[11px] font-bold text-emerald-900 mb-0.5">對應的雲端 db.json 網址（可自動產生或直接貼上）</label>
+                    <input type="text" id="modal-cloud-db-url" placeholder="https://raw.githubusercontent.com/JHANSIANGJYUN/travel-puzzle/main/db.json" class="w-full bg-white border border-emerald-300 rounded-xl px-3 py-1.5 font-mono text-[11px]">
+                </div>
+            </div>
+
+            <!-- 3. Google Maps 與 Gemini API Key -->
+            <div class="bg-washi p-3.5 rounded-2xl border border-stone-200 space-y-2.5 text-xs">
+                <div>
+                    <label class="block font-bold text-stone-700 mb-1">🗺️ Google Maps API Key（用於真實路網距離與地點實景照片）</label>
+                    <input type="password" id="modal-gmaps-key" placeholder="AIzaSy..." class="w-full bg-white border border-stone-300 rounded-xl px-3 py-1.5 font-mono">
+                </div>
+                <div>
+                    <label class="block font-bold text-stone-700 mb-1">✨ Gemini API Key（用於冷門航班與景點智慧補充）</label>
+                    <input type="password" id="modal-gemini-key" placeholder="AIzaSy..." class="w-full bg-white border border-stone-300 rounded-xl px-3 py-1.5 font-mono">
+                </div>
+            </div>
+
+            <div class="flex justify-end gap-2 pt-1">
+                <button type="button" onclick="closeApiKeyModal()" class="px-4 py-2 rounded-xl border border-stone-300 text-xs font-bold text-stone-600 cursor-pointer">取消</button>
+                <button type="button" onclick="saveApiAndCloudSettings()" class="px-4 py-2 rounded-xl bg-matcha hover:bg-matcha/90 text-white text-xs font-bold cursor-pointer">💾 儲存並立即同步資料庫</button>
             </div>
         </div>
     </div>
@@ -641,44 +710,6 @@
         </div>
     </div>
 
-    <!-- API 與 GitHub 雲端資料庫設定彈窗 -->
-    <div id="api-key-modal" class="fixed inset-0 z-50 hidden bg-black/50 backdrop-blur-xs flex items-center justify-center p-4">
-        <div class="bg-white rounded-2xl max-w-lg w-full p-5 space-y-4 shadow-xl border border-stone-200 max-h-[90vh] overflow-y-auto">
-            <div class="flex items-center justify-between border-b border-stone-100 pb-2.5">
-                <h3 class="font-serif font-bold text-base text-indigoJp">🔑 API 金鑰與跨裝置雲端同步設定</h3>
-                <button type="button" onclick="closeApiKeyModal()" class="text-stone-400 hover:text-sumi text-lg font-bold cursor-pointer">✕</button>
-            </div>
-            <div class="space-y-3 text-xs">
-                <div class="bg-emerald-50/80 p-3 rounded-xl border border-emerald-200 space-y-2">
-                    <label class="block font-bold text-emerald-950">☁️ 跨裝置同步代碼（手機與電腦輸入相同代碼即可同步行程）</label>
-                    <div class="flex gap-2">
-                        <input type="text" id="modal-sync-code-input" placeholder="例如：JAPAN2026" class="flex-1 bg-white border border-emerald-300 rounded-xl px-3 py-1.5 font-mono font-bold uppercase">
-                        <button type="button" onclick="applySyncCodeFromModal()" class="bg-matcha text-white font-bold px-3 py-1.5 rounded-xl cursor-pointer">套用代碼</button>
-                    </div>
-                </div>
-                <div>
-                    <label class="block font-bold text-stone-700 mb-1">🗺️ Google Maps API Key（選填，用於真實路網距離與地點照片）</label>
-                    <input type="password" id="modal-gmaps-key" placeholder="AIzaSy..." class="w-full border border-stone-300 rounded-xl px-3 py-2 font-mono">
-                </div>
-                <div>
-                    <label class="block font-bold text-stone-700 mb-1">✨ Gemini API Key（選填，用於冷門航班與景點智慧補充）</label>
-                    <input type="password" id="modal-gemini-key" placeholder="AIzaSy..." class="w-full border border-stone-300 rounded-xl px-3 py-2 font-mono">
-                </div>
-                <div>
-                    <label class="block font-bold text-stone-700 mb-1">🌐 GitHub 雲端資料庫網址（db.json Raw URL）</label>
-                    <input type="text" id="modal-cloud-db-url" placeholder="https://raw.githubusercontent.com/.../main/db.json" class="w-full border border-stone-300 rounded-xl px-3 py-2 font-mono text-[11px]">
-                </div>
-            </div>
-            <div class="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-stone-100">
-                <button type="button" onclick="copyShareSetupLink()" class="px-3 py-2 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-300 text-xs font-bold cursor-pointer">🔗 複製免設定同步網址</button>
-                <div class="flex gap-2">
-                    <button type="button" onclick="closeApiKeyModal()" class="px-4 py-2 rounded-xl border border-stone-300 text-xs font-bold text-stone-600 cursor-pointer">取消</button>
-                    <button type="button" onclick="saveApiAndCloudSettings()" class="px-4 py-2 rounded-xl bg-indigoJp text-white text-xs font-bold cursor-pointer">儲存設定</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- 重設確認彈窗 -->
     <div id="reset-confirm-modal" class="fixed inset-0 z-50 hidden bg-black/50 backdrop-blur-xs flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl max-w-sm w-full p-5 space-y-4 shadow-xl border border-stone-200">
@@ -692,7 +723,7 @@
     </div>
 
     <script>
-        const APP_VERSION = 'v1.24';
+        const APP_VERSION = 'v1.27';
         const STORAGE_KEY = 'travel_puzzle_jp_state_v1';
         const CONFIG_KEY = 'travel_puzzle_jp_config_v1';
 
@@ -812,8 +843,11 @@
         let userConfig = {
             gmapsKey: '',
             geminiKey: '',
-            cloudDbUrl: '',
-            syncCode: 'JAPAN2026'
+            githubToken: '',
+            githubUser: 'JHANSIANGJYUN',
+            githubRepo: 'travel-puzzle',
+            cloudDbUrl: 'https://raw.githubusercontent.com/JHANSIANGJYUN/travel-puzzle/main/db.json',
+            syncCode: 'JP-GPVMP6'
         };
 
         let cloudData = {
@@ -881,41 +915,42 @@
         const photoCache = {};
 
         // =========================================================
-        // 工具函式：日期、時間、距離計算與序列化
+        // 基礎時間、日期與資料持久化工具
         // =========================================================
-        function getTotalDays() {
-            const s = new Date(appState.startDate + 'T00:00:00');
-            const e = new Date(appState.endDate + 'T00:00:00');
-            if (isNaN(s.getTime()) || isNaN(e.getTime()) || e < s) return 4;
-            return Math.max(1, Math.min(14, Math.round((e - s) / 86400000) + 1));
-        }
-
-        function getDateLabelForDay(dayNum) {
-            const s = new Date(appState.startDate + 'T00:00:00');
-            if (isNaN(s.getTime())) return `Day ${dayNum}`;
-            const d = new Date(s.getTime() + (dayNum - 1) * 86400000);
-            const weekdays = ['日', '一', '二', '三', '四', '五', '六'];
-            return `${d.getMonth() + 1}/${d.getDate()} (${weekdays[d.getDay()]})`;
-        }
-
         function parseClockToMinutes(clockStr) {
             const m = String(clockStr || '09:00').match(/^(\d{1,2}):(\d{2})$/);
             if (!m) return 540;
-            return Number(m[1]) * 60 + Number(m[2]);
+            return Math.min(23, Math.max(0, Number(m[1]))) * 60 + Math.min(59, Math.max(0, Number(m[2])));
         }
 
         function formatMinutesToClock(totalMins) {
-            const wrapped = ((Math.round(totalMins) % 1440) + 1440) % 1440;
-            const hh = String(Math.floor(wrapped / 60)).padStart(2, '0');
-            const mm = String(wrapped % 60).padStart(2, '0');
+            const normalized = ((Math.round(totalMins) % 1440) + 1440) % 1440;
+            const hh = String(Math.floor(normalized / 60)).padStart(2, '0');
+            const mm = String(normalized % 60).padStart(2, '0');
             return `${hh}:${mm}`;
+        }
+
+        function getTotalDays() {
+            const s = new Date((appState.startDate || '2026-12-18') + 'T00:00:00');
+            const e = new Date((appState.endDate || '2026-12-21') + 'T00:00:00');
+            if (isNaN(s.getTime()) || isNaN(e.getTime())) return 4;
+            const diff = Math.round((e - s) / 86400000) + 1;
+            return Math.min(14, Math.max(1, diff));
+        }
+
+        function getDateLabelForDay(dayNum) {
+            const base = new Date((appState.startDate || '2026-12-18') + 'T00:00:00');
+            if (isNaN(base.getTime())) return `Day ${dayNum}`;
+            base.setDate(base.getDate() + (dayNum - 1));
+            const weekdays = ['日', '一', '二', '三', '四', '五', '六'];
+            return `${base.getMonth() + 1}/${base.getDate()} (${weekdays[base.getDay()]})`;
         }
 
         function saveState() {
             try {
                 localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
-                const el = document.getElementById('auto-save-status');
-                if (el) el.textContent = `☁️ 已儲存 (${new Date().toTimeString().slice(0, 5)})`;
+                const statusEl = document.getElementById('auto-save-status');
+                if (statusEl) statusEl.textContent = `☁️ 已儲存 (${new Date().toTimeString().slice(0, 5)})`;
             } catch (e) {}
         }
 
@@ -927,248 +962,139 @@
 
         function loadSavedData() {
             try {
-                const rawCfg = localStorage.getItem(CONFIG_KEY);
-                if (rawCfg) Object.assign(userConfig, JSON.parse(rawCfg));
-            } catch (e) {}
+                // 解析 #setup= 一鍵分享連結
+                const hash = window.location.hash || '';
+                if (hash.startsWith('#setup=')) {
+                    const raw = decodeURIComponent(atob(hash.slice(7)));
+                    const parsedSetup = JSON.parse(raw);
+                    Object.assign(userConfig, parsedSetup);
+                    saveConfig();
+                    history.replaceState(null, '', window.location.pathname + window.location.search);
+                }
 
-            try {
-                const rawState = localStorage.getItem(STORAGE_KEY);
-                if (rawState) {
-                    const parsed = JSON.parse(rawState);
-                    Object.assign(appState, parsed);
+                // 載入與相容舊版金鑰設定
+                const savedCfg = JSON.parse(localStorage.getItem(CONFIG_KEY) || '{}');
+                Object.assign(userConfig, savedCfg);
+                if (!userConfig.gmapsKey) userConfig.gmapsKey = localStorage.getItem('gmaps_api_key') || localStorage.getItem('google_maps_api_key') || '';
+                if (!userConfig.geminiKey) userConfig.geminiKey = localStorage.getItem('gemini_api_key') || '';
+                if (!userConfig.githubToken) userConfig.githubToken = localStorage.getItem('github_token') || localStorage.getItem('gh_token') || '';
+                if (!userConfig.syncCode) userConfig.syncCode = localStorage.getItem('sync_code') || 'JP-GPVMP6';
+
+                const savedState = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
+                if (savedState && typeof savedState === 'object') {
+                    Object.assign(appState, savedState);
                 }
             } catch (e) {}
-
-            // 支援網址 #setup= 免設定分享參數
-            if (window.location.hash && window.location.hash.startsWith('#setup=')) {
-                try {
-                    const decoded = JSON.parse(decodeURIComponent(atob(window.location.hash.slice(7))));
-                    if (decoded.gmapsKey) userConfig.gmapsKey = decoded.gmapsKey;
-                    if (decoded.geminiKey) userConfig.geminiKey = decoded.geminiKey;
-                    if (decoded.cloudDbUrl) userConfig.cloudDbUrl = decoded.cloudDbUrl;
-                    if (decoded.syncCode) userConfig.syncCode = decoded.syncCode;
-                    saveConfig();
-                } catch (e) {}
-            }
         }
 
         async function syncCloudDatabase() {
+            const url = (userConfig.cloudDbUrl || '').trim();
             const badge = document.getElementById('cloud-db-version-badge');
-            const candidates = [];
-            if (userConfig.cloudDbUrl) candidates.push(userConfig.cloudDbUrl.trim());
-            candidates.push('./db.json');
-
-            for (const url of candidates) {
-                try {
-                    const resp = await fetch(url, { cache: 'no-store' });
-                    if (!resp.ok) continue;
-                    const data = await resp.json();
-                    if (data && typeof data === 'object') {
-                        if (Array.isArray(data.jrPasses) && data.jrPasses.length) cloudData.jrPasses = data.jrPasses;
-                        if (data.flights && typeof data.flights === 'object') cloudData.flights = { ...DEFAULT_FLIGHTS_DB, ...data.flights };
-                        if (Array.isArray(data.events)) cloudData.events = data.events;
-                        if (Array.isArray(data.stations) && data.stations.length) cloudData.stations = data.stations;
-                        if (data.updatedAt) {
-                            cloudData.updatedAt = data.updatedAt;
-                            const dt = new Date(data.updatedAt);
-                            if (!isNaN(dt.getTime()) && badge) {
-                                badge.textContent = `🌐 雲端庫 ${dt.getMonth() + 1}月${dt.getDate()}日 更新`;
-                                badge.className = 'text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-900';
-                            }
-                        } else if (badge) {
-                            badge.textContent = '🌐 雲端庫已同步';
-                        }
-                        renderAll();
-                        return;
-                    }
-                } catch (e) {}
-            }
-            if (badge) badge.textContent = '🌐 內建資料庫保底';
-        }
-
-        // =========================================================
-        // 物理距離與全日本通用交通時間估算引擎（結合車站經緯度 + Google Maps）
-        // =========================================================
-        function findStationCoords(placeName) {
-            const text = String(placeName || '');
-            const allStations = [...(cloudData.stations || []), ...CORE_HUB_STATIONS];
-            for (const st of allStations) {
-                if (st.name && text.includes(st.name)) return st;
-                if (Array.isArray(st.aliases)) {
-                    for (const alias of st.aliases) {
-                        if (alias && text.includes(alias)) return st;
-                    }
+            const modalStatus = document.getElementById('modal-cloud-db-status');
+            if (!url) return;
+            try {
+                const resp = await fetch(`${url}${url.includes('?') ? '&' : '?'}t=${Date.now()}`, { cache: 'no-store' });
+                if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+                const data = await resp.json();
+                if (data && typeof data === 'object') {
+                    if (Array.isArray(data.jrPasses) && data.jrPasses.length) cloudData.jrPasses = data.jrPasses;
+                    if (data.flights && typeof data.flights === 'object') cloudData.flights = { ...DEFAULT_FLIGHTS_DB, ...data.flights };
+                    if (Array.isArray(data.events)) cloudData.events = data.events;
+                    if (Array.isArray(data.stations) && data.stations.length) cloudData.stations = data.stations;
+                    cloudData.updatedAt = data.updatedAt || '';
+                    const shortDate = cloudData.updatedAt ? cloudData.updatedAt.slice(0, 10) : '已連線';
+                    if (badge) badge.textContent = `🌐 雲端庫 ${shortDate}`;
+                    if (modalStatus) modalStatus.textContent = `🟢 已同步 (${cloudData.updatedAt || '最新'})`;
+                    renderAll();
                 }
+            } catch (e) {
+                if (badge) badge.textContent = '🌐 離線保底模式';
             }
-            return null;
-        }
-
-        function calcHaversineKm(lat1, lng1, lat2, lng2) {
-            const R = 6371;
-            const dLat = (lat2 - lat1) * Math.PI / 180;
-            const dLng = (lng2 - lng1) * Math.PI / 180;
-            const a = Math.sin(dLat / 2) ** 2 +
-                Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLng / 2) ** 2;
-            return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        }
-
-        function estimateSegmentTransit(fromPlace, toPlace, isPassDay) {
-            const cacheKey = `${fromPlace}__${toPlace}__${appState.drivingMode ? 'D' : 'T'}__${isPassDay ? 'P' : 'N'}`;
-            if (appState.routeCache[cacheKey]) return appState.routeCache[cacheKey];
-
-            const s1 = findStationCoords(fromPlace);
-            const s2 = findStationCoords(toPlace);
-            let railKm = 12.0;
-            let sourceNote = '日本鐵道物理模型估算';
-
-            if (s1 && s2) {
-                if (s1.name === s2.name) {
-                    railKm = 1.4;
-                    sourceNote = `同生活圈（${s1.name}周邊）`;
-                } else {
-                    const straightKm = calcHaversineKm(s1.lat, s1.lng, s2.lat, s2.lng);
-                    railKm = Math.max(1.8, Math.round(straightKm * 1.22 * 10) / 10);
-                    sourceNote = `車站座標距離約 ${railKm} km`;
-                }
-            }
-
-            let minutes = 32;
-            let modeLabel = isPassDay ? '🚄 JR 優先路線' : '🚇 地鐵／私鐵直達';
-            let singleFareJpy = 380;
-
-            if (appState.drivingMode) {
-                modeLabel = '🚗 自駕導航路線';
-                minutes = Math.max(12, Math.round((railKm / 42) * 60 + 8));
-                singleFareJpy = 0;
-            } else if (railKm < 2.2) {
-                modeLabel = '🚶 步行散步直達';
-                minutes = Math.max(8, Math.round((railKm / 4.2) * 60));
-                singleFareJpy = 0;
-            } else if (railKm <= 22) {
-                // 日本市區地鐵均速 ~28 km/h + 兩端進站/等車/出站緩衝 16 分鐘
-                modeLabel = isPassDay ? '🚇 地鐵／JR 轉乘' : '🚇 市區地鐵／私鐵';
-                minutes = Math.round((railKm / 28) * 60 + 16);
-                singleFareJpy = Math.min(680, Math.max(240, Math.round(railKm * 28 / 10) * 10));
-            } else if (railKm <= 120) {
-                // 跨城市 JR 新快速 / 特急均速 ~100 km/h + 兩端進站轉乘 13 分鐘
-                modeLabel = isPassDay ? '🚄 JR 新快速／特急（PASS 免費）' : '🚆 JR 新快速／私鐵特急';
-                minutes = Math.round((railKm / 100) * 60 + 13);
-                singleFareJpy = Math.round(railKm * 19 / 10) * 10;
-            } else {
-                // 長距離新幹線 ~175 km/h + 18 分鐘進站
-                modeLabel = isPassDay ? '🚅 新幹線（PASS 適用區間）' : '🚅 新幹線指定席';
-                minutes = Math.round((railKm / 175) * 60 + 18);
-                singleFareJpy = Math.round(railKm * 28 / 100) * 100;
-            }
-
-            const result = { minutes, modeLabel, sourceNote, singleFareJpy, railKm };
-            appState.routeCache[cacheKey] = result;
-            return result;
         }
 
         // =========================================================
-        // 互動式日本地圖與區域選擇
+        // 日本互動地圖、航班、JR PASS 與自駕試算渲染
         // =========================================================
         function selectRegion(regionId) {
+            if (!REGIONS_META.some(r => r.id === regionId)) return;
             appState.region = regionId;
             appState.extraRegions = (appState.extraRegions || []).filter(r => r !== regionId);
             const meta = REGIONS_META.find(r => r.id === regionId);
-            if (meta) {
-                const totalDays = getTotalDays();
-                for (let d = 1; d < totalDays; d++) {
-                    if (!appState.dayHotels[d]) appState.dayHotels[d] = meta.defaultHotel;
-                }
-            }
+            if (meta && !appState.dayHotels[1]) appState.dayHotels[1] = meta.defaultHotel;
             saveState();
             renderAll();
         }
 
         function toggleExtraRegion(regionId) {
             if (regionId === appState.region) return;
-            const set = new Set(appState.extraRegions || []);
-            if (set.has(regionId)) set.delete(regionId);
-            else set.add(regionId);
-            appState.extraRegions = Array.from(set);
+            const list = new Set(appState.extraRegions || []);
+            if (list.has(regionId)) list.delete(regionId);
+            else list.add(regionId);
+            appState.extraRegions = Array.from(list);
             saveState();
             renderAll();
         }
 
         function renderRegionMapAndButtons() {
-            const activeMeta = REGIONS_META.find(r => r.id === appState.region) || REGIONS_META[0];
+            const activeReg = appState.region || 'kansai';
+            const extras = new Set(appState.extraRegions || []);
+            const meta = REGIONS_META.find(r => r.id === activeReg) || REGIONS_META[0];
+
             const descEl = document.getElementById('region-desc-text');
-            if (descEl) descEl.textContent = activeMeta.desc;
+            if (descEl) descEl.textContent = meta.desc;
 
-            // 更新 SVG 日本互動地圖發光樣式
+            // 更新 SVG 地圖板塊顏色與發光特效
             document.querySelectorAll('#japan-interactive-map [data-map-region]').forEach(group => {
-                const rId = group.getAttribute('data-map-region');
-                const isMain = rId === appState.region;
-                const isExtra = (appState.extraRegions || []).includes(rId);
-                const shapes = group.querySelectorAll('path, circle');
-                const label = group.querySelector('text');
-
-                if (isMain) {
-                    group.setAttribute('filter', 'url(#jp-region-glow)');
-                    shapes.forEach(s => s.setAttribute('fill', '#D94E34'));
-                    if (label) label.setAttribute('fill', rId === 'okinawa' ? '#B83928' : '#FFFFFF');
-                } else if (isExtra) {
-                    group.setAttribute('filter', 'url(#jp-extra-glow)');
-                    shapes.forEach(s => s.setAttribute('fill', '#4A7C59'));
-                    if (label) label.setAttribute('fill', rId === 'okinawa' ? '#2F5D3C' : '#FFFFFF');
-                } else {
-                    group.removeAttribute('filter');
-                    shapes.forEach(s => s.setAttribute('fill', '#B8D0E4'));
-                    if (label) label.setAttribute('fill', '#1E3A5F');
-                }
+                const rid = group.getAttribute('data-map-region');
+                const isMain = rid === activeReg;
+                const isExtra = extras.has(rid);
+                const fill = isMain ? '#D94E34' : (isExtra ? '#4A7C59' : '#94A3B8');
+                const textFill = (isMain || isExtra) ? '#1E293B' : '#334155';
+                group.style.filter = isMain ? 'url(#jp-region-glow)' : (isExtra ? 'url(#jp-extra-glow)' : 'none');
+                group.querySelectorAll('path, circle').forEach(shape => {
+                    shape.setAttribute('fill', fill);
+                });
+                group.querySelectorAll('text').forEach(txt => {
+                    txt.setAttribute('fill', textFill);
+                });
             });
 
-            // 快速點選按鈕
-            const selContainer = document.getElementById('region-selector');
-            if (selContainer) {
-                selContainer.innerHTML = REGIONS_META.map(r => {
-                    const active = r.id === appState.region;
-                    return `<button type="button" onclick="selectRegion('${r.id}')" class="px-2.5 py-1 rounded-full text-xs font-bold transition-all cursor-pointer ${active ? 'bg-vermilion text-white shadow-xs' : 'bg-washi hover:bg-stone-200 text-indigoJp border border-stone-200'}">${r.name}</button>`;
+            const selectorEl = document.getElementById('region-selector');
+            if (selectorEl) {
+                selectorEl.innerHTML = REGIONS_META.map(r => {
+                    const active = r.id === activeReg;
+                    return `<button type="button" onclick="selectRegion('${r.id}')" class="px-2.5 py-1 rounded-lg text-xs font-bold transition-colors cursor-pointer ${active ? 'bg-vermilion text-white shadow-2xs' : 'bg-washi hover:bg-stone-200 text-stone-700'}">${r.name}</button>`;
                 }).join('');
             }
 
-            // 跨區順遊延伸按鈕
-            const extraContainer = document.getElementById('multi-region-container');
-            if (extraContainer) {
-                extraContainer.innerHTML = REGIONS_META.filter(r => r.id !== appState.region).map(r => {
-                    const checked = (appState.extraRegions || []).includes(r.id);
-                    return `<button type="button" onclick="toggleExtraRegion('${r.id}')" class="px-2.5 py-1 rounded-full text-xs font-bold transition-all cursor-pointer ${checked ? 'bg-matcha text-white shadow-xs' : 'bg-washi hover:bg-emerald-50 text-stone-600 border border-stone-200'}">${checked ? '✓ ' : '+ '}${r.name}</button>`;
+            const multiEl = document.getElementById('multi-region-container');
+            if (multiEl) {
+                multiEl.innerHTML = REGIONS_META.filter(r => r.id !== activeReg).map(r => {
+                    const checked = extras.has(r.id);
+                    return `<button type="button" onclick="toggleExtraRegion('${r.id}')" class="px-2.5 py-1 rounded-lg text-xs font-bold border transition-colors cursor-pointer ${checked ? 'bg-matcha text-white border-matcha' : 'bg-white hover:bg-emerald-50 text-stone-600 border-stone-200'}">${checked ? '✓ ' : '+ '}${r.name}</button>`;
                 }).join('');
             }
         }
 
-        // =========================================================
-        // 航班讀取、日期與 JR PASS 計算
-        // =========================================================
         async function lookupFlights() {
             const outCode = (document.getElementById('outbound-flight-input')?.value || '').trim().toUpperCase();
             const inCode = (document.getElementById('inbound-flight-input')?.value || '').trim().toUpperCase();
-            const tip = document.getElementById('flight-status-tip');
-            const flightsMap = { ...DEFAULT_FLIGHTS_DB, ...(cloudData.flights || {}) };
+            const db = cloudData.flights || DEFAULT_FLIGHTS_DB;
 
-            let foundAny = false;
-            if (outCode && flightsMap[outCode]) {
-                appState.outboundFlight = { code: outCode, ...flightsMap[outCode] };
-                const arrMins = parseClockToMinutes(flightsMap[outCode].time) + 45;
-                appState.dayStartTimes[1] = formatMinutesToClock(arrMins);
-                foundAny = true;
-            }
-            if (inCode && flightsMap[inCode]) {
-                appState.inboundFlight = { code: inCode, ...flightsMap[inCode] };
-                foundAny = true;
-            }
-
-            if (tip) {
-                tip.classList.remove('hidden');
-                if (foundAny) {
-                    tip.className = 'text-[11px] px-3 py-1.5 rounded-lg border bg-emerald-50 border-emerald-200 text-emerald-900 font-bold';
-                    tip.textContent = `✅ 已從資料庫帶入航班時刻（Day 1 出發時間已自動銜接通關後 ${appState.dayStartTimes[1]}）`;
+            if (outCode) {
+                if (db[outCode]) {
+                    appState.outboundFlight = { code: outCode, ...db[outCode] };
+                    const arrMins = parseClockToMinutes(db[outCode].time) + 45;
+                    appState.dayStartTimes[1] = formatMinutesToClock(arrMins);
                 } else {
-                    tip.className = 'text-[11px] px-3 py-1.5 rounded-lg border bg-amber-50 border-amber-200 text-amber-900';
-                    tip.textContent = '⚠️ 資料庫暫無此冷門航班代號，已保留現有時刻，您仍可直接調整當日出發時間。';
+                    appState.outboundFlight = { code: outCode, airline: '自訂航班', airport: '日本入境機場', terminal: 'T1', time: '12:00', aircraft: '' };
+                }
+            }
+            if (inCode) {
+                if (db[inCode]) {
+                    appState.inboundFlight = { code: inCode, ...db[inCode] };
+                } else {
+                    appState.inboundFlight = { code: inCode, airline: '自訂航班', airport: '日本離境機場', terminal: 'T1', time: '18:00', aircraft: '' };
                 }
             }
             saveState();
@@ -1178,329 +1104,340 @@
         function renderFlightBanner() {
             const banner = document.getElementById('flight-result-banner');
             if (!banner) return;
-            const out = appState.outboundFlight || { code: 'AK176', airline: 'AirAsia', airport: '關西國際機場 (KIX)', terminal: 'T1', time: '19:30', aircraft: 'A321neo' };
-            const inb = appState.inboundFlight || { code: 'AK177', airline: 'AirAsia', airport: '關西國際機場 (KIX)', terminal: 'T1', time: '20:45', aircraft: 'A321neo' };
-
+            const out = appState.outboundFlight || { code: 'AK176', ...DEFAULT_FLIGHTS_DB.AK176 };
+            const inc = appState.inboundFlight || { code: 'AK177', ...DEFAULT_FLIGHTS_DB.AK177 };
             banner.innerHTML = `
-                <div class="bg-white px-3 py-2 rounded-lg border border-stone-200/90 flex items-center justify-between text-xs">
-                    <div>
-                        <div class="font-bold text-indigoJp">🛫 去程 ${out.code}・${out.airline}</div>
-                        <div class="text-[11px] text-stone-600">${out.airport} (${out.terminal || 'T1'}) <strong class="text-vermilion">${out.time} 抵達</strong></div>
-                    </div>
-                    <span class="text-[10px] font-mono bg-stone-100 px-2 py-0.5 rounded text-stone-500">${out.aircraft || 'JET'}</span>
+                <div class="bg-white px-3 py-2 rounded-lg border border-stone-200 flex items-center justify-between text-xs">
+                    <span>🛫 <strong>去程 ${out.code}</strong>（${out.airline || ''}）</span>
+                    <span class="font-mono font-bold text-indigoJp">${out.airport} ${out.time} 抵達</span>
                 </div>
-                <div class="bg-white px-3 py-2 rounded-lg border border-stone-200/90 flex items-center justify-between text-xs">
-                    <div>
-                        <div class="font-bold text-vermilion">🛬 回程 ${inb.code}・${inb.airline}</div>
-                        <div class="text-[11px] text-stone-600">${inb.airport} (${inb.terminal || 'T1'}) <strong class="text-indigoJp">${inb.time} 起飛</strong></div>
-                    </div>
-                    <span class="text-[10px] font-mono bg-stone-100 px-2 py-0.5 rounded text-stone-500">${inb.aircraft || 'JET'}</span>
+                <div class="bg-white px-3 py-2 rounded-lg border border-stone-200 flex items-center justify-between text-xs">
+                    <span>🛬 <strong>回程 ${inc.code}</strong>（${inc.airline || ''}）</span>
+                    <span class="font-mono font-bold text-vermilion">${inc.airport} ${inc.time} 起飛</span>
                 </div>
             `;
         }
 
-        function isDayCoveredByJrPass(dayNum) {
-            if (appState.drivingMode || !appState.useJrPass) return false;
+        function isPassActiveOnDay(dayNum) {
+            if (!appState.useJrPass || appState.drivingMode) return false;
             const passes = cloudData.jrPasses || DEFAULT_JR_PASSES;
             const p1 = passes.find(p => p.id === appState.jrPassId);
-            if (p1) {
-                const s1 = Number(appState.jrPassStartDay || 1);
-                if (dayNum >= s1 && dayNum < s1 + p1.days) return true;
-            }
-            if (appState.useSecondJrPass) {
-                const p2 = passes.find(p => p.id === appState.jrPassId2);
-                if (p2) {
-                    const s2 = Number(appState.jrPassStartDay2 || 1);
-                    if (dayNum >= s2 && dayNum < s2 + p2.days) return true;
-                }
-            }
-            return false;
+            const s1 = Number(appState.jrPassStartDay || 1);
+            const active1 = p1 && dayNum >= s1 && dayNum < s1 + (p1.days || 1);
+            const p2 = appState.useSecondJrPass ? passes.find(p => p.id === appState.jrPassId2) : null;
+            const s2 = Number(appState.jrPassStartDay2 || 1);
+            const active2 = p2 && dayNum >= s2 && dayNum < s2 + (p2.days || 1);
+            return Boolean(active1 || active2);
         }
 
         function renderJrPassAndDrivingSection() {
-            const totalDays = getTotalDays();
             const travelers = Number(appState.travelers || 2);
-            const drivingToggle = document.getElementById('driving-mode-toggle');
-            const drivingInputs = document.getElementById('driving-cost-inputs');
-            const drivingVsBox = document.getElementById('driving-vs-jr-box');
+            const totalDays = getTotalDays();
+            const driveToggle = document.getElementById('driving-mode-toggle');
+            const driveInputs = document.getElementById('driving-cost-inputs');
+            const driveBox = document.getElementById('driving-vs-jr-box');
+            const lockHint = document.getElementById('driving-lock-hint');
 
-            if (drivingToggle) {
-                drivingToggle.disabled = travelers < 3;
-                if (travelers < 3) appState.drivingMode = false;
-                drivingToggle.checked = !!appState.drivingMode;
+            if (driveToggle) {
+                driveToggle.disabled = travelers < 3;
+                if (travelers < 3 && appState.drivingMode) appState.drivingMode = false;
+                driveToggle.checked = !!appState.drivingMode;
             }
-            if (drivingInputs) {
-                drivingInputs.classList.toggle('hidden', !appState.drivingMode);
-                drivingInputs.classList.toggle('grid', !!appState.drivingMode);
+            if (lockHint) {
+                lockHint.textContent = travelers >= 3
+                    ? `✅ 目前 ${travelers} 人同行已解鎖自駕模式，可切換比較租車與 PASS 總花費`
+                    : `🔒 需 3 人以上同行才會解鎖自駕模式（目前 ${travelers} 人）`;
             }
+            if (driveInputs) {
+                driveInputs.classList.toggle('hidden', !appState.drivingMode);
+                driveInputs.classList.toggle('grid', !!appState.drivingMode);
+            }
+
+            const useJrCheck = document.getElementById('use-jr-pass');
+            const jrPanel = document.getElementById('jr-pass-config-panel');
+            if (useJrCheck) useJrCheck.checked = !!appState.useJrPass;
+            if (jrPanel) jrPanel.classList.toggle('hidden', !appState.useJrPass || appState.drivingMode);
 
             const passes = cloudData.jrPasses || DEFAULT_JR_PASSES;
-            const targetRegs = new Set([appState.region, ...(appState.extraRegions || [])]);
-            const filteredPasses = passes.filter(p => p.regions.some(r => targetRegs.has(r)));
-            const displayPasses = filteredPasses.length ? filteredPasses : passes;
-
-            if (!displayPasses.some(p => p.id === appState.jrPassId)) {
-                appState.jrPassId = displayPasses[0].id;
-            }
-
             const sel1 = document.getElementById('jr-pass-select');
             const sel2 = document.getElementById('jr-pass-select-2');
-            const daySel1 = document.getElementById('jr-pass-start-day');
-            const daySel2 = document.getElementById('jr-pass-start-day-2');
+            const day1Sel = document.getElementById('jr-pass-start-day');
+            const day2Sel = document.getElementById('jr-pass-start-day-2');
 
-            if (sel1) {
-                sel1.innerHTML = displayPasses.map(p => `<option value="${p.id}" ${p.id === appState.jrPassId ? 'selected' : ''}>${p.name} — ¥${p.priceJpy.toLocaleString()}</option>`).join('');
-            }
-            if (sel2) {
-                sel2.innerHTML = displayPasses.map(p => `<option value="${p.id}" ${p.id === appState.jrPassId2 ? 'selected' : ''}>${p.name} — ¥${p.priceJpy.toLocaleString()}</option>`).join('');
-            }
-            const dayOpts = (selected) => Array.from({ length: totalDays }, (_, i) => i + 1)
-                .map(d => `<option value="${d}" ${d === Number(selected) ? 'selected' : ''}>Day ${d} 啟用</option>`).join('');
-            if (daySel1) daySel1.innerHTML = dayOpts(appState.jrPassStartDay);
-            if (daySel2) daySel2.innerHTML = dayOpts(appState.jrPassStartDay2);
+            const passOptions = passes.map(p => `<option value="${p.id}">${p.name} - ¥${p.priceJpy.toLocaleString()}</option>`).join('');
+            const dayOptions = Array.from({ length: totalDays }, (_, i) => i + 1).map(d => `<option value="${d}">Day ${d} 啟用</option>`).join('');
 
-            const passPanel = document.getElementById('jr-pass-config-panel');
-            if (passPanel) passPanel.classList.toggle('hidden', !appState.useJrPass || appState.drivingMode);
-            const secondBox = document.getElementById('second-jr-pass-box');
-            if (secondBox) {
-                secondBox.classList.toggle('hidden', !appState.useSecondJrPass);
-                secondBox.classList.toggle('grid', !!appState.useSecondJrPass);
+            if (sel1) { sel1.innerHTML = passOptions; sel1.value = appState.jrPassId; }
+            if (sel2) { sel2.innerHTML = passOptions; sel2.value = appState.jrPassId2; }
+            if (day1Sel) { day1Sel.innerHTML = dayOptions; day1Sel.value = String(appState.jrPassStartDay || 1); }
+            if (day2Sel) { day2Sel.innerHTML = dayOptions; day2Sel.value = String(appState.jrPassStartDay2 || 1); }
+
+            const secCheck = document.getElementById('use-second-jr-pass');
+            const secBox = document.getElementById('second-jr-pass-box');
+            if (secCheck) secCheck.checked = !!appState.useSecondJrPass;
+            if (secBox) {
+                secBox.classList.toggle('hidden', !appState.useSecondJrPass);
+                secBox.classList.toggle('grid', !!appState.useSecondJrPass);
             }
+
+            const p1 = passes.find(p => p.id === appState.jrPassId) || passes[0];
+            const p2 = appState.useSecondJrPass ? passes.find(p => p.id === appState.jrPassId2) : null;
+            const totalPassJpy = ((p1?.priceJpy || 0) + (p2?.priceJpy || 0)) * travelers;
 
             const activeDays = [];
             for (let d = 1; d <= totalDays; d++) {
-                if (isDayCoveredByJrPass(d)) activeDays.push(`Day ${d}`);
+                if (isPassActiveOnDay(d)) activeDays.push(`Day ${d}`);
             }
-            const banner = document.getElementById('jr-pass-active-days-banner');
-            if (banner) {
-                banner.textContent = activeDays.length
-                    ? `📅 目前 PASS 生效日：${activeDays.join('、')}`
-                    : '⚠️ 目前尚未涵蓋任何旅遊天數';
-            }
-
-            // 計算單買預估車資 vs PASS 總價
-            const p1 = passes.find(p => p.id === appState.jrPassId);
-            const p2 = appState.useSecondJrPass ? passes.find(p => p.id === appState.jrPassId2) : null;
-            const passPerPersonJpy = (appState.useJrPass ? (p1?.priceJpy || 0) + (p2?.priceJpy || 0) : 0);
-
-            let estSingleTransitJpy = 0;
-            for (let d = 1; d <= totalDays; d++) {
-                if (isDayCoveredByJrPass(d)) {
-                    const segs = buildDaySegments(d);
-                    segs.forEach(s => { estSingleTransitJpy += (s.transit?.singleFareJpy || 0); });
-                }
+            const bannerEl = document.getElementById('jr-pass-active-days-banner');
+            if (bannerEl) {
+                bannerEl.textContent = activeDays.length
+                    ? `📅 生效日：${activeDays.join('、')}（全員 ${travelers} 人票券總計 ¥${totalPassJpy.toLocaleString()}）`
+                    : '⚠️ 目前設定天數未涵蓋任何行程日';
             }
 
-            const compBox = document.getElementById('jr-cost-comparison-box');
-            if (compBox && p1) {
-                const diff = estSingleTransitJpy - passPerPersonJpy;
-                compBox.innerHTML = diff >= 0
-                    ? `<span class="text-matcha font-bold">🎉 划算推薦！</span> 生效日單買車資約 <strong>¥${estSingleTransitJpy.toLocaleString()}</strong>，買 PASS 每人現省 <strong>¥${diff.toLocaleString()}</strong>`
-                    : `<span class="text-amber-800 font-bold">💡 精算提醒：</span> PASS 每人 <strong>¥${passPerPersonJpy.toLocaleString()}</strong>，目前生效日單買車資約 <strong>¥${estSingleTransitJpy.toLocaleString()}</strong>（建議搭配跨城移動更划算）`;
+            const compEl = document.getElementById('jr-cost-comparison-box');
+            if (compEl) {
+                compEl.innerHTML = `<strong>票券試算：</strong>每人 ¥${((p1?.priceJpy || 0) + (p2?.priceJpy || 0)).toLocaleString()}，${travelers} 人共 <strong>¥${totalPassJpy.toLocaleString()}</strong>（時間軸於生效日優先排入 JR 特急／新快速路線）。`;
             }
 
-            if (drivingVsBox && appState.drivingMode) {
-                const totalDrive = Number(appState.rentalCost || 0) + Number(appState.tollFuelCost || 0);
-                const totalJrGroup = passPerPersonJpy * travelers;
-                drivingVsBox.classList.remove('hidden');
-                drivingVsBox.innerHTML = `🚗 ${travelers}人自駕總計 <strong>¥${totalDrive.toLocaleString()}</strong>（人均 ¥${Math.round(totalDrive / travelers).toLocaleString()}） vs 全員 JR PASS <strong>¥${totalJrGroup.toLocaleString()}</strong>`;
-            } else if (drivingVsBox) {
-                drivingVsBox.classList.add('hidden');
+            if (driveBox) {
+                driveBox.classList.toggle('hidden', !appState.drivingMode);
+                const driveTotal = Number(appState.rentalCost || 0) + Number(appState.tollFuelCost || 0);
+                driveBox.innerHTML = `🚗 <strong>自駕總計 ¥${driveTotal.toLocaleString()}</strong>（人均 ¥${Math.round(driveTotal / travelers).toLocaleString()}） vs 全員 JR PASS ¥${totalPassJpy.toLocaleString()}`;
             }
         }
 
         // =========================================================
-        // 每日時間軸建構與單日智慧順排引擎
+        // 距離與移動時間估算（結合開放車站座標與鐵道物理模型）
         // =========================================================
+        function findStationCoord(placeName) {
+            const clean = String(placeName || '').trim();
+            if (!clean) return null;
+            const stations = [...(cloudData.stations || []), ...CORE_HUB_STATIONS];
+            for (const st of stations) {
+                if (clean.includes(st.name) || st.name.includes(clean)) return st;
+                if (Array.isArray(st.aliases) && st.aliases.some(a => clean.includes(a))) return st;
+            }
+            return null;
+        }
+
+        function calcHaversineKm(lat1, lng1, lat2, lng2) {
+            const R = 6371;
+            const dLat = (lat2 - lat1) * Math.PI / 180;
+            const dLng = (lng2 - lng1) * Math.PI / 180;
+            const a = Math.sin(dLat / 2) ** 2 + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLng / 2) ** 2;
+            return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        }
+
+        function estimateTransitSegment(fromPlace, toPlace, dayNum) {
+            const key = `${dayNum}|${fromPlace}|${toPlace}`;
+            if (appState.manualTransitMinutes[key]) {
+                return {
+                    minutes: Number(appState.manualTransitMinutes[key]),
+                    modeLabel: appState.drivingMode ? '🚗 自駕導航（手動微調）' : '🚆 大眾運輸（手動微調）',
+                    isManual: true
+                };
+            }
+
+            if (!fromPlace || !toPlace || fromPlace === toPlace) {
+                return { minutes: 10, modeLabel: '🚶 步行／站內轉乘', isManual: false };
+            }
+
+            const s1 = findStationCoord(fromPlace);
+            const s2 = findStationCoord(toPlace);
+            const passActive = isPassActiveOnDay(dayNum);
+
+            if (s1 && s2) {
+                if (s1.name === s2.name) {
+                    return { minutes: 12, modeLabel: appState.drivingMode ? '🚗 市區短程移動' : '🚶 步行散策', isManual: false };
+                }
+                const railKm = calcHaversineKm(s1.lat, s1.lng, s2.lat, s2.lng) * 1.22;
+                if (appState.drivingMode) {
+                    const mins = Math.max(15, Math.round((railKm / 48) * 60 + 10));
+                    return { minutes: mins, modeLabel: `🚗 自駕約 ${Math.round(railKm)} km`, isManual: false };
+                }
+                if (railKm < 2.5) {
+                    return { minutes: Math.max(10, Math.round(railKm * 12)), modeLabel: '🚶 步行移動', isManual: false };
+                }
+                if (railKm <= 18) {
+                    const mins = Math.max(15, Math.round((railKm / 30) * 60 + 8));
+                    return { minutes: mins, modeLabel: passActive ? '🚃 JR 在來線／地鐵' : '🚇 地鐵／私鐵', isManual: false };
+                }
+                const speed = railKm > 120 ? 175 : 95;
+                const mins = Math.max(25, Math.round((railKm / speed) * 60 + 12));
+                return {
+                    minutes: mins,
+                    modeLabel: passActive ? `🚄 JR 特急／新快速（約 ${Math.round(railKm)} km）` : `🚆 鐵道特急（約 ${Math.round(railKm)} km）`,
+                    isManual: false
+                };
+            }
+
+            return {
+                minutes: appState.drivingMode ? 30 : 35,
+                modeLabel: appState.drivingMode ? '🚗 自駕預估移動' : (passActive ? '🚆 JR／鐵道預估移動' : '🚇 大眾運輸預估移動'),
+                isManual: false
+            };
+        }
+
         function buildDaySegments(dayNum) {
             const totalDays = getTotalDays();
-            const isPassDay = isDayCoveredByJrPass(dayNum);
-            const startClock = appState.dayStartTimes[dayNum] || '09:00';
+            const startClock = appState.dayStartTimes[dayNum] || '09:30';
             let cursorMins = parseClockToMinutes(startClock);
+            const segments = [];
 
-            const originPlace = dayNum === 1
+            const startOrigin = dayNum === 1
                 ? (appState.outboundFlight?.airport || '關西國際機場 (KIX)')
-                : (appState.dayHotels[dayNum - 1] || REGIONS_META.find(r => r.id === appState.region)?.defaultHotel || '住宿飯店');
+                : (appState.dayHotels[dayNum - 1] || appState.dayHotels[1] || '住宿飯店');
 
-            const tonightHotel = dayNum < totalDays ? (appState.dayHotels[dayNum] || '') : '';
-            const prevHotel = dayNum > 1 ? (appState.dayHotels[dayNum - 1] || '') : '';
-            const shouldDropLuggage = dayNum < totalDays && !!appState.dropLuggageFirst[dayNum] && tonightHotel && tonightHotel !== originPlace;
-
-            const activities = [...(appState.activitiesByDay[dayNum] || [])];
-            const nodes = [];
-
-            // 起點
-            nodes.push({
-                kind: 'origin',
-                title: originPlace,
-                subtitle: dayNum === 1 ? `✈️ 航班抵達通關後出發` : `🏨 Day ${dayNum} 住宿飯店出發`,
+            segments.push({
+                type: 'anchor',
+                title: dayNum === 1 ? `🛬 抵達出發：${startOrigin}` : `🏨 飯店出發：${startOrigin}`,
                 arriveTime: formatMinutesToClock(cursorMins),
-                departTime: formatMinutesToClock(cursorMins)
+                duration: 0,
+                transit: null
             });
 
-            let currentPlace = originPlace;
-
-            // 先寄放行李
-            if (shouldDropLuggage) {
-                const key = `${dayNum}:luggage:${currentPlace}->${tonightHotel}`;
-                const tr = estimateSegmentTransit(currentPlace, tonightHotel, isPassDay);
-                const mins = appState.manualTransitMinutes[key] ?? tr.minutes;
-                cursorMins += mins;
-                nodes.push({
-                    kind: 'luggage',
-                    title: tonightHotel,
-                    subtitle: `🧳 優先前往今晚飯店寄放行李（約 20 分鐘）`,
-                    transit: { ...tr, minutes: mins, overrideKey: key, from: currentPlace, to: tonightHotel },
+            let currentLoc = startOrigin;
+            const todayHotel = appState.dayHotels[dayNum] || '';
+            if (dayNum < totalDays && appState.dropLuggageFirst[dayNum] && todayHotel && todayHotel !== currentLoc) {
+                const tr = estimateTransitSegment(currentLoc, todayHotel, dayNum);
+                cursorMins += tr.minutes;
+                segments.push({
+                    type: 'luggage',
+                    title: `🧳 先去飯店寄放行李：${todayHotel}`,
                     arriveTime: formatMinutesToClock(cursorMins),
-                    departTime: formatMinutesToClock(cursorMins + 20)
+                    duration: 20,
+                    transit: { ...tr, from: currentLoc, to: todayHotel }
                 });
                 cursorMins += 20;
-                currentPlace = tonightHotel;
+                currentLoc = todayHotel;
             }
 
-            // 景點拼圖
-            activities.forEach((act, idx) => {
-                const key = `${dayNum}:act:${act.id}:${currentPlace}->${act.title}`;
-                const tr = estimateSegmentTransit(currentPlace, act.title, isPassDay);
-                const mins = appState.manualTransitMinutes[key] ?? tr.minutes;
-                cursorMins += mins;
-                const dur = Number(act.duration || 90);
-                nodes.push({
-                    kind: 'activity',
+            const acts = appState.activitiesByDay[dayNum] || [];
+            acts.forEach((act, idx) => {
+                const tr = estimateTransitSegment(currentLoc, act.title, dayNum);
+                cursorMins += tr.minutes;
+                segments.push({
+                    type: 'activity',
                     actIndex: idx,
-                    activity: act,
+                    id: act.id,
                     title: act.title,
-                    transit: { ...tr, minutes: mins, overrideKey: key, from: currentPlace, to: act.title },
+                    tag: act.tag || '景點',
+                    note: act.note || '',
                     arriveTime: formatMinutesToClock(cursorMins),
-                    departTime: formatMinutesToClock(cursorMins + dur)
+                    duration: Number(act.duration || 90),
+                    transit: { ...tr, from: currentLoc, to: act.title }
                 });
-                cursorMins += dur;
-                currentPlace = act.title;
+                cursorMins += Number(act.duration || 90);
+                currentLoc = act.title;
             });
 
-            // 終點（回飯店 或 最終日前往機場）
-            if (dayNum < totalDays && tonightHotel) {
-                const key = `${dayNum}:endhotel:${currentPlace}->${tonightHotel}`;
-                const tr = estimateSegmentTransit(currentPlace, tonightHotel, isPassDay);
-                const mins = appState.manualTransitMinutes[key] ?? tr.minutes;
-                cursorMins += mins;
-                nodes.push({
-                    kind: 'endHotel',
-                    title: tonightHotel,
-                    subtitle: prevHotel && prevHotel !== tonightHotel ? '🏨 入住新飯店辦理 Check-in' : '🏨 返回今晚住宿飯店休息',
-                    transit: { ...tr, minutes: mins, overrideKey: key, from: currentPlace, to: tonightHotel },
-                    arriveTime: formatMinutesToClock(cursorMins)
+            if (dayNum === totalDays) {
+                const depAirport = appState.inboundFlight?.airport || '關西國際機場 (KIX)';
+                const tr = estimateTransitSegment(currentLoc, depAirport, dayNum);
+                cursorMins += tr.minutes;
+                segments.push({
+                    type: 'anchor',
+                    title: `🛫 前往離境機場：${depAirport}（班機 ${appState.inboundFlight?.time || '20:45'} 起飛）`,
+                    arriveTime: formatMinutesToClock(cursorMins),
+                    duration: 0,
+                    transit: { ...tr, from: currentLoc, to: depAirport }
                 });
-            } else if (dayNum === totalDays) {
-                const airport = appState.inboundFlight?.airport || '關西國際機場 (KIX)';
-                const key = `${dayNum}:airport:${currentPlace}->${airport}`;
-                const tr = estimateSegmentTransit(currentPlace, airport, isPassDay);
-                const mins = appState.manualTransitMinutes[key] ?? tr.minutes;
-                cursorMins += mins;
-                nodes.push({
-                    kind: 'endAirport',
-                    title: airport,
-                    subtitle: `✈️ 預留 2 小時報到安檢（班機 ${appState.inboundFlight?.time || '20:45'} 起飛）`,
-                    transit: { ...tr, minutes: mins, overrideKey: key, from: currentPlace, to: airport },
-                    arriveTime: formatMinutesToClock(cursorMins)
+            } else if (todayHotel) {
+                const tr = estimateTransitSegment(currentLoc, todayHotel, dayNum);
+                cursorMins += tr.minutes;
+                segments.push({
+                    type: 'anchor',
+                    title: `🏨 返回今晚住宿：${todayHotel}`,
+                    arriveTime: formatMinutesToClock(cursorMins),
+                    duration: 0,
+                    transit: { ...tr, from: currentLoc, to: todayHotel }
                 });
             }
 
-            return nodes;
+            return segments;
         }
 
-        function scoreSlotFit(act, arrivalMins) {
-            const text = `${act.title || ''} ${act.tag || ''} ${act.note || ''}`;
-            const isNight = /(點燈|夜景|燈飾|光雕|光之|展望台|煙火|花火|花燈路|屋台)/.test(text);
-            const isFood = /(美食|拉麵|牛排|海鮮丼|燒肉|居酒屋|市場|晚餐|午餐)/.test(text);
-            const isDayTempleOrMuseum = /(寺|神社|城|美術館|博物館|公園|庭園)/.test(text) && !isNight;
+        // =========================================================
+        // 單日智慧順排（固定頭尾機場／飯店 ＋ 夜間點燈／用餐／營業時間）
+        // =========================================================
+        function scoreSlotFit(item, arrivalMins) {
+            const text = `${item.title || ''} ${item.tag || ''} ${item.note || ''}`;
+            const isNight = /(點燈|燈飾|夜景|展望台|花燈|光雕|光之|聖誕樹|星光|屋台)/.test(text);
+            const isFood = /(美食|拉麵|牛排|海鮮|燒肉|市場|壽司|烏龍麵|章魚燒|晚餐|午餐)/.test(text);
+            const isDayOnly = /(寺|神社|城|美術館|博物館|動物園|水族館|兼六園|栗林公園)/.test(text) && !isNight;
 
             let penalty = 0;
-            if (isNight && arrivalMins < 17 * 60) {
-                // 夜間行程太早去會扣重分，自動排到 17:00 之後
-                penalty += (17 * 60 - arrivalMins) * 1.6;
-            }
-            if (isFood) {
-                const distLunch = Math.abs(arrivalMins - 12 * 60 + 30);
-                const distDinner = Math.abs(arrivalMins - 18 * 60 + 30);
-                penalty += Math.min(distLunch, distDinner) * 0.45;
-            }
-            if (isDayTempleOrMuseum && arrivalMins >= 17 * 60) {
-                penalty += (arrivalMins - 16.5 * 60) * 1.4;
+            if (isNight && arrivalMins < 17 * 60) penalty += (17 * 60 - arrivalMins) * 1.4;
+            if (isDayOnly && arrivalMins > 16 * 60 + 30) penalty += (arrivalMins - (16 * 60 + 30)) * 1.2;
+            if (isFood && !isNight) {
+                const inLunch = arrivalMins >= 11 * 60 && arrivalMins <= 14 * 60;
+                const inDinner = arrivalMins >= 17 * 60 && arrivalMins <= 20 * 60 + 30;
+                if (!inLunch && !inDinner) penalty += 45;
             }
             return penalty;
         }
 
         function optimizeActiveDayRoute() {
-            const day = appState.activeDay || 1;
-            const list = appState.activitiesByDay[day] || [];
+            const d = appState.activeDay || 1;
+            const list = [...(appState.activitiesByDay[d] || [])];
             if (list.length < 2) return;
 
-            lastRouteSnapshot = { day, list: JSON.parse(JSON.stringify(list)) };
+            lastRouteSnapshot = { day: d, list: list.map(x => ({ ...x })) };
             const totalDays = getTotalDays();
-            const isPassDay = isDayCoveredByJrPass(day);
-
-            let startPlace = day === 1
+            const startOrigin = d === 1
                 ? (appState.outboundFlight?.airport || '關西國際機場 (KIX)')
-                : (appState.dayHotels[day - 1] || '住宿飯店');
-            const tonightHotel = day < totalDays ? (appState.dayHotels[day] || '') : '';
-            if (day < totalDays && appState.dropLuggageFirst[day] && tonightHotel) {
-                startPlace = tonightHotel;
-            }
-            const endPlace = day < totalDays
-                ? tonightHotel
-                : (appState.inboundFlight?.airport || '關西國際機場 (KIX)');
+                : (appState.dayHotels[d - 1] || appState.dayHotels[1] || '住宿飯店');
+            const endAnchor = d === totalDays
+                ? (appState.inboundFlight?.airport || '關西國際機場 (KIX)')
+                : (appState.dayHotels[d] || startOrigin);
+            const startMins = parseClockToMinutes(appState.dayStartTimes[d] || '09:30');
 
-            let startMins = parseClockToMinutes(appState.dayStartTimes[day] || '09:00');
-            if (day < totalDays && appState.dropLuggageFirst[day] && tonightHotel) startMins += 35;
-
-            const evaluatePerm = (perm) => {
-                let curr = startPlace;
-                let clock = startMins;
+            function evaluateOrder(perm) {
+                let curLoc = startOrigin;
+                let curTime = startMins;
                 let totalScore = 0;
                 for (const item of perm) {
-                    const move = estimateSegmentTransit(curr, item.title, isPassDay).minutes;
-                    clock += move;
-                    totalScore += move + scoreSlotFit(item, clock);
-                    clock += Number(item.duration || 90);
-                    curr = item.title;
+                    const tr = estimateTransitSegment(curLoc, item.title, d);
+                    curTime += tr.minutes;
+                    totalScore += tr.minutes + scoreSlotFit(item, curTime);
+                    curTime += Number(item.duration || 90);
+                    curLoc = item.title;
                 }
-                if (endPlace) {
-                    totalScore += estimateSegmentTransit(curr, endPlace, isPassDay).minutes;
+                if (endAnchor) {
+                    totalScore += estimateTransitSegment(curLoc, endAnchor, d).minutes;
                 }
                 return totalScore;
-            };
-
-            let bestPerm = list;
-            if (list.length <= 7) {
-                let bestScore = Infinity;
-                const permute = (arr, m = []) => {
-                    if (arr.length === 0) {
-                        const sc = evaluatePerm(m);
-                        if (sc < bestScore) { bestScore = sc; bestPerm = m; }
-                        return;
-                    }
-                    for (let i = 0; i < arr.length; i++) {
-                        const next = arr.slice(0, i).concat(arr.slice(i + 1));
-                        permute(next, m.concat(arr[i]));
-                    }
-                };
-                permute(list);
-            } else {
-                // 超過 7 個景點使用最近鄰居法
-                const rem = [...list];
-                const ordered = [];
-                let curr = startPlace;
-                while (rem.length) {
-                    rem.sort((a, b) => estimateSegmentTransit(curr, a.title, isPassDay).minutes - estimateSegmentTransit(curr, b.title, isPassDay).minutes);
-                    const pick = rem.shift();
-                    ordered.push(pick);
-                    curr = pick.title;
-                }
-                bestPerm = ordered;
             }
 
-            appState.activitiesByDay[day] = bestPerm;
+            let bestPerm = list;
+            let bestScore = evaluateOrder(list);
+
+            if (list.length <= 7) {
+                const used = Array(list.length).fill(false);
+                const curr = [];
+                function dfs() {
+                    if (curr.length === list.length) {
+                        const sc = evaluateOrder(curr);
+                        if (sc < bestScore) {
+                            bestScore = sc;
+                            bestPerm = curr.map(x => ({ ...x }));
+                        }
+                        return;
+                    }
+                    for (let i = 0; i < list.length; i++) {
+                        if (used[i]) continue;
+                        used[i] = true;
+                        curr.push(list[i]);
+                        dfs();
+                        curr.pop();
+                        used[i] = false;
+                    }
+                }
+                dfs();
+            }
+
+            appState.activitiesByDay[d] = bestPerm;
             const undoBtn = document.getElementById('undo-optimize-btn');
             if (undoBtn) undoBtn.classList.remove('hidden');
             saveState();
@@ -1510,6 +1447,7 @@
         function undoLastRouteOptimization() {
             if (!lastRouteSnapshot) return;
             appState.activitiesByDay[lastRouteSnapshot.day] = lastRouteSnapshot.list;
+            appState.activeDay = lastRouteSnapshot.day;
             lastRouteSnapshot = null;
             const undoBtn = document.getElementById('undo-optimize-btn');
             if (undoBtn) undoBtn.classList.add('hidden');
@@ -1518,33 +1456,25 @@
         }
 
         // =========================================================
-        // 渲染時間軸、分頁與推薦拼圖卡片
+        // 單日時間軸、全行程總覽看板與回收桶渲染
         // =========================================================
-        function renderDayTabs() {
-            const totalDays = getTotalDays();
-            if (appState.activeDay > totalDays) appState.activeDay = totalDays;
-            const container = document.getElementById('day-tabs-container');
-            if (!container) return;
+        function setTimelineViewMode(mode) {
+            appState.timelineViewMode = mode;
+            const isSingle = mode === 'single';
+            document.getElementById('single-day-detail-section')?.classList.toggle('hidden', !isSingle);
+            document.getElementById('overview-board-section')?.classList.toggle('hidden', isSingle);
 
-            container.innerHTML = Array.from({ length: totalDays }, (_, i) => i + 1).map(d => {
-                const active = d === appState.activeDay;
-                const pass = isDayCoveredByJrPass(d);
-                return `
-                    <button type="button" onclick="switchActiveDay(${d})" class="shrink-0 px-3.5 py-2 rounded-xl text-xs font-bold border transition-all cursor-pointer ${active ? 'bg-indigoJp text-white border-indigoJp shadow-xs' : 'bg-washi hover:bg-stone-200/70 text-indigoJp border-stone-200'}">
-                        <div>Day ${d}・${getDateLabelForDay(d)}</div>
-                        <div class="text-[10px] font-normal ${active ? 'text-amber-300' : 'text-stone-500'}">${pass ? '🚄 JR PASS 日' : '🚇 一般交通'}</div>
-                    </button>
-                `;
-            }).join('');
-
-            const optBtn = document.getElementById('optimize-route-btn');
-            if (optBtn) optBtn.textContent = `✨ 智慧順排 Day ${appState.activeDay}`;
-
-            const passBadge = document.getElementById('active-day-pass-badge');
-            if (passBadge) {
-                const isPass = isDayCoveredByJrPass(appState.activeDay);
-                passBadge.textContent = appState.drivingMode ? '🚗 自駕模式日' : (isPass ? '🚄 JR PASS 生效日' : '🚇 一般車資日');
+            const sBtn = document.getElementById('view-mode-single-btn');
+            const oBtn = document.getElementById('view-mode-overview-btn');
+            if (sBtn && oBtn) {
+                sBtn.className = isSingle
+                    ? 'px-3 py-1 rounded-lg bg-indigoJp text-white shadow-2xs transition-all cursor-pointer'
+                    : 'px-3 py-1 rounded-lg text-stone-600 hover:text-indigoJp transition-all cursor-pointer';
+                oBtn.className = !isSingle
+                    ? 'px-3 py-1 rounded-lg bg-indigoJp text-white shadow-2xs transition-all cursor-pointer'
+                    : 'px-3 py-1 rounded-lg text-stone-600 hover:text-indigoJp transition-all cursor-pointer';
             }
+            if (!isSingle) renderOverviewPuzzleBoard();
         }
 
         function switchActiveDay(dayNum) {
@@ -1553,303 +1483,284 @@
             renderAll();
         }
 
-        function renderTimeline() {
-            const day = appState.activeDay || 1;
+        function renderDayTabs() {
             const totalDays = getTotalDays();
+            if (appState.activeDay > totalDays) appState.activeDay = totalDays;
+            const d = appState.activeDay || 1;
 
+            const optBtn = document.getElementById('optimize-route-btn');
+            if (optBtn) optBtn.textContent = `✨ 智慧順排 Day ${d}`;
+
+            const passBadge = document.getElementById('active-day-pass-badge');
+            if (passBadge) {
+                const active = isPassActiveOnDay(d);
+                passBadge.textContent = appState.drivingMode
+                    ? '🚗 自駕導航日'
+                    : (active ? '🚄 JR PASS 生效日' : '🎫 單買車票／IC卡日');
+                passBadge.className = active
+                    ? 'text-xs font-bold px-2.5 py-1 rounded-full bg-matcha/15 text-matcha'
+                    : 'text-xs font-bold px-2.5 py-1 rounded-full bg-stone-100 text-stone-600';
+            }
+
+            const tabsEl = document.getElementById('day-tabs-container');
+            if (tabsEl) {
+                tabsEl.innerHTML = Array.from({ length: totalDays }, (_, i) => i + 1).map(day => {
+                    const isActive = day === d;
+                    const count = (appState.activitiesByDay[day] || []).length;
+                    return `
+                        <button type="button" onclick="switchActiveDay(${day})" class="shrink-0 px-3.5 py-2 rounded-xl border text-xs font-bold transition-all cursor-pointer ${isActive ? 'bg-indigoJp text-white border-indigoJp shadow-xs' : 'bg-washi hover:bg-stone-100 text-stone-700 border-stone-200'}">
+                            Day ${day}・${getDateLabelForDay(day)} <span class="ml-1 px-1.5 py-0.5 rounded-full text-[10px] ${isActive ? 'bg-white/20 text-white' : 'bg-stone-200 text-stone-600'}">${count}</span>
+                        </button>
+                    `;
+                }).join('');
+            }
+
+            // 更新出發時間、住宿飯店與對調選單
             const startInput = document.getElementById('day-start-time');
-            if (startInput) startInput.value = appState.dayStartTimes[day] || '09:00';
-
+            const hotelDayNum = document.getElementById('hotel-day-num');
+            const hotelInput = document.getElementById('day-hotel-input');
             const hotelBox = document.getElementById('hotel-setting-box');
             const dropBox = document.getElementById('drop-luggage-box');
-            if (hotelBox) hotelBox.classList.toggle('hidden', day >= totalDays);
-            if (dropBox) dropBox.classList.toggle('hidden', day >= totalDays);
-
-            const hotelDayNum = document.getElementById('hotel-day-num');
-            if (hotelDayNum) hotelDayNum.textContent = day;
-            const hotelInput = document.getElementById('day-hotel-input');
-            if (hotelInput) hotelInput.value = appState.dayHotels[day] || '';
             const dropCheck = document.getElementById('drop-luggage-checkbox');
-            if (dropCheck) dropCheck.checked = !!appState.dropLuggageFirst[day];
-
             const swapSel = document.getElementById('swap-target-day');
+
+            if (startInput) startInput.value = appState.dayStartTimes[d] || '09:30';
+            if (hotelDayNum) hotelDayNum.textContent = String(d);
+            if (hotelInput) hotelInput.value = appState.dayHotels[d] || '';
+            if (hotelBox) hotelBox.classList.toggle('opacity-50', d === totalDays);
+            if (dropBox) dropBox.classList.toggle('hidden', d === totalDays);
+            if (dropCheck) dropCheck.checked = !!appState.dropLuggageFirst[d];
             if (swapSel) {
                 swapSel.innerHTML = Array.from({ length: totalDays }, (_, i) => i + 1)
-                    .filter(d => d !== day)
-                    .map(d => `<option value="${d}">Day ${d}</option>`).join('');
+                    .filter(x => x !== d)
+                    .map(x => `<option value="${x}">與 Day ${x} 對調</option>`).join('');
             }
 
-            const weatherPanel = document.getElementById('weather-countdown-panel');
-            const meta = REGIONS_META.find(r => r.id === appState.region) || REGIONS_META[0];
-            if (weatherPanel) {
-                weatherPanel.innerHTML = `🌤️ <strong>${meta.name}旅遊小提醒：</strong>${meta.weatherTip}`;
+            const weatherEl = document.getElementById('weather-countdown-panel');
+            if (weatherEl) {
+                const meta = REGIONS_META.find(r => r.id === appState.region) || REGIONS_META[0];
+                weatherEl.innerHTML = `🌤️ <strong>${meta.name}季節與穿著提醒：</strong>${meta.weatherTip}`;
             }
-
-            const nodes = buildDaySegments(day);
-            const container = document.getElementById('puzzle-timeline-container');
-            if (!container) return;
-
-            container.innerHTML = nodes.map((node, idx) => {
-                let transitHtml = '';
-                if (node.transit) {
-                    const gmapsUrl = `https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(node.transit.from)}&destination=${encodeURIComponent(node.transit.to)}&travelmode=${appState.drivingMode ? 'driving' : 'transit'}`;
-                    transitHtml = `
-                        <div class="ml-11 my-2 bg-stone-50/90 border border-stone-200/90 rounded-xl px-3.5 py-2.5 flex flex-wrap items-center justify-between gap-2 text-xs">
-                            <div class="space-y-1">
-                                <div class="flex items-center gap-2 flex-wrap">
-                                    <span class="font-bold px-2 py-0.5 rounded-md bg-emerald-100 text-emerald-900">${node.transit.modeLabel}</span>
-                                    <span class="text-stone-600 font-medium">${node.transit.from} ➔ ${node.transit.to}</span>
-                                </div>
-                                <div class="text-[11px] text-stone-500 flex items-center gap-2 flex-wrap">
-                                    <span>📍 ${node.transit.sourceNote}</span>
-                                    <span>• 預估約 <input type="number" min="1" max="600" value="${node.transit.minutes}" onchange="overrideTransitMinutes('${node.transit.overrideKey}', this.value)" class="w-12 bg-white border border-stone-300 rounded px-1 py-0.5 text-center font-mono font-bold text-indigoJp"> 分鐘</span>
-                                </div>
-                            </div>
-                            <a href="${gmapsUrl}" target="_blank" rel="noopener" class="text-[11px] font-bold text-indigoJp hover:text-vermilion bg-white px-2.5 py-1.5 rounded-lg border border-stone-200 shrink-0">Google Maps ↗</a>
-                        </div>
-                    `;
-                }
-
-                if (node.kind === 'activity') {
-                    const act = node.activity;
-                    return `
-                        ${transitHtml}
-                        <div class="relative z-10 flex items-start gap-3">
-                            <div class="w-14 shrink-0 bg-vermilion text-white rounded-xl py-1.5 text-center shadow-2xs">
-                                <div class="text-[10px] opacity-85">抵達</div>
-                                <div class="text-xs font-mono font-bold">${node.arriveTime}</div>
-                            </div>
-                            <div class="flex-1 puzzle-card bg-white rounded-2xl border-2 border-stone-200 hover:border-indigoJp/40 p-4 shadow-2xs space-y-2">
-                                <div class="flex items-start justify-between gap-2">
-                                    <div class="space-y-1">
-                                        <div class="flex items-center gap-1.5 flex-wrap">
-                                            <span class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-indigoJp/10 text-indigoJp">${act.tag || '景點'}</span>
-                                            <span class="text-xs font-mono text-stone-500">${node.arriveTime} ～ ${node.departTime}</span>
-                                        </div>
-                                        <h4 class="font-serif font-bold text-base text-sumi">${act.title}</h4>
-                                        ${act.note ? `<p class="text-xs text-stone-500">${act.note}</p>` : ''}
-                                    </div>
-                                    <div class="flex items-center gap-1 shrink-0">
-                                        <button type="button" onclick="moveActivity(${day}, ${node.actIndex}, -1)" class="w-7 h-7 rounded-lg bg-washi hover:bg-stone-200 text-xs font-bold cursor-pointer" title="上移">↑</button>
-                                        <button type="button" onclick="moveActivity(${day}, ${node.actIndex}, 1)" class="w-7 h-7 rounded-lg bg-washi hover:bg-stone-200 text-xs font-bold cursor-pointer" title="下移">↓</button>
-                                        <button type="button" onclick="removeActivityToTrash(${day}, ${node.actIndex})" class="w-7 h-7 rounded-lg bg-red-50 hover:bg-vermilion text-vermilion hover:text-white text-xs font-bold cursor-pointer" title="拆下拼圖">✕</button>
-                                    </div>
-                                </div>
-                                <div class="flex items-center gap-2 text-[11px] text-stone-500 pt-1 border-t border-stone-100">
-                                    <span>⏱️ 停留時間：</span>
-                                    <input type="number" min="15" step="15" value="${act.duration || 90}" onchange="updateActivityDuration(${day}, ${node.actIndex}, this.value)" class="w-14 bg-washi border border-stone-300 rounded px-1.5 py-0.5 font-mono font-bold text-indigoJp text-center">
-                                    <span>分鐘</span>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                }
-
-                const badgeBg = node.kind === 'origin' ? 'bg-indigoJp' : (node.kind === 'luggage' ? 'bg-amber-500' : 'bg-matcha');
-                const badgeTop = node.kind === 'origin' ? '出發' : (node.kind === 'luggage' ? '寄放' : '抵達');
-                return `
-                    ${transitHtml}
-                    <div class="relative z-10 flex items-start gap-3">
-                        <div class="w-14 shrink-0 ${badgeBg} text-white rounded-xl py-1.5 text-center shadow-2xs">
-                            <div class="text-[10px] opacity-85">${badgeTop}</div>
-                            <div class="text-xs font-mono font-bold">${node.arriveTime}</div>
-                        </div>
-                        <div class="flex-1 bg-washi rounded-2xl border border-stone-200/90 p-3.5">
-                            <div class="text-xs font-bold text-indigoJp">${node.subtitle}</div>
-                            <div class="font-serif font-bold text-base text-sumi mt-0.5">${node.title}</div>
-                        </div>
-                    </div>
-                `;
-            }).join('');
         }
 
-        function overrideTransitMinutes(key, val) {
-            const mins = Math.max(1, Number(val) || 15);
-            appState.manualTransitMinutes[key] = mins;
+        function updateManualTransit(dayNum, fromPlace, toPlace, mins) {
+            const val = Math.max(1, Number(mins) || 15);
+            appState.manualTransitMinutes[`${dayNum}|${fromPlace}|${toPlace}`] = val;
             saveState();
             renderTimeline();
         }
 
-        function moveActivity(day, idx, delta) {
-            const list = appState.activitiesByDay[day] || [];
-            const target = idx + delta;
-            if (target < 0 || target >= list.length) return;
-            const [item] = list.splice(idx, 1);
-            list.splice(target, 0, item);
+        function updateActivityDuration(dayNum, idx, mins) {
+            const act = (appState.activitiesByDay[dayNum] || [])[idx];
+            if (!act) return;
+            act.duration = Math.max(15, Number(mins) || 60);
             saveState();
-            renderAll();
+            renderTimeline();
         }
 
-        function updateActivityDuration(day, idx, val) {
-            const list = appState.activitiesByDay[day] || [];
-            if (list[idx]) {
-                list[idx].duration = Math.max(15, Number(val) || 60);
-                saveState();
-                renderTimeline();
-            }
-        }
-
-        function removeActivityToTrash(day, idx) {
-            const list = appState.activitiesByDay[day] || [];
+        function removeActivityToTrash(dayNum, idx) {
+            const list = appState.activitiesByDay[dayNum] || [];
             const [removed] = list.splice(idx, 1);
             if (removed) {
-                appState.trashBin.unshift({ ...removed, fromDay: day });
+                appState.trashBin.unshift({ ...removed, originalDay: dayNum });
+                saveState();
+                renderAll();
             }
+        }
+
+        function moveActivityOrder(dayNum, idx, delta) {
+            const list = appState.activitiesByDay[dayNum] || [];
+            const target = idx + delta;
+            if (target < 0 || target >= list.length) return;
+            [list[idx], list[target]] = [list[target], list[idx]];
             saveState();
             renderAll();
         }
 
-        // =========================================================
-        // 全行程總覽看板與拖曳
-        // =========================================================
-        let draggedPuzzleInfo = null;
+        function renderTimeline() {
+            const container = document.getElementById('puzzle-timeline-container');
+            if (!container) return;
+            const d = appState.activeDay || 1;
+            const segments = buildDaySegments(d);
 
-        function setTimelineViewMode(mode) {
-            appState.timelineViewMode = mode;
-            saveState();
-            renderAll();
-        }
-
-        function renderOverviewPuzzleBoard() {
-            const isOverview = appState.timelineViewMode === 'overview';
-            const ovSec = document.getElementById('overview-board-section');
-            const sgSec = document.getElementById('single-day-detail-section');
-            const btnSingle = document.getElementById('view-mode-single-btn');
-            const btnOverview = document.getElementById('view-mode-overview-btn');
-
-            if (ovSec) ovSec.classList.toggle('hidden', !isOverview);
-            if (sgSec) sgSec.classList.toggle('hidden', isOverview);
-            if (btnSingle) btnSingle.className = isOverview ? 'px-3 py-1 rounded-lg text-stone-600 hover:text-indigoJp transition-all cursor-pointer' : 'px-3 py-1 rounded-lg bg-indigoJp text-white shadow-2xs transition-all cursor-pointer';
-            if (btnOverview) btnOverview.className = isOverview ? 'px-3 py-1 rounded-lg bg-indigoJp text-white shadow-2xs transition-all cursor-pointer' : 'px-3 py-1 rounded-lg text-stone-600 hover:text-indigoJp transition-all cursor-pointer';
-
-            if (!isOverview) return;
-            const grid = document.getElementById('overview-puzzle-grid');
-            if (!grid) return;
-
-            const totalDays = getTotalDays();
-            grid.innerHTML = Array.from({ length: totalDays }, (_, i) => i + 1).map(d => {
-                const acts = appState.activitiesByDay[d] || [];
-                const cardsHtml = acts.map((act, idx) => `
-                    <div draggable="true"
-                         ondragstart="draggedPuzzleInfo={day:${d},index:${idx}}"
-                         ondragover="event.preventDefault()"
-                         ondrop="handleDropOnCard(event, ${d}, ${idx})"
-                         class="bg-white p-2.5 rounded-xl border border-stone-200 shadow-2xs cursor-grab active:cursor-grabbing flex items-start justify-between gap-2 text-xs">
-                        <div>
-                            <div class="font-bold text-sumi">${act.title}</div>
-                            <div class="text-[10px] text-stone-400">${act.tag || '景點'}・${act.duration || 90}分</div>
+            container.innerHTML = segments.map(seg => {
+                const transitHtml = seg.transit ? `
+                    <div class="ml-11 my-1.5 flex flex-wrap items-center gap-2 text-xs text-stone-600 bg-washi/90 border border-stone-200/80 rounded-xl px-3 py-1.5">
+                        <span>${seg.transit.modeLabel}</span>
+                        <div class="inline-flex items-center gap-1">
+                            <span>約</span>
+                            <input type="number" min="1" max="600" value="${seg.transit.minutes}"
+                                onchange="updateManualTransit(${d}, '${seg.transit.from.replace(/'/g, "\\'")}', '${seg.transit.to.replace(/'/g, "\\'")}', this.value)"
+                                class="w-14 bg-white border border-stone-300 rounded-md px-1.5 py-0.5 text-center font-mono font-bold text-indigoJp">
+                            <span>分鐘</span>
                         </div>
-                        <button type="button" onclick="removeActivityToTrash(${d}, ${idx})" class="text-stone-400 hover:text-vermilion font-bold cursor-pointer">✕</button>
+                        <a href="https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(seg.transit.from)}&destination=${encodeURIComponent(seg.transit.to)}&travelmode=${appState.drivingMode ? 'driving' : 'transit'}" target="_blank" rel="noopener" class="ml-auto text-[11px] font-bold text-indigoJp hover:text-vermilion underline">Google Maps ↗</a>
                     </div>
-                `).join('') || `<div class="text-[11px] text-stone-400 text-center py-6 border border-dashed border-stone-200 rounded-xl">可拖曳拼圖至此天</div>`;
+                ` : '';
+
+                if (seg.type === 'anchor' || seg.type === 'luggage') {
+                    return `
+                        ${transitHtml}
+                        <div class="relative z-10 flex items-center gap-3 bg-slate-50 border border-slate-200 rounded-2xl px-4 py-3">
+                            <span class="font-mono font-bold text-xs text-indigoJp bg-white border border-slate-200 px-2.5 py-1 rounded-lg shrink-0">${seg.arriveTime}</span>
+                            <span class="text-xs sm:text-sm font-bold text-slate-800">${seg.title}</span>
+                        </div>
+                    `;
+                }
 
                 return `
-                    <div ondragover="event.preventDefault()" ondrop="handleDropOnDayColumn(event, ${d})" class="bg-washi p-3 rounded-2xl border border-stone-200/90 space-y-2 min-h-[200px]">
-                        <div class="flex items-center justify-between border-b border-stone-200/70 pb-1.5">
-                            <span class="font-bold text-xs text-indigoJp">Day ${d}・${getDateLabelForDay(d)}</span>
-                            <span class="text-[10px] text-stone-500">${acts.length} 塊</span>
+                    ${transitHtml}
+                    <div class="puzzle-card relative z-10 bg-white border-2 border-indigoJp/20 hover:border-vermilion/60 rounded-2xl p-4 shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                        <div class="flex items-start gap-3">
+                            <span class="font-mono font-bold text-xs text-white bg-vermilion px-2.5 py-1 rounded-lg shrink-0 mt-0.5">${seg.arriveTime}</span>
+                            <div class="space-y-1">
+                                <div class="flex items-center gap-1.5 flex-wrap">
+                                    <span class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-sakura text-vermilion">${seg.tag}</span>
+                                    <h4 class="font-serif font-bold text-sm sm:text-base text-indigoJp">${seg.title}</h4>
+                                </div>
+                                ${seg.note ? `<p class="text-xs text-stone-500">${seg.note}</p>` : ''}
+                            </div>
                         </div>
-                        <div class="space-y-2">${cardsHtml}</div>
+                        <div class="flex items-center gap-1.5 self-end sm:self-center shrink-0">
+                            <label class="inline-flex items-center gap-1 text-[11px] text-stone-500 bg-washi px-2 py-1 rounded-lg border border-stone-200">
+                                <span>停留</span>
+                                <input type="number" min="15" step="15" value="${seg.duration}" onchange="updateActivityDuration(${d}, ${seg.actIndex}, this.value)" class="w-12 bg-white border border-stone-300 rounded px-1 text-center font-mono font-bold text-indigoJp">
+                                <span>分</span>
+                            </label>
+                            <button type="button" onclick="moveActivityOrder(${d}, ${seg.actIndex}, -1)" title="上移" class="px-2 py-1 rounded-lg bg-washi hover:bg-stone-200 text-xs font-bold text-stone-600 cursor-pointer">↑</button>
+                            <button type="button" onclick="moveActivityOrder(${d}, ${seg.actIndex}, 1)" title="下移" class="px-2 py-1 rounded-lg bg-washi hover:bg-stone-200 text-xs font-bold text-stone-600 cursor-pointer">↓</button>
+                            <button type="button" onclick="removeActivityToTrash(${d}, ${seg.actIndex})" title="拆下放進回收桶" class="px-2 py-1 rounded-lg bg-red-50 hover:bg-vermilion text-vermilion hover:text-white text-xs font-bold transition-colors cursor-pointer">🗑️</button>
+                        </div>
                     </div>
                 `;
             }).join('');
         }
 
-        function handleDropOnCard(e, targetDay, targetIdx) {
-            e.preventDefault();
-            e.stopPropagation();
-            if (!draggedPuzzleInfo) return;
-            const { day: srcDay, index: srcIdx } = draggedPuzzleInfo;
-            draggedPuzzleInfo = null;
-            const srcList = appState.activitiesByDay[srcDay] || [];
-            const [item] = srcList.splice(srcIdx, 1);
-            if (!item) return;
-            if (!appState.activitiesByDay[targetDay]) appState.activitiesByDay[targetDay] = [];
-            appState.activitiesByDay[targetDay].splice(targetIdx, 0, item);
-            saveState();
-            renderAll();
-        }
-
-        function handleDropOnDayColumn(e, targetDay) {
+        // 全行程看板與拖曳支援
+        let draggedPuzzleInfo = null;
+        function handlePuzzleDragStart(dayNum, idx) { draggedPuzzleInfo = { dayNum, idx }; }
+        function handlePuzzleDragOver(e) { e.preventDefault(); }
+        function handlePuzzleDragLeave(e) {}
+        function handlePuzzleDropToDay(e, targetDay) {
             e.preventDefault();
             if (!draggedPuzzleInfo) return;
-            const { day: srcDay, index: srcIdx } = draggedPuzzleInfo;
+            const { dayNum, idx } = draggedPuzzleInfo;
             draggedPuzzleInfo = null;
-            const srcList = appState.activitiesByDay[srcDay] || [];
-            const [item] = srcList.splice(srcIdx, 1);
-            if (!item) return;
-            if (!appState.activitiesByDay[targetDay]) appState.activitiesByDay[targetDay] = [];
-            appState.activitiesByDay[targetDay].push(item);
-            saveState();
-            renderAll();
+            const srcList = appState.activitiesByDay[dayNum] || [];
+            const [item] = srcList.splice(idx, 1);
+            if (item) {
+                if (!appState.activitiesByDay[targetDay]) appState.activitiesByDay[targetDay] = [];
+                appState.activitiesByDay[targetDay].push(item);
+                saveState();
+                renderAll();
+            }
         }
-
-        function handlePuzzleDragOver(e) {
-            e.preventDefault();
-            e.currentTarget.classList.add('bg-red-100', 'border-vermilion');
-        }
-
-        function handlePuzzleDragLeave(e) {
-            e.currentTarget.classList.remove('bg-red-100', 'border-vermilion');
-        }
-
         function handlePuzzleDropToDelete(e) {
             e.preventDefault();
-            e.currentTarget.classList.remove('bg-red-100', 'border-vermilion');
             if (!draggedPuzzleInfo) return;
-            removeActivityToTrash(draggedPuzzleInfo.day, draggedPuzzleInfo.index);
+            const { dayNum, idx } = draggedPuzzleInfo;
             draggedPuzzleInfo = null;
+            removeActivityToTrash(dayNum, idx);
         }
 
-        // =========================================================
-        // 回收桶 UI
-        // =========================================================
-        function renderTrashBinUI() {
-            const bar = document.getElementById('puzzle-trash-bin-bar');
-            const badge = document.getElementById('trash-bin-count-badge');
-            const list = document.getElementById('puzzle-trash-bin-list');
-            const arrow = document.getElementById('trash-bin-toggle-arrow');
-            const items = appState.trashBin || [];
-
-            if (bar) bar.classList.toggle('hidden', items.length === 0);
-            if (badge) badge.textContent = `${items.length} 塊`;
-            if (arrow) arrow.textContent = appState.trashDrawerOpen ? '▲ 收合' : '▼ 點擊展開復原';
-            if (list) {
-                list.classList.toggle('hidden', !appState.trashDrawerOpen);
-                list.innerHTML = items.map((it, i) => `
-                    <div class="bg-white p-2.5 rounded-xl border border-stone-200 flex items-center justify-between gap-2 text-xs">
-                        <span class="truncate font-medium text-sumi">${it.title}</span>
-                        <button type="button" onclick="restoreFromTrash(${i})" class="shrink-0 text-[11px] font-bold text-matcha hover:underline cursor-pointer">↩️ 放回 Day ${appState.activeDay}</button>
+        function renderOverviewPuzzleBoard() {
+            const grid = document.getElementById('overview-puzzle-grid');
+            if (!grid) return;
+            const totalDays = getTotalDays();
+            grid.innerHTML = Array.from({ length: totalDays }, (_, i) => i + 1).map(d => {
+                const acts = appState.activitiesByDay[d] || [];
+                return `
+                    <div ondragover="handlePuzzleDragOver(event)" ondrop="handlePuzzleDropToDay(event, ${d})" class="bg-washi border border-stone-200 rounded-2xl p-3 space-y-2 min-h-[180px]">
+                        <div class="flex items-center justify-between border-b border-stone-200 pb-1.5">
+                            <span class="text-xs font-bold text-indigoJp">Day ${d}・${getDateLabelForDay(d)}</span>
+                            <button type="button" onclick="switchActiveDay(${d}); setTimelineViewMode('single');" class="text-[11px] font-bold text-vermilion underline cursor-pointer">詳情</button>
+                        </div>
+                        <div class="space-y-1.5">
+                            ${acts.map((a, idx) => `
+                                <div draggable="true" ondragstart="handlePuzzleDragStart(${d}, ${idx})" class="bg-white border border-stone-200 rounded-xl p-2.5 text-xs shadow-2xs cursor-grab active:cursor-grabbing">
+                                    <div class="font-bold text-indigoJp">${a.title}</div>
+                                    <div class="text-[10px] text-stone-400 mt-0.5">${a.tag || '景點'}・${a.duration || 90} 分</div>
+                                </div>
+                            `).join('') || '<div class="text-[11px] text-stone-400 text-center py-6">可拖曳拼圖至此天</div>'}
+                        </div>
                     </div>
-                `).join('');
-            }
+                `;
+            }).join('');
         }
 
         function toggleTrashBinDrawer() {
             appState.trashDrawerOpen = !appState.trashDrawerOpen;
             renderTrashBinUI();
         }
-
-        function restoreFromTrash(idx) {
-            const [item] = appState.trashBin.splice(idx, 1);
-            if (item) {
-                const d = appState.activeDay || 1;
-                if (!appState.activitiesByDay[d]) appState.activitiesByDay[d] = [];
-                appState.activitiesByDay[d].push(item);
-            }
+        function restoreFromTrashBin(idx) {
+            const [item] = (appState.trashBin || []).splice(idx, 1);
+            if (!item) return;
+            const d = appState.activeDay || item.originalDay || 1;
+            if (!appState.activitiesByDay[d]) appState.activitiesByDay[d] = [];
+            appState.activitiesByDay[d].push({ id: item.id || ('act-' + Date.now()), title: item.title, tag: item.tag, duration: item.duration, note: item.note });
             saveState();
             renderAll();
         }
-
         function emptyPuzzleTrashBin() {
             appState.trashBin = [];
             saveState();
-            renderAll();
+            renderTrashBinUI();
+        }
+        function renderTrashBinUI() {
+            const bar = document.getElementById('puzzle-trash-bin-bar');
+            const countBadge = document.getElementById('trash-bin-count-badge');
+            const listEl = document.getElementById('puzzle-trash-bin-list');
+            const bin = appState.trashBin || [];
+            if (bar) bar.classList.toggle('hidden', bin.length === 0);
+            if (countBadge) countBadge.textContent = `${bin.length} 塊`;
+            if (listEl) {
+                listEl.classList.toggle('hidden', !appState.trashDrawerOpen);
+                listEl.innerHTML = bin.map((item, idx) => `
+                    <div class="flex items-center justify-between bg-white px-3 py-2 rounded-xl border border-stone-200 text-xs">
+                        <span class="truncate font-bold text-stone-700 mr-2">${item.title}</span>
+                        <button type="button" onclick="restoreFromTrashBin(${idx})" class="shrink-0 text-[11px] font-bold text-matcha hover:underline cursor-pointer">↩️ 放回 Day ${appState.activeDay}</button>
+                    </div>
+                `).join('');
+            }
         }
 
         // =========================================================
-        // 區塊三：立體拼圖推薦卡片渲染（完整還原設計樣式）
+        // 區塊三：立體拼圖推薦卡片渲染（三層實景圖片保底 + 完整設計樣式）
         // =========================================================
+        const FALLBACK_SCENE_PHOTOS = {
+            event: [
+                'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?auto=format&fit=crop&w=640&q=80',
+                'https://images.unsplash.com/photo-1590559899731-a382839e5549?auto=format&fit=crop&w=640&q=80',
+                'https://images.unsplash.com/photo-1542051841857-5f90071e7989?auto=format&fit=crop&w=640&q=80',
+                'https://images.unsplash.com/photo-1548567117-02328f050eaa?auto=format&fit=crop&w=640&q=80'
+            ],
+            food: [
+                'https://images.unsplash.com/photo-1553621042-f6e147245754?auto=format&fit=crop&w=640&q=80',
+                'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=640&q=80',
+                'https://images.unsplash.com/photo-1590559899731-a382839e5549?auto=format&fit=crop&w=640&q=80'
+            ],
+            spot: [
+                'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=640&q=80',
+                'https://images.unsplash.com/photo-1528360983277-13d401cdc186?auto=format&fit=crop&w=640&q=80',
+                'https://images.unsplash.com/photo-1478436127897-769e1b3f0f36?auto=format&fit=crop&w=640&q=80',
+                'https://images.unsplash.com/photo-1536098561742-ca998e48cbcc?auto=format&fit=crop&w=640&q=80'
+            ]
+        };
+
+        function getGuaranteedFallbackPhoto(item, idx) {
+            if (item.photoUrl) return item.photoUrl;
+            if (item.fallbackImg) return item.fallbackImg;
+            const text = `${item.title || ''} ${item.tag || ''}`;
+            let pool = FALLBACK_SCENE_PHOTOS.spot;
+            if (item.type === 'event' || /(點燈|燈飾|花火|祭|光雕|夜景|聖誕)/.test(text)) {
+                pool = FALLBACK_SCENE_PHOTOS.event;
+            } else if (/(美食|拉麵|市場|海鮮|燒肉|牛排|逛街)/.test(text)) {
+                pool = FALLBACK_SCENE_PHOTOS.food;
+            }
+            const hash = Math.abs(Array.from(item.title || '').reduce((acc, ch) => acc + ch.charCodeAt(0), idx));
+            return pool[hash % pool.length];
+        }
+
         function setRecFilter(filter) {
             appState.recFilter = filter;
             ['all', 'event', 'spot'].forEach(f => {
@@ -1932,7 +1843,7 @@
                 const locText = item.location || `${regName}・建議停留 ${item.duration || 90} 分鐘`;
                 const cardId = `rec-puzzle-card-${idx}`;
                 const bgImgId = `rec-puzzle-bg-${idx}`;
-                const initialBg = photoCache[item.title] || item.fallbackImg || '';
+                const initialBg = photoCache[item.title] || getGuaranteedFallbackPhoto(item, idx);
 
                 if (userConfig.gmapsKey && photoCache[item.title] === undefined) {
                     fetchPlacePhotoForCard(item.title, bgImgId);
@@ -1945,9 +1856,9 @@
                         <!-- 立體拼圖右凹槽 -->
                         <span aria-hidden="true" class="pointer-events-none absolute top-1/2 -right-3 -translate-y-1/2 w-6 h-6 rounded-full bg-[#FAF8F5] border-l-2 ${isSeasonal ? 'border-[#E8B84B]' : 'border-stone-200'} z-20"></span>
 
-                        <!-- 右側淡入實景背景圖層 -->
+                        <!-- 右側淡入實景背景圖層（三層保底永不空白） -->
                         <div class="pointer-events-none absolute inset-0 rounded-2xl overflow-hidden z-0">
-                            <div id="${bgImgId}" class="absolute inset-y-0 right-0 w-[56%] bg-cover bg-center opacity-45 transition-opacity duration-500" style="${initialBg ? `background-image:url('${initialBg}')` : ''}"></div>
+                            <div id="${bgImgId}" class="absolute inset-y-0 right-0 w-[56%] bg-cover bg-center opacity-50 transition-opacity duration-500" style="background-image:url('${initialBg}')"></div>
                             <div class="absolute inset-0 bg-gradient-to-r from-white via-white/95 to-white/25"></div>
                         </div>
 
@@ -2292,12 +2203,33 @@
         function openApiKeyModal() {
             document.getElementById('modal-gmaps-key').value = userConfig.gmapsKey || '';
             document.getElementById('modal-gemini-key').value = userConfig.geminiKey || '';
-            document.getElementById('modal-cloud-db-url').value = userConfig.cloudDbUrl || '';
-            document.getElementById('modal-sync-code-input').value = userConfig.syncCode || '';
+            document.getElementById('modal-github-token').value = userConfig.githubToken || '';
+            document.getElementById('modal-github-user').value = userConfig.githubUser || 'JHANSIANGJYUN';
+            document.getElementById('modal-github-repo').value = userConfig.githubRepo || 'travel-puzzle';
+            document.getElementById('modal-cloud-db-url').value = userConfig.cloudDbUrl || `https://raw.githubusercontent.com/${userConfig.githubUser || 'JHANSIANGJYUN'}/${userConfig.githubRepo || 'travel-puzzle'}/main/db.json`;
+            document.getElementById('modal-sync-code-input').value = userConfig.syncCode || 'JP-GPVMP6';
+            const statusLine = document.getElementById('github-sync-status-line');
+            if (statusLine) {
+                statusLine.textContent = userConfig.githubToken
+                    ? `🟢 GitHub 雙向同步已就緒 (${userConfig.syncCode || 'JP-GPVMP6'})`
+                    : `🟡 僅唯讀模式（填入 GitHub Token 即可上傳同步）`;
+            }
             document.getElementById('api-key-modal')?.classList.remove('hidden');
         }
         function closeApiKeyModal() {
             document.getElementById('api-key-modal')?.classList.add('hidden');
+        }
+        function updateCloudUrlPreview() {
+            const u = (document.getElementById('modal-github-user')?.value || '').trim();
+            const r = (document.getElementById('modal-github-repo')?.value || '').trim();
+            const urlInput = document.getElementById('modal-cloud-db-url');
+            if (u && r && urlInput) {
+                urlInput.value = `https://raw.githubusercontent.com/${u}/${r}/main/db.json`;
+            }
+        }
+        function copySyncCodeText() {
+            const code = (document.getElementById('modal-sync-code-input')?.value || '').trim().toUpperCase();
+            if (code) navigator.clipboard?.writeText(code);
         }
         function applySyncCodeFromModal() {
             const code = (document.getElementById('modal-sync-code-input')?.value || '').trim().toUpperCase();
@@ -2308,19 +2240,103 @@
                 if (lbl) lbl.textContent = code;
             }
         }
-        function saveApiAndCloudSettings() {
+        async function pushTripToGitHub() {
+            saveApiAndCloudSettings(false);
+            const statusLine = document.getElementById('github-sync-status-line');
+            const token = (userConfig.githubToken || '').trim();
+            const owner = (userConfig.githubUser || 'JHANSIANGJYUN').trim();
+            const repo = (userConfig.githubRepo || 'travel-puzzle').trim();
+            const code = (userConfig.syncCode || 'JP-GPVMP6').trim().toUpperCase();
+            if (!token) {
+                if (statusLine) statusLine.textContent = '⚠️ 請先填入 GitHub Personal Access Token 再上傳';
+                return;
+            }
+            if (statusLine) statusLine.textContent = '⏳ 正在上傳行程至 GitHub 雲端...';
+            const path = `trips/${code}.json`;
+            const apiUrl = `https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
+            try {
+                let sha = undefined;
+                const getResp = await fetch(apiUrl, { headers: { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github+json' } });
+                if (getResp.ok) {
+                    const existing = await getResp.json();
+                    sha = existing.sha;
+                }
+                const payloadObj = { updatedAt: new Date().toISOString(), syncCode: code, appState };
+                const base64Content = btoa(unescape(encodeURIComponent(JSON.stringify(payloadObj, null, 2))));
+                const putResp = await fetch(apiUrl, {
+                    method: 'PUT',
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        Accept: 'application/vnd.github+json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        message: `Sync travel puzzle trip ${code}`,
+                        content: base64Content,
+                        ...(sha ? { sha } : {})
+                    })
+                });
+                if (!putResp.ok) throw new Error(`HTTP ${putResp.status}`);
+                if (statusLine) statusLine.textContent = `✅ 已成功上傳至 GitHub (${code})！手機輸入同代碼即可讀取`;
+                const hdrBadge = document.getElementById('cloud-sync-header-badge');
+                if (hdrBadge) hdrBadge.textContent = `・☁️ ${code} 已同步`;
+            } catch (err) {
+                if (statusLine) statusLine.textContent = `❌ 上傳失敗：請確認 Token 具備 repo 寫入權限 (${err.message})`;
+            }
+        }
+        async function pullTripFromGitHub() {
+            saveApiAndCloudSettings(false);
+            const statusLine = document.getElementById('github-sync-status-line');
+            const owner = (userConfig.githubUser || 'JHANSIANGJYUN').trim();
+            const repo = (userConfig.githubRepo || 'travel-puzzle').trim();
+            const code = (userConfig.syncCode || 'JP-GPVMP6').trim().toUpperCase();
+            if (statusLine) statusLine.textContent = `⏳ 正在從 GitHub 讀取 ${code}...`;
+            try {
+                let data = null;
+                if (userConfig.githubToken) {
+                    const apiUrl = `https://api.github.com/repos/${owner}/${repo}/contents/trips/${code}.json`;
+                    const resp = await fetch(apiUrl, { headers: { Authorization: `Bearer ${userConfig.githubToken}`, Accept: 'application/vnd.github+json' } });
+                    if (resp.ok) {
+                        const fileMeta = await resp.json();
+                        const decodedStr = decodeURIComponent(escape(atob(fileMeta.content.replace(/\n/g, ''))));
+                        data = JSON.parse(decodedStr);
+                    }
+                }
+                if (!data) {
+                    const rawUrl = `https://raw.githubusercontent.com/${owner}/${repo}/main/trips/${code}.json?t=${Date.now()}`;
+                    const resp = await fetch(rawUrl, { cache: 'no-store' });
+                    if (resp.ok) data = await resp.json();
+                }
+                if (!data || !data.appState) throw new Error('找不到該代碼的雲端行程檔');
+                Object.assign(appState, data.appState);
+                saveState();
+                renderAll();
+                if (statusLine) statusLine.textContent = `✅ 已成功載入雲端行程 (${code})！`;
+            } catch (err) {
+                if (statusLine) statusLine.textContent = `⚠️ 讀取失敗：${err.message}`;
+            }
+        }
+        function saveApiAndCloudSettings(shouldClose = true) {
             userConfig.gmapsKey = (document.getElementById('modal-gmaps-key')?.value || '').trim();
             userConfig.geminiKey = (document.getElementById('modal-gemini-key')?.value || '').trim();
+            userConfig.githubToken = (document.getElementById('modal-github-token')?.value || '').trim();
+            userConfig.githubUser = (document.getElementById('modal-github-user')?.value || 'JHANSIANGJYUN').trim();
+            userConfig.githubRepo = (document.getElementById('modal-github-repo')?.value || 'travel-puzzle').trim();
             userConfig.cloudDbUrl = (document.getElementById('modal-cloud-db-url')?.value || '').trim();
             applySyncCodeFromModal();
             saveConfig();
-            closeApiKeyModal();
-            syncCloudDatabase();
+            if (shouldClose) {
+                closeApiKeyModal();
+                syncCloudDatabase();
+            }
         }
         function copyShareSetupLink() {
+            saveApiAndCloudSettings(false);
             const encoded = btoa(encodeURIComponent(JSON.stringify(userConfig)));
             const shareUrl = `${window.location.origin}${window.location.pathname}#setup=${encoded}`;
             navigator.clipboard?.writeText(shareUrl);
+            const statusLine = document.getElementById('github-sync-status-line');
+            if (statusLine) statusLine.textContent = '🔗 已複製一鍵自動設定連結！貼到手機打開即可免重打金鑰';
         }
 
         function openResetConfirmModal() {
