@@ -1,7 +1,7 @@
-// 旅遊拼圖 Travel Puzzle 主程式 (v1.45)
+// 旅遊拼圖 Travel Puzzle 主程式 (v1.49)
 // 直接讀取倉庫內 db.json（無需額外 data.js）與 japan.svg
 
-const APP_VERSION = 'v1.48';
+const APP_VERSION = 'v1.49';
 const STORAGE_KEY = 'travel_puzzle_jp_state_v1';
 const CONFIG_KEY = 'travel_puzzle_jp_config_v1';
 const LEGACY_CONFIG_KEYS = ['travel_puzzle_config', 'jp_travel_config_v1', 'travelPuzzleConfig', 'travel_puzzle_api_keys', 'travel_puzzle_settings', 'tp_config_v1'];
@@ -1633,135 +1633,141 @@ function addRecommendedFromCard(idx) {
 }
 
 let draggedPuzzleInfo = null;
-let dragHoverTarget = null;
+let dragCurrentSlot = null;
 
 function handlePuzzleDragStart(e, dayNum, idx) {
-    draggedPuzzleInfo = { dayNum, idx };
+    const list = appState.activitiesByDay[dayNum] || [];
+    const item = list[idx];
+    if (!item) return;
+
+    draggedPuzzleInfo = {
+        dayNum,
+        idx,
+        item: { ...item }
+    };
+    dragCurrentSlot = { day: dayNum, idx };
+
     if (e && e.dataTransfer) {
         e.dataTransfer.effectAllowed = 'move';
-        try { e.dataTransfer.setData('text/plain', `${dayNum}:${idx}`); } catch (_) {}
+        try { e.dataTransfer.setData('text/plain', item.id || `${dayNum}:${idx}`); } catch (_) {}
     }
+
+    const cardEl = e.currentTarget;
     requestAnimationFrame(() => {
-        if (e && e.target) e.target.classList.add('opacity-40', 'scale-95');
+        if (cardEl) cardEl.classList.add('opacity-30', 'scale-[0.97]', 'border-dashed', 'border-vermilion');
     });
 }
 
 function handlePuzzleDragEnd(e) {
-    if (e && e.target) e.target.classList.remove('opacity-40', 'scale-95');
-    draggedPuzzleInfo = null;
-    dragHoverTarget = null;
-    clearOverviewDropPlaceholder();
-}
-
-function clearOverviewDropPlaceholder() {
-    document.querySelectorAll('.overview-drop-slot-preview').forEach(el => el.remove());
-    document.querySelectorAll('[data-overview-card]').forEach(el => {
-        el.style.transform = '';
-    });
-}
-
-function showOverviewDropPlaceholder(targetDay, insertIdx, itemTitle) {
-    const listContainer = document.getElementById(`overview-day-list-${targetDay}`);
-    if (!listContainer) return;
-
-    const existing = listContainer.querySelector('.overview-drop-slot-preview');
-    if (existing && Number(existing.dataset.insertIdx) === insertIdx) return;
-
-    clearOverviewDropPlaceholder();
-
-    const slot = document.createElement('div');
-    slot.className = 'overview-drop-slot-preview rounded-xl border-2 border-dashed border-vermilion bg-vermilion/10 px-3 py-2.5 text-xs font-bold text-vermilion flex items-center justify-between gap-2 transition-all duration-200';
-    slot.dataset.insertIdx = String(insertIdx);
-    slot.innerHTML = `<span class="truncate">🧩 放開滑鼠嵌入：${itemTitle || '此行程'}</span><span class="text-[10px] shrink-0 bg-vermilion text-white px-1.5 py-0.5 rounded">插入此處</span>`;
-
-    const cards = Array.from(listContainer.querySelectorAll('[data-overview-card]'));
-    if (insertIdx < cards.length) {
-        listContainer.insertBefore(slot, cards[insertIdx]);
-    } else {
-        listContainer.appendChild(slot);
+    if (e && e.currentTarget) {
+        e.currentTarget.classList.remove('opacity-30', 'scale-[0.97]', 'border-dashed', 'border-vermilion');
     }
+    draggedPuzzleInfo = null;
+    dragCurrentSlot = null;
+    renderOverviewPuzzleBoard();
+}
+
+function moveDraggedItemWithFlip(targetDay, targetIdx) {
+    if (!draggedPuzzleInfo || !dragCurrentSlot) return;
+    if (dragCurrentSlot.day === targetDay && dragCurrentSlot.idx === targetIdx) return;
+
+    // 1. FLIP - First: 記錄所有現有卡片位置
+    const beforeRects = new Map();
+    document.querySelectorAll('[data-overview-act-id]').forEach(el => {
+        beforeRects.set(el.dataset.overviewActId, el.getBoundingClientRect());
+    });
+
+    // 2. 更新實際資料順序（直接讓目標天數卡片平滑讓出真實位置，消除插拔佔位框抖動）
+    const fromList = appState.activitiesByDay[dragCurrentSlot.day] || [];
+    const [movingItem] = fromList.splice(dragCurrentSlot.idx, 1);
+    if (!movingItem) return;
+
+    if (!appState.activitiesByDay[targetDay]) appState.activitiesByDay[targetDay] = [];
+    const destList = appState.activitiesByDay[targetDay];
+    const clampedIdx = Math.max(0, Math.min(destList.length, targetIdx));
+    destList.splice(clampedIdx, 0, movingItem);
+    dragCurrentSlot = { day: targetDay, idx: clampedIdx };
+
+    // 3. FLIP - Last: 重新繪製總覽看板
+    renderOverviewPuzzleBoard();
+
+    // 4. FLIP - Invert & Play: 用 transform 補間讓被擠開的卡片絲滑滑動
+    document.querySelectorAll('[data-overview-act-id]').forEach(el => {
+        const id = el.dataset.overviewActId;
+        const prev = beforeRects.get(id);
+        if (!prev) return;
+        const curr = el.getBoundingClientRect();
+        const dx = prev.left - curr.left;
+        const dy = prev.top - curr.top;
+        if (Math.abs(dx) > 0.5 || Math.abs(dy) > 0.5) {
+            el.style.transition = 'none';
+            el.style.transform = `translate(${dx}px, ${dy}px)`;
+            requestAnimationFrame(() => {
+                el.style.transition = 'transform 260ms cubic-bezier(0.22, 1, 0.36, 1)';
+                el.style.transform = '';
+            });
+        }
+    });
 }
 
 function handleOverviewCardDragOver(e, targetDay, cardIdx) {
     e.preventDefault();
     e.stopPropagation();
-    if (!draggedPuzzleInfo) return;
+    if (!draggedPuzzleInfo || !dragCurrentSlot) return;
 
-    const rect = e.currentTarget.getBoundingClientRect();
-    const isBottomHalf = (e.clientY - rect.top) > rect.height / 2;
-    const insertIdx = isBottomHalf ? cardIdx + 1 : cardIdx;
+    const cardEl = e.currentTarget;
+    if (draggedPuzzleInfo.item && cardEl.dataset.overviewActId === String(draggedPuzzleInfo.item.id)) return;
 
-    if (dragHoverTarget && dragHoverTarget.day === targetDay && dragHoverTarget.insertIdx === insertIdx) return;
-    dragHoverTarget = { day: targetDay, insertIdx };
+    // 加入遲滯緩衝帶（上 38% 才往上插、下 38% 才往下插），徹底防止邊界微抖動
+    const rect = cardEl.getBoundingClientRect();
+    const relY = (e.clientY - rect.top) / (rect.height || 1);
+    if (relY > 0.38 && relY < 0.62) return;
 
-    const srcItem = (appState.activitiesByDay[draggedPuzzleInfo.dayNum] || [])[draggedPuzzleInfo.idx];
-    showOverviewDropPlaceholder(targetDay, insertIdx, srcItem?.title);
+    let desiredIdx = relY >= 0.62 ? cardIdx + 1 : cardIdx;
+    if (dragCurrentSlot.day === targetDay && dragCurrentSlot.idx < desiredIdx) {
+        desiredIdx = Math.max(0, desiredIdx - 1);
+    }
+    moveDraggedItemWithFlip(targetDay, desiredIdx);
 }
 
 function handlePuzzleDragOver(e, targetDay = null) {
     e.preventDefault();
-    if (!draggedPuzzleInfo || targetDay === null) return;
+    if (!draggedPuzzleInfo || !dragCurrentSlot || targetDay === null) return;
     if (e.target && e.target.closest && e.target.closest('[data-overview-card]')) return;
 
     const acts = appState.activitiesByDay[targetDay] || [];
-    const insertIdx = acts.length;
-    if (dragHoverTarget && dragHoverTarget.day === targetDay && dragHoverTarget.insertIdx === insertIdx) return;
-    dragHoverTarget = { day: targetDay, insertIdx };
-
-    const srcItem = (appState.activitiesByDay[draggedPuzzleInfo.dayNum] || [])[draggedPuzzleInfo.idx];
-    showOverviewDropPlaceholder(targetDay, insertIdx, srcItem?.title);
+    const desiredIdx = dragCurrentSlot.day === targetDay ? Math.max(0, acts.length - 1) : acts.length;
+    moveDraggedItemWithFlip(targetDay, desiredIdx);
 }
 
-function handlePuzzleDragLeave(e) {
-    if (e && e.currentTarget && !e.currentTarget.contains(e.relatedTarget)) {
-        dragHoverTarget = null;
-        clearOverviewDropPlaceholder();
-    }
-}
+function handlePuzzleDragLeave(e) {}
 
-function handlePuzzleDropToDay(e, targetDay, fallbackIdx = null) {
+function handlePuzzleDropToDay(e, targetDay) {
     e.preventDefault();
     e.stopPropagation();
     if (!draggedPuzzleInfo) return;
 
-    const { dayNum, idx } = draggedPuzzleInfo;
-    const resolvedIdx = (dragHoverTarget && dragHoverTarget.day === targetDay)
-        ? dragHoverTarget.insertIdx
-        : fallbackIdx;
-
     draggedPuzzleInfo = null;
-    dragHoverTarget = null;
-    clearOverviewDropPlaceholder();
-
-    const srcList = appState.activitiesByDay[dayNum] || [];
-    const [item] = srcList.splice(idx, 1);
-    if (item) {
-        if (!appState.activitiesByDay[targetDay]) appState.activitiesByDay[targetDay] = [];
-        if (typeof resolvedIdx === 'number' && resolvedIdx >= 0) {
-            const adjustedIdx = (dayNum === targetDay && idx < resolvedIdx) ? Math.max(0, resolvedIdx - 1) : resolvedIdx;
-            appState.activitiesByDay[targetDay].splice(adjustedIdx, 0, item);
-        } else {
-            appState.activitiesByDay[targetDay].push(item);
-        }
-        saveState();
-        renderAll();
-    }
+    dragCurrentSlot = null;
+    saveState();
+    renderAll();
 }
 
 function handlePuzzleDropToDelete(e) {
     e.preventDefault();
-    if (!draggedPuzzleInfo) return;
-    const { dayNum, idx } = draggedPuzzleInfo;
+    if (!draggedPuzzleInfo || !dragCurrentSlot) return;
+    const { day, idx } = dragCurrentSlot;
     draggedPuzzleInfo = null;
-    dragHoverTarget = null;
-    clearOverviewDropPlaceholder();
-    removeActivityToTrash(dayNum, idx);
+    dragCurrentSlot = null;
+    removeActivityToTrash(day, idx);
 }
 
 function renderOverviewPuzzleBoard() {
     const grid = document.getElementById('overview-puzzle-grid');
     if (!grid) return;
     const totalDays = getTotalDays();
+    const draggingId = draggedPuzzleInfo?.item?.id ? String(draggedPuzzleInfo.item.id) : '';
+
     grid.innerHTML = Array.from({ length: totalDays }, (_, i) => i + 1).map(d => {
         const acts = appState.activitiesByDay[d] || [];
         const startAnchor = d === 1
@@ -1773,7 +1779,6 @@ function renderOverviewPuzzleBoard() {
 
         return `
             <div ondragover="handlePuzzleDragOver(event, ${d})"
-                 ondragleave="handlePuzzleDragLeave(event)"
                  ondrop="handlePuzzleDropToDay(event, ${d})"
                  class="bg-washi border border-stone-200 rounded-2xl p-3 space-y-2 min-h-[220px] flex flex-col justify-between transition-colors">
                 <div class="space-y-1.5">
@@ -1785,24 +1790,28 @@ function renderOverviewPuzzleBoard() {
                         ${startAnchor}
                     </div>
                     <div id="overview-day-list-${d}" class="space-y-1.5 min-h-[52px]">
-                        ${acts.map((a, idx) => `
+                        ${acts.map((a, idx) => {
+                            const isDraggingThis = draggingId && String(a.id) === draggingId;
+                            return `
                             <div data-overview-card="1"
+                                 data-overview-act-id="${a.id}"
                                  draggable="true"
                                  ondragstart="handlePuzzleDragStart(event, ${d}, ${idx})"
                                  ondragend="handlePuzzleDragEnd(event)"
                                  ondragover="handleOverviewCardDragOver(event, ${d}, ${idx})"
                                  ondrop="handlePuzzleDropToDay(event, ${d})"
-                                 class="bg-white border border-stone-200 hover:border-vermilion/60 rounded-xl p-2.5 text-xs shadow-2xs cursor-grab active:cursor-grabbing flex items-center justify-between gap-1.5 transition-all duration-200">
+                                 class="${isDraggingThis ? 'bg-vermilion/8 border-2 border-dashed border-vermilion text-vermilion shadow-inner' : 'bg-white border border-stone-200 hover:border-vermilion/60 shadow-2xs'} rounded-xl p-2.5 text-xs cursor-grab active:cursor-grabbing flex items-center justify-between gap-1.5 select-none">
                                 <div class="min-w-0 flex-1">
-                                    <div class="font-bold text-indigoJp leading-snug">${a.title}</div>
-                                    <div class="text-[10px] text-stone-400 mt-0.5">${a.tag || '景點'}・${a.duration || 90} 分</div>
+                                    <div class="font-bold ${isDraggingThis ? 'text-vermilion' : 'text-indigoJp'} leading-snug">${isDraggingThis ? '🧩 ' + a.title : a.title}</div>
+                                    <div class="text-[10px] ${isDraggingThis ? 'text-vermilion/80' : 'text-stone-400'} mt-0.5">${isDraggingThis ? '放開滑鼠左鍵即可嵌入此位置' : `${a.tag || '景點'}・${a.duration || 90} 分`}</div>
                                 </div>
-                                <div class="flex flex-col gap-0.5 shrink-0">
+                                <div class="flex flex-col gap-0.5 shrink-0 ${isDraggingThis ? 'opacity-0 pointer-events-none' : ''}">
                                     <button type="button" onclick="event.stopPropagation(); moveActivityOrder(${d}, ${idx}, -1)" ${idx === 0 ? 'disabled' : ''} title="上移順序" class="px-1.5 py-0.5 rounded bg-washi hover:bg-stone-200 disabled:opacity-30 text-[10px] font-bold text-stone-600 cursor-pointer">↑</button>
                                     <button type="button" onclick="event.stopPropagation(); moveActivityOrder(${d}, ${idx}, 1)" ${idx === acts.length - 1 ? 'disabled' : ''} title="下移順序" class="px-1.5 py-0.5 rounded bg-washi hover:bg-stone-200 disabled:opacity-30 text-[10px] font-bold text-stone-600 cursor-pointer">↓</button>
                                 </div>
                             </div>
-                        `).join('') || '<div class="text-[11px] text-stone-400 text-center py-4 border border-dashed border-stone-200 rounded-xl">可拖曳拼圖至此天</div>'}
+                        `;
+                        }).join('') || '<div class="text-[11px] text-stone-400 text-center py-4 border border-dashed border-stone-200 rounded-xl">可拖曳拼圖至此天</div>'}
                     </div>
                 </div>
                 <div class="bg-slate-100/90 border border-slate-200 rounded-xl px-2.5 py-1.5 text-[11px] font-bold text-slate-700 truncate mt-1.5" title="${endAnchor}">
@@ -2636,6 +2645,9 @@ function renderAll() {
         showHealthWarning('⚠️ app.js 分區設定異常，請檢查最近修改的括號或逗號。');
         return;
     }
+
+    const verBadge = document.getElementById('app-version-badge');
+    if (verBadge) verBadge.textContent = APP_VERSION;
 
     const sInput = document.getElementById('start-date');
     const eInput = document.getElementById('end-date');
