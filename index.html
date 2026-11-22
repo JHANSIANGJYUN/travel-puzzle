@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="./styles.css?v=1.45">
+    <link rel="stylesheet" href="./styles.css?v=1.47">
     <script>
         tailwind.config = {
             theme: {
@@ -33,7 +33,7 @@
 </head>
 <body class="min-h-screen flex flex-col antialiased selection:bg-vermilion/20 selection:text-vermilion">
 
-    <!-- 結構與資料健康檢查橫幅（僅在檔案缺漏或載入異常時顯示） -->
+    <!-- 結構與資料健康檢查橫幅 -->
     <div id="health-check-banner" class="hidden bg-red-600 text-white text-xs font-bold px-4 py-2 text-center"></div>
 
     <!-- 頂部導覽列 -->
@@ -48,7 +48,7 @@
                 <div>
                     <div class="flex items-center flex-wrap gap-1.5">
                         <h1 class="font-serif text-base sm:text-lg font-bold text-indigoJp tracking-wide">旅遊拼圖 Travel Puzzle</h1>
-                        <span id="app-version-badge" class="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-indigoJp/10 text-indigoJp">v1.45</span>
+                        <span id="app-version-badge" class="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-indigoJp/10 text-indigoJp">v1.47</span>
                         <span id="cloud-db-version-badge" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-stone-100 text-stone-500">🌐 讀取 db.json 中</span>
                         <span id="auto-save-status" class="text-[11px] text-stone-400 font-medium">☁️ 已自動儲存</span>
                     </div>
@@ -254,7 +254,7 @@
             <!-- 全行程拼圖總覽看板 -->
             <div id="overview-board-section" class="hidden space-y-3">
                 <div class="bg-amber-50/90 border border-amber-200/80 rounded-xl p-3 text-xs text-amber-950 flex flex-wrap items-center justify-between gap-2">
-                    <span><strong>全行程拼圖總覽模式：</strong>可直接<strong>拖曳拼圖上下調整順序、跨天移動</strong>，或往下拖進垃圾桶拆下拼圖。</span>
+                    <span><strong>全行程拼圖總覽模式：</strong>可直接<strong>拖曳拼圖上下調整順序、跨天移動</strong>，或使用卡片右側 <strong>↑ / ↓ 按鈕</strong>微調順序（頭尾機場與住宿飯店自動固定）。</span>
                     <button type="button" onclick="setTimelineViewMode('single')" class="text-xs font-bold text-indigoJp hover:text-vermilion underline shrink-0 cursor-pointer">返回單日精算 ➔</button>
                 </div>
                 <div id="overview-puzzle-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 items-start"></div>
@@ -428,14 +428,14 @@
             </div>
         </section>
 
-        <!-- 區塊三：當季限定祭典、點燈與順遊景點拼圖庫（直接由 db.json 驅動） -->
+        <!-- 區塊三：當季限定祭典、點燈與順遊景點拼圖庫 -->
         <section class="bg-white rounded-2xl border border-stone-200/90 shadow-xs p-5 space-y-4">
             <div class="flex flex-wrap items-center justify-between gap-2 border-b border-stone-100 pb-3">
                 <div class="flex items-center gap-2">
                     <span class="w-6 h-6 rounded-full bg-matcha text-white text-xs font-bold flex items-center justify-center">3</span>
                     <div>
                         <h2 class="font-serif text-lg font-bold text-indigoJp">當季限定祭典、點燈與順遊景點拼圖庫</h2>
-                        <p class="text-[11px] text-stone-500">直接同步倉庫 db.json 資料庫，並支援 Google Maps 4.0★ 以上高評價推薦</p>
+                        <p class="text-[11px] text-stone-500">自動優先置頂出發月份限定活動，並自動串接 Google Maps 4.0★ 以上高評價推薦</p>
                     </div>
                 </div>
                 <div class="flex items-center gap-1.5 flex-wrap">
@@ -597,7 +597,7 @@
         </div>
     </div>
 
-    <!-- 主邏輯腳本（直接串接同目錄與 GitHub 上的 db.json 與 japan.svg） -->
-    <script src="./app.js?v=1.45"></script>
+    <!-- 引入外部核心主程式 app.js（直接讀取 db.json 與 japan.svg） -->
+    <script src="./app.js?v=1.47" onerror="document.getElementById('health-check-banner').textContent='⚠️ 找不到 app.js，請確認 app.js 已上傳至倉庫根目錄！'; document.getElementById('health-check-banner').classList.remove('hidden');"></script>
 </body>
 </html>
