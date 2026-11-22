@@ -8,8 +8,15 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="./styles.css?v=1.48">
     <script>
+        // 動態附加時間戳載入 styles.css，確保每次更新即時生效不被快取
+        (function () {
+            const cssLink = document.createElement('link');
+            cssLink.rel = 'stylesheet';
+            cssLink.href = './styles.css?v=' + Date.now();
+            document.head.appendChild(cssLink);
+        })();
+
         tailwind.config = {
             theme: {
                 extend: {
@@ -28,7 +35,7 @@
                     }
                 }
             }
-        }
+        };
     </script>
 </head>
 <body class="min-h-screen flex flex-col antialiased selection:bg-vermilion/20 selection:text-vermilion">
@@ -48,7 +55,7 @@
                 <div>
                     <div class="flex items-center flex-wrap gap-1.5">
                         <h1 class="font-serif text-base sm:text-lg font-bold text-indigoJp tracking-wide">旅遊拼圖 Travel Puzzle</h1>
-                        <span id="app-version-badge" class="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-indigoJp/10 text-indigoJp">v1.48</span>
+                        <span id="app-version-badge" class="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-indigoJp/10 text-indigoJp">v1.49</span>
                         <span id="cloud-db-version-badge" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-stone-100 text-stone-500">🌐 讀取 db.json 中</span>
                         <span id="auto-save-status" class="text-[11px] text-stone-400 font-medium">☁️ 已自動儲存</span>
                     </div>
@@ -57,16 +64,16 @@
             </div>
 
             <div class="flex items-center gap-1.5 sm:gap-2">
-                <button id="device-sync-header-btn" onclick="openApiKeyModal()" class="inline-flex items-center gap-1 bg-emerald-50 hover:bg-emerald-100 text-emerald-900 border border-emerald-300 text-xs font-bold px-2.5 sm:px-3 py-2 rounded-xl shadow-2xs transition-colors cursor-pointer">
+                <button type="button" id="device-sync-header-btn" onclick="openApiKeyModal()" class="inline-flex items-center gap-1 bg-emerald-50 hover:bg-emerald-100 text-emerald-900 border border-emerald-300 text-xs font-bold px-2.5 sm:px-3 py-2 rounded-xl shadow-2xs transition-colors cursor-pointer">
                     <span>☁️ <span id="header-sync-code-label">同步代碼</span></span>
                 </button>
-                <button id="api-key-header-btn" onclick="openApiKeyModal()" class="inline-flex items-center gap-1 bg-washi hover:bg-amber-50 text-indigoJp border border-stone-300 text-xs font-medium px-2.5 sm:px-3 py-2 rounded-xl shadow-2xs transition-colors cursor-pointer">
+                <button type="button" id="api-key-header-btn" onclick="openApiKeyModal()" class="inline-flex items-center gap-1 bg-washi hover:bg-amber-50 text-indigoJp border border-stone-300 text-xs font-medium px-2.5 sm:px-3 py-2 rounded-xl shadow-2xs transition-colors cursor-pointer">
                     <span>🔑 API / 雲端庫</span>
                 </button>
-                <button onclick="openResetConfirmModal()" class="inline-flex items-center gap-1 bg-white hover:bg-red-50 text-stone-600 hover:text-vermilion border border-stone-300 hover:border-vermilion/50 text-xs font-medium px-2.5 sm:px-3 py-2 rounded-xl shadow-2xs transition-colors cursor-pointer">
+                <button type="button" onclick="openResetConfirmModal()" class="inline-flex items-center gap-1 bg-white hover:bg-red-50 text-stone-600 hover:text-vermilion border border-stone-300 hover:border-vermilion/50 text-xs font-medium px-2.5 sm:px-3 py-2 rounded-xl shadow-2xs transition-colors cursor-pointer">
                     <span>🗑️ 重設</span>
                 </button>
-                <button onclick="openExportModal()" class="inline-flex items-center gap-1.5 bg-indigoJp hover:bg-indigoJp/90 text-white text-xs sm:text-sm font-medium px-3 sm:px-3.5 py-2 rounded-xl shadow-xs transition-colors cursor-pointer">
+                <button type="button" onclick="openExportModal()" class="inline-flex items-center gap-1.5 bg-indigoJp hover:bg-indigoJp/90 text-white text-xs sm:text-sm font-medium px-3 sm:px-3.5 py-2 rounded-xl shadow-xs transition-colors cursor-pointer">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
                     </svg>
@@ -94,15 +101,15 @@
             <!-- 第一排：日期與人數 -->
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <div class="bg-washi p-3 rounded-xl border border-stone-200/80">
-                    <label class="block text-xs font-bold text-stone-600 mb-1">📅 出發日期（去程）</label>
+                    <label for="start-date" class="block text-xs font-bold text-stone-600 mb-1">📅 出發日期（去程）</label>
                     <input type="date" id="start-date" value="2026-12-18" onchange="handleDateRangeChange('start')" class="w-full bg-white border border-stone-300 rounded-lg px-2.5 py-1.5 text-sm font-medium text-indigoJp focus:outline-none focus:border-indigoJp">
                 </div>
                 <div class="bg-washi p-3 rounded-xl border border-stone-200/80">
-                    <label class="block text-xs font-bold text-stone-600 mb-1">🏁 回程日期（離境）</label>
+                    <label for="end-date" class="block text-xs font-bold text-stone-600 mb-1">🏁 回程日期（離境）</label>
                     <input type="date" id="end-date" value="2026-12-21" onchange="handleDateRangeChange('end')" class="w-full bg-white border border-stone-300 rounded-lg px-2.5 py-1.5 text-sm font-medium text-indigoJp focus:outline-none focus:border-indigoJp">
                 </div>
                 <div class="bg-washi p-3 rounded-xl border border-stone-200/80">
-                    <label class="block text-xs font-bold text-stone-600 mb-1">👥 同行人數</label>
+                    <label for="traveler-count" class="block text-xs font-bold text-stone-600 mb-1">👥 同行人數</label>
                     <select id="traveler-count" onchange="handleTravelerCountChange(this.value)" class="w-full bg-white border border-stone-300 rounded-lg px-2.5 py-1.5 text-sm font-bold text-indigoJp focus:outline-none focus:border-indigoJp">
                         <option value="1">1 人（獨旅）</option>
                         <option value="2" selected>2 人同行</option>
@@ -156,9 +163,9 @@
                 <div class="flex flex-wrap items-center justify-between gap-2">
                     <span class="text-xs font-bold text-indigoJp">✈️ 航班設定（自動帶入降落機場與抵達起飛時刻）</span>
                     <div class="flex items-center gap-1.5">
-                        <input type="text" id="outbound-flight-input" value="AK176" placeholder="去程如 AK176" class="w-24 sm:w-28 bg-white border border-stone-300 rounded-lg px-2.5 py-1 text-xs font-mono font-bold uppercase focus:outline-none focus:border-indigoJp">
+                        <input type="text" id="outbound-flight-input" value="AK176" placeholder="去程如 AK176" aria-label="去程航班代號" class="w-24 sm:w-28 bg-white border border-stone-300 rounded-lg px-2.5 py-1 text-xs font-mono font-bold uppercase focus:outline-none focus:border-indigoJp">
                         <span class="text-stone-400 text-xs">➔</span>
-                        <input type="text" id="inbound-flight-input" value="AK177" placeholder="回程如 AK177" class="w-24 sm:w-28 bg-white border border-stone-300 rounded-lg px-2.5 py-1 text-xs font-mono font-bold uppercase focus:outline-none focus:border-indigoJp">
+                        <input type="text" id="inbound-flight-input" value="AK177" placeholder="回程如 AK177" aria-label="回程航班代號" class="w-24 sm:w-28 bg-white border border-stone-300 rounded-lg px-2.5 py-1 text-xs font-mono font-bold uppercase focus:outline-none focus:border-indigoJp">
                         <button type="button" id="fetch-flight-btn" onclick="lookupFlights()" class="bg-indigoJp hover:bg-indigoJp/90 text-white font-bold text-xs px-3 py-1.5 rounded-lg shadow-2xs transition-colors cursor-pointer shrink-0">
                             🔍 讀取航班
                         </button>
@@ -183,11 +190,11 @@
                     </div>
                     <div id="driving-cost-inputs" class="hidden grid-cols-2 gap-2 pt-2 border-t border-amber-200/60">
                         <div>
-                            <label class="block text-[11px] text-amber-900 mb-0.5">租車總租金 (¥)</label>
+                            <label for="rental-car-cost" class="block text-[11px] text-amber-900 mb-0.5">租車總租金 (¥)</label>
                             <input type="number" id="rental-car-cost" value="32000" onchange="handleRentalCostChange()" class="w-full bg-white border border-amber-300 rounded-lg px-2.5 py-1 text-xs font-mono font-bold">
                         </div>
                         <div>
-                            <label class="block text-[11px] text-amber-900 mb-0.5">預估油資＋過路費 (¥)</label>
+                            <label for="rental-toll-fuel" class="block text-[11px] text-amber-900 mb-0.5">預估油資＋過路費 (¥)</label>
                             <input type="number" id="rental-toll-fuel" value="8500" onchange="handleRentalCostChange()" class="w-full bg-white border border-amber-300 rounded-lg px-2.5 py-1 text-xs font-mono font-bold">
                         </div>
                     </div>
@@ -206,10 +213,10 @@
                     <div id="jr-pass-config-panel" class="space-y-2 pt-1">
                         <div class="grid grid-cols-1 sm:grid-cols-12 gap-2">
                             <div class="sm:col-span-8">
-                                <select id="jr-pass-select" onchange="handleJrPassConfigChange()" class="w-full bg-white border border-emerald-300 rounded-lg px-2.5 py-1.5 text-xs font-medium text-sumi focus:outline-none"></select>
+                                <select id="jr-pass-select" aria-label="選擇第一張 JR PASS" onchange="handleJrPassConfigChange()" class="w-full bg-white border border-emerald-300 rounded-lg px-2.5 py-1.5 text-xs font-medium text-sumi focus:outline-none"></select>
                             </div>
                             <div class="sm:col-span-4">
-                                <select id="jr-pass-start-day" onchange="handleJrPassConfigChange()" class="w-full bg-white border border-emerald-300 rounded-lg px-2.5 py-1.5 text-xs font-bold text-indigoJp focus:outline-none"></select>
+                                <select id="jr-pass-start-day" aria-label="選擇第一張 PASS 啟用日" onchange="handleJrPassConfigChange()" class="w-full bg-white border border-emerald-300 rounded-lg px-2.5 py-1.5 text-xs font-bold text-indigoJp focus:outline-none"></select>
                             </div>
                         </div>
                         <div id="jr-pass-active-days-banner" class="text-[11px] font-bold text-emerald-900 bg-emerald-100/80 px-2.5 py-1 rounded-lg border border-emerald-300/60"></div>
@@ -221,10 +228,10 @@
                         </div>
                         <div id="second-jr-pass-box" class="hidden grid-cols-1 sm:grid-cols-12 gap-2 pt-1">
                             <div class="sm:col-span-8">
-                                <select id="jr-pass-select-2" onchange="handleJrPassConfigChange()" class="w-full bg-white border border-emerald-300 rounded-lg px-2.5 py-1.5 text-xs font-medium text-sumi"></select>
+                                <select id="jr-pass-select-2" aria-label="選擇第二張 JR PASS" onchange="handleJrPassConfigChange()" class="w-full bg-white border border-emerald-300 rounded-lg px-2.5 py-1.5 text-xs font-medium text-sumi"></select>
                             </div>
                             <div class="sm:col-span-4">
-                                <select id="jr-pass-start-day-2" onchange="handleJrPassConfigChange()" class="w-full bg-white border border-emerald-300 rounded-lg px-2.5 py-1.5 text-xs font-bold text-indigoJp"></select>
+                                <select id="jr-pass-start-day-2" aria-label="選擇第二張 PASS 啟用日" onchange="handleJrPassConfigChange()" class="w-full bg-white border border-emerald-300 rounded-lg px-2.5 py-1.5 text-xs font-bold text-indigoJp"></select>
                             </div>
                         </div>
                         <div id="jr-cost-comparison-box" class="text-xs bg-white/90 rounded-lg p-2.5 border border-emerald-200"></div>
@@ -274,18 +281,18 @@
                 <div class="bg-washi p-4 rounded-xl border border-stone-200/80 space-y-3">
                     <div class="grid grid-cols-1 sm:grid-cols-12 gap-3 items-end">
                         <div class="sm:col-span-3">
-                            <label class="block text-[11px] font-bold text-stone-600 mb-1">⏰ 當日出發時間</label>
+                            <label for="day-start-time" class="block text-[11px] font-bold text-stone-600 mb-1">⏰ 當日出發時間</label>
                             <input type="time" id="day-start-time" value="09:30" onchange="updateDayStartTime(this.value)" class="w-full bg-white border border-stone-300 rounded-xl px-3 py-2 text-sm font-mono font-bold text-indigoJp">
                         </div>
                         <div id="hotel-setting-box" class="sm:col-span-6">
-                            <label class="block text-[11px] font-bold text-stone-600 mb-1">🏨 Day <span id="hotel-day-num">1</span> 今晚住宿飯店（自動串接隔日起點）</label>
+                            <label for="day-hotel-input" class="block text-[11px] font-bold text-stone-600 mb-1">🏨 Day <span id="hotel-day-num">1</span> 今晚住宿飯店（自動串接隔日起點）</label>
                             <div class="flex gap-1.5">
                                 <input type="text" id="day-hotel-input" placeholder="例如：東橫INN 大阪難波西、京都站前飯店" onchange="saveDayHotel(this.value)" class="flex-1 bg-white border border-stone-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-indigoJp">
                                 <button type="button" onclick="saveDayHotel(document.getElementById('day-hotel-input').value)" class="bg-indigoJp text-white text-xs font-bold px-3 rounded-xl shrink-0 cursor-pointer">套用</button>
                             </div>
                         </div>
                         <div class="sm:col-span-3">
-                            <label class="block text-[11px] font-bold text-stone-600 mb-1">🔄 自由對調行程（住宿不動）</label>
+                            <label for="swap-target-day" class="block text-[11px] font-bold text-stone-600 mb-1">🔄 自由對調行程（住宿不動）</label>
                             <div class="flex gap-1">
                                 <select id="swap-target-day" class="flex-1 bg-white border border-stone-300 rounded-xl px-2 py-2 text-xs font-bold text-indigoJp"></select>
                                 <button type="button" onclick="handleManualDaySwap()" class="bg-white hover:bg-indigoJp hover:text-white text-indigoJp border border-indigoJp/30 text-xs font-bold px-2.5 rounded-xl transition-colors cursor-pointer">對調</button>
@@ -339,7 +346,7 @@
                         </div>
                     </div>
                     <div class="flex items-center gap-2 bg-washi px-3 py-1.5 rounded-xl border border-stone-200 text-xs">
-                        <span class="text-stone-500">匯率 1 JPY =</span>
+                        <label for="jpy-rate-input" class="text-stone-500">匯率 1 JPY =</label>
                         <input type="number" id="jpy-rate-input" value="0.215" step="0.001" min="0.01" onchange="updateJpyRate(this.value)" class="w-16 bg-white border border-stone-300 rounded-lg px-1.5 py-0.5 font-mono font-bold text-indigoJp text-center focus:outline-none">
                         <span class="text-stone-500">TWD</span>
                     </div>
@@ -350,22 +357,22 @@
                     <span class="block text-xs font-bold text-indigoJp">✈️🏨 機票與住宿獨立記帳（不計入單日零用開銷）</span>
                     <div class="grid grid-cols-1 sm:grid-cols-12 gap-2 items-center">
                         <div class="sm:col-span-3">
-                            <select id="fixed-expense-type" class="w-full bg-white border border-stone-300 rounded-xl px-2.5 py-2 text-xs font-bold text-indigoJp">
+                            <select id="fixed-expense-type" aria-label="機酒費用類型" class="w-full bg-white border border-stone-300 rounded-xl px-2.5 py-2 text-xs font-bold text-indigoJp">
                                 <option value="機票費用">✈️ 機票費用</option>
                                 <option value="住宿費用">🏨 住宿費用</option>
                             </select>
                         </div>
                         <div class="sm:col-span-4">
-                            <input type="text" id="fixed-expense-item" placeholder="說明（如：來回機票2張、東橫INN 3晚）" class="w-full bg-white border border-stone-300 rounded-xl px-3 py-2 text-xs">
+                            <input type="text" id="fixed-expense-item" placeholder="說明（如：來回機票2張、東橫INN 3晚）" aria-label="機酒費用說明" class="w-full bg-white border border-stone-300 rounded-xl px-3 py-2 text-xs">
                         </div>
                         <div class="sm:col-span-2">
-                            <select id="fixed-expense-currency" class="w-full bg-white border border-stone-300 rounded-xl px-2 py-2 text-xs font-bold">
+                            <select id="fixed-expense-currency" aria-label="機酒幣別" class="w-full bg-white border border-stone-300 rounded-xl px-2 py-2 text-xs font-bold">
                                 <option value="TWD">台幣 NT$</option>
                                 <option value="JPY">日圓 ¥</option>
                             </select>
                         </div>
                         <div class="sm:col-span-2">
-                            <input type="number" id="fixed-expense-amount" placeholder="金額" min="1" class="w-full bg-white border border-stone-300 rounded-xl px-3 py-2 text-xs font-mono font-bold">
+                            <input type="number" id="fixed-expense-amount" placeholder="金額" min="1" aria-label="機酒金額" class="w-full bg-white border border-stone-300 rounded-xl px-3 py-2 text-xs font-mono font-bold">
                         </div>
                         <div class="sm:col-span-1">
                             <button type="button" onclick="addFixedExpenseRecord()" class="w-full bg-indigoJp hover:bg-vermilion text-white font-bold text-xs py-2 px-2 rounded-xl cursor-pointer">加入</button>
@@ -382,7 +389,7 @@
                         </select>
                     </div>
                     <div class="sm:col-span-3">
-                        <select id="expense-category" class="w-full bg-white border border-stone-300 rounded-xl px-2.5 py-2 text-xs font-bold text-sumi">
+                        <select id="expense-category" aria-label="消費分類" class="w-full bg-white border border-stone-300 rounded-xl px-2.5 py-2 text-xs font-bold text-sumi">
                             <option value="🍜 美食餐飲">🍜 美食餐飲</option>
                             <option value="🎟️ 門票體驗">🎟️ 門票體驗</option>
                             <option value="🛍️ 購物伴手禮">🛍️ 購物伴手禮</option>
@@ -391,10 +398,10 @@
                         </select>
                     </div>
                     <div class="sm:col-span-4">
-                        <input type="text" id="expense-item-name" placeholder="消費項目（如：一蘭拉麵、清水寺門票）" class="w-full bg-white border border-stone-300 rounded-xl px-3 py-2 text-xs">
+                        <input type="text" id="expense-item-name" placeholder="消費項目（如：一蘭拉麵、清水寺門票）" aria-label="消費項目名稱" class="w-full bg-white border border-stone-300 rounded-xl px-3 py-2 text-xs">
                     </div>
                     <div class="sm:col-span-2">
-                        <input type="number" id="expense-amount-jpy" placeholder="日圓 ¥" min="1" class="w-full bg-white border border-stone-300 rounded-xl px-3 py-2 text-xs font-mono font-bold">
+                        <input type="number" id="expense-amount-jpy" placeholder="日圓 ¥" min="1" aria-label="日圓金額" class="w-full bg-white border border-stone-300 rounded-xl px-3 py-2 text-xs font-mono font-bold">
                     </div>
                     <div class="sm:col-span-1">
                         <button type="button" onclick="addExpenseRecord()" class="w-full bg-vermilion hover:bg-indigoJp text-white font-bold text-xs py-2 px-2 rounded-xl cursor-pointer">記一筆</button>
@@ -447,7 +454,7 @@
             </div>
 
             <div class="flex flex-col sm:flex-row gap-2">
-                <input type="text" id="spot-search-input" onkeydown="if(event.key==='Enter') searchCustomPlaceOrQuickAdd()" placeholder="輸入想去的日本景點、餐廳或車站名稱（例如：黑門市場、神戶動物王國）..." class="flex-1 bg-washi border border-stone-300 rounded-xl px-3.5 py-2 text-xs sm:text-sm focus:outline-none focus:border-indigoJp">
+                <input type="text" id="spot-search-input" onkeydown="if(event.key==='Enter') searchCustomPlaceOrQuickAdd()" placeholder="輸入想去的日本景點、餐廳或車站名稱（例如：黑門市場、神戶動物王國）..." aria-label="搜尋日本景點" class="flex-1 bg-washi border border-stone-300 rounded-xl px-3.5 py-2 text-xs sm:text-sm focus:outline-none focus:border-indigoJp">
                 <button type="button" onclick="searchCustomPlaceOrQuickAdd()" class="bg-indigoJp hover:bg-vermilion text-white font-bold text-xs px-4 py-2 rounded-xl shadow-2xs transition-colors cursor-pointer shrink-0">＋ 搜尋並加入拼圖庫</button>
             </div>
 
@@ -464,12 +471,12 @@
             </div>
             <div class="space-y-3 text-xs">
                 <div>
-                    <label class="block font-bold text-stone-700 mb-1">地點或活動名稱</label>
+                    <label for="custom-piece-title" class="block font-bold text-stone-700 mb-1">地點或活動名稱</label>
                     <input type="text" id="custom-piece-title" placeholder="例如：心齋橋 PARCO 寶可夢中心、一蘭拉麵" class="w-full border border-stone-300 rounded-xl px-3 py-2 text-sm">
                 </div>
                 <div class="grid grid-cols-2 gap-2">
                     <div>
-                        <label class="block font-bold text-stone-700 mb-1">類型標籤</label>
+                        <label for="custom-piece-tag" class="block font-bold text-stone-700 mb-1">類型標籤</label>
                         <select id="custom-piece-tag" class="w-full border border-stone-300 rounded-xl px-2.5 py-2 font-bold">
                             <option value="經典名勝">⛩️ 經典名勝</option>
                             <option value="光影花火">✨ 光影花火</option>
@@ -478,12 +485,12 @@
                         </select>
                     </div>
                     <div>
-                        <label class="block font-bold text-stone-700 mb-1">預計停留（分鐘）</label>
+                        <label for="custom-piece-duration" class="block font-bold text-stone-700 mb-1">預計停留（分鐘）</label>
                         <input type="number" id="custom-piece-duration" value="90" min="15" step="15" class="w-full border border-stone-300 rounded-xl px-3 py-2 font-mono font-bold">
                     </div>
                 </div>
                 <div>
-                    <label class="block font-bold text-stone-700 mb-1">備註或交通提醒（選填）</label>
+                    <label for="custom-piece-note" class="block font-bold text-stone-700 mb-1">備註或交通提醒（選填）</label>
                     <input type="text" id="custom-piece-note" placeholder="例如：需提前預約、傍晚點燈後造訪" class="w-full border border-stone-300 rounded-xl px-3 py-2">
                 </div>
             </div>
@@ -509,7 +516,7 @@
                 <div id="github-sync-status-line" class="text-[11px] font-bold text-emerald-700">🟢 準備就緒</div>
                 <p class="text-[11px] text-stone-500 leading-relaxed">手機讀取免設 Token：電腦填入下方 GitHub Token 並按「⬆️ 上傳」後，手機只要輸入相同「同步代碼」並按「📥 讀取」即可載入最新行程！</p>
                 <div class="flex flex-wrap items-center gap-1.5">
-                    <input type="text" id="modal-sync-code-input" placeholder="JP-GPVMP6" class="w-32 bg-white border border-stone-300 rounded-xl px-2.5 py-1.5 font-mono font-bold uppercase text-indigoJp">
+                    <input type="text" id="modal-sync-code-input" placeholder="JP-GPVMP6" aria-label="同步代碼" class="w-32 bg-white border border-stone-300 rounded-xl px-2.5 py-1.5 font-mono font-bold uppercase text-indigoJp">
                     <button type="button" onclick="copySyncCodeText()" class="px-2.5 py-1.5 rounded-xl bg-white hover:bg-stone-100 border border-stone-300 font-bold text-stone-700 cursor-pointer">複製</button>
                     <button type="button" id="btn-pull-github-trip" onclick="pullTripFromGitHub()" class="px-3 py-1.5 rounded-xl bg-indigoJp hover:bg-indigoJp/90 text-white font-bold cursor-pointer">📥 讀取此代碼</button>
                     <button type="button" id="btn-push-github-trip" onclick="pushTripToGitHub()" class="px-3 py-1.5 rounded-xl bg-matcha hover:bg-matcha/90 text-white font-bold cursor-pointer">⬆️ 上傳</button>
@@ -518,7 +525,7 @@
                     <button type="button" onclick="copyShareSetupLink()" class="px-3 py-1.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-white font-bold shadow-2xs cursor-pointer">🔗 複製一鍵自動設定連結（免重打金鑰）</button>
                 </div>
                 <div>
-                    <label class="block font-bold text-indigoJp mb-1">🔑 GitHub 寫入權杖 Personal Access Token（上傳行程必填，手機僅讀取可留空）</label>
+                    <label for="modal-github-token" class="block font-bold text-indigoJp mb-1">🔑 GitHub 寫入權杖 Personal Access Token（上傳行程必填，手機僅讀取可留空）</label>
                     <input type="password" id="modal-github-token" placeholder="ghp_... 或 github_pat_..." class="w-full bg-white border border-stone-300 rounded-xl px-3 py-2 font-mono">
                 </div>
             </div>
@@ -530,16 +537,16 @@
                 </div>
                 <div class="grid grid-cols-2 gap-2">
                     <div>
-                        <label class="block text-[11px] font-bold text-emerald-900 mb-0.5">GitHub 帳號</label>
+                        <label for="modal-github-user" class="block text-[11px] font-bold text-emerald-900 mb-0.5">GitHub 帳號</label>
                         <input type="text" id="modal-github-user" value="JHANSIANGJYUN" oninput="updateCloudUrlPreview()" placeholder="JHANSIANGJYUN" class="w-full bg-white border border-emerald-300 rounded-xl px-2.5 py-1.5 font-mono">
                     </div>
                     <div>
-                        <label class="block text-[11px] font-bold text-emerald-900 mb-0.5">倉庫名稱</label>
+                        <label for="modal-github-repo" class="block text-[11px] font-bold text-emerald-900 mb-0.5">倉庫名稱</label>
                         <input type="text" id="modal-github-repo" value="travel-puzzle" oninput="updateCloudUrlPreview()" placeholder="travel-puzzle" class="w-full bg-white border border-emerald-300 rounded-xl px-2.5 py-1.5 font-mono">
                     </div>
                 </div>
                 <div>
-                    <label class="block text-[11px] font-bold text-emerald-900 mb-0.5">對應的雲端 db.json 網址（可自動產生或直接貼上）</label>
+                    <label for="modal-cloud-db-url" class="block text-[11px] font-bold text-emerald-900 mb-0.5">對應的雲端 db.json 網址（可自動產生或直接貼上）</label>
                     <input type="text" id="modal-cloud-db-url" placeholder="https://raw.githubusercontent.com/JHANSIANGJYUN/travel-puzzle/main/db.json" class="w-full bg-white border border-emerald-300 rounded-xl px-3 py-1.5 font-mono text-[11px]">
                 </div>
             </div>
@@ -547,7 +554,7 @@
             <div class="bg-washi p-3.5 rounded-2xl border border-stone-200 space-y-3 text-xs">
                 <div class="space-y-1.5">
                     <div class="flex items-center justify-between gap-2">
-                        <label class="font-bold text-stone-700">🗺️ Google Maps API Key（真實路線時間與地點實景照）</label>
+                        <label for="modal-gmaps-key" class="font-bold text-stone-700">🗺️ Google Maps API Key（真實路線時間與地點實景照）</label>
                         <button type="button" id="btn-test-gmaps" onclick="testGoogleMapsApiKey()" class="shrink-0 px-2.5 py-1 rounded-lg bg-indigoJp/10 hover:bg-indigoJp text-indigoJp hover:text-white font-bold text-[11px] transition-colors cursor-pointer">🧪 測試連線</button>
                     </div>
                     <input type="password" id="modal-gmaps-key" placeholder="AIzaSy..." class="w-full bg-white border border-stone-300 rounded-xl px-3 py-1.5 font-mono">
@@ -555,7 +562,7 @@
                 </div>
                 <div class="space-y-1.5">
                     <div class="flex items-center justify-between gap-2">
-                        <label class="font-bold text-stone-700">✨ Gemini API Key（冷門航班與景點智慧補充）</label>
+                        <label for="modal-gemini-key" class="font-bold text-stone-700">✨ Gemini API Key（冷門航班與景點智慧補充）</label>
                         <button type="button" id="btn-test-gemini" onclick="testGeminiApiKey()" class="shrink-0 px-2.5 py-1 rounded-lg bg-indigoJp/10 hover:bg-indigoJp text-indigoJp hover:text-white font-bold text-[11px] transition-colors cursor-pointer">🧪 測試連線</button>
                     </div>
                     <input type="password" id="modal-gemini-key" placeholder="AIzaSy..." class="w-full bg-white border border-stone-300 rounded-xl px-3 py-1.5 font-mono">
@@ -577,7 +584,7 @@
                 <h3 class="font-serif font-bold text-base text-indigoJp">📖 匯出完整旅遊手札（可一鍵複製貼到 LINE / Notion）</h3>
                 <button type="button" onclick="closeExportModal()" class="text-stone-400 hover:text-sumi text-lg font-bold cursor-pointer">✕</button>
             </div>
-            <textarea id="export-text-area" rows="14" readonly class="w-full bg-washi border border-stone-300 rounded-xl p-3.5 text-xs font-mono leading-relaxed text-sumi focus:outline-none"></textarea>
+            <textarea id="export-text-area" rows="14" readonly aria-label="匯出行程文字內容" class="w-full bg-washi border border-stone-300 rounded-xl p-3.5 text-xs font-mono leading-relaxed text-sumi focus:outline-none"></textarea>
             <div class="flex justify-end gap-2">
                 <button type="button" onclick="closeExportModal()" class="px-4 py-2 rounded-xl border border-stone-300 text-xs font-bold text-stone-600 cursor-pointer">關閉</button>
                 <button type="button" onclick="copyExportText()" class="px-4 py-2 rounded-xl bg-indigoJp hover:bg-vermilion text-white text-xs font-bold cursor-pointer">📋 一鍵複製全部手札</button>
@@ -597,7 +604,20 @@
         </div>
     </div>
 
-    <!-- 引入外部核心主程式 app.js（直接讀取 db.json 與 japan.svg） -->
-    <script src="./app.js?v=1.48" onerror="document.getElementById('health-check-banner').textContent='⚠️ 找不到 app.js，請確認 app.js 已上傳至倉庫根目錄！'; document.getElementById('health-check-banner').classList.remove('hidden');"></script>
+    <!-- 自動防快取載入外部核心主程式 app.js（以後只需修改 app.js 即可自動生效） -->
+    <script>
+        (function () {
+            const s = document.createElement('script');
+            s.src = './app.js?v=' + Date.now();
+            s.onerror = function () {
+                const banner = document.getElementById('health-check-banner');
+                if (banner) {
+                    banner.textContent = '⚠️ 找不到 app.js，請確認 app.js 已上傳至倉庫根目錄！';
+                    banner.classList.remove('hidden');
+                }
+            };
+            document.body.appendChild(s);
+        })();
+    </script>
 </body>
 </html>
