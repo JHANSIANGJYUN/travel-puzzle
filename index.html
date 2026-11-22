@@ -9,7 +9,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@600;700&display=swap" rel="stylesheet">
     <script>
-        // 動態附加時間戳載入 styles.css，確保每次更新即時生效不被快取
         (function () {
             const cssLink = document.createElement('link');
             cssLink.rel = 'stylesheet';
@@ -55,7 +54,7 @@
                 <div>
                     <div class="flex items-center flex-wrap gap-1.5">
                         <h1 class="font-serif text-base sm:text-lg font-bold text-indigoJp tracking-wide">旅遊拼圖 Travel Puzzle</h1>
-                        <span id="app-version-badge" class="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-indigoJp/10 text-indigoJp">v1.49</span>
+                        <span id="app-version-badge" class="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-indigoJp/10 text-indigoJp">v1.50</span>
                         <span id="cloud-db-version-badge" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-stone-100 text-stone-500">🌐 讀取 db.json 中</span>
                         <span id="auto-save-status" class="text-[11px] text-stone-400 font-medium">☁️ 已自動儲存</span>
                     </div>
@@ -604,8 +603,16 @@
         </div>
     </div>
 
-    <!-- 自動防快取載入外部核心主程式 app.js（以後只需修改 app.js 即可自動生效） -->
+    <!-- 全域錯誤捕捉 ＋ 自動防快取載入外部核心主程式 app.js -->
     <script>
+        window.addEventListener('error', function (e) {
+            const banner = document.getElementById('health-check-banner');
+            if (banner && e && e.message) {
+                banner.textContent = '⚠️ 程式執行發生異常：' + e.message + (e.lineno ? ' (第 ' + e.lineno + ' 行)' : '');
+                banner.classList.remove('hidden');
+            }
+        });
+
         (function () {
             const s = document.createElement('script');
             s.src = './app.js?v=' + Date.now();
