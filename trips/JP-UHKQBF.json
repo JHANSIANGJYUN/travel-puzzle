@@ -1,0 +1,201 @@
+{
+  "updatedAt": "2026-11-22T04:43:54.494Z",
+  "syncCode": "JP-UHKQBF",
+  "appState": {
+    "tripCode": "JP-UHKQBF",
+    "tripTitle": "關西北陸7日",
+    "tripAuthor": "旅人手札",
+    "coverUrl": "",
+    "startDate": "2027-02-25",
+    "endDate": "2027-03-03",
+    "travelers": 3,
+    "region": "hokuriku",
+    "extraRegions": [],
+    "outboundFlight": {
+      "code": "IT252",
+      "airline": "台灣虎航 Tigerair",
+      "airport": "關西國際機場 (KIX)",
+      "terminal": "T1",
+      "time": "14:55",
+      "aircraft": "A320neo",
+      "region": "kansai"
+    },
+    "inboundFlight": {
+      "code": "MM27",
+      "airline": "樂桃航空 Peach",
+      "airport": "關西國際機場 (KIX)",
+      "terminal": "T2",
+      "time": "15:55",
+      "aircraft": "A320neo",
+      "region": "kansai"
+    },
+    "drivingMode": false,
+    "rentalCost": 32000,
+    "tollFuelCost": 8500,
+    "useJrPass": true,
+    "jrPassId": "jr-kansai-hokuriku-7",
+    "jrPassStartDay": 1,
+    "useSecondJrPass": false,
+    "jrPassId2": "jr-haruka-oneway",
+    "jrPassStartDay2": 1,
+    "activeDay": 2,
+    "timelineViewMode": "single",
+    "dayStartTimes": {
+      "1": "15:40",
+      "2": "09:00",
+      "3": "09:00",
+      "4": "09:30"
+    },
+    "dayHotels": {
+      "1": "東橫INN 金澤",
+      "2": "東橫INN 金澤",
+      "3": "東橫INN 新大阪東口"
+    },
+    "dropLuggageFirst": {
+      "1": false,
+      "2": false,
+      "3": false
+    },
+    "activitiesByDay": {
+      "1": [
+        {
+          "id": "act-1795322568142",
+          "title": "AEON 新高岡",
+          "tag": "美食逛街",
+          "duration": 90,
+          "note": ""
+        }
+      ],
+      "2": [
+        {
+          "id": "act-1795322593499",
+          "title": "近江町市場",
+          "tag": "美食逛街",
+          "duration": 90,
+          "note": ""
+        },
+        {
+          "id": "act-1795322612907",
+          "title": "兼六園",
+          "tag": "經典名勝",
+          "duration": 90,
+          "note": ""
+        }
+      ],
+      "3": [],
+      "4": []
+    },
+    "manualTransitMinutes": {},
+    "routeCache": {
+      "TRANSIT|關西國際機場 (KIX)|東橫INN 大阪難波西": {
+        "minutes": 73,
+        "modeBadge": "🚆 南海電鐵特急 Rapi:t / 空港急行直達最快",
+        "detailText": "南海空港線一班車直達難波加兩端步行約 73 分（若改搭 JR 需在天王寺/新今宮轉乘約 85 分）",
+        "fareText": "原價車資 ¥970（南海空港急行／特急 Rapi:t ¥1,490）"
+      },
+      "TRANSIT|東橫INN 大阪難波西|東橫INN 新大阪東口": {
+        "minutes": 37,
+        "modeBadge": "🚇 地鐵御堂筋線直達最快（亦可搭 JR 轉乘）",
+        "detailText": "地鐵一班車直達加兩端步行約 37 分（若改搭 JR 轉乘約需 45 分）",
+        "fareText": "原價車資 ¥290（地鐵需自付／若改搭 JR 轉乘可用 PASS）"
+      },
+      "TRANSIT|關西國際機場 (KIX)|東橫INN 金澤": {
+        "minutes": 322,
+        "modeBadge": "🚄 JR 新快速／特急直達（約 351 km）",
+        "detailText": "搭乘 JR 幹線列車含兩端步行轉乘約 322 分",
+        "fareText": "原價車資 ¥6,030（持 JR PASS 可全額折抵）"
+      },
+      "TRANSIT|AEON 新高岡|東橫INN 金澤": {
+        "minutes": 69,
+        "modeBadge": "🚄 JR 新快速／特急直達（約 47 km）",
+        "detailText": "搭乘 JR 幹線列車含兩端步行轉乘約 69 分",
+        "fareText": "原價車資 ¥1,010（持 JR PASS 可全額折抵）"
+      },
+      "TRANSIT|關西國際機場 (KIX)|AEON 新高岡": {
+        "minutes": 354,
+        "modeBadge": "🚄 JR 新快速／特急直達（約 395 km）",
+        "detailText": "搭乘 JR 幹線列車含兩端步行轉乘約 354 分",
+        "fareText": "原價車資 ¥6,760（持 JR PASS 可全額折抵）"
+      },
+      "TRANSIT|東橫INN 金澤|東橫INN 新大阪東口": {
+        "minutes": 280,
+        "modeBadge": "🚄 JR 新快速／特急直達（約 302 km）",
+        "detailText": "搭乘 JR 幹線列車含兩端步行轉乘約 280 分",
+        "fareText": "原價車資 ¥5,220（持 JR PASS 可全額折抵）"
+      },
+      "TRANSIT|東橫INN 新大阪東口|近江町市場": {
+        "minutes": 284,
+        "modeBadge": "🚄 JR 新快速／特急直達（約 304 km）",
+        "detailText": "搭乘 JR 幹線列車含兩端步行轉乘約 284 分",
+        "fareText": "原價車資 ¥5,260（持 JR PASS 可全額折抵）"
+      },
+      "TRANSIT|近江町市場|東橫INN 新大阪東口": {
+        "minutes": 282,
+        "modeBadge": "🚄 JR 新快速／特急直達（約 302 km）",
+        "detailText": "搭乘 JR 幹線列車含兩端步行轉乘約 282 分",
+        "fareText": "原價車資 ¥5,230（持 JR PASS 可全額折抵）"
+      },
+      "TRANSIT|東橫INN 金澤|近江町市場": {
+        "minutes": 19,
+        "modeBadge": "🚶 步行散策直達最快",
+        "detailText": "沿途步行前往約 19 分（距離約 1.0 km）",
+        "fareText": "步行免費 ¥0"
+      },
+      "TRANSIT|近江町市場|東橫INN 金澤": {
+        "minutes": 19,
+        "modeBadge": "🚶 步行散策直達最快",
+        "detailText": "沿途步行前往約 19 分（距離約 0.9 km）",
+        "fareText": "步行免費 ¥0"
+      },
+      "TRANSIT|兼六園|東橫INN 金澤": {
+        "minutes": 28,
+        "modeBadge": "🚃 JR 在來線／地鐵轉乘",
+        "detailText": "市區電車轉乘含兩端進出站步行約 28 分（約 3.2 km）",
+        "fareText": "原價車資 ¥230（JR 路段可用 PASS 折抵／私鐵地鐵需自付）"
+      },
+      "TRANSIT|近江町市場|兼六園": {
+        "minutes": 22,
+        "modeBadge": "🚶 步行散策直達最快",
+        "detailText": "沿途步行前往約 22 分（距離約 2.0 km）",
+        "fareText": "步行免費 ¥0"
+      }
+    },
+    "trashBin": [],
+    "trashDrawerOpen": false,
+    "jpyRate": 0.215,
+    "fixedExpenses": [],
+    "expensesByDay": {},
+    "recFilter": "all",
+    "customRecItems": [
+      {
+        "id": "custom-rec-1795322471741",
+        "region": "kansai",
+        "type": "spot",
+        "months": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12
+        ],
+        "tag": "自訂搜尋",
+        "periodText": "即時加入",
+        "rating": 0,
+        "userRatingCount": 0,
+        "location": "石川縣金澤市",
+        "title": "金澤",
+        "duration": 90,
+        "note": "使用者自訂搜尋加入的行程拼圖，可選擇天數嵌入。",
+        "photoUrl": "https://places.googleapis.com/v1/places/ChIJw2aFRlU2-F8RFWLeb8RV8Y0/photos/AV-0GLe_40o329b_d_XDpj5PgNoWT_T936oA7f-dQsuR0_SDX4jFbr6h4Ym0BYNmkJ9jHVh-fib5rGv6QziXE-PHmwoalwY6i0z9v6L_n7knKn7ohioFCj4PdX1T6a9x9y-W78qdY-eNw_ReSOt5fy6IRiTXdLMr_cK9uu7_mCS3eDTpTnuEo6_7klGZGgrRyD4W7XuKR8K7GHFwpu_BbA3UXFxxeuR6R8rpddMfNxuxXAx9FmEpMN73SeW8tiwBwAI8sH9f2MOB5NaZsWgsb6gDPCIueFFHMCLl27xL6yzpg7AWqBQnZJO2Whv4x7vOubsldf2Py-As1WonEKUdO-5KhQcarRkGpOtWBELtW_dTMZv21h5Xl1S87Vg44ol-DPyj3xpwjKP7ldaBrLJcDCxpNsFm4w/media?maxWidthPx=600&key=AIzaSyD8rHbYZwY0ovF7mWP0r-9xWnBIY7HAGt0"
+      }
+    ],
+    "expenseSelectedDay": 1
+  }
+}
