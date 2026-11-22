@@ -1,7 +1,7 @@
-// 旅遊拼圖 Travel Puzzle 主程式 (v2.10)
+// 旅遊拼圖 Travel Puzzle 主程式 (v2.11)
 // 支援「手札拍立得旅程大廳」、「完整規劃模式」、「隨身行程檢視＋記帳模式」與「三層快取省流量架構」
 
-const APP_VERSION = 'v2.10';
+const APP_VERSION = 'v2.11';
 const STORAGE_KEY = 'travel_puzzle_jp_state_v1';
 const SAVED_TRIPS_KEY = 'travel_puzzle_saved_trips_v2';
 const GMAPS_TTL_CACHE_KEY = 'travel_puzzle_gmaps_ttl_cache_v1';
@@ -119,7 +119,6 @@ const DEFAULT_APP_STATE = {
 
 let appState = JSON.parse(JSON.stringify(DEFAULT_APP_STATE));
 let savedTripsList = [];
-// 'hub' = 拍立得手札大廳 | 'view' = 點卡片進入（固定基本資訊，專注第2大區行程與記帳） | 'edit' = 完整新增/編輯模式
 let currentViewScreen = 'hub';
 let lastRouteSnapshot = null;
 const photoCache = {};
@@ -132,9 +131,9 @@ const pendingLocationQueries = {};
 // 本機 TTL 持久化快取層（降低 Google Maps Places / Routes 呼叫）
 // =========================================================
 let persistentGmapsCache = {
-    places: {},   // { "京都": { lat, lng, ts } }
-    photos: {},   // { "清水寺": { photoName, ts } } -> 僅存不含 Key 的資源路徑
-    topSpots: {}  // { "kansai": { items, ts } }
+    places: {},
+    photos: {},
+    topSpots: {}
 };
 
 function loadPersistentGmapsCache() {
@@ -197,6 +196,695 @@ function clearGmapsLocalCache() {
     try { localStorage.removeItem(GMAPS_TTL_CACHE_KEY); } catch (e) {}
     saveState();
     updateGmapsCacheStatsBadge();
+    renderAll();
+}
+
+function generateNewTripCode() {
+    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+    let suffix = '';
+    for (let i = 0; i < 6; i++) {
+        suffix += chars[Math.floor(Math.random() * chars.length)];
+    }
+    return `JP-${suffix}`;
+}
+
+function showHealthBanner(msg) {
+    const el = document.getElementById('health-check-banner');
+    if (el) {
+        el.textContent = msg;
+        el.classList.remove('hidden');
+    }
+}
+
+function mergeAppStateSafely(savedState) {
+    if (!savedState || typeof savedState !== 'object') return;
+    Object.assign(appState, savedState);
+    if (!appState.tripCode) appState.tripCode = userConfig.syncCode || DEFAULT_SYNC_CODE;
+    if (!appState.tripTitle) appState.tripTitle = '日本專屬手札之旅';
+    if (!appState.tripAuthor) appState.tripAuthor = '旅人手札';
+    if (!Array.isArray(appState.extraRegions)) appState.extraRegions = [];
+    if (!appState.dayStartTimes || typeof appState.dayStartTimes !== 'object') appState.dayStartTimes = { ...DEFAULT_APP_STATE.dayStartTimes };
+    if (!appState.dayHotels || typeof appState.dayHotels !== 'object') appState.dayHotels = { ...DEFAULT_APP_STATE.dayHotels };
+    if (!appState.dropLuggageFirst || typeof appState.dropLuggageFirst !== 'object') appState.dropLuggageFirst = {};
+    if (!appState.activitiesByDay || typeof appState.activitiesByDay !== 'object') appState.activitiesByDay = {};
+    if (!appState.manualTransitMinutes || typeof appState.manualTransitMinutes !== 'object') appState.manualTransitMinutes = {};
+    if (!appState.routeCache || typeof appState.routeCache !== 'object') appState.routeCache = {};
+    if (!Array.isArray(appState.trashBin)) appState.trashBin = [];
+    if (!Array.isArray(appState.fixedExpenses)) appState.fixedExpenses = [];
+    if (!appState.expensesByDay || typeof appState.expensesByDay !== 'object') appState.expensesByDay = {};
+    if (!Array.isArray(appState.customRecItems)) appState.customRecItems = [];
+}
+
+// =========================================================
+// 多旅程管理、拍立得手札大廳與畫面切換
+// =========================================================
+function loadSavedTripsRegistry() {
+    try {
+        const raw = JSON.parse(localStorage.getItem(SAVED_TRIPS_KEY) || '[]');
+        if (Array.isArray(raw) && raw.length > 0) {
+            savedTripsList = raw;
+        } else {
+            savedTripsList = [buildTripEntryFromState(appState)];
+            saveTripsRegistry();
+        }
+    } catch (e) {
+        savedTripsList = [buildTripEntryFromState(appState)];
+    }
+}
+
+function saveTripsRegistry() {
+    try {
+        localStorage.setItem(SAVED_TRIPS_KEY, JSON.stringify(savedTripsList));
+    } catch (e) {}
+}
+
+function resolveBestCoverForState(stateObj) {
+    if (stateObj.coverUrl && stateObj.coverUrl.trim()) return stateObj.coverUrl.trim();
+    const firstDayActs = stateObj.activitiesByDay?.[1] || Object.values(stateObj.activitiesByDay || {}).flat();
+    for (const act of firstDayActs || []) {
+        if (act?.title && photoCache[act.title]) return photoCache[act.title];
+        const dbMatch = (cloudData.events || []).find(ev => ev.title === act?.title && ev.photoUrl);
+        if (dbMatch?.photoUrl) return dbMatch.photoUrl;
+    }
+    const meta = REGIONS_META.find(r => r.id === stateObj.region) || REGIONS_META[0];
+    return meta.coverFallback;
+}
+
+function buildTripEntryFromState(stateObj) {
+    const code = (stateObj.tripCode || DEFAULT_SYNC_CODE).trim().toUpperCase();
+    return {
+        code,
+        title: (stateObj.tripTitle || '日本專屬手札之旅').trim(),
+        author: (stateObj.tripAuthor || '旅人手札').trim(),
+        coverUrl: resolveBestCoverForState(stateObj),
+        region: stateObj.region || 'kansai',
+        startDate: stateObj.startDate || '2026-12-18',
+        endDate: stateObj.endDate || '2026-12-21',
+        updatedAt: new Date().toISOString(),
+        stateSnapshot: JSON.parse(JSON.stringify(stateObj))
+    };
+}
+
+function upsertCurrentTripIntoRegistry() {
+    const entry = buildTripEntryFromState(appState);
+    const idx = savedTripsList.findIndex(t => t.code === entry.code);
+    if (idx >= 0) savedTripsList[idx] = entry;
+    else savedTripsList.unshift(entry);
+    saveTripsRegistry();
+}
+
+function switchWorkspaceMode(screenMode) {
+    currentViewScreen = screenMode;
+    const hubEl = document.getElementById('trips-hub-view');
+    const wsEl = document.getElementById('trip-workspace-view');
+    const backBtn = document.getElementById('back-to-hub-btn');
+    const expBtn = document.getElementById('export-header-btn');
+
+    if (screenMode === 'hub') {
+        hubEl?.classList.remove('hidden');
+        wsEl?.classList.add('hidden');
+        backBtn?.classList.add('hidden');
+        expBtn?.classList.add('hidden');
+        renderTripsHub();
+        return;
+    }
+
+    hubEl?.classList.add('hidden');
+    wsEl?.classList.remove('hidden');
+    backBtn?.classList.remove('hidden');
+    expBtn?.classList.remove('hidden');
+
+    const isEdit = screenMode === 'edit';
+    document.getElementById('fixed-trip-summary-bar')?.classList.toggle('hidden', isEdit);
+    document.getElementById('section-one-setup')?.classList.toggle('hidden', !isEdit);
+    document.getElementById('section-three-recommendations')?.classList.toggle('hidden', !isEdit);
+
+    const modePill = document.getElementById('workspace-mode-pill');
+    const editBtn = document.getElementById('btn-enter-edit-mode');
+    if (modePill) {
+        modePill.textContent = isEdit ? '✏️ 完整規劃編輯模式' : '📖 隨身行程與記帳模式';
+        modePill.className = isEdit
+            ? 'text-xs font-bold px-2.5 py-1 rounded-full bg-amber-100 text-amber-900'
+            : 'text-xs font-bold px-2.5 py-1 rounded-full bg-matcha/15 text-matcha';
+    }
+    if (editBtn) {
+        editBtn.classList.toggle('hidden', isEdit);
+    }
+
+    renderAll();
+    if (isEdit) {
+        setTimeout(() => { tryLoadExternalJapanSvg(); }, 40);
+    }
+}
+
+function goToTripsHub() {
+    upsertCurrentTripIntoRegistry();
+    switchWorkspaceMode('hub');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function openTripFromHub(code, targetMode = 'view') {
+    const target = savedTripsList.find(t => t.code === code);
+    if (!target || !target.stateSnapshot) return;
+    appState = JSON.parse(JSON.stringify(DEFAULT_APP_STATE));
+    mergeAppStateSafely(target.stateSnapshot);
+    appState.tripCode = target.code;
+    userConfig.syncCode = target.code;
+    saveConfig();
+    saveState();
+    switchWorkspaceMode(targetMode);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function createNewTripAndEdit() {
+    const newCode = generateNewTripCode();
+    const fresh = JSON.parse(JSON.stringify(DEFAULT_APP_STATE));
+    fresh.tripCode = newCode;
+    fresh.tripTitle = '我的日本新旅程手札';
+    fresh.tripAuthor = '旅人手札';
+    fresh.coverUrl = '';
+    fresh.activitiesByDay = { 1: [], 2: [], 3: [], 4: [] };
+    fresh.expensesByDay = {};
+    fresh.fixedExpenses = [];
+    fresh.trashBin = [];
+
+    appState = fresh;
+    userConfig.syncCode = newCode;
+    saveConfig();
+    saveState();
+    upsertCurrentTripIntoRegistry();
+    switchWorkspaceMode('edit');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+async function saveCurrentTripToHub() {
+    upsertCurrentTripIntoRegistry();
+    saveState();
+    if (userConfig.githubToken) {
+        await pushTripToGitHub(true);
+    }
+    switchWorkspaceMode('hub');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function deleteSavedTripFromHub(e, code) {
+    e.stopPropagation();
+    savedTripsList = savedTripsList.filter(t => t.code !== code);
+    saveTripsRegistry();
+    renderTripsHub();
+}
+
+async function importTripByCodeFromHub() {
+    const input = document.getElementById('hub-import-code-input');
+    const code = (input?.value || '').trim().toUpperCase();
+    if (!code) return;
+    input.value = '';
+    userConfig.syncCode = code;
+    saveConfig();
+    const ok = await pullTripFromGitHub(true);
+    if (ok) {
+        appState.tripCode = code;
+        upsertCurrentTripIntoRegistry();
+        renderTripsHub();
+    } else {
+        showHealthBanner(`⚠️ 雲端找不到代碼 ${code} 的行程檔案，請確認對方是否已按上傳同步。`);
+    }
+}
+
+function copyCurrentTripShareCode() {
+    const code = appState.tripCode || userConfig.syncCode || DEFAULT_SYNC_CODE;
+    navigator.clipboard?.writeText(code);
+    const statusEl = document.getElementById('auto-save-status');
+    if (statusEl) statusEl.textContent = `📋 已複製分享代碼 ${code}`;
+}
+
+function handleTripMetaChange() {
+    appState.tripTitle = document.getElementById('trip-title-input')?.value || '';
+    appState.tripAuthor = document.getElementById('trip-author-input')?.value || '';
+    appState.coverUrl = document.getElementById('trip-cover-input')?.value || '';
+    saveState();
+    upsertCurrentTripIntoRegistry();
+}
+
+function renderTripsHub() {
+    const grid = document.getElementById('trips-polaroid-grid');
+    if (!grid) return;
+
+    const verBadge = document.getElementById('app-version-badge');
+    if (verBadge) verBadge.textContent = APP_VERSION;
+    const syncLabel = document.getElementById('header-sync-code-label');
+    if (syncLabel && userConfig.syncCode) syncLabel.textContent = userConfig.syncCode;
+
+    const rankColors = ['#B5654D', '#6D8B74', '#5B7C8D', '#A68A56', '#8E6C88'];
+    const tapeColors = ['#D6B8B2', '#C5D1C8', '#B8C9D4', '#DDD0B8', '#CFC3D1'];
+    const tilts = ['-1.2deg', '0.9deg', '-0.7deg', '1.1deg'];
+
+    const cardsHtml = savedTripsList.map((trip, idx) => {
+        const rankNum = String(idx + 1).padStart(2, '0');
+        const rankColor = rankColors[idx % rankColors.length];
+        const tapeColor = tapeColors[idx % tapeColors.length];
+        const tilt = tilts[idx % tilts.length];
+        const regMeta = REGIONS_META.find(r => r.id === trip.region) || REGIONS_META[0];
+        const sDate = new Date((trip.startDate || '2026-12-18') + 'T00:00:00');
+        const eDate = new Date((trip.endDate || '2026-12-21') + 'T00:00:00');
+        const days = (!isNaN(sDate) && !isNaN(eDate)) ? Math.max(1, Math.round((eDate - sDate) / 86400000) + 1) : 4;
+        const cover = trip.coverUrl || regMeta.coverFallback;
+        const actCount = Object.values(trip.stateSnapshot?.activitiesByDay || {}).reduce((acc, arr) => acc + (arr?.length || 0), 0);
+
+        return `
+            <div onclick="openTripFromHub('${trip.code}', 'view')" style="transform: rotate(${tilt});" class="journal-polaroid relative rounded-2xl p-4 pt-5 cursor-pointer select-none flex flex-col justify-between group">
+                <span aria-hidden="true" class="pointer-events-none absolute -top-8 left-3 font-serif text-6xl font-bold tracking-tighter opacity-15 select-none" style="color: ${rankColor};">${rankNum}</span>
+                <span aria-hidden="true" class="washi-tape" style="background-color: ${tapeColor};"></span>
+
+                <div class="space-y-3">
+                    <div class="stamp-photo-frame">
+                        <div class="relative w-full h-44 rounded-xl overflow-hidden bg-stone-200">
+                            <img src="${cover}" alt="${trip.title}" onerror="this.src='${regMeta.coverFallback}'" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            <span class="absolute bottom-2 left-2 text-[10px] font-mono font-bold px-2 py-0.5 rounded-md bg-black/65 text-white backdrop-blur-2xs">${trip.code}</span>
+                        </div>
+                    </div>
+
+                    <div class="px-1 space-y-1">
+                        <div class="text-[11px] font-mono font-bold tracking-widest uppercase" style="color: ${rankColor};">JOURNAL ${rankNum}</div>
+                        <h3 class="font-serif font-bold text-lg text-[#2B2B2B] leading-snug line-clamp-2 group-hover:text-vermilion transition-colors">${trip.title}</h3>
+                        <p class="text-xs text-stone-500">日本・${regMeta.name}・${days} 日</p>
+                    </div>
+                </div>
+
+                <div class="px-1 pt-3 mt-3 border-t border-dashed border-[#DFD7C5] flex items-center justify-between text-xs text-stone-500">
+                    <div class="flex items-center gap-1.5 truncate">
+                        <span class="w-5 h-5 rounded-full bg-indigoJp/15 text-indigoJp font-bold text-[10px] flex items-center justify-center shrink-0">${(trip.author || '旅').slice(0, 1)}</span>
+                        <span class="truncate font-medium text-stone-700">${trip.author || '旅人手札'}</span>
+                    </div>
+                    <div class="flex items-center gap-2 shrink-0">
+                        <span class="text-[11px]">🧩 ${actCount} 站</span>
+                        <button type="button" onclick="event.stopPropagation(); openTripFromHub('${trip.code}', 'edit')" title="編輯旅程設定" class="px-1.5 py-0.5 rounded bg-washi hover:bg-amber-100 text-stone-600 text-[11px] font-bold cursor-pointer">✏️</button>
+                        ${savedTripsList.length > 1 ? `<button type="button" onclick="deleteSavedTripFromHub(event, '${trip.code}')" title="移除此手札" class="px-1.5 py-0.5 rounded hover:bg-red-50 text-stone-400 hover:text-vermilion text-[11px] font-bold cursor-pointer">✕</button>` : ''}
+                    </div>
+                </div>
+            </div>
+        `;
+    }).join('');
+
+    const addNewCardHtml = `
+        <button type="button" onclick="createNewTripAndEdit()" class="min-h-[340px] rounded-2xl border-2 border-dashed border-[#C9BFA8] bg-[#FCF9F2]/60 hover:bg-[#FCF9F2] hover:border-vermilion/60 p-6 flex flex-col items-center justify-center gap-3 text-center transition-all cursor-pointer group">
+            <span class="w-12 h-12 rounded-full bg-vermilion/10 group-hover:bg-vermilion text-vermilion group-hover:text-white flex items-center justify-center text-2xl font-bold transition-colors">＋</span>
+            <div>
+                <div class="font-serif font-bold text-base text-indigoJp group-hover:text-vermilion">新增一趟日本手札</div>
+                <p class="text-xs text-stone-500 mt-1">自動產生專屬分享代碼<br>自由安排地圖、班機與景點拼圖</p>
+            </div>
+        </button>
+    `;
+
+    grid.innerHTML = cardsHtml + addNewCardHtml;
+}
+
+function renderFixedSummaryBar() {
+    const regMeta = REGIONS_META.find(r => r.id === appState.region) || REGIONS_META[0];
+    const days = getTotalDays();
+    const out = appState.outboundFlight || { code: 'AK176', ...DEFAULT_FLIGHTS_DB.AK176 };
+    const inc = appState.inboundFlight || { code: 'AK177', ...DEFAULT_FLIGHTS_DB.AK177 };
+    const passes = cloudData.jrPasses || DEFAULT_JR_PASSES;
+    const p1 = passes.find(p => p.id === appState.jrPassId);
+    const cover = resolveBestCoverForState(appState);
+
+    const thumbEl = document.getElementById('summary-cover-thumb');
+    if (thumbEl && cover) {
+        thumbEl.src = cover;
+        thumbEl.classList.remove('hidden');
+    }
+
+    const setTxt = (id, txt) => { const el = document.getElementById(id); if (el) el.textContent = txt; };
+    setTxt('workspace-trip-code', appState.tripCode || userConfig.syncCode || DEFAULT_SYNC_CODE);
+    setTxt('summary-region-badge', regMeta.name);
+    setTxt('summary-days-badge', `${days} 天 ${Math.max(0, days - 1)} 夜`);
+    setTxt('summary-author-badge', `✍️ ${appState.tripAuthor || '旅人手札'}`);
+    setTxt('summary-trip-title', appState.tripTitle || '日本專屬手札之旅');
+    setTxt('summary-date-range', `📅 ${appState.startDate} ～ ${appState.endDate}（${appState.travelers || 2} 人同行）`);
+    setTxt('summary-outbound-flight', `${out.code}・${out.airport} ${out.time} 抵達`);
+    setTxt('summary-inbound-flight', `${inc.code}・${inc.airport} ${inc.time} 起飛`);
+    setTxt('summary-pass-info', appState.drivingMode
+        ? `🚗 自駕租車模式（${appState.travelers} 人共乘）`
+        : (appState.useJrPass ? `🚄 ${p1?.name || 'JR PASS'}（Day ${appState.jrPassStartDay} 啟用）` : '🎫 單買車票 / IC 卡自由行'));
+}
+
+// =========================================================
+// 讀取倉庫內 japan.svg（47 都道府縣自動 11 分區著色＋滿版裁切）
+// =========================================================
+const PREF_TO_REGION_11 = [
+    'hokkaido',
+    'tohoku','tohoku','tohoku','tohoku','tohoku','tohoku',
+    'kanto','kanto','kanto','kanto','kanto','kanto','kanto',
+    'hokuriku','hokuriku','hokuriku','hokuriku',
+    'chubu','chubu','chubu','chubu','chubu','chubu',
+    'kansai','kansai','kansai','kansai','kansai','kansai',
+    'sanin','sanin',
+    'sanyo','sanyo','sanyo',
+    'shikoku','shikoku','shikoku','shikoku',
+    'kyushu','kyushu','kyushu','kyushu','kyushu','kyushu','kyushu',
+    'okinawa'
+];
+
+function classifySvgNodeToRegion(el, idx, totalCount, svgBox) {
+    const rawAttr = `${el.id || ''} ${el.getAttribute('class') || ''} ${el.getAttribute('data-name') || ''} ${el.getAttribute('title') || ''}`.toLowerCase();
+    if (/hokkaido|北海道/.test(rawAttr)) return 'hokkaido';
+    if (/aomori|iwate|miyagi|akita|yamagata|fukushima|東北/.test(rawAttr)) return 'tohoku';
+    if (/ibaraki|tochigi|gunma|saitama|chiba|tokyo|kanagawa|關東|関東/.test(rawAttr)) return 'kanto';
+    if (/niigata|toyama|ishikawa|fukui|北陸/.test(rawAttr)) return 'hokuriku';
+    if (/yamanashi|nagano|gifu|shizuoka|aichi|mie|中部/.test(rawAttr)) return 'chubu';
+    if (/shiga|kyoto|osaka|hyogo|nara|wakayama|關西|関西|近畿/.test(rawAttr)) return 'kansai';
+    if (/tottori|shimane|山陰/.test(rawAttr)) return 'sanin';
+    if (/okayama|hiroshima|yamaguchi|山陽/.test(rawAttr)) return 'sanyo';
+    if (/tokushima|kagawa|ehime|kochi|四國|四国/.test(rawAttr)) return 'shikoku';
+    if (/fukuoka|saga|nagasaki|kumamoto|oita|miyazaki|kagoshima|九州/.test(rawAttr)) return 'kyushu';
+    if (/okinawa|沖繩|沖縄/.test(rawAttr)) return 'okinawa';
+
+    const jisMatch = rawAttr.match(/(?:pref|jp|p)[-_]?0?([1-9]|[1-3][0-9]|4[0-7])(?:\D|$)/);
+    if (jisMatch) return PREF_TO_REGION_11[Number(jisMatch[1]) - 1] || 'kansai';
+    if (totalCount === 47 && idx < 47) return PREF_TO_REGION_11[idx];
+
+    try {
+        const bb = el.getBBox();
+        const nx = (bb.x + bb.width / 2 - svgBox.x) / (svgBox.width || 1);
+        const ny = (bb.y + bb.height / 2 - svgBox.y) / (svgBox.height || 1);
+        if (nx < 0.24 && ny > 0.72) return 'okinawa';
+        if (nx > 0.72 && ny < 0.26) return 'hokkaido';
+        if (nx > 0.64 && ny >= 0.26 && ny < 0.51) return 'tohoku';
+        if (nx > 0.59 && ny >= 0.51 && ny < 0.65) return 'kanto';
+        if (nx >= 0.48 && nx <= 0.64 && ny >= 0.45 && ny < 0.56) return 'hokuriku';
+        if (nx >= 0.47 && nx <= 0.60 && ny >= 0.56 && ny < 0.69) return 'chubu';
+        if (nx >= 0.37 && nx < 0.48 && ny >= 0.57 && ny < 0.72) return 'kansai';
+        if (nx >= 0.23 && nx < 0.38 && ny >= 0.56 && ny < 0.635) return 'sanin';
+        if (nx >= 0.22 && nx < 0.37 && ny >= 0.635 && ny < 0.69) return 'sanyo';
+        if (nx >= 0.28 && nx < 0.40 && ny >= 0.69 && ny < 0.76) return 'shikoku';
+        return 'kyushu';
+    } catch (e) {
+        return 'kansai';
+    }
+}
+
+async function tryLoadExternalJapanSvg() {
+    const host = document.getElementById('external-japan-svg-host');
+    if (!host) return;
+    const owner = (userConfig.githubUser || 'JHANSIANGJYUN').trim();
+    const repo = (userConfig.githubRepo || 'travel-puzzle').trim();
+    const candidateUrls = [
+        `./japan.svg?t=${Date.now()}`,
+        `https://raw.githubusercontent.com/${owner}/${repo}/main/japan.svg?t=${Date.now()}`
+    ];
+
+    for (const url of candidateUrls) {
+        try {
+            const resp = await fetch(url, { cache: 'no-store' });
+            if (!resp.ok) continue;
+            const svgText = await resp.text();
+            if (!svgText.includes('<svg')) continue;
+
+            host.innerHTML = svgText;
+            const extSvg = host.querySelector('svg');
+            if (!extSvg) continue;
+
+            extSvg.classList.add('w-full', 'h-full');
+            extSvg.removeAttribute('width');
+            extSvg.removeAttribute('height');
+
+            const origVb = extSvg.viewBox?.baseVal;
+            const vb = (origVb && origVb.width > 0) ? origVb : { x: 0, y: 0, width: 1000, height: 1000 };
+            const shapes = Array.from(extSvg.querySelectorAll('path, polygon'));
+            const okinawaShapes = [];
+            const mainlandGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+
+            shapes.forEach((shape, idx) => {
+                const parentReg = shape.closest('[data-map-region]');
+                const regId = parentReg
+                    ? parentReg.getAttribute('data-map-region')
+                    : classifySvgNodeToRegion(shape, idx, shapes.length, vb);
+                shape.setAttribute('data-map-region', regId);
+                shape.style.cursor = 'pointer';
+                shape.style.transition = 'fill 0.2s ease, filter 0.2s ease';
+                shape.setAttribute('stroke', '#FFFFFF');
+                shape.addEventListener('click', () => selectRegion(regId));
+                if (regId === 'okinawa') {
+                    okinawaShapes.push(shape);
+                } else {
+                    mainlandGroup.appendChild(shape);
+                }
+            });
+
+            extSvg.innerHTML = '';
+            extSvg.appendChild(mainlandGroup);
+
+            let mBox = { x: 0, y: 0, width: 1000, height: 1000 };
+            try {
+                const b = mainlandGroup.getBBox();
+                if (b.width > 0 && b.height > 0) mBox = b;
+            } catch (e) {}
+
+            const padX = mBox.width * 0.04;
+            const padY = mBox.height * 0.04;
+            const cropX = mBox.x - padX;
+            const cropY = mBox.y - padY;
+            const cropW = mBox.width + padX * 2;
+            const cropH = mBox.height + padY * 2;
+            extSvg.setAttribute('viewBox', `${cropX} ${cropY} ${cropW} ${cropH}`);
+            extSvg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+
+            mainlandGroup.querySelectorAll('path, polygon').forEach(s => {
+                s.setAttribute('stroke-width', String(Math.max(0.4, cropW / 550)));
+            });
+
+            if (okinawaShapes.length > 0) {
+                const ns = 'http://www.w3.org/2000/svg';
+                const insetGroup = document.createElementNS(ns, 'g');
+                const boxX = cropX + cropW * 0.02;
+                const boxY = cropY + cropH * 0.03;
+                const boxW = cropW * 0.25;
+                const boxH = cropH * 0.22;
+
+                const frameRect = document.createElementNS(ns, 'rect');
+                frameRect.setAttribute('x', boxX);
+                frameRect.setAttribute('y', boxY);
+                frameRect.setAttribute('width', boxW);
+                frameRect.setAttribute('height', boxH);
+                frameRect.setAttribute('rx', String(cropW * 0.018));
+                frameRect.setAttribute('fill', 'rgba(255,255,255,0.92)');
+                frameRect.setAttribute('stroke', '#94A3B8');
+                frameRect.setAttribute('stroke-width', String(cropW * 0.0022));
+                frameRect.setAttribute('stroke-dasharray', `${cropW * 0.007} ${cropW * 0.007}`);
+                frameRect.style.cursor = 'pointer';
+                frameRect.addEventListener('click', () => selectRegion('okinawa'));
+                insetGroup.appendChild(frameRect);
+
+                const okiWrapper = document.createElementNS(ns, 'g');
+                okinawaShapes.forEach(s => {
+                    s.setAttribute('stroke-width', String(Math.max(0.3, cropW / 700)));
+                    okiWrapper.appendChild(s);
+                });
+                insetGroup.appendChild(okiWrapper);
+                extSvg.appendChild(insetGroup);
+
+                try {
+                    const okiBox = okiWrapper.getBBox();
+                    if (okiBox.width > 0 && okiBox.height > 0) {
+                        const scale = Math.min((boxW * 0.80) / okiBox.width, (boxH * 0.64) / okiBox.height);
+                        const targetCx = boxX + boxW * 0.5;
+                        const targetCy = boxY + boxH * 0.42;
+                        const srcCx = okiBox.x + okiBox.width * 0.5;
+                        const srcCy = okiBox.y + okiBox.height * 0.5;
+                        okiWrapper.setAttribute('transform', `translate(${targetCx - srcCx * scale}, ${targetCy - srcCy * scale}) scale(${scale})`);
+                    }
+                } catch (e) {}
+
+                const labelTxt = document.createElementNS(ns, 'text');
+                labelTxt.setAttribute('x', boxX + boxW * 0.5);
+                labelTxt.setAttribute('y', boxY + boxH * 0.89);
+                labelTxt.setAttribute('text-anchor', 'middle');
+                labelTxt.setAttribute('font-size', String(cropW * 0.025));
+                labelTxt.setAttribute('font-weight', '700');
+                labelTxt.setAttribute('fill', '#1E293B');
+                labelTxt.style.cursor = 'pointer';
+                labelTxt.textContent = '沖繩列島';
+                labelTxt.addEventListener('click', () => selectRegion('okinawa'));
+                insetGroup.appendChild(labelTxt);
+            }
+
+            renderRegionMapAndButtons();
+            return;
+        } catch (e) {}
+    }
+    host.innerHTML = '<span class="text-xs text-stone-500">⚠️ 尚未讀取到 japan.svg，請確認已上傳至倉庫根目錄</span>';
+}
+
+// =========================================================
+// 時間、設定持久化與讀取倉庫 db.json
+// =========================================================
+function parseClockToMinutes(clockStr) {
+    const m = String(clockStr || '09:00').match(/^(\d{1,2}):(\d{2})$/);
+    if (!m) return 540;
+    return Math.min(23, Math.max(0, Number(m[1]))) * 60 + Math.min(59, Math.max(0, Number(m[2])));
+}
+
+function formatMinutesToClock(totalMins) {
+    const normalized = ((Math.round(totalMins) % 1440) + 1440) % 1440;
+    const hh = String(Math.floor(normalized / 60)).padStart(2, '0');
+    const mm = String(normalized % 60).padStart(2, '0');
+    return `${hh}:${mm}`;
+}
+
+function applyConfigObjectWithAliases(rawObj) {
+    if (!rawObj || typeof rawObj !== 'object') return;
+    if (rawObj.c) userConfig.syncCode = String(rawObj.c).trim().toUpperCase();
+    if (rawObj.p) userConfig.githubToken = String(rawObj.p).trim();
+    if (rawObj.m) userConfig.gmapsKey = String(rawObj.m).trim();
+    if (rawObj.g) userConfig.geminiKey = String(rawObj.g).trim();
+    if (rawObj.d) userConfig.cloudDbUrl = String(rawObj.d).trim();
+    if (rawObj.syncCode) userConfig.syncCode = String(rawObj.syncCode).trim().toUpperCase();
+    if (rawObj.githubToken) userConfig.githubToken = String(rawObj.githubToken).trim();
+    if (rawObj.gmapsKey) userConfig.gmapsKey = String(rawObj.gmapsKey).trim();
+    if (rawObj.geminiKey) userConfig.geminiKey = String(rawObj.geminiKey).trim();
+    if (rawObj.cloudDbUrl) userConfig.cloudDbUrl = String(rawObj.cloudDbUrl).trim();
+    if (rawObj.githubUser) userConfig.githubUser = String(rawObj.githubUser).trim();
+    if (rawObj.githubRepo) userConfig.githubRepo = String(rawObj.githubRepo).trim();
+}
+
+function getTotalDays() {
+    const s = new Date((appState.startDate || '2026-12-18') + 'T00:00:00');
+    const e = new Date((appState.endDate || '2026-12-21') + 'T00:00:00');
+    if (isNaN(s.getTime()) || isNaN(e.getTime())) return 4;
+    return Math.min(14, Math.max(1, Math.round((e - s) / 86400000) + 1));
+}
+
+function getDateLabelForDay(dayNum) {
+    const base = new Date((appState.startDate || '2026-12-18') + 'T00:00:00');
+    if (isNaN(base.getTime())) return `Day ${dayNum}`;
+    base.setDate(base.getDate() + (dayNum - 1));
+    const weekdays = ['日', '一', '二', '三', '四', '五', '六'];
+    return `${base.getMonth() + 1}/${base.getDate()} (${weekdays[base.getDay()]})`;
+}
+
+function saveState() {
+    try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+        upsertCurrentTripIntoRegistry();
+        const statusEl = document.getElementById('auto-save-status');
+        if (statusEl) statusEl.textContent = `☁️ 已儲存 (${new Date().toTimeString().slice(0, 5)})`;
+    } catch (e) {}
+}
+
+function saveConfig() {
+    try {
+        localStorage.setItem(CONFIG_KEY, JSON.stringify(userConfig));
+        if (userConfig.gmapsKey) localStorage.setItem('gmaps_api_key', userConfig.gmapsKey);
+        if (userConfig.geminiKey) localStorage.setItem('gemini_api_key', userConfig.geminiKey);
+        if (userConfig.githubToken) localStorage.setItem('github_token', userConfig.githubToken);
+        if (userConfig.syncCode) localStorage.setItem('sync_code', userConfig.syncCode);
+    } catch (e) {}
+}
+
+function loadSavedData() {
+    try {
+        const hash = window.location.hash || '';
+        if (hash.startsWith('#setup=')) {
+            const encodedPart = decodeURIComponent(hash.slice(7));
+            let rawStr = '';
+            try { rawStr = decodeURIComponent(atob(encodedPart)); } catch (_) { rawStr = atob(encodedPart); }
+            applyConfigObjectWithAliases(JSON.parse(rawStr));
+            saveConfig();
+            history.replaceState(null, '', window.location.pathname + window.location.search);
+        }
+
+        for (const legacyKey of LEGACY_CONFIG_KEYS) {
+            const legacyRaw = localStorage.getItem(legacyKey);
+            if (legacyRaw) applyConfigObjectWithAliases(JSON.parse(legacyRaw));
+        }
+
+        const savedCfg = JSON.parse(localStorage.getItem(CONFIG_KEY) || '{}');
+        applyConfigObjectWithAliases(savedCfg);
+
+        if (!userConfig.gmapsKey) userConfig.gmapsKey = localStorage.getItem('gmaps_api_key') || '';
+        if (!userConfig.geminiKey) userConfig.geminiKey = localStorage.getItem('gemini_api_key') || '';
+        if (!userConfig.githubToken) userConfig.githubToken = localStorage.getItem('github_token') || '';
+        if (!userConfig.syncCode) userConfig.syncCode = localStorage.getItem('sync_code') || DEFAULT_SYNC_CODE;
+        if (!userConfig.githubUser) userConfig.githubUser = 'JHANSIANGJYUN';
+        if (!userConfig.githubRepo) userConfig.githubRepo = 'travel-puzzle';
+        if (!userConfig.cloudDbUrl) userConfig.cloudDbUrl = `https://raw.githubusercontent.com/${userConfig.githubUser}/${userConfig.githubRepo}/main/db.json`;
+        saveConfig();
+
+        const savedState = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
+        if (savedState && typeof savedState === 'object') {
+            mergeAppStateSafely(savedState);
+        }
+        loadPersistentGmapsCache();
+        loadSavedTripsRegistry();
+    } catch (e) {}
+}
+
+function normalizeDbEvent(ev, idx) {
+    const cat = String(ev.category || ev.tag || '經典景點');
+    const isEventType = ev.type === 'event' || /(祭典|光影|花火|賞花|紅葉|點燈)/.test(cat);
+    const title = String(ev.title || '').trim();
+    const img = String(ev.imageUrl || ev.photoUrl || '').trim();
+    if (title && img) photoCache[title] = img;
+    return {
+        id: ev.id || `db-ev-${idx}`,
+        region: String(ev.region || 'kansai').toLowerCase(),
+        type: isEventType ? 'event' : 'spot',
+        months: Array.isArray(ev.months) && ev.months.length ? ev.months : [1,2,3,4,5,6,7,8,9,10,11,12],
+        tag: cat,
+        periodText: String(ev.dateLabel || ev.periodText || '四季皆宜'),
+        location: String(ev.location || ''),
+        title,
+        duration: Number(ev.duration || 90),
+        note: String(ev.desc || ev.note || ''),
+        isIndoor: Boolean(ev.isIndoor),
+        wikiJa: String(ev.wikiJa || ''),
+        photoUrl: img
+    };
+}
+
+async function syncCloudDatabase() {
+    const badge = document.getElementById('cloud-db-version-badge');
+    const modalStatus = document.getElementById('modal-cloud-db-status');
+    const candidateUrls = [
+        `./db.json?t=${Date.now()}`,
+        (userConfig.cloudDbUrl || '').trim()
+    ].filter(Boolean);
+
+    for (const rawUrl of candidateUrls) {
+        try {
+            const sep = rawUrl.includes('?') ? '&' : '?';
+            const resp = await fetch(`${rawUrl}${sep}v=${Date.now()}`, { cache: 'no-store' });
+            if (!resp.ok) continue;
+            const data = await resp.json();
+            if (!data || typeof data !== 'object') continue;
+
+            if (Array.isArray(data.jrPasses) && data.jrPasses.length > 0) cloudData.jrPasses = data.jrPasses;
+            if (data.flights && typeof data.flights === 'object') cloudData.flights = { ...DEFAULT_FLIGHTS_DB, ...data.flights };
+            if (Array.isArray(data.events)) cloudData.events = data.events.map((ev, i) => normalizeDbEvent(ev, i)).filter(e => e.title);
+            if (Array.isArray(data.stations) && data.stations.length > 0) cloudData.stations = data.stations;
+            cloudData.updatedAt = data.updatedAt || '';
+
+            const shortDate = cloudData.updatedAt ? cloudData.updatedAt.slice(0, 10) : '已連線';
+            if (badge) badge.textContent = `🌐 db.json (${cloudData.events.length}筆・${shortDate})`;
+            if (modalStatus) modalStatus.textContent = `🟢 已同步 (${cloudData.updatedAt || '最新'})`;
+            if (currentViewScreen === 'hub') renderTripsHub();
+            else renderAll();
+            return;
+        } catch (e) {}
+    }
+
+    if (badge) badge.textContent = '🌐 db.json 離線模式';
+}
+
+// =========================================================
+// 表單控制與地圖渲染
+// =========================================================
+function handleDateRangeChange(which) {
+    const sVal = document.getElementById('start-date')?.value || appState.startDate;
+    const eVal = document.getElementById('end-date')?.value || appState.endDate;
+    appState.startDate = sVal;
+    appState.endDate = eVal < sVal ? sVal : eVal;
+    saveState();
     renderAll();
 }
 
@@ -656,21 +1344,42 @@ function estimateTransitSegment(fromPlace, toPlace, dayNum) {
 }
 
 async function resolvePlaceLocation(apiKey, placeQuery) {
-    const resp = await fetch('https://places.googleapis.com/v1/places:searchText', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-Goog-Api-Key': apiKey,
-            'X-Goog-FieldMask': 'places.location,places.displayName'
-        },
-        body: JSON.stringify({ textQuery: `${placeQuery} 日本`, maxResultCount: 1 })
-    });
-    const data = await resp.json();
-    const loc = data?.places?.[0]?.location;
-    if (loc && typeof loc.latitude === 'number' && typeof loc.longitude === 'number') {
-        return { latLng: { latitude: loc.latitude, longitude: loc.longitude } };
+    const cleanKey = String(placeQuery || '').trim();
+    const cached = persistentGmapsCache.places[cleanKey];
+    if (cached && (Date.now() - cached.ts) < GMAPS_CACHE_TTL_MS && typeof cached.lat === 'number') {
+        return { latLng: { latitude: cached.lat, longitude: cached.lng } };
     }
-    return { address: `${placeQuery} 日本` };
+
+    if (pendingLocationQueries[cleanKey]) {
+        return pendingLocationQueries[cleanKey];
+    }
+
+    pendingLocationQueries[cleanKey] = (async () => {
+        try {
+            const resp = await fetch('https://places.googleapis.com/v1/places:searchText', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Goog-Api-Key': apiKey,
+                    'X-Goog-FieldMask': 'places.location,places.displayName'
+                },
+                body: JSON.stringify({ textQuery: `${cleanKey} 日本`, maxResultCount: 1 })
+            });
+            const data = await resp.json();
+            const loc = data?.places?.[0]?.location;
+            if (loc && typeof loc.latitude === 'number' && typeof loc.longitude === 'number') {
+                persistentGmapsCache.places[cleanKey] = { lat: loc.latitude, lng: loc.longitude, ts: Date.now() };
+                savePersistentGmapsCache();
+                updateGmapsCacheStatsBadge();
+                return { latLng: { latitude: loc.latitude, longitude: loc.longitude } };
+            }
+            return { address: `${cleanKey} 日本` };
+        } finally {
+            delete pendingLocationQueries[cleanKey];
+        }
+    })();
+
+    return pendingLocationQueries[cleanKey];
 }
 
 async function computeSmartGoogleRoute(apiKey, fromPlace, toPlace, isDrive) {
@@ -774,52 +1483,47 @@ async function fetchGoogleRouteEstimate(fromPlace, toPlace, cacheKey) {
             } else {
                 fareText = `原價車資約 ¥${estFare.toLocaleString()}（IC 卡／單買車票）`;
             }
-        const savedState = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
-        if (savedState && typeof savedState === 'object') {
-            mergeAppStateSafely(savedState);
         }
-        loadPersistentGmapsCache();
-        loadSavedTripsRegistry();
+
+        appState.routeCache = appState.routeCache || {};
+        appState.routeCache[cacheKey] = { minutes: mins, modeBadge, detailText, fareText, ts: Date.now() };
+        saveState();
+        updateGmapsCacheStatsBadge();
+        renderTimeline();
     } catch (e) {}
 }
-async function resolvePlaceLocation(apiKey, placeQuery) {
-    const cleanKey = String(placeQuery || '').trim();
-    const cached = persistentGmapsCache.places[cleanKey];
-    if (cached && (Date.now() - cached.ts) < GMAPS_CACHE_TTL_MS && typeof cached.lat === 'number') {
-        return { latLng: { latitude: cached.lat, longitude: cached.lng } };
-    }
 
-    if (pendingLocationQueries[cleanKey]) {
-        return pendingLocationQueries[cleanKey];
-    }
+function buildDaySegments(dayNum) {
+    const totalDays = getTotalDays();
+    const startClock = appState.dayStartTimes[dayNum] || '09:30';
+    let cursorMins = parseClockToMinutes(startClock);
+    const segments = [];
 
-    pendingLocationQueries[cleanKey] = (async () => {
-        try {
-            const resp = await fetch('https://places.googleapis.com/v1/places:searchText', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-Goog-Api-Key': apiKey,
-                    'X-Goog-FieldMask': 'places.location,places.displayName'
-                },
-                body: JSON.stringify({ textQuery: `${cleanKey} 日本`, maxResultCount: 1 })
-            });
-            const data = await resp.json();
-            const loc = data?.places?.[0]?.location;
-            if (loc && typeof loc.latitude === 'number' && typeof loc.longitude === 'number') {
-                persistentGmapsCache.places[cleanKey] = { lat: loc.latitude, lng: loc.longitude, ts: Date.now() };
-                savePersistentGmapsCache();
-                updateGmapsCacheStatsBadge();
-                return { latLng: { latitude: loc.latitude, longitude: loc.longitude } };
-            }
-            return { address: `${cleanKey} 日本` };
-        } finally {
-            delete pendingLocationQueries[cleanKey];
-        }
-    })();
+    const startOrigin = dayNum === 1
+        ? (appState.outboundFlight?.airport || '關西國際機場 (KIX)')
+        : (appState.dayHotels[dayNum - 1] || appState.dayHotels[1] || '住宿飯店');
 
-    return pendingLocationQueries[cleanKey];
-}
+    segments.push({
+        type: 'anchor',
+        placeQuery: startOrigin,
+        title: dayNum === 1 ? `🛬 抵達出發：${startOrigin}` : `🏨 飯店出發：${startOrigin}`,
+        arriveTime: formatMinutesToClock(cursorMins),
+        duration: 0,
+        transit: null
+    });
+
+    let currentLoc = startOrigin;
+    const todayHotel = appState.dayHotels[dayNum] || '';
+    if (dayNum < totalDays && appState.dropLuggageFirst[dayNum] && todayHotel && todayHotel !== currentLoc) {
+        const tr = estimateTransitSegment(currentLoc, todayHotel, dayNum);
+        cursorMins += tr.minutes;
+        segments.push({
+            type: 'luggage',
+            placeQuery: todayHotel,
+            title: `🧳 先去飯店寄放行李：${todayHotel}`,
+            arriveTime: formatMinutesToClock(cursorMins),
+            duration: 20,
+            transit: { ...tr, from: currentLoc, to: todayHotel }
         });
         cursorMins += 20;
         currentLoc = todayHotel;
@@ -1462,7 +2166,7 @@ function renderTrashBinUI() {
 }
 
 // =========================================================
-// 區塊三：推薦拼圖庫（直連 db.json 與 Google Places）
+// 區塊三：推薦拼圖庫（直連 db.json 與本機 TTL 快取）
 // =========================================================
 function setRecFilter(filter) {
     appState.recFilter = filter;
@@ -1477,32 +2181,6 @@ function setRecFilter(filter) {
     loadBuiltinRecommendations();
 }
 
-async function fetchPlacePhotoForCard(queryTitle, domId) {
-    if (!userConfig.gmapsKey || photoCache[queryTitle] !== undefined) return;
-    photoCache[queryTitle] = '';
-    try {
-        const resp = await fetch('https://places.googleapis.com/v1/places:searchText', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-Goog-Api-Key': userConfig.gmapsKey,
-                'X-Goog-FieldMask': 'places.photos'
-            },
-            body: JSON.stringify({ textQuery: `${queryTitle} 日本` })
-        });
-        const data = await resp.json();
-        const photoName = data?.places?.[0]?.photos?.[0]?.name;
-        if (photoName) {
-            const photoUrl = `https://places.googleapis.com/v1/${photoName}/media?maxWidthPx=600&key=${userConfig.gmapsKey}`;
-            photoCache[queryTitle] = photoUrl;
-            const el = document.getElementById(domId);
-        appState.routeCache = appState.routeCache || {};
-        appState.routeCache[cacheKey] = { minutes: mins, modeBadge, detailText, fareText, ts: Date.now() };
-        saveState();
-        updateGmapsCacheStatsBadge();
-        renderTimeline();
-    } catch (e) {}
-}
 async function fetchPlacePhotoForCard(queryTitle, domId) {
     const cleanTitle = String(queryTitle || '').trim();
     if (!cleanTitle || !userConfig.gmapsKey || photoCache[cleanTitle] !== undefined || pendingPhotoQueries[cleanTitle]) return;
@@ -1565,7 +2243,6 @@ function loadBuiltinRecommendations() {
     const tripMonth = Number((appState.startDate || '2026-12-18').split('-')[1]) || 12;
     const totalDays = getTotalDays();
 
-    // 主流按需載入策略：僅讀取本機已快取的 4★+ 景點，不於切換地區時自動重打 Google Maps API
     const googleFetchedItems = [];
     targetRegs.forEach(regId => {
         if (Array.isArray(googleTopSpotsCache[regId])) googleFetchedItems.push(...googleTopSpotsCache[regId]);
