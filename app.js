@@ -1,24 +1,25 @@
-// 旅遊拼圖 Travel Puzzle 主程式 (v1.50)
-// 直接讀取倉庫內 db.json（無需額外 data.js）與 japan.svg
+// 旅遊拼圖 Travel Puzzle 主程式 (v2.00)
+// 支援「手札拍立得旅程大廳」、「完整規劃模式」與「隨身行程檢視＋記帳模式」
 
-const APP_VERSION = 'v1.51';
+const APP_VERSION = 'v2.00';
 const STORAGE_KEY = 'travel_puzzle_jp_state_v1';
+const SAVED_TRIPS_KEY = 'travel_puzzle_saved_trips_v2';
 const CONFIG_KEY = 'travel_puzzle_jp_config_v1';
 const LEGACY_CONFIG_KEYS = ['travel_puzzle_config', 'jp_travel_config_v1', 'travelPuzzleConfig', 'travel_puzzle_api_keys', 'travel_puzzle_settings', 'tp_config_v1'];
 const DEFAULT_SYNC_CODE = 'JP-GPVMP6';
 
 const REGIONS_META = [
-    { id: 'kansai', name: '關西地區', desc: '滋賀・京都・大阪・兵庫・奈良・和歌山', defaultHotel: '東橫INN 大阪難波西', weatherTip: '12月關西白天約 8–12°C，早晚偏冷建議洋蔥式穿搭；雨天可優先安排地下街或京都車站室內景點。' },
-    { id: 'kanto', name: '關東地區', desc: '茨城・栃木・群馬・埼玉・千葉・東京・神奈川', defaultHotel: '東橫INN 東京站新大橋前', weatherTip: '12月東京晴朗乾燥約 6–13°C，風大建議攜帶防風外套與護唇膏。' },
-    { id: 'hokkaido', name: '北海道', desc: '札幌・小樽・函館・富良野・美瑛與登別溫泉', defaultHotel: 'JR Inn 札幌駅南口', weatherTip: '冬季零下積雪路面易滑，務必穿著防滑防水雪靴與發熱衣。' },
-    { id: 'tohoku', name: '東北地區', desc: '青森・岩手・秋田・宮城・山形・福島', defaultHotel: '東橫INN 仙台站西口中央', weatherTip: '東北山區冬季降雪豐沛，搭乘地方 JR 線路請預留班次緩衝。' },
-    { id: 'hokuriku', name: '北陸地區', desc: '新潟・富山・石川（金澤／能登）・福井', defaultHotel: 'Via Inn 金澤（JR金澤站直結）', weatherTip: '北陸冬季多雨雪且濕冷，建議攜帶折疊傘與防水鞋款。' },
-    { id: 'chubu', name: '中部地區', desc: '長野・山梨・靜岡・岐阜・愛知・三重', defaultHotel: '東橫INN 名古屋站新幹線口', weatherTip: '中部山區（高山／白川鄉）氣溫較低，市區名古屋晴朗乾爽。' },
-    { id: 'sanin', name: '山陰地區', desc: '鳥取縣（砂丘／柯南小鎮）・島根縣（出雲大社／松江城）', defaultHotel: 'Dormy Inn 出雲', weatherTip: '日本海側冬季雲量較多偶有陣雪，建議備妥雨具與保暖衣物。' },
-    { id: 'sanyo', name: '山陽地區', desc: '岡山縣（倉敷）・廣島縣（宮島）・山口縣（下關／角島）', defaultHotel: 'Via Inn 廣島新幹線口', weatherTip: '瀨戶內海沿岸晴天率高、氣候溫和，非常適合鐵道跳島漫遊。' },
-    { id: 'shikoku', name: '四國地區', desc: '香川・德島・愛媛・高知', defaultHotel: 'JR Clement Inn 高松', weatherTip: '四國瀨戶內側溫暖少雨，適合搭配 JR 四國周遊券慢活巡禮。' },
-    { id: 'kyushu', name: '九州地區', desc: '福岡・佐賀・長崎・大分・熊本・宮崎・鹿兒島', defaultHotel: '東橫INN 博多口站前', weatherTip: '北九州冬季海風較強約 7–13°C，阿蘇山區氣溫更低需注意保暖。' },
-    { id: 'okinawa', name: '沖繩地區', desc: '沖繩本島（那霸／美國村／美麗海水族館）與離島', defaultHotel: '東橫INN 那霸旭橋站前', weatherTip: '沖繩冬季約 17–21°C 舒適宜人，海邊風大建議帶件薄風衣。' }
+    { id: 'kansai', name: '關西地區', desc: '滋賀・京都・大阪・兵庫・奈良・和歌山', defaultHotel: '東橫INN 大阪難波西', coverFallback: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/6/64/Fushimiinari-taisha%2C_gehaiden-1.jpg/960px-Fushimiinari-taisha%2C_gehaiden-1.jpg', weatherTip: '12月關西白天約 8–12°C，早晚偏冷建議洋蔥式穿搭；雨天可優先安排地下街或京都車站室內景點。' },
+    { id: 'kanto', name: '關東地區', desc: '茨城・栃木・群馬・埼玉・千葉・東京・神奈川', defaultHotel: '東橫INN 東京站新大橋前', coverFallback: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/a/ae/Kiyomizu-dera%2C_Kyoto%2C_November_2016_-02.jpg/960px-Kiyomizu-dera%2C_Kyoto%2C_November_2016_-02.jpg', weatherTip: '12月東京晴朗乾燥約 6–13°C，風大建議攜帶防風外套與護唇膏。' },
+    { id: 'hokkaido', name: '北海道', desc: '札幌・小樽・函館・富良野・美瑛與登別溫泉', defaultHotel: 'JR Inn 札幌駅南口', coverFallback: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c1/Himeji_castle_in_may_2015.jpg/960px-Himeji_castle_in_may_2015.jpg', weatherTip: '冬季零下積雪路面易滑，務必穿著防滑防水雪靴與發熱衣。' },
+    { id: 'tohoku', name: '東北地區', desc: '青森・岩手・秋田・宮城・山形・福島', defaultHotel: '東橫INN 仙台站西口中央', coverFallback: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c1/Himeji_castle_in_may_2015.jpg/960px-Himeji_castle_in_may_2015.jpg', weatherTip: '東北山區冬季降雪豐沛，搭乘地方 JR 線路請預留班次緩衝。' },
+    { id: 'hokuriku', name: '北陸地區', desc: '新潟・富山・石川（金澤／能登）・福井', defaultHotel: 'Via Inn 金澤（JR金澤站直結）', coverFallback: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c1/Himeji_castle_in_may_2015.jpg/960px-Himeji_castle_in_may_2015.jpg', weatherTip: '北陸冬季多雨雪且濕冷，建議攜帶折疊傘與防水鞋款。' },
+    { id: 'chubu', name: '中部地區', desc: '長野・山梨・靜岡・岐阜・愛知・三重', defaultHotel: '東橫INN 名古屋站新幹線口', coverFallback: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c1/Himeji_castle_in_may_2015.jpg/960px-Himeji_castle_in_may_2015.jpg', weatherTip: '中部山區（高山／白川鄉）氣溫較低，市區名古屋晴朗乾爽。' },
+    { id: 'sanin', name: '山陰地區', desc: '鳥取縣（砂丘／柯南小鎮）・島根縣（出雲大社／松江城）', defaultHotel: 'Dormy Inn 出雲', coverFallback: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/6/64/Fushimiinari-taisha%2C_gehaiden-1.jpg/960px-Fushimiinari-taisha%2C_gehaiden-1.jpg', weatherTip: '日本海側冬季雲量較多偶有陣雪，建議備妥雨具與保暖衣物。' },
+    { id: 'sanyo', name: '山陽地區', desc: '岡山縣（倉敷）・廣島縣（宮島）・山口縣（下關／角島）', defaultHotel: 'Via Inn 廣島新幹線口', coverFallback: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c1/Himeji_castle_in_may_2015.jpg/960px-Himeji_castle_in_may_2015.jpg', weatherTip: '瀨戶內海沿岸晴天率高、氣候溫和，非常適合鐵道跳島漫遊。' },
+    { id: 'shikoku', name: '四國地區', desc: '香川・德島・愛媛・高知', defaultHotel: 'JR Clement Inn 高松', coverFallback: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c1/Himeji_castle_in_may_2015.jpg/960px-Himeji_castle_in_may_2015.jpg', weatherTip: '四國瀨戶內側溫暖少雨，適合搭配 JR 四國周遊券慢活巡禮。' },
+    { id: 'kyushu', name: '九州地區', desc: '福岡・佐賀・長崎・大分・熊本・宮崎・鹿兒島', defaultHotel: '東橫INN 博多口站前', coverFallback: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a7/%E6%9D%B1%E5%A4%A7%E5%AF%BA_%E5%A4%A7%E4%BB%8F%E6%AE%BF%EF%BC%882024%E5%B9%B4%EF%BC%89.jpg/960px-%E6%9D%B1%E5%A4%A7%E5%AF%BA_%E5%A4%A7%E4%BB%8F%E6%AE%BF%EF%BC%882024%E5%B9%B4%EF%BC%89.jpg', weatherTip: '北九州冬季海風較強約 7–13°C，阿蘇山區氣溫更低需注意保暖。' },
+    { id: 'okinawa', name: '沖繩地區', desc: '沖繩本島（那霸／美國村／美麗海水族館）與離島', defaultHotel: '東橫INN 那霸旭橋站前', coverFallback: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/1/1d/KOBE_PORT_TOWER_001.jpg/960px-KOBE_PORT_TOWER_001.jpg', weatherTip: '沖繩冬季約 17–21°C 舒適宜人，海邊風大建議帶件薄風衣。' }
 ];
 
 const DEFAULT_JR_PASSES = [
@@ -68,6 +69,10 @@ let cloudData = {
 };
 
 const DEFAULT_APP_STATE = {
+    tripCode: 'JP-GPVMP6',
+    tripTitle: '京阪冬季光影四日遊',
+    tripAuthor: '旅人手札',
+    coverUrl: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/6/64/Fushimiinari-taisha%2C_gehaiden-1.jpg/960px-Fushimiinari-taisha%2C_gehaiden-1.jpg',
     startDate: '2026-12-18',
     endDate: '2026-12-21',
     travelers: 2,
@@ -111,10 +116,22 @@ const DEFAULT_APP_STATE = {
 };
 
 let appState = JSON.parse(JSON.stringify(DEFAULT_APP_STATE));
+let savedTripsList = [];
+// 'hub' = 拍立得手札大廳 | 'view' = 點卡片進入（固定基本資訊，專注第2大區行程與記帳） | 'edit' = 完整新增/編輯模式
+let currentViewScreen = 'hub';
 let lastRouteSnapshot = null;
 const photoCache = {};
 const googleTopSpotsCache = {};
 const googleTopSpotsLoading = {};
+
+function generateNewTripCode() {
+    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+    let suffix = '';
+    for (let i = 0; i < 6; i++) {
+        suffix += chars[Math.floor(Math.random() * chars.length)];
+    }
+    return `JP-${suffix}`;
+}
 
 function showHealthBanner(msg) {
     const el = document.getElementById('health-check-banner');
@@ -127,6 +144,9 @@ function showHealthBanner(msg) {
 function mergeAppStateSafely(savedState) {
     if (!savedState || typeof savedState !== 'object') return;
     Object.assign(appState, savedState);
+    if (!appState.tripCode) appState.tripCode = userConfig.syncCode || DEFAULT_SYNC_CODE;
+    if (!appState.tripTitle) appState.tripTitle = '日本專屬手札之旅';
+    if (!appState.tripAuthor) appState.tripAuthor = '旅人手札';
     if (!Array.isArray(appState.extraRegions)) appState.extraRegions = [];
     if (!appState.dayStartTimes || typeof appState.dayStartTimes !== 'object') appState.dayStartTimes = { ...DEFAULT_APP_STATE.dayStartTimes };
     if (!appState.dayHotels || typeof appState.dayHotels !== 'object') appState.dayHotels = { ...DEFAULT_APP_STATE.dayHotels };
@@ -141,7 +161,304 @@ function mergeAppStateSafely(savedState) {
 }
 
 // =========================================================
-// 讀取倉庫內 japan.svg（47 都道府縣自動 11 分區著色）
+// 多旅程管理、拍立得手札大廳與畫面切換
+// =========================================================
+function loadSavedTripsRegistry() {
+    try {
+        const raw = JSON.parse(localStorage.getItem(SAVED_TRIPS_KEY) || '[]');
+        if (Array.isArray(raw) && raw.length > 0) {
+            savedTripsList = raw;
+        } else {
+            // 首次開啟時將目前預設示範行程收錄為第一張拍立得卡片
+            savedTripsList = [buildTripEntryFromState(appState)];
+            saveTripsRegistry();
+        }
+    } catch (e) {
+        savedTripsList = [buildTripEntryFromState(appState)];
+    }
+}
+
+function saveTripsRegistry() {
+    try {
+        localStorage.setItem(SAVED_TRIPS_KEY, JSON.stringify(savedTripsList));
+    } catch (e) {}
+}
+
+function resolveBestCoverForState(stateObj) {
+    if (stateObj.coverUrl && stateObj.coverUrl.trim()) return stateObj.coverUrl.trim();
+    const firstDayActs = stateObj.activitiesByDay?.[1] || Object.values(stateObj.activitiesByDay || {}).flat();
+    for (const act of firstDayActs || []) {
+        if (act?.title && photoCache[act.title]) return photoCache[act.title];
+        const dbMatch = (cloudData.events || []).find(ev => ev.title === act?.title && ev.photoUrl);
+        if (dbMatch?.photoUrl) return dbMatch.photoUrl;
+    }
+    const meta = REGIONS_META.find(r => r.id === stateObj.region) || REGIONS_META[0];
+    return meta.coverFallback;
+}
+
+function buildTripEntryFromState(stateObj) {
+    const code = (stateObj.tripCode || DEFAULT_SYNC_CODE).trim().toUpperCase();
+    return {
+        code,
+        title: (stateObj.tripTitle || '日本專屬手札之旅').trim(),
+        author: (stateObj.tripAuthor || '旅人手札').trim(),
+        coverUrl: resolveBestCoverForState(stateObj),
+        region: stateObj.region || 'kansai',
+        startDate: stateObj.startDate || '2026-12-18',
+        endDate: stateObj.endDate || '2026-12-21',
+        updatedAt: new Date().toISOString(),
+        stateSnapshot: JSON.parse(JSON.stringify(stateObj))
+    };
+}
+
+function upsertCurrentTripIntoRegistry() {
+    const entry = buildTripEntryFromState(appState);
+    const idx = savedTripsList.findIndex(t => t.code === entry.code);
+    if (idx >= 0) savedTripsList[idx] = entry;
+    else savedTripsList.unshift(entry);
+    saveTripsRegistry();
+}
+
+function switchWorkspaceMode(screenMode) {
+    currentViewScreen = screenMode;
+    const hubEl = document.getElementById('trips-hub-view');
+    const wsEl = document.getElementById('trip-workspace-view');
+    const backBtn = document.getElementById('back-to-hub-btn');
+    const expBtn = document.getElementById('export-header-btn');
+
+    if (screenMode === 'hub') {
+        hubEl?.classList.remove('hidden');
+        wsEl?.classList.add('hidden');
+        backBtn?.classList.add('hidden');
+        expBtn?.classList.add('hidden');
+        renderTripsHub();
+        return;
+    }
+
+    hubEl?.classList.add('hidden');
+    wsEl?.classList.remove('hidden');
+    backBtn?.classList.remove('hidden');
+    expBtn?.classList.remove('hidden');
+
+    const isEdit = screenMode === 'edit';
+    document.getElementById('fixed-trip-summary-bar')?.classList.toggle('hidden', isEdit);
+    document.getElementById('section-one-setup')?.classList.toggle('hidden', !isEdit);
+    document.getElementById('section-three-recommendations')?.classList.toggle('hidden', !isEdit);
+
+    const modePill = document.getElementById('workspace-mode-pill');
+    const editBtn = document.getElementById('btn-enter-edit-mode');
+    if (modePill) {
+        modePill.textContent = isEdit ? '✏️ 完整規劃編輯模式' : '📖 隨身行程與記帳模式';
+        modePill.className = isEdit
+            ? 'text-xs font-bold px-2.5 py-1 rounded-full bg-amber-100 text-amber-900'
+            : 'text-xs font-bold px-2.5 py-1 rounded-full bg-matcha/15 text-matcha';
+    }
+    if (editBtn) {
+        editBtn.classList.toggle('hidden', isEdit);
+    }
+
+    renderAll();
+    if (isEdit) {
+        setTimeout(() => { tryLoadExternalJapanSvg(); }, 40);
+    }
+}
+
+function goToTripsHub() {
+    upsertCurrentTripIntoRegistry();
+    switchWorkspaceMode('hub');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function openTripFromHub(code, targetMode = 'view') {
+    const target = savedTripsList.find(t => t.code === code);
+    if (!target || !target.stateSnapshot) return;
+    appState = JSON.parse(JSON.stringify(DEFAULT_APP_STATE));
+    mergeAppStateSafely(target.stateSnapshot);
+    appState.tripCode = target.code;
+    userConfig.syncCode = target.code;
+    saveConfig();
+    saveState();
+    switchWorkspaceMode(targetMode);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function createNewTripAndEdit() {
+    const newCode = generateNewTripCode();
+    const fresh = JSON.parse(JSON.stringify(DEFAULT_APP_STATE));
+    fresh.tripCode = newCode;
+    fresh.tripTitle = '我的日本新旅程手札';
+    fresh.tripAuthor = '旅人手札';
+    fresh.coverUrl = '';
+    fresh.activitiesByDay = { 1: [], 2: [], 3: [], 4: [] };
+    fresh.expensesByDay = {};
+    fresh.fixedExpenses = [];
+    fresh.trashBin = [];
+
+    appState = fresh;
+    userConfig.syncCode = newCode;
+    saveConfig();
+    saveState();
+    upsertCurrentTripIntoRegistry();
+    switchWorkspaceMode('edit');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+async function saveCurrentTripToHub() {
+    upsertCurrentTripIntoRegistry();
+    saveState();
+    if (userConfig.githubToken) {
+        await pushTripToGitHub(true);
+    }
+    switchWorkspaceMode('hub');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function deleteSavedTripFromHub(e, code) {
+    e.stopPropagation();
+    savedTripsList = savedTripsList.filter(t => t.code !== code);
+    saveTripsRegistry();
+    renderTripsHub();
+}
+
+async function importTripByCodeFromHub() {
+    const input = document.getElementById('hub-import-code-input');
+    const code = (input?.value || '').trim().toUpperCase();
+    if (!code) return;
+    input.value = '';
+    userConfig.syncCode = code;
+    saveConfig();
+    const ok = await pullTripFromGitHub(true);
+    if (ok) {
+        appState.tripCode = code;
+        upsertCurrentTripIntoRegistry();
+        renderTripsHub();
+    } else {
+        showHealthBanner(`⚠️ 雲端找不到代碼 ${code} 的行程檔案，請確認對方是否已按上傳同步。`);
+    }
+}
+
+function copyCurrentTripShareCode() {
+    const code = appState.tripCode || userConfig.syncCode || DEFAULT_SYNC_CODE;
+    navigator.clipboard?.writeText(code);
+    const statusEl = document.getElementById('auto-save-status');
+    if (statusEl) statusEl.textContent = `📋 已複製分享代碼 ${code}`;
+}
+
+function handleTripMetaChange() {
+    appState.tripTitle = document.getElementById('trip-title-input')?.value || '';
+    appState.tripAuthor = document.getElementById('trip-author-input')?.value || '';
+    appState.coverUrl = document.getElementById('trip-cover-input')?.value || '';
+    saveState();
+    upsertCurrentTripIntoRegistry();
+}
+
+function renderTripsHub() {
+    const grid = document.getElementById('trips-polaroid-grid');
+    if (!grid) return;
+
+    const verBadge = document.getElementById('app-version-badge');
+    if (verBadge) verBadge.textContent = APP_VERSION;
+    const syncLabel = document.getElementById('header-sync-code-label');
+    if (syncLabel && userConfig.syncCode) syncLabel.textContent = userConfig.syncCode;
+
+    const rankColors = ['#B5654D', '#6D8B74', '#5B7C8D', '#A68A56', '#8E6C88'];
+    const tapeColors = ['#D6B8B2', '#C5D1C8', '#B8C9D4', '#DDD0B8', '#CFC3D1'];
+    const tilts = ['-1.2deg', '0.9deg', '-0.7deg', '1.1deg'];
+
+    const cardsHtml = savedTripsList.map((trip, idx) => {
+        const rankNum = String(idx + 1).padStart(2, '0');
+        const rankColor = rankColors[idx % rankColors.length];
+        const tapeColor = tapeColors[idx % tapeColors.length];
+        const tilt = tilts[idx % tilts.length];
+        const regMeta = REGIONS_META.find(r => r.id === trip.region) || REGIONS_META[0];
+        const sDate = new Date((trip.startDate || '2026-12-18') + 'T00:00:00');
+        const eDate = new Date((trip.endDate || '2026-12-21') + 'T00:00:00');
+        const days = (!isNaN(sDate) && !isNaN(eDate)) ? Math.max(1, Math.round((eDate - sDate) / 86400000) + 1) : 4;
+        const cover = trip.coverUrl || regMeta.coverFallback;
+        const actCount = Object.values(trip.stateSnapshot?.activitiesByDay || {}).reduce((acc, arr) => acc + (arr?.length || 0), 0);
+
+        return `
+            <div onclick="openTripFromHub('${trip.code}', 'view')" style="transform: rotate(${tilt});" class="journal-polaroid relative rounded-2xl p-4 pt-5 cursor-pointer select-none flex flex-col justify-between group">
+                <!-- 背後巨大鏤空編號浮水印 -->
+                <span aria-hidden="true" class="pointer-events-none absolute -top-8 left-3 font-serif text-6xl font-bold tracking-tighter opacity-15 select-none" style="color: ${rankColor};">${rankNum}</span>
+                <!-- 頂部半透明紙膠帶 -->
+                <span aria-hidden="true" class="washi-tape" style="background-color: ${tapeColor};"></span>
+
+                <div class="space-y-3">
+                    <!-- 郵票齒孔質感相片框 -->
+                    <div class="stamp-photo-frame">
+                        <div class="relative w-full h-44 rounded-xl overflow-hidden bg-stone-200">
+                            <img src="${cover}" alt="${trip.title}" onerror="this.src='${regMeta.coverFallback}'" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            <span class="absolute bottom-2 left-2 text-[10px] font-mono font-bold px-2 py-0.5 rounded-md bg-black/65 text-white backdrop-blur-2xs">${trip.code}</span>
+                        </div>
+                    </div>
+
+                    <div class="px-1 space-y-1">
+                        <div class="text-[11px] font-mono font-bold tracking-widest uppercase" style="color: ${rankColor};">JOURNAL ${rankNum}</div>
+                        <h3 class="font-serif font-bold text-lg text-[#2B2B2B] leading-snug line-clamp-2 group-hover:text-vermilion transition-colors">${trip.title}</h3>
+                        <p class="text-xs text-stone-500">日本・${regMeta.name}・${days} 日</p>
+                    </div>
+                </div>
+
+                <div class="px-1 pt-3 mt-3 border-t border-dashed border-[#DFD7C5] flex items-center justify-between text-xs text-stone-500">
+                    <div class="flex items-center gap-1.5 truncate">
+                        <span class="w-5 h-5 rounded-full bg-indigoJp/15 text-indigoJp font-bold text-[10px] flex items-center justify-center shrink-0">${(trip.author || '旅').slice(0, 1)}</span>
+                        <span class="truncate font-medium text-stone-700">${trip.author || '旅人手札'}</span>
+                    </div>
+                    <div class="flex items-center gap-2 shrink-0">
+                        <span class="text-[11px]">🧩 ${actCount} 站</span>
+                        <button type="button" onclick="event.stopPropagation(); openTripFromHub('${trip.code}', 'edit')" title="編輯旅程設定" class="px-1.5 py-0.5 rounded bg-washi hover:bg-amber-100 text-stone-600 text-[11px] font-bold cursor-pointer">✏️</button>
+                        ${savedTripsList.length > 1 ? `<button type="button" onclick="deleteSavedTripFromHub(event, '${trip.code}')" title="移除此手札" class="px-1.5 py-0.5 rounded hover:bg-red-50 text-stone-400 hover:text-vermilion text-[11px] font-bold cursor-pointer">✕</button>` : ''}
+                    </div>
+                </div>
+            </div>
+        `;
+    }).join('');
+
+    const addNewCardHtml = `
+        <button type="button" onclick="createNewTripAndEdit()" class="min-h-[340px] rounded-2xl border-2 border-dashed border-[#C9BFA8] bg-[#FCF9F2]/60 hover:bg-[#FCF9F2] hover:border-vermilion/60 p-6 flex flex-col items-center justify-center gap-3 text-center transition-all cursor-pointer group">
+            <span class="w-12 h-12 rounded-full bg-vermilion/10 group-hover:bg-vermilion text-vermilion group-hover:text-white flex items-center justify-center text-2xl font-bold transition-colors">＋</span>
+            <div>
+                <div class="font-serif font-bold text-base text-indigoJp group-hover:text-vermilion">新增一趟日本手札</div>
+                <p class="text-xs text-stone-500 mt-1">自動產生專屬分享代碼<br>自由安排地圖、班機與景點拼圖</p>
+            </div>
+        </button>
+    `;
+
+    grid.innerHTML = cardsHtml + addNewCardHtml;
+}
+
+function renderFixedSummaryBar() {
+    const regMeta = REGIONS_META.find(r => r.id === appState.region) || REGIONS_META[0];
+    const days = getTotalDays();
+    const out = appState.outboundFlight || { code: 'AK176', ...DEFAULT_FLIGHTS_DB.AK176 };
+    const inc = appState.inboundFlight || { code: 'AK177', ...DEFAULT_FLIGHTS_DB.AK177 };
+    const passes = cloudData.jrPasses || DEFAULT_JR_PASSES;
+    const p1 = passes.find(p => p.id === appState.jrPassId);
+    const cover = resolveBestCoverForState(appState);
+
+    const thumbEl = document.getElementById('summary-cover-thumb');
+    if (thumbEl && cover) {
+        thumbEl.src = cover;
+        thumbEl.classList.remove('hidden');
+    }
+
+    const setTxt = (id, txt) => { const el = document.getElementById(id); if (el) el.textContent = txt; };
+    setTxt('workspace-trip-code', appState.tripCode || userConfig.syncCode || DEFAULT_SYNC_CODE);
+    setTxt('summary-region-badge', regMeta.name);
+    setTxt('summary-days-badge', `${days} 天 ${Math.max(0, days - 1)} 夜`);
+    setTxt('summary-author-badge', `✍️ ${appState.tripAuthor || '旅人手札'}`);
+    setTxt('summary-trip-title', appState.tripTitle || '日本專屬手札之旅');
+    setTxt('summary-date-range', `📅 ${appState.startDate} ～ ${appState.endDate}（${appState.travelers || 2} 人同行）`);
+    setTxt('summary-outbound-flight', `${out.code}・${out.airport} ${out.time} 抵達`);
+    setTxt('summary-inbound-flight', `${inc.code}・${inc.airport} ${inc.time} 起飛`);
+    setTxt('summary-pass-info', appState.drivingMode
+        ? `🚗 自駕租車模式（${appState.travelers} 人共乘）`
+        : (appState.useJrPass ? `🚄 ${p1?.name || 'JR PASS'}（Day ${appState.jrPassStartDay} 啟用）` : '🎫 單買車票 / IC 卡自由行'));
+}
+
+// =========================================================
+// 讀取倉庫內 japan.svg（47 都道府縣自動 11 分區著色＋滿版裁切）
 // =========================================================
 const PREF_TO_REGION_11 = [
     'hokkaido',
@@ -246,7 +563,6 @@ async function tryLoadExternalJapanSvg() {
             extSvg.innerHTML = '';
             extSvg.appendChild(mainlandGroup);
 
-            // 精準量測北海道到九州的實際邊界並滿版放大
             let mBox = { x: 0, y: 0, width: 1000, height: 1000 };
             try {
                 const b = mainlandGroup.getBBox();
@@ -378,6 +694,7 @@ function getDateLabelForDay(dayNum) {
 function saveState() {
     try {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+        upsertCurrentTripIntoRegistry();
         const statusEl = document.getElementById('auto-save-status');
         if (statusEl) statusEl.textContent = `☁️ 已儲存 (${new Date().toTimeString().slice(0, 5)})`;
     } catch (e) {}
@@ -426,6 +743,7 @@ function loadSavedData() {
         if (savedState && typeof savedState === 'object') {
             mergeAppStateSafely(savedState);
         }
+        loadSavedTripsRegistry();
     } catch (e) {}
 }
 
@@ -477,13 +795,13 @@ async function syncCloudDatabase() {
             const shortDate = cloudData.updatedAt ? cloudData.updatedAt.slice(0, 10) : '已連線';
             if (badge) badge.textContent = `🌐 db.json (${cloudData.events.length}筆・${shortDate})`;
             if (modalStatus) modalStatus.textContent = `🟢 已同步 (${cloudData.updatedAt || '最新'})`;
-            renderAll();
+            if (currentViewScreen === 'hub') renderTripsHub();
+            else renderAll();
             return;
         } catch (e) {}
     }
 
     if (badge) badge.textContent = '🌐 db.json 離線模式';
-    showHealthBanner('⚠️ 無法讀取 db.json，請確認 db.json 已放在倉庫根目錄且為有效 JSON 格式。');
 }
 
 // =========================================================
@@ -1539,7 +1857,7 @@ function applyFlipReorder(nextDay, nextIdx) {
     if (previewDropTarget && previewDropTarget.targetDay === nextDay && previewDropTarget.targetIdx === nextIdx) return;
 
     const now = performance.now();
-    if (now - lastFlipMoveTs < 95) return;
+    if (now - lastFlipMoveTs < 110) return;
     lastFlipMoveTs = now;
 
     const oldRects = new Map();
@@ -1577,7 +1895,6 @@ function handleOverviewCardDragOver(e, targetDay, slotIdx) {
     const rect = e.currentTarget.getBoundingClientRect();
     const relY = (e.clientY - rect.top) / (rect.height || 1);
 
-    // 加寬上下 28% 才切換的遲滯帶，避免卡片高度變化時在邊界反覆觸發
     if (relY > 0.28 && relY < 0.72) return;
     const insertIdx = relY >= 0.5 ? slotIdx + 1 : slotIdx;
     applyFlipReorder(targetDay, insertIdx);
@@ -1586,7 +1903,6 @@ function handleOverviewCardDragOver(e, targetDay, slotIdx) {
 function handleOverviewColumnDragOver(e, targetDay, listLen) {
     e.preventDefault();
     if (!draggedPuzzleInfo) return;
-    // 若游標仍在某張卡片或預留框範圍內，交由卡片處理，絕不因經過縫隙而跳到最底端
     const listWrap = e.currentTarget.querySelector('[data-overview-list]');
     if (listWrap) {
         const cards = listWrap.querySelectorAll('[data-overview-id]');
@@ -1799,6 +2115,7 @@ async function fetchPlacePhotoForCard(queryTitle, domId) {
 }
 
 function loadBuiltinRecommendations() {
+    if (currentViewScreen !== 'edit') return;
     const grid = document.getElementById('recommendations-grid');
     if (!grid) return;
 
@@ -2195,7 +2512,7 @@ function submitCustomPiece() {
 
 function openExportModal() {
     const totalDays = getTotalDays();
-    const lines = [`【旅遊拼圖 Travel Puzzle 行程手札】`, `出發日期：${appState.startDate} ～ ${appState.endDate}（${totalDays}天，${appState.travelers}人）`, ``];
+    const lines = [`【${appState.tripTitle || '旅遊拼圖 Travel Puzzle 行程手札'}】`, `分享代碼：${appState.tripCode || userConfig.syncCode}`, `出發日期：${appState.startDate} ～ ${appState.endDate}（${totalDays}天，${appState.travelers}人）`, ``];
     for (let d = 1; d <= totalDays; d++) {
         lines.push(`=== Day ${d} (${getDateLabelForDay(d)}) ===`);
         const nodes = buildDaySegments(d);
@@ -2222,11 +2539,11 @@ function openApiKeyModal() {
     document.getElementById('modal-github-user').value = userConfig.githubUser || 'JHANSIANGJYUN';
     document.getElementById('modal-github-repo').value = userConfig.githubRepo || 'travel-puzzle';
     document.getElementById('modal-cloud-db-url').value = userConfig.cloudDbUrl || `https://raw.githubusercontent.com/${userConfig.githubUser || 'JHANSIANGJYUN'}/${userConfig.githubRepo || 'travel-puzzle'}/main/db.json`;
-    document.getElementById('modal-sync-code-input').value = userConfig.syncCode || DEFAULT_SYNC_CODE;
+    document.getElementById('modal-sync-code-input').value = appState.tripCode || userConfig.syncCode || DEFAULT_SYNC_CODE;
     const statusLine = document.getElementById('github-sync-status-line');
     if (statusLine) {
         statusLine.textContent = userConfig.githubToken
-            ? `🟢 GitHub 雙向同步已就緒 (${userConfig.syncCode || DEFAULT_SYNC_CODE})`
+            ? `🟢 GitHub 雙向同步已就緒 (${appState.tripCode || userConfig.syncCode || DEFAULT_SYNC_CODE})`
             : `🟡 僅唯讀模式（填入 GitHub Token 即可上傳同步）`;
     }
     document.getElementById('gmaps-test-result')?.classList.add('hidden');
@@ -2325,22 +2642,23 @@ function applySyncCodeFromModal() {
     const code = (document.getElementById('modal-sync-code-input')?.value || '').trim().toUpperCase();
     if (code) {
         userConfig.syncCode = code;
+        appState.tripCode = code;
         saveConfig();
         const lbl = document.getElementById('header-sync-code-label');
         if (lbl) lbl.textContent = code;
     }
 }
 
-async function pushTripToGitHub() {
-    saveApiAndCloudSettings(false);
+async function pushTripToGitHub(silent = false) {
+    if (!silent) saveApiAndCloudSettings(false);
     const statusLine = document.getElementById('github-sync-status-line');
     const token = (userConfig.githubToken || '').trim();
     const owner = (userConfig.githubUser || 'JHANSIANGJYUN').trim();
     const repo = (userConfig.githubRepo || 'travel-puzzle').trim();
-    const code = (userConfig.syncCode || 'JP-GPVMP6').trim().toUpperCase();
+    const code = (appState.tripCode || userConfig.syncCode || 'JP-GPVMP6').trim().toUpperCase();
     if (!token) {
         if (statusLine) statusLine.textContent = '⚠️ 請先填入 GitHub Personal Access Token 再上傳';
-        return;
+        return false;
     }
     if (statusLine) statusLine.textContent = '⏳ 正在上傳行程至 GitHub 雲端...';
     const path = `trips/${code}.json`;
@@ -2360,13 +2678,15 @@ async function pushTripToGitHub() {
         if (statusLine) statusLine.textContent = `✅ 已成功上傳至 GitHub (${code})！`;
         const hdrBadge = document.getElementById('cloud-sync-header-badge');
         if (hdrBadge) hdrBadge.textContent = `・☁️ ${code} 已同步`;
+        return true;
     } catch (err) {
         if (statusLine) statusLine.textContent = `❌ 上傳失敗：${err.message}`;
+        return false;
     }
 }
 
-async function pullTripFromGitHub() {
-    saveApiAndCloudSettings(false);
+async function pullTripFromGitHub(silent = false) {
+    if (!silent) saveApiAndCloudSettings(false);
     const statusLine = document.getElementById('github-sync-status-line');
     const owner = (userConfig.githubUser || 'JHANSIANGJYUN').trim();
     const repo = (userConfig.githubRepo || 'travel-puzzle').trim();
@@ -2401,13 +2721,17 @@ async function pullTripFromGitHub() {
         const loadedState = data.appState || data.state || data.trip || (data.activitiesByDay ? data : null);
         if (!loadedState) throw new Error('雲端檔案格式無法辨識');
         mergeAppStateSafely(loadedState);
+        appState.tripCode = code;
         saveState();
-        renderAll();
+        if (currentViewScreen === 'hub') renderTripsHub();
+        else renderAll();
         if (statusLine) statusLine.textContent = `✅ 已成功載入雲端行程 (${code})！`;
         const hdrBadge = document.getElementById('cloud-sync-header-badge');
         if (hdrBadge) hdrBadge.textContent = `・☁️ ${code} 已載入`;
+        return true;
     } catch (err) {
         if (statusLine) statusLine.textContent = `⚠️ 讀取失敗：${err.message}`;
+        return false;
     }
 }
 
@@ -2426,7 +2750,7 @@ function saveApiAndCloudSettings(shouldClose = true) {
 function copyShareSetupLink() {
     saveApiAndCloudSettings(false);
     const compactPayload = {
-        c: userConfig.syncCode || DEFAULT_SYNC_CODE,
+        c: appState.tripCode || userConfig.syncCode || DEFAULT_SYNC_CODE,
         p: userConfig.githubToken || '',
         m: userConfig.gmapsKey || '',
         g: userConfig.geminiKey || '',
@@ -2439,16 +2763,19 @@ function copyShareSetupLink() {
     if (statusLine) statusLine.textContent = '🔗 已複製一鍵自動設定連結！貼到手機打開即可免重打金鑰';
 }
 
-function openResetConfirmModal() { document.getElementById('reset-confirm-modal')?.classList.remove('hidden'); }
-function closeResetConfirmModal() { document.getElementById('reset-confirm-modal')?.classList.add('hidden'); }
-function confirmResetTrip() { localStorage.removeItem(STORAGE_KEY); window.location.reload(); }
-
 // =========================================================
 // 統一渲染管線 renderAll() 與雙保險啟動器
 // =========================================================
 function renderAll() {
     const verBadge = document.getElementById('app-version-badge');
     if (verBadge) verBadge.textContent = APP_VERSION;
+
+    const titleIn = document.getElementById('trip-title-input');
+    const authorIn = document.getElementById('trip-author-input');
+    const coverIn = document.getElementById('trip-cover-input');
+    if (titleIn) titleIn.value = appState.tripTitle || '';
+    if (authorIn) authorIn.value = appState.tripAuthor || '';
+    if (coverIn) coverIn.value = appState.coverUrl || '';
 
     const sInput = document.getElementById('start-date');
     const eInput = document.getElementById('end-date');
@@ -2464,12 +2791,13 @@ function renderAll() {
     if (rInput) rInput.value = appState.jpyRate || 0.215;
     if (outInput && appState.outboundFlight?.code) outInput.value = appState.outboundFlight.code;
     if (inInput && appState.inboundFlight?.code) inInput.value = appState.inboundFlight.code;
-    if (syncLabel && userConfig.syncCode) syncLabel.textContent = userConfig.syncCode;
+    if (syncLabel) syncLabel.textContent = appState.tripCode || userConfig.syncCode || DEFAULT_SYNC_CODE;
 
     const days = getTotalDays();
     const badge = document.getElementById('trip-days-badge');
     if (badge) badge.textContent = `${days} 天 ${Math.max(0, days - 1)} 夜`;
 
+    renderFixedSummaryBar();
     renderRegionMapAndButtons();
     renderFlightBanner();
     renderJrPassAndDrivingSection();
@@ -2490,8 +2818,7 @@ function bootTravelPuzzleApp() {
             }
         });
     }
-    renderAll();
-    tryLoadExternalJapanSvg();
+    switchWorkspaceMode('hub');
     syncCloudDatabase();
 }
 
