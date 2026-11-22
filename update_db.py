@@ -182,11 +182,32 @@ def enrich_stations_from_open_data(existing_stations: list[dict]) -> list[dict]:
 
 
 def call_gemini_json(prompt_text: str):
-    """呼叫 Gemini API 並強制解析回傳的 JSON 陣列或物件（支援無金鑰時安全跳過）"""
+    """呼叫 Gemini API 並強制解析回傳的 JSON 陣列或物件（自動相容最新 gemini-3.8-flash 模型）"""
     api_key = os.environ.get("GEMINI_API_KEY", "").strip()
     if not api_key:
         print("[INFO] 未偵測到 GEMINI_API_KEY，將略過 AI 擴充並保留現有累積資料與開放車站座標。")
         return None
+
+    payload = {
+        "contents": [{"parts": [{"text": prompt_text}]}],
+        "generationConfig": {"temperature": 0.35, "responseMimeType": "application/json"}
+    }
+    for model in ("gemini-3.8-flash", "gemini-3-flash-preview", "gemini-2.5-flash"):
+        url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={api_key}"
+        try:
+            req = urllib.request.Request(
+                url,
+                data=json.dumps(payload).encode("utf-8"),
+                headers={"Content-Type": "application/json"}
+            )
+            with urllib.request.urlopen(req, timeout=45) as resp:
+                res_data = json.loads(resp.read().decode("utf-8"))
+                text = res_data["candidates"][0]["content"]["parts"][0]["text"]
+                text = re.sub(r"^```json\s*|\s*```$", "", text.strip())
+                return json.loads(text)
+        except Exception as e:
+            print(f"[WARN] Gemini 模型 ({model}) 呼叫失敗，嘗試下一順位: {e}")
+    return None
 
     url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={api_key}"
     payload = {
@@ -363,6 +384,33 @@ def merge_events_dedup(existing_events: list[dict], new_events: list[dict]) -> l
     return list(merged_map.values())
 
 
+def enrich_event_wikipedia_photos(events: list[dict], max_lookups: int = 25) -> list[dict]:
+    """透過免費免 Key 的 Wikipedia REST API 為尚未有圖片的景點補齊 Wikimedia 縮圖，減少前端 Places API 呼叫"""
+    lookups = 0
+    for ev in events:
+        if ev.get("imageUrl") or ev.get("photoUrl"):
+            continue
+        if lookups >= max_lookups:
+            break
+        raw_title = str(ev.get("wikiJa") or ev.get("title") or "").split("・")[0].split("（")[0].strip()
+        if not raw_title:
+            continue
+        lookups += 1
+        for lang in ("ja", "zh"):
+            try:
+                api_url = f"https://{lang}.wikipedia.org/api/rest_v1/page/summary/{urllib.request.quote(raw_title)}"
+                req = urllib.request.Request(api_url, headers={"User-Agent": "TravelPuzzleBot/1.0"})
+                with urllib.request.urlopen(req, timeout=8) as resp:
+                    summary = json.loads(resp.read().decode("utf-8"))
+                    thumb = summary.get("thumbnail", {}).get("source", "")
+                    if thumb:
+                        ev["imageUrl"] = thumb
+                        break
+            except Exception:
+                continue
+    return events
+
+
 def main():
     jst = timezone(timedelta(hours=9))
     now_jst = datetime.now(jst)
@@ -381,9 +429,10 @@ def main():
     flights = fetch_updated_flights(db.get("flights", DEFAULT_FLIGHTS_DB))
     print(f"[OK] JR PASS 共 {len(jr_passes)} 種，航班庫共 {len(flights)} 班")
 
-    # 3. 抓取當季與輪替月份活動並累積合併
+    # 3. 抓取當季與輪替月份活動並累積合併，再透過 Wikipedia 免費補齊縮圖
     fetched_events = fetch_seasonal_events(target_months)
     merged_events = merge_events_dedup(db.get("events", []), fetched_events)
+    merged_events = enrich_event_wikipedia_photos(merged_events, max_lookups=30)
     print(f"[OK] 活動與景點庫累積至 {len(merged_events)} 筆")
 
     output = {
