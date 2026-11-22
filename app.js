@@ -1,13 +1,12 @@
-// 旅遊拼圖 Travel Puzzle 主程式 (v1.49)
+// 旅遊拼圖 Travel Puzzle 主程式 (v1.50)
 // 直接讀取倉庫內 db.json（無需額外 data.js）與 japan.svg
 
-const APP_VERSION = 'v1.49';
+const APP_VERSION = 'v1.50';
 const STORAGE_KEY = 'travel_puzzle_jp_state_v1';
 const CONFIG_KEY = 'travel_puzzle_jp_config_v1';
 const LEGACY_CONFIG_KEYS = ['travel_puzzle_config', 'jp_travel_config_v1', 'travelPuzzleConfig', 'travel_puzzle_api_keys', 'travel_puzzle_settings', 'tp_config_v1'];
 const DEFAULT_SYNC_CODE = 'JP-GPVMP6';
 
-// 11 大分區基礎詮釋資料（飯店預設值與季節提醒）
 const REGIONS_META = [
     { id: 'kansai', name: '關西地區', desc: '滋賀・京都・大阪・兵庫・奈良・和歌山', defaultHotel: '東橫INN 大阪難波西', weatherTip: '12月關西白天約 8–12°C，早晚偏冷建議洋蔥式穿搭；雨天可優先安排地下街或京都車站室內景點。' },
     { id: 'kanto', name: '關東地區', desc: '茨城・栃木・群馬・埼玉・千葉・東京・神奈川', defaultHotel: '東橫INN 東京站新大橋前', weatherTip: '12月東京晴朗乾燥約 6–13°C，風大建議攜帶防風外套與護唇膏。' },
@@ -22,18 +21,33 @@ const REGIONS_META = [
     { id: 'okinawa', name: '沖繩地區', desc: '沖繩本島（那霸／美國村／美麗海水族館）與離島', defaultHotel: '東橫INN 那霸旭橋站前', weatherTip: '沖繩冬季約 17–21°C 舒適宜人，海邊風大建議帶件薄風衣。' }
 ];
 
-// 離線或 db.json 尚未載入前的最小必要保底資料
-const MINIMAL_FALLBACK_PASSES = [
+const DEFAULT_JR_PASSES = [
     { id: 'jr-kansai-area-3', name: 'JR 關西地區鐵路周遊券 (3日)', priceJpy: 5800, days: 3, regions: ['kansai'], airportCovered: true },
     { id: 'jr-kansai-wide-5', name: 'JR 關西廣域鐵路周遊券 (5日)', priceJpy: 12000, days: 5, regions: ['kansai', 'sanyo', 'sanin'], airportCovered: true },
+    { id: 'jr-haruka-oneway', name: 'JR 關西機場特快 HARUKA 車票 (單程)', priceJpy: 1800, days: 1, regions: ['kansai'], airportCovered: true },
     { id: 'jr-tokyo-wide-3', name: 'JR 東京廣域周遊券 (3日)', priceJpy: 15000, days: 3, regions: ['kanto'], airportCovered: true },
-    { id: 'jr-whole-japan-7', name: 'JR 全日本鐵路通票 (7日普通車)', priceJpy: 50000, days: 7, regions: ['kansai', 'kanto', 'hokkaido', 'kyushu', 'chubu', 'tohoku', 'sanyo', 'sanin', 'shikoku'], airportCovered: true }
+    { id: 'jr-whole-japan-7', name: 'JR 全日本鐵路通票 (7日普通車)', priceJpy: 50000, days: 7, regions: ['kansai', 'kanto', 'hokkaido', 'kyushu', 'hokuriku', 'chubu', 'tohoku', 'sanyo', 'sanin', 'shikoku'], airportCovered: true }
 ];
 
-const MINIMAL_FALLBACK_FLIGHTS = {
+const DEFAULT_FLIGHTS_DB = {
     AK176: { airline: 'AirAsia 亞洲航空', airport: '關西國際機場 (KIX)', terminal: 'T1', time: '19:30', aircraft: 'A321neo', region: 'kansai' },
     AK177: { airline: 'AirAsia 亞洲航空', airport: '關西國際機場 (KIX)', terminal: 'T1', time: '20:45', aircraft: 'A321neo', region: 'kansai' }
 };
+
+const CORE_HUB_STATIONS = [
+    { name: '関西国際空港', aliases: ['關西國際機場', '關西機場', 'KIX'], lat: 34.4347, lng: 135.2440 },
+    { name: '新大阪', aliases: ['新大阪駅', '新大阪東口'], lat: 34.7335, lng: 135.5003 },
+    { name: '大阪', aliases: ['梅田', '大阪駅'], lat: 34.7025, lng: 135.4959 },
+    { name: '難波', aliases: ['なんば', '道頓堀', '心齋橋', '大阪難波'], lat: 34.6669, lng: 135.5003 },
+    { name: '天王寺', aliases: ['阿倍野'], lat: 34.6476, lng: 135.5133 },
+    { name: '京都', aliases: ['京都車站', '京都駅'], lat: 34.9858, lng: 135.7588 },
+    { name: '祇園四条', aliases: ['清水寺', '二年坂', '祇園', '河原町'], lat: 35.0037, lng: 135.7720 },
+    { name: '嵯峨嵐山', aliases: ['嵐山', '渡月橋'], lat: 35.0185, lng: 135.6812 },
+    { name: '稲荷', aliases: ['伏見稻荷'], lat: 34.9671, lng: 135.7727 },
+    { name: '三ノ宮', aliases: ['神戶', '三宮', '美利堅公園', '布引香草園'], lat: 34.6947, lng: 135.1955 },
+    { name: '奈良', aliases: ['奈良公園', '東大寺'], lat: 34.6810, lng: 135.8190 },
+    { name: '宇治', aliases: ['平等院'], lat: 34.8906, lng: 135.8008 }
+];
 
 let userConfig = {
     gmapsKey: '',
@@ -45,13 +59,12 @@ let userConfig = {
     syncCode: 'JP-GPVMP6'
 };
 
-// 直接對應你 db.json 結構的動態資料庫容器
 let cloudData = {
     updatedAt: '',
-    jrPasses: [...MINIMAL_FALLBACK_PASSES],
-    flights: { ...MINIMAL_FALLBACK_FLIGHTS },
+    jrPasses: [...DEFAULT_JR_PASSES],
+    flights: { ...DEFAULT_FLIGHTS_DB },
     events: [],
-    stations: []
+    stations: [...CORE_HUB_STATIONS]
 };
 
 const DEFAULT_APP_STATE = {
@@ -60,8 +73,8 @@ const DEFAULT_APP_STATE = {
     travelers: 2,
     region: 'kansai',
     extraRegions: [],
-    outboundFlight: { code: 'AK176', ...MINIMAL_FALLBACK_FLIGHTS.AK176 },
-    inboundFlight: { code: 'AK177', ...MINIMAL_FALLBACK_FLIGHTS.AK177 },
+    outboundFlight: { code: 'AK176', ...DEFAULT_FLIGHTS_DB.AK176 },
+    inboundFlight: { code: 'AK177', ...DEFAULT_FLIGHTS_DB.AK177 },
     drivingMode: false,
     rentalCost: 32000,
     tollFuelCost: 8500,
@@ -77,31 +90,21 @@ const DEFAULT_APP_STATE = {
     dayHotels: { 1: '東橫INN 大阪難波西', 2: '東橫INN 新大阪東口', 3: '東橫INN 新大阪東口' },
     dropLuggageFirst: { 1: false, 2: true, 3: false },
     activitiesByDay: {
-        1: [
-            { id: 'act-1', title: '道頓堀＆心齋橋晚餐逛街（固力果跑跑人）', tag: '美食逛街', duration: 90, note: '深夜一蘭拉麵或章魚燒宵夜' }
-        ],
-        2: [
-            { id: 'act-2', title: '大阪光之饗宴・御堂筋彩燈大道', tag: '光影花火', duration: 90, note: '傍晚點燈後散步拍照最美' }
-        ],
+        1: [{ id: 'act-1', title: '道頓堀＆心齋橋晚餐逛街（固力果跑跑人）', tag: '美食逛街', duration: 90, note: '深夜一蘭拉麵或章魚燒宵夜' }],
+        2: [{ id: 'act-2', title: '大阪光之饗宴・御堂筋彩燈大道', tag: '光影花火', duration: 90, note: '傍晚點燈後散步拍照最美' }],
         3: [
             { id: 'act-3', title: '清水寺＆二年坂三年坂散策', tag: '經典景點', duration: 150, note: '沿途品嚐抹茶甜點' },
-            { id: 'act-4', title: '伏見稻荷大社・千本鳥居', tag: '傳統祭典', duration: 120, note: 'JR 奈良線直達最省時' }
+            { id: 'act-4', title: '伏見稻荷大社・千本鳥居', tag: '傳統祭典', duration: 120, note: 'JR奈良線直達' }
         ],
-        4: [
-            { id: 'act-6', title: '黑門市場＆難波最後伴手禮採買', tag: '季節美食', duration: 120, note: '17:30前出發前往關西機場' }
-        ]
+        4: [{ id: 'act-6', title: '黑門市場＆難波最後伴手禮採買', tag: '美食逛街', duration: 120, note: '17:30前出發前往關西機場' }]
     },
     manualTransitMinutes: {},
     routeCache: {},
     trashBin: [],
     trashDrawerOpen: false,
     jpyRate: 0.215,
-    fixedExpenses: [
-        { id: 'fx-1', type: '機票費用', item: '來回機票（2人含行李）', currency: 'TWD', amount: 16800 }
-    ],
-    expensesByDay: {
-        1: [{ id: 'ex-1', category: '🍜 美食餐飲', item: '道頓堀章魚燒＆拉麵', amountJpy: 3200 }]
-    },
+    fixedExpenses: [{ id: 'fx-1', type: '機票費用', item: '來回機票（2人含行李）', currency: 'TWD', amount: 16800 }],
+    expensesByDay: { 1: [{ id: 'ex-1', category: '🍜 美食餐飲', item: '道頓堀章魚燒＆拉麵', amountJpy: 3200 }] },
     recFilter: 'all',
     customRecItems: [],
     expenseSelectedDay: 1
@@ -109,15 +112,11 @@ const DEFAULT_APP_STATE = {
 
 let appState = JSON.parse(JSON.stringify(DEFAULT_APP_STATE));
 let lastRouteSnapshot = null;
-let lastInsertedActId = null;
 const photoCache = {};
 const googleTopSpotsCache = {};
 const googleTopSpotsLoading = {};
 
-// =========================================================
-// 健康檢查與防呆驗證
-// =========================================================
-function showHealthWarning(msg) {
+function showHealthBanner(msg) {
     const el = document.getElementById('health-check-banner');
     if (el) {
         el.textContent = msg;
@@ -125,34 +124,24 @@ function showHealthWarning(msg) {
     }
 }
 
-function normalizeDbEventItem(raw) {
-    if (!raw || typeof raw !== 'object' || !raw.title) return null;
-    const cat = String(raw.category || raw.tag || '經典景點').trim();
-    const inferredType = raw.type
-        ? raw.type
-        : (/(祭典|光影|花火|賞花|紅葉|點燈)/.test(cat) ? 'event' : 'spot');
-    const months = Array.isArray(raw.months) && raw.months.length
-        ? raw.months.map(Number)
-        : [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
-    return {
-        id: raw.id || `db-ev-${raw.title}`,
-        region: String(raw.region || 'kansai').toLowerCase(),
-        type: inferredType,
-        months,
-        tag: cat,
-        periodText: raw.dateLabel || raw.periodText || (months.length < 12 ? `${months.join('・')}月限定` : '全年皆宜'),
-        location: raw.location || '',
-        title: String(raw.title).trim(),
-        wikiJa: raw.wikiJa || '',
-        duration: Number(raw.duration || 90),
-        isIndoor: Boolean(raw.isIndoor),
-        note: raw.desc || raw.note || '',
-        photoUrl: raw.imageUrl || raw.photoUrl || ''
-    };
+function mergeAppStateSafely(savedState) {
+    if (!savedState || typeof savedState !== 'object') return;
+    Object.assign(appState, savedState);
+    if (!Array.isArray(appState.extraRegions)) appState.extraRegions = [];
+    if (!appState.dayStartTimes || typeof appState.dayStartTimes !== 'object') appState.dayStartTimes = { ...DEFAULT_APP_STATE.dayStartTimes };
+    if (!appState.dayHotels || typeof appState.dayHotels !== 'object') appState.dayHotels = { ...DEFAULT_APP_STATE.dayHotels };
+    if (!appState.dropLuggageFirst || typeof appState.dropLuggageFirst !== 'object') appState.dropLuggageFirst = {};
+    if (!appState.activitiesByDay || typeof appState.activitiesByDay !== 'object') appState.activitiesByDay = {};
+    if (!appState.manualTransitMinutes || typeof appState.manualTransitMinutes !== 'object') appState.manualTransitMinutes = {};
+    if (!appState.routeCache || typeof appState.routeCache !== 'object') appState.routeCache = {};
+    if (!Array.isArray(appState.trashBin)) appState.trashBin = [];
+    if (!Array.isArray(appState.fixedExpenses)) appState.fixedExpenses = [];
+    if (!appState.expensesByDay || typeof appState.expensesByDay !== 'object') appState.expensesByDay = {};
+    if (!Array.isArray(appState.customRecItems)) appState.customRecItems = [];
 }
 
 // =========================================================
-// 自動讀取同目錄或 GitHub 倉庫的 japan.svg（47 都道府縣 11 分區著色）
+// 讀取倉庫內 japan.svg（47 都道府縣自動 11 分區著色）
 // =========================================================
 const PREF_TO_REGION_11 = [
     'hokkaido',
@@ -209,7 +198,6 @@ function classifySvgNodeToRegion(el, idx, totalCount, svgBox) {
 async function tryLoadExternalJapanSvg() {
     const host = document.getElementById('external-japan-svg-host');
     if (!host) return;
-
     const owner = (userConfig.githubUser || 'JHANSIANGJYUN').trim();
     const repo = (userConfig.githubRepo || 'travel-puzzle').trim();
     const candidateUrls = [
@@ -228,38 +216,15 @@ async function tryLoadExternalJapanSvg() {
             const extSvg = host.querySelector('svg');
             if (!extSvg) continue;
 
-            const origW = parseFloat(extSvg.getAttribute('width')) || 437.33;
-            const origH = parseFloat(extSvg.getAttribute('height')) || 516.02;
             extSvg.classList.add('w-full', 'h-full');
             extSvg.removeAttribute('width');
             extSvg.removeAttribute('height');
-            extSvg.setAttribute('viewBox', '68 -4 378 396');
 
-            const ns = 'http://www.w3.org/2000/svg';
-            const insetRect = document.createElementNS(ns, 'rect');
-            insetRect.setAttribute('x', '78');
-            insetRect.setAttribute('y', '14');
-            insetRect.setAttribute('width', '175');
-            insetRect.setAttribute('height', '132');
-            insetRect.setAttribute('rx', '16');
-            insetRect.setAttribute('fill', 'rgba(255,255,255,0.92)');
-            insetRect.setAttribute('stroke', '#94A3B8');
-            insetRect.setAttribute('stroke-width', '1.3');
-            insetRect.setAttribute('stroke-dasharray', '4 3');
-            extSvg.insertBefore(insetRect, extSvg.firstChild);
-
-            const insetText = document.createElementNS(ns, 'text');
-            insetText.setAttribute('x', '165');
-            insetText.setAttribute('y', '136');
-            insetText.setAttribute('text-anchor', 'middle');
-            insetText.setAttribute('font-size', '12');
-            insetText.setAttribute('fill', '#334155');
-            insetText.setAttribute('font-weight', 'bold');
-            insetText.textContent = '沖繩列島';
-            extSvg.insertBefore(insetText, insetRect.nextSibling);
-
-            const vb = { x: 0, y: 0, width: origW, height: origH };
+            const origVb = extSvg.viewBox?.baseVal;
+            const vb = (origVb && origVb.width > 0) ? origVb : { x: 0, y: 0, width: 1000, height: 1000 };
             const shapes = Array.from(extSvg.querySelectorAll('path, polygon'));
+            const okinawaShapes = [];
+
             shapes.forEach((shape, idx) => {
                 const parentReg = shape.closest('[data-map-region]');
                 const regId = parentReg
@@ -269,153 +234,83 @@ async function tryLoadExternalJapanSvg() {
                 shape.style.cursor = 'pointer';
                 shape.style.transition = 'fill 0.2s ease, filter 0.2s ease';
                 shape.setAttribute('stroke', '#FFFFFF');
-                shape.setAttribute('stroke-width', '0.75');
-
-                if (shape.id === 'JP-47' || regId === 'okinawa') {
-                    shape.setAttribute('transform', 'translate(68, -622) scale(1.55)');
-                }
+                shape.setAttribute('stroke-width', String(Math.max(0.6, vb.width / 850)));
                 shape.addEventListener('click', () => selectRegion(regId));
+                if (regId === 'okinawa') okinawaShapes.push(shape);
             });
+
+            const cropX = vb.x + vb.width * 0.14;
+            const cropY = vb.y + vb.height * 0.01;
+            const cropW = vb.width * 0.85;
+            const cropH = vb.height * 0.77;
+            extSvg.setAttribute('viewBox', `${cropX} ${cropY} ${cropW} ${cropH}`);
+
+            if (okinawaShapes.length > 0) {
+                const ns = 'http://www.w3.org/2000/svg';
+                const insetGroup = document.createElementNS(ns, 'g');
+                const boxX = cropX + cropW * 0.03;
+                const boxY = cropY + cropH * 0.04;
+                const boxW = cropW * 0.27;
+                const boxH = cropH * 0.24;
+
+                const frameRect = document.createElementNS(ns, 'rect');
+                frameRect.setAttribute('x', boxX);
+                frameRect.setAttribute('y', boxY);
+                frameRect.setAttribute('width', boxW);
+                frameRect.setAttribute('height', boxH);
+                frameRect.setAttribute('rx', String(cropW * 0.018));
+                frameRect.setAttribute('fill', 'rgba(255,255,255,0.88)');
+                frameRect.setAttribute('stroke', '#94A3B8');
+                frameRect.setAttribute('stroke-width', String(cropW * 0.002));
+                frameRect.setAttribute('stroke-dasharray', `${cropW * 0.006} ${cropW * 0.006}`);
+                frameRect.style.cursor = 'pointer';
+                frameRect.addEventListener('click', () => selectRegion('okinawa'));
+                insetGroup.appendChild(frameRect);
+
+                const okiWrapper = document.createElementNS(ns, 'g');
+                okinawaShapes.forEach(s => okiWrapper.appendChild(s));
+                insetGroup.appendChild(okiWrapper);
+                extSvg.appendChild(insetGroup);
+
+                try {
+                    const okiBox = okiWrapper.getBBox();
+                    if (okiBox.width > 0 && okiBox.height > 0) {
+                        const scale = Math.min((boxW * 0.82) / okiBox.width, (boxH * 0.68) / okiBox.height);
+                        const targetCx = boxX + boxW * 0.5;
+                        const targetCy = boxY + boxH * 0.43;
+                        const srcCx = okiBox.x + okiBox.width * 0.5;
+                        const srcCy = okiBox.y + okiBox.height * 0.5;
+                        okiWrapper.setAttribute('transform', `translate(${targetCx - srcCx * scale}, ${targetCy - srcCy * scale}) scale(${scale})`);
+                    }
+                } catch (e) {}
+
+                const labelTxt = document.createElementNS(ns, 'text');
+                labelTxt.setAttribute('x', boxX + boxW * 0.5);
+                labelTxt.setAttribute('y', boxY + boxH * 0.90);
+                labelTxt.setAttribute('text-anchor', 'middle');
+                labelTxt.setAttribute('font-size', String(cropW * 0.022));
+                labelTxt.setAttribute('font-weight', '700');
+                labelTxt.setAttribute('fill', '#1E293B');
+                labelTxt.style.cursor = 'pointer';
+                labelTxt.textContent = '沖繩列島';
+                labelTxt.addEventListener('click', () => selectRegion('okinawa'));
+                insetGroup.appendChild(labelTxt);
+            }
 
             renderRegionMapAndButtons();
             return;
         } catch (e) {}
     }
-    host.innerHTML = '<div class="text-xs text-stone-500">⚠️ 無法載入 japan.svg，請確認檔案已上傳至倉庫根目錄或使用上方區域按鈕切換</div>';
+    host.innerHTML = '<span class="text-xs text-stone-500">⚠️ 尚未讀取到 japan.svg，請確認已上傳至倉庫根目錄</span>';
 }
 
 // =========================================================
-// 表單與互動事件處理器
-// =========================================================
-function handleDateRangeChange(changedSide) {
-    const sEl = document.getElementById('start-date');
-    const eEl = document.getElementById('end-date');
-    if (!sEl || !eEl) return;
-    if (sEl.value) appState.startDate = sEl.value;
-    if (eEl.value) appState.endDate = eEl.value;
-    if (appState.endDate < appState.startDate) {
-        if (changedSide === 'start') {
-            appState.endDate = appState.startDate;
-            eEl.value = appState.endDate;
-        } else {
-            appState.startDate = appState.endDate;
-            sEl.value = appState.startDate;
-        }
-    }
-    saveState();
-    renderAll();
-}
-
-function handleTravelerCountChange(val) {
-    appState.travelers = Math.max(1, Number(val) || 2);
-    saveState();
-    renderAll();
-}
-
-function toggleDrivingMode(checked) {
-    appState.drivingMode = Boolean(checked);
-    saveState();
-    renderAll();
-}
-
-function handleRentalCostChange() {
-    appState.rentalCost = Math.max(0, Number(document.getElementById('rental-car-cost')?.value || 0));
-    appState.tollFuelCost = Math.max(0, Number(document.getElementById('rental-toll-fuel')?.value || 0));
-    saveState();
-    renderJrPassAndDrivingSection();
-    renderExpenseSummary();
-}
-
-function toggleJrPass(checked) {
-    appState.useJrPass = Boolean(checked);
-    saveState();
-    renderAll();
-}
-
-function toggleSecondJrPass(checked) {
-    appState.useSecondJrPass = Boolean(checked);
-    saveState();
-    renderAll();
-}
-
-function handleJrPassConfigChange() {
-    appState.jrPassId = document.getElementById('jr-pass-select')?.value || appState.jrPassId;
-    appState.jrPassStartDay = Number(document.getElementById('jr-pass-start-day')?.value || 1);
-    appState.jrPassId2 = document.getElementById('jr-pass-select-2')?.value || appState.jrPassId2;
-    appState.jrPassStartDay2 = Number(document.getElementById('jr-pass-start-day-2')?.value || 1);
-    saveState();
-    renderAll();
-}
-
-function updateDayStartTime(val) {
-    const d = appState.activeDay || 1;
-    appState.dayStartTimes[d] = val || '09:30';
-    saveState();
-    renderTimeline();
-}
-
-function saveDayHotel(val) {
-    const d = appState.activeDay || 1;
-    const totalDays = getTotalDays();
-    const clean = String(val || '').trim();
-    for (let day = d; day < totalDays; day++) {
-        appState.dayHotels[day] = clean;
-    }
-    saveState();
-    renderAll();
-}
-
-function toggleDropLuggageFirst(checked) {
-    const d = appState.activeDay || 1;
-    appState.dropLuggageFirst[d] = Boolean(checked);
-    saveState();
-    renderTimeline();
-}
-
-function handleManualDaySwap() {
-    const d1 = appState.activeDay || 1;
-    const d2 = Number(document.getElementById('swap-target-day')?.value || 0);
-    if (!d2 || d1 === d2) return;
-    const tmp = appState.activitiesByDay[d1] || [];
-    appState.activitiesByDay[d1] = appState.activitiesByDay[d2] || [];
-    appState.activitiesByDay[d2] = tmp;
-    saveState();
-    renderAll();
-}
-
-function updateJpyRate(val) {
-    const r = Number(val);
-    if (r > 0) {
-        appState.jpyRate = r;
-        saveState();
-        renderExpenseSummary();
-    }
-}
-
-// =========================================================
-// 基礎時間、日期與資料持久化工具（含 Schema 防呆合併）
+// 時間、設定持久化與讀取倉庫 db.json
 // =========================================================
 function parseClockToMinutes(clockStr) {
     const m = String(clockStr || '09:00').match(/^(\d{1,2}):(\d{2})$/);
     if (!m) return 540;
     return Math.min(23, Math.max(0, Number(m[1]))) * 60 + Math.min(59, Math.max(0, Number(m[2])));
-}
-
-function applyConfigObjectWithAliases(rawObj) {
-    if (!rawObj || typeof rawObj !== 'object') return;
-    if (rawObj.c) userConfig.syncCode = String(rawObj.c).trim().toUpperCase();
-    if (rawObj.p) userConfig.githubToken = String(rawObj.p).trim();
-    if (rawObj.m) userConfig.gmapsKey = String(rawObj.m).trim();
-    if (rawObj.g) userConfig.geminiKey = String(rawObj.g).trim();
-    if (rawObj.d) userConfig.cloudDbUrl = String(rawObj.d).trim();
-
-    if (rawObj.syncCode) userConfig.syncCode = String(rawObj.syncCode).trim().toUpperCase();
-    if (rawObj.githubToken) userConfig.githubToken = String(rawObj.githubToken).trim();
-    if (rawObj.gmapsKey) userConfig.gmapsKey = String(rawObj.gmapsKey).trim();
-    if (rawObj.geminiKey) userConfig.geminiKey = String(rawObj.geminiKey).trim();
-    if (rawObj.cloudDbUrl) userConfig.cloudDbUrl = String(rawObj.cloudDbUrl).trim();
-    if (rawObj.githubUser) userConfig.githubUser = String(rawObj.githubUser).trim();
-    if (rawObj.githubRepo) userConfig.githubRepo = String(rawObj.githubRepo).trim();
 }
 
 function formatMinutesToClock(totalMins) {
@@ -425,12 +320,27 @@ function formatMinutesToClock(totalMins) {
     return `${hh}:${mm}`;
 }
 
+function applyConfigObjectWithAliases(rawObj) {
+    if (!rawObj || typeof rawObj !== 'object') return;
+    if (rawObj.c) userConfig.syncCode = String(rawObj.c).trim().toUpperCase();
+    if (rawObj.p) userConfig.githubToken = String(rawObj.p).trim();
+    if (rawObj.m) userConfig.gmapsKey = String(rawObj.m).trim();
+    if (rawObj.g) userConfig.geminiKey = String(rawObj.g).trim();
+    if (rawObj.d) userConfig.cloudDbUrl = String(rawObj.d).trim();
+    if (rawObj.syncCode) userConfig.syncCode = String(rawObj.syncCode).trim().toUpperCase();
+    if (rawObj.githubToken) userConfig.githubToken = String(rawObj.githubToken).trim();
+    if (rawObj.gmapsKey) userConfig.gmapsKey = String(rawObj.gmapsKey).trim();
+    if (rawObj.geminiKey) userConfig.geminiKey = String(rawObj.geminiKey).trim();
+    if (rawObj.cloudDbUrl) userConfig.cloudDbUrl = String(rawObj.cloudDbUrl).trim();
+    if (rawObj.githubUser) userConfig.githubUser = String(rawObj.githubUser).trim();
+    if (rawObj.githubRepo) userConfig.githubRepo = String(rawObj.githubRepo).trim();
+}
+
 function getTotalDays() {
     const s = new Date((appState.startDate || '2026-12-18') + 'T00:00:00');
     const e = new Date((appState.endDate || '2026-12-21') + 'T00:00:00');
     if (isNaN(s.getTime()) || isNaN(e.getTime())) return 4;
-    const diff = Math.round((e - s) / 86400000) + 1;
-    return Math.min(14, Math.max(1, diff));
+    return Math.min(14, Math.max(1, Math.round((e - s) / 86400000) + 1));
 }
 
 function getDateLabelForDay(dayNum) {
@@ -459,39 +369,14 @@ function saveConfig() {
     } catch (e) {}
 }
 
-function mergeAppStateSafely(rawState) {
-    if (!rawState || typeof rawState !== 'object') return;
-    const base = JSON.parse(JSON.stringify(DEFAULT_APP_STATE));
-    appState = {
-        ...base,
-        ...rawState,
-        activitiesByDay: (rawState.activitiesByDay && typeof rawState.activitiesByDay === 'object') ? rawState.activitiesByDay : base.activitiesByDay,
-        expensesByDay: (rawState.expensesByDay && typeof rawState.expensesByDay === 'object') ? rawState.expensesByDay : base.expensesByDay,
-        fixedExpenses: Array.isArray(rawState.fixedExpenses) ? rawState.fixedExpenses : base.fixedExpenses,
-        trashBin: Array.isArray(rawState.trashBin) ? rawState.trashBin : [],
-        extraRegions: Array.isArray(rawState.extraRegions) ? rawState.extraRegions : [],
-        customRecItems: Array.isArray(rawState.customRecItems) ? rawState.customRecItems : [],
-        dayStartTimes: (rawState.dayStartTimes && typeof rawState.dayStartTimes === 'object') ? rawState.dayStartTimes : base.dayStartTimes,
-        dayHotels: (rawState.dayHotels && typeof rawState.dayHotels === 'object') ? rawState.dayHotels : base.dayHotels,
-        dropLuggageFirst: (rawState.dropLuggageFirst && typeof rawState.dropLuggageFirst === 'object') ? rawState.dropLuggageFirst : base.dropLuggageFirst,
-        manualTransitMinutes: (rawState.manualTransitMinutes && typeof rawState.manualTransitMinutes === 'object') ? rawState.manualTransitMinutes : {},
-        routeCache: (rawState.routeCache && typeof rawState.routeCache === 'object') ? rawState.routeCache : {}
-    };
-}
-
 function loadSavedData() {
     try {
         const hash = window.location.hash || '';
         if (hash.startsWith('#setup=')) {
             const encodedPart = decodeURIComponent(hash.slice(7));
             let rawStr = '';
-            try {
-                rawStr = decodeURIComponent(atob(encodedPart));
-            } catch (_) {
-                rawStr = atob(encodedPart);
-            }
-            const parsedSetup = JSON.parse(rawStr);
-            applyConfigObjectWithAliases(parsedSetup);
+            try { rawStr = decodeURIComponent(atob(encodedPart)); } catch (_) { rawStr = atob(encodedPart); }
+            applyConfigObjectWithAliases(JSON.parse(rawStr));
             saveConfig();
             history.replaceState(null, '', window.location.pathname + window.location.search);
         }
@@ -504,23 +389,13 @@ function loadSavedData() {
         const savedCfg = JSON.parse(localStorage.getItem(CONFIG_KEY) || '{}');
         applyConfigObjectWithAliases(savedCfg);
 
-        if (!userConfig.gmapsKey) {
-            userConfig.gmapsKey = localStorage.getItem('gmaps_api_key') || localStorage.getItem('google_maps_api_key') || localStorage.getItem('googleMapsApiKey') || '';
-        }
-        if (!userConfig.geminiKey) {
-            userConfig.geminiKey = localStorage.getItem('gemini_api_key') || localStorage.getItem('geminiApiKey') || '';
-        }
-        if (!userConfig.githubToken) {
-            userConfig.githubToken = localStorage.getItem('github_token') || localStorage.getItem('gh_token') || localStorage.getItem('githubToken') || '';
-        }
-        if (!userConfig.syncCode) {
-            userConfig.syncCode = localStorage.getItem('sync_code') || localStorage.getItem('device_sync_code') || DEFAULT_SYNC_CODE;
-        }
+        if (!userConfig.gmapsKey) userConfig.gmapsKey = localStorage.getItem('gmaps_api_key') || '';
+        if (!userConfig.geminiKey) userConfig.geminiKey = localStorage.getItem('gemini_api_key') || '';
+        if (!userConfig.githubToken) userConfig.githubToken = localStorage.getItem('github_token') || '';
+        if (!userConfig.syncCode) userConfig.syncCode = localStorage.getItem('sync_code') || DEFAULT_SYNC_CODE;
         if (!userConfig.githubUser) userConfig.githubUser = 'JHANSIANGJYUN';
         if (!userConfig.githubRepo) userConfig.githubRepo = 'travel-puzzle';
-        if (!userConfig.cloudDbUrl) {
-            userConfig.cloudDbUrl = `https://raw.githubusercontent.com/${userConfig.githubUser}/${userConfig.githubRepo}/main/db.json`;
-        }
+        if (!userConfig.cloudDbUrl) userConfig.cloudDbUrl = `https://raw.githubusercontent.com/${userConfig.githubUser}/${userConfig.githubRepo}/main/db.json`;
         saveConfig();
 
         const savedState = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
@@ -530,52 +405,158 @@ function loadSavedData() {
     } catch (e) {}
 }
 
-// =========================================================
-// 直接從 db.json 讀取完整資料（雙路徑：優先同層 ./db.json，備援 GitHub Raw）
-// =========================================================
+function normalizeDbEvent(ev, idx) {
+    const cat = String(ev.category || ev.tag || '經典景點');
+    const isEventType = ev.type === 'event' || /(祭典|光影|花火|賞花|紅葉|點燈)/.test(cat);
+    const title = String(ev.title || '').trim();
+    const img = String(ev.imageUrl || ev.photoUrl || '').trim();
+    if (title && img) photoCache[title] = img;
+    return {
+        id: ev.id || `db-ev-${idx}`,
+        region: String(ev.region || 'kansai').toLowerCase(),
+        type: isEventType ? 'event' : 'spot',
+        months: Array.isArray(ev.months) && ev.months.length ? ev.months : [1,2,3,4,5,6,7,8,9,10,11,12],
+        tag: cat,
+        periodText: String(ev.dateLabel || ev.periodText || '四季皆宜'),
+        location: String(ev.location || ''),
+        title,
+        duration: Number(ev.duration || 90),
+        note: String(ev.desc || ev.note || ''),
+        isIndoor: Boolean(ev.isIndoor),
+        wikiJa: String(ev.wikiJa || ''),
+        photoUrl: img
+    };
+}
+
 async function syncCloudDatabase() {
     const badge = document.getElementById('cloud-db-version-badge');
     const modalStatus = document.getElementById('modal-cloud-db-status');
     const candidateUrls = [
         `./db.json?t=${Date.now()}`,
-        userConfig.cloudDbUrl ? `${userConfig.cloudDbUrl}${userConfig.cloudDbUrl.includes('?') ? '&' : '?'}t=${Date.now()}` : ''
+        (userConfig.cloudDbUrl || '').trim()
     ].filter(Boolean);
 
-    for (const url of candidateUrls) {
+    for (const rawUrl of candidateUrls) {
         try {
-            const resp = await fetch(url, { cache: 'no-store' });
+            const sep = rawUrl.includes('?') ? '&' : '?';
+            const resp = await fetch(`${rawUrl}${sep}v=${Date.now()}`, { cache: 'no-store' });
             if (!resp.ok) continue;
             const data = await resp.json();
             if (!data || typeof data !== 'object') continue;
 
-            if (Array.isArray(data.jrPasses) && data.jrPasses.length) {
-                cloudData.jrPasses = data.jrPasses;
-            }
-            if (data.flights && typeof data.flights === 'object') {
-                cloudData.flights = { ...MINIMAL_FALLBACK_FLIGHTS, ...data.flights };
-            }
-            if (Array.isArray(data.events)) {
-                cloudData.events = data.events.map(normalizeDbEventItem).filter(Boolean);
-            }
-            if (Array.isArray(data.stations)) {
-                cloudData.stations = data.stations.filter(s => s && s.name && typeof s.lat === 'number' && typeof s.lng === 'number');
-            }
+            if (Array.isArray(data.jrPasses) && data.jrPasses.length > 0) cloudData.jrPasses = data.jrPasses;
+            if (data.flights && typeof data.flights === 'object') cloudData.flights = { ...DEFAULT_FLIGHTS_DB, ...data.flights };
+            if (Array.isArray(data.events)) cloudData.events = data.events.map((ev, i) => normalizeDbEvent(ev, i)).filter(e => e.title);
+            if (Array.isArray(data.stations) && data.stations.length > 0) cloudData.stations = data.stations;
             cloudData.updatedAt = data.updatedAt || '';
 
             const shortDate = cloudData.updatedAt ? cloudData.updatedAt.slice(0, 10) : '已連線';
-            if (badge) badge.textContent = `🌐 db.json (${shortDate})`;
-            if (modalStatus) modalStatus.textContent = `🟢 已同步 (${cloudData.updatedAt || '最新'}｜共 ${cloudData.events.length} 筆景點)`;
+            if (badge) badge.textContent = `🌐 db.json (${cloudData.events.length}筆・${shortDate})`;
+            if (modalStatus) modalStatus.textContent = `🟢 已同步 (${cloudData.updatedAt || '最新'})`;
             renderAll();
             return;
         } catch (e) {}
     }
-    if (badge) badge.textContent = '🌐 db.json 離線保底';
-    if (modalStatus) modalStatus.textContent = '🟡 無法連線 db.json，目前使用內建保底資料';
+
+    if (badge) badge.textContent = '🌐 db.json 離線模式';
+    showHealthBanner('⚠️ 無法讀取 db.json，請確認 db.json 已放在倉庫根目錄且為有效 JSON 格式。');
 }
 
 // =========================================================
-// 日本互動地圖、航班、JR PASS 與自駕試算渲染
+// 表單控制與地圖渲染
 // =========================================================
+function handleDateRangeChange(which) {
+    const sVal = document.getElementById('start-date')?.value || appState.startDate;
+    const eVal = document.getElementById('end-date')?.value || appState.endDate;
+    appState.startDate = sVal;
+    appState.endDate = eVal < sVal ? sVal : eVal;
+    saveState();
+    renderAll();
+}
+
+function handleTravelerCountChange(val) {
+    appState.travelers = Math.max(1, Number(val) || 2);
+    if (appState.travelers < 3) appState.drivingMode = false;
+    saveState();
+    renderAll();
+}
+
+function toggleDrivingMode(checked) {
+    appState.drivingMode = Boolean(checked);
+    appState.routeCache = {};
+    saveState();
+    renderAll();
+}
+
+function handleRentalCostChange() {
+    appState.rentalCost = Math.max(0, Number(document.getElementById('rental-car-cost')?.value || 0));
+    appState.tollFuelCost = Math.max(0, Number(document.getElementById('rental-toll-fuel')?.value || 0));
+    saveState();
+    renderAll();
+}
+
+function toggleJrPass(checked) {
+    appState.useJrPass = Boolean(checked);
+    saveState();
+    renderAll();
+}
+
+function toggleSecondJrPass(checked) {
+    appState.useSecondJrPass = Boolean(checked);
+    saveState();
+    renderAll();
+}
+
+function handleJrPassConfigChange() {
+    appState.jrPassId = document.getElementById('jr-pass-select')?.value || appState.jrPassId;
+    appState.jrPassStartDay = Number(document.getElementById('jr-pass-start-day')?.value || 1);
+    appState.jrPassId2 = document.getElementById('jr-pass-select-2')?.value || appState.jrPassId2;
+    appState.jrPassStartDay2 = Number(document.getElementById('jr-pass-start-day-2')?.value || 1);
+    saveState();
+    renderAll();
+}
+
+function updateDayStartTime(val) {
+    if (!val) return;
+    appState.dayStartTimes[appState.activeDay || 1] = val;
+    saveState();
+    renderTimeline();
+}
+
+function saveDayHotel(val) {
+    const d = appState.activeDay || 1;
+    appState.dayHotels[d] = String(val || '').trim();
+    saveState();
+    renderAll();
+}
+
+function toggleDropLuggageFirst(checked) {
+    const d = appState.activeDay || 1;
+    appState.dropLuggageFirst[d] = Boolean(checked);
+    saveState();
+    renderTimeline();
+}
+
+function handleManualDaySwap() {
+    const d1 = appState.activeDay || 1;
+    const d2 = Number(document.getElementById('swap-target-day')?.value || 0);
+    if (!d2 || d1 === d2) return;
+    const tmp = appState.activitiesByDay[d1] || [];
+    appState.activitiesByDay[d1] = appState.activitiesByDay[d2] || [];
+    appState.activitiesByDay[d2] = tmp;
+    saveState();
+    renderAll();
+}
+
+function updateJpyRate(val) {
+    const num = Number(val);
+    if (num > 0) {
+        appState.jpyRate = num;
+        saveState();
+        renderExpenseSummary();
+    }
+}
+
 function selectRegion(regionId) {
     if (!REGIONS_META.some(r => r.id === regionId)) return;
     appState.region = regionId;
@@ -605,17 +586,10 @@ function renderRegionMapAndButtons() {
     if (descEl) descEl.textContent = meta.desc;
 
     const BASE_REGION_COLORS = {
-        hokkaido: '#7BA3C7',
-        tohoku: '#8BB3D6',
-        kanto: '#B6D0E8',
-        hokuriku: '#C78A52',
-        chubu: '#D6A168',
-        kansai: '#DFCA68',
-        sanin: '#CE8FA0',
-        sanyo: '#BC7488',
-        shikoku: '#DFD88A',
-        kyushu: '#C97B8E',
-        okinawa: '#E07A5F'
+        hokkaido: '#7BA3C7', tohoku: '#8BB3D6', kanto: '#B6D0E8',
+        hokuriku: '#C78A52', chubu: '#D6A168', kansai: '#DFCA68',
+        sanin: '#CE8FA0', sanyo: '#BC7488', shikoku: '#DFD88A',
+        kyushu: '#C97B8E', okinawa: '#E07A5F'
     };
 
     document.querySelectorAll('#external-japan-svg-host [data-map-region]').forEach(shape => {
@@ -648,13 +622,12 @@ function renderRegionMapAndButtons() {
 async function lookupFlights() {
     const outCode = (document.getElementById('outbound-flight-input')?.value || '').trim().toUpperCase();
     const inCode = (document.getElementById('inbound-flight-input')?.value || '').trim().toUpperCase();
-    const db = cloudData.flights || MINIMAL_FALLBACK_FLIGHTS;
+    const db = cloudData.flights || DEFAULT_FLIGHTS_DB;
 
     if (outCode) {
         if (db[outCode]) {
             appState.outboundFlight = { code: outCode, ...db[outCode] };
-            const arrMins = parseClockToMinutes(db[outCode].time) + 45;
-            appState.dayStartTimes[1] = formatMinutesToClock(arrMins);
+            appState.dayStartTimes[1] = formatMinutesToClock(parseClockToMinutes(db[outCode].time) + 45);
         } else {
             appState.outboundFlight = { code: outCode, airline: '自訂航班', airport: '日本入境機場', terminal: 'T1', time: '12:00', aircraft: '' };
         }
@@ -673,8 +646,8 @@ async function lookupFlights() {
 function renderFlightBanner() {
     const banner = document.getElementById('flight-result-banner');
     if (!banner) return;
-    const out = appState.outboundFlight || { code: 'AK176', ...MINIMAL_FALLBACK_FLIGHTS.AK176 };
-    const inc = appState.inboundFlight || { code: 'AK177', ...MINIMAL_FALLBACK_FLIGHTS.AK177 };
+    const out = appState.outboundFlight || { code: 'AK176', ...DEFAULT_FLIGHTS_DB.AK176 };
+    const inc = appState.inboundFlight || { code: 'AK177', ...DEFAULT_FLIGHTS_DB.AK177 };
     banner.innerHTML = `
         <div class="bg-white px-3 py-2 rounded-lg border border-stone-200 flex items-center justify-between text-xs">
             <span>🛫 <strong>去程 ${out.code}</strong>（${out.airline || ''}）</span>
@@ -689,7 +662,7 @@ function renderFlightBanner() {
 
 function isPassActiveOnDay(dayNum) {
     if (!appState.useJrPass || appState.drivingMode) return false;
-    const passes = cloudData.jrPasses || MINIMAL_FALLBACK_PASSES;
+    const passes = cloudData.jrPasses || DEFAULT_JR_PASSES;
     const p1 = passes.find(p => p.id === appState.jrPassId);
     const s1 = Number(appState.jrPassStartDay || 1);
     const active1 = p1 && dayNum >= s1 && dayNum < s1 + (p1.days || 1);
@@ -727,7 +700,7 @@ function renderJrPassAndDrivingSection() {
     if (useJrCheck) useJrCheck.checked = !!appState.useJrPass;
     if (jrPanel) jrPanel.classList.toggle('hidden', !appState.useJrPass || appState.drivingMode);
 
-    const passes = cloudData.jrPasses || MINIMAL_FALLBACK_PASSES;
+    const passes = cloudData.jrPasses || DEFAULT_JR_PASSES;
     const sel1 = document.getElementById('jr-pass-select');
     const sel2 = document.getElementById('jr-pass-select-2');
     const day1Sel = document.getElementById('jr-pass-start-day');
@@ -777,48 +750,15 @@ function renderJrPassAndDrivingSection() {
 }
 
 // =========================================================
-// 距離與移動時間估算（直接讀取 db.json 的 stations 座標與路線）
+// 距離、詳細轉乘建議、預估車資與 JR PASS 折抵計算
 // =========================================================
-const STATION_ALIASES = {
-    '関西国際空港': ['關西國際機場', '關西機場', 'KIX'],
-    '新大阪': ['新大阪駅', '新大阪東口'],
-    '大阪': ['梅田', '大阪駅'],
-    '難波': ['なんば', '道頓堀', '心齋橋', '大阪難波'],
-    '天王寺': ['阿倍野'],
-    '京都': ['京都車站', '京都駅'],
-    '祇園四条': ['清水寺', '二年坂', '祇園', '河原町'],
-    '嵯峨嵐山': ['嵐山', '渡月橋'],
-    '稲荷': ['伏見稻荷'],
-    '三ノ宮': ['神戶', '三宮', '美利堅公園', '南京町'],
-    '姫路': ['姬路'],
-    '奈良': ['奈良公園', '東大寺'],
-    '宇治': ['平等院'],
-    '成田空港': ['成田國際機場', 'NRT'],
-    '羽田空港': ['羽田機場', 'HND'],
-    '東京': ['東京車站', '丸之內'],
-    '渋谷': ['澀谷', '原宿', '明治神宮'],
-    '浅草': ['淺草', '雷門'],
-    '押上': ['晴空塔'],
-    '新千歳空港': ['新千歲機場', 'CTS'],
-    '札幌': ['大通公園', '狸小路'],
-    '小樽': ['小樽運河'],
-    '博多': ['福岡', 'FUK', '天神', '中洲'],
-    '由布院': ['湯布院', '金鱗湖'],
-    '那覇空港': ['那霸', 'OKA', '國際通'],
-    '金沢': ['金澤', '兼六園'],
-    '仙台': ['定禪寺通'],
-    '広島': ['廣島', '宮島'],
-    '高松': ['栗林公園']
-};
-
 function findStationCoord(placeName) {
     const clean = String(placeName || '').trim();
     if (!clean) return null;
-    const stations = cloudData.stations || [];
+    const stations = [...(cloudData.stations || []), ...CORE_HUB_STATIONS];
     for (const st of stations) {
         if (clean.includes(st.name) || st.name.includes(clean)) return st;
-        const aliases = STATION_ALIASES[st.name] || [];
-        if (aliases.some(a => clean.includes(a))) return st;
+        if (Array.isArray(st.aliases) && st.aliases.some(a => clean.includes(a))) return st;
     }
     return null;
 }
@@ -831,61 +771,125 @@ function calcHaversineKm(lat1, lng1, lat2, lng2) {
     return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 }
 
-function estimateTransitSegment(fromPlace, toPlace, dayNum) {
-    const key = `${dayNum}|${fromPlace}|${toPlace}`;
-    const passActive = isPassActiveOnDay(dayNum);
-
-    function buildPassFareNote(fareJpy, jrEligible, jrAltText = '') {
-        if (appState.drivingMode) return `預估油資＋過路費約 ¥${fareJpy.toLocaleString()}`;
-        if (jrEligible === 'full') {
-            return passActive
-                ? `原價車資 ¥${fareJpy.toLocaleString()}（持 JR PASS 可全額折抵）`
-                : `預估車資 ¥${fareJpy.toLocaleString()}（JR 路線・未啟用 PASS 需購票）`;
-        }
-        if (jrEligible === 'alt') {
-            return passActive
-                ? `原價車資 ¥${fareJpy.toLocaleString()}（${jrAltText || '地鐵需自付／若改搭 JR 轉乘可用 PASS'}）`
-                : `預估車資 ¥${fareJpy.toLocaleString()}（私鐵／地鐵路線）`;
-        }
-        return `預估車資 ¥${fareJpy.toLocaleString()}（非 JR 路線・需使用 IC 卡自付）`;
-    }
-
-    if (appState.manualTransitMinutes[key]) {
-        const m = Number(appState.manualTransitMinutes[key]);
+function buildSmartFareAndRouteInfo(fromPlace, toPlace, railKm, mins, passActive, isDrive) {
+    if (isDrive) {
+        const toll = railKm > 15 ? Math.round((railKm * 28) / 10) * 10 : 0;
         return {
-            minutes: m,
-            modeBadge: appState.drivingMode ? '🚗 自駕導航（手動微調）' : '🚆 大眾運輸（手動微調）',
-            detailDesc: `已手動微調移動時間為 ${m} 分鐘`,
-            fareText: buildPassFareNote(320, 'full'),
-            fareJpy: 320,
-            jrCovered: true,
-            isManual: true
+            modeBadge: `🚗 自駕導航直達最快（約 ${Math.round(railKm)} km）`,
+            detailText: `自駕點對點直達約 ${mins} 分（省去車站轉乘與步行）`,
+            fareText: toll > 0 ? `預估過路費約 ¥${toll.toLocaleString()}（自駕模式）` : '市區一般道路免過路費（自駕模式）',
+            jrCovered: false
         };
     }
+
+    const f = String(fromPlace || '');
+    const t = String(toPlace || '');
+    const pair = `${f}|${t}`;
+
+    if (/關西|KIX/.test(pair) && /難波|心齋橋|道頓堀/.test(pair)) {
+        return {
+            modeBadge: '🚆 南海電鐵特急 Rapi:t / 空港急行直達最快',
+            detailText: `南海空港線一班車直達難波加兩端步行約 ${mins} 分（若改搭 JR 需在天王寺/新今宮轉乘約 ${mins + 12} 分）`,
+            fareText: passActive
+                ? '原價車資 ¥970（南海電鐵需自付／若改搭 JR 關空快速可用 PASS 折抵）'
+                : '原價車資 ¥970（南海空港急行／特急 Rapi:t ¥1,490）',
+            jrCovered: false
+        };
+    }
+
+    if (/關西|KIX/.test(pair) && /新大阪|京都|天王寺/.test(pair)) {
+        return {
+            modeBadge: '🚄 JR 特急 HARUKA 直達最快',
+            detailText: `JR 關西機場特快 HARUKA 直達加兩端步行約 ${mins} 分`,
+            fareText: passActive ? '原價車資 ¥2,200（持 JR PASS 可全額折抵）' : '原價車資 ¥2,200（單買車票）',
+            jrCovered: true
+        };
+    }
+
+    if (/難波|心齋橋|道頓堀/.test(pair) && /新大阪|梅田|大阪/.test(pair)) {
+        return {
+            modeBadge: '🚇 地鐵御堂筋線直達最快（亦可搭 JR 轉乘）',
+            detailText: `地鐵一班車直達加兩端步行約 ${mins} 分（若改搭 JR 轉乘約需 ${mins + 8} 分）`,
+            fareText: passActive
+                ? '原價車資 ¥290（地鐵需自付／若改搭 JR 轉乘可用 PASS）'
+                : '原價車資 ¥290（ICOCA / 地鐵單程票）',
+            jrCovered: false
+        };
+    }
+
+    if (/新大阪|大阪/.test(pair) && /三ノ宮|神戶|元町|布引香草園/.test(pair)) {
+        return {
+            modeBadge: '🚄 JR 神戶線新快速直達',
+            detailText: `JR 新快速直達神戶三宮/元町，含兩端步行約 ${mins} 分`,
+            fareText: passActive ? '原價車資 ¥420（持 JR PASS 可全額折抵）' : '原價車資 ¥420（單買車票）',
+            jrCovered: true
+        };
+    }
+
+    if (/新大阪|大阪/.test(pair) && /京都|稲荷|伏見|嵐山/.test(pair)) {
+        return {
+            modeBadge: '🚄 JR 京都線新快速直達最快',
+            detailText: `JR 新快速直達京都車站（轉乘奈良線/嵯峨野線），含兩端步行約 ${mins} 分`,
+            fareText: passActive ? '原價車資 ¥580（持 JR PASS 可全額折抵）' : '原價車資 ¥580（單買車票）',
+            jrCovered: true
+        };
+    }
+
+    if (railKm < 2.2) {
+        return {
+            modeBadge: '🚶 步行散策直達最快',
+            detailText: `沿途步行前往約 ${mins} 分（距離約 ${railKm.toFixed(1)} km）`,
+            fareText: '步行免費 ¥0',
+            jrCovered: false
+        };
+    }
+
+    if (railKm <= 16) {
+        const estFare = Math.max(210, Math.round((190 + railKm * 14) / 10) * 10);
+        return {
+            modeBadge: passActive ? '🚃 JR 在來線／地鐵轉乘' : '🚇 地鐵／私鐵直達最快',
+            detailText: `市區電車轉乘含兩端進出站步行約 ${mins} 分（約 ${railKm.toFixed(1)} km）`,
+            fareText: passActive
+                ? `原價車資 ¥${estFare}（JR 路段可用 PASS 折抵／私鐵地鐵需自付）`
+                : `原價車資 ¥${estFare}（IC 卡／單程票）`,
+            jrCovered: passActive
+        };
+    }
+
+    const estJrFare = Math.max(420, Math.round((240 + railKm * 16.5) / 10) * 10);
+    return {
+        modeBadge: passActive ? `🚄 JR 新快速／特急直達（約 ${Math.round(railKm)} km）` : `🚆 鐵道新快速／特急（約 ${Math.round(railKm)} km）`,
+        detailText: `搭乘 JR 幹線列車含兩端步行轉乘約 ${mins} 分`,
+        fareText: passActive
+            ? `原價車資 ¥${estJrFare.toLocaleString()}（持 JR PASS 可全額折抵）`
+            : `原價車資 ¥${estJrFare.toLocaleString()}（單買車票）`,
+        jrCovered: true
+    };
+}
+
+function estimateTransitSegment(fromPlace, toPlace, dayNum) {
+    const manualKey = `${dayNum}|${fromPlace}|${toPlace}`;
+    const passActive = isPassActiveOnDay(dayNum);
+    const isDrive = Boolean(appState.drivingMode);
 
     if (!fromPlace || !toPlace || fromPlace === toPlace) {
         return {
-            minutes: 10,
+            minutes: Number(appState.manualTransitMinutes[manualKey] || 10),
             modeBadge: '🚶 步行／站內轉乘',
-            detailDesc: '同區域步行或站內轉乘約 10 分',
-            fareText: '免費步行（¥0）',
-            fareJpy: 0,
-            jrCovered: true,
-            isManual: false
+            detailText: '同區域短距離步行移動約 10 分',
+            fareText: '步行免費 ¥0'
         };
     }
 
-    const cacheKey = `${appState.drivingMode ? 'DRIVE' : 'TRANSIT'}|${fromPlace}|${toPlace}`;
-    if (appState.routeCache && appState.routeCache[cacheKey] && appState.routeCache[cacheKey].modeBadge) {
+    const cacheKey = `${isDrive ? 'DRIVE' : 'TRANSIT'}|${fromPlace}|${toPlace}`;
+    if (appState.routeCache && appState.routeCache[cacheKey]) {
         const cached = appState.routeCache[cacheKey];
+        const finalMins = Number(appState.manualTransitMinutes[manualKey] || cached.minutes);
         return {
-            minutes: cached.minutes,
-            modeBadge: cached.modeBadge,
-            detailDesc: cached.detailDesc,
-            fareText: buildPassFareNote(cached.fareJpy || 320, cached.jrEligible || 'full', cached.jrAltText || ''),
-            fareJpy: cached.fareJpy || 320,
-            jrCovered: cached.jrEligible === 'full',
-            isManual: false
+            minutes: finalMins,
+            modeBadge: cached.modeBadge || '🚆 大眾運輸路線',
+            detailText: cached.detailText || `含兩端步行轉乘約 ${finalMins} 分`,
+            fareText: cached.fareText || (passActive ? '持 JR PASS 依路線折抵' : '依實際搭乘路線計費')
         };
     }
 
@@ -897,150 +901,31 @@ function estimateTransitSegment(fromPlace, toPlace, dayNum) {
 
     const s1 = findStationCoord(fromPlace);
     const s2 = findStationCoord(toPlace);
-    const hasDoorWalk1 = s1 && fromPlace.trim() !== s1.name && !fromPlace.includes('機場') && !fromPlace.includes('空港');
-    const hasDoorWalk2 = s2 && toPlace.trim() !== s2.name && !toPlace.includes('機場') && !toPlace.includes('空港');
-    const doorBufferMins = (hasDoorWalk1 ? 11 : 0) + (hasDoorWalk2 ? 11 : 0);
+    let railKm = 12;
+    let calcMins = isDrive ? 32 : 38;
 
     if (s1 && s2) {
-        if (s1.name === s2.name) {
-            return {
-                minutes: 14,
-                modeBadge: appState.drivingMode ? '🚗 市區短程移動' : '🚶 步行散策直達',
-                detailDesc: '同商圈步行即可抵達，加計進出站約 14 分',
-                fareText: '免費步行（¥0）',
-                fareJpy: 0,
-                jrCovered: true,
-                isManual: false
-            };
+        railKm = s1.name === s2.name ? 1.2 : calcHaversineKm(s1.lat, s1.lng, s2.lat, s2.lng) * 1.22;
+        const doorBuffer = (fromPlace.trim() !== s1.name ? 11 : 0) + (toPlace.trim() !== s2.name ? 11 : 0);
+        if (isDrive) {
+            calcMins = Math.max(15, Math.round((railKm / 42) * 60 + 10));
+        } else if (railKm < 2.2) {
+            calcMins = Math.max(10, Math.round(railKm * 13));
+        } else if (railKm <= 18) {
+            calcMins = Math.max(20, Math.round((railKm / 28) * 60 + 5 + doorBuffer));
+        } else {
+            const speed = railKm > 120 ? 175 : 95;
+            calcMins = Math.max(28, Math.round((railKm / speed) * 60 + 10 + doorBuffer));
         }
-        const pair = `${s1.name}->${s2.name}`;
-        const revPair = `${s2.name}->${s1.name}`;
-        const railKm = calcHaversineKm(s1.lat, s1.lng, s2.lat, s2.lng) * 1.22;
-
-        if (appState.drivingMode) {
-            const mins = Math.max(18, Math.round((railKm / 42) * 60 + 12));
-            const toll = Math.max(300, Math.round(railKm * 28));
-            return {
-                minutes: mins,
-                modeBadge: `🚗 高速／市區自駕導航（約 ${Math.round(railKm)} km）`,
-                detailDesc: `自駕含停車步行約 ${mins} 分`,
-                fareText: buildPassFareNote(toll, 'none'),
-                fareJpy: toll,
-                jrCovered: false,
-                isManual: false
-            };
-        }
-
-        if (pair === '難波->新大阪' || revPair === '難波->新大阪') {
-            return {
-                minutes: 40,
-                modeBadge: '🚇 地鐵御堂筋線直達最快（亦可搭 JR 轉乘）',
-                detailDesc: '地鐵一班車直達加兩端步行約 40 分（若改搭 JR 轉乘約需 48 分）',
-                fareText: buildPassFareNote(290, 'alt', '地鐵需自付／若改搭 JR 轉乘可用 PASS'),
-                fareJpy: 290,
-                jrCovered: false,
-                isManual: false
-            };
-        }
-        if (pair === '新大阪->三ノ宮' || revPair === '新大阪->三ノ宮' || pair === '大阪->三ノ宮' || revPair === '大阪->三ノ宮') {
-            const m = pair.includes('新大阪') ? 48 : 42;
-            return {
-                minutes: m,
-                modeBadge: '🚄 JR 神戶線新快速直達最快',
-                detailDesc: `JR 新快速直達神戶三宮／元町，含兩端步行約 ${m} 分`,
-                fareText: buildPassFareNote(420, 'full'),
-                fareJpy: 420,
-                jrCovered: true,
-                isManual: false
-            };
-        }
-        if (pair === '関西国際空港->難波' || revPair === '関西国際空港->難波') {
-            return {
-                minutes: 56,
-                modeBadge: '🚆 南海電鐵空港急行直達最快（亦可搭 JR 轉乘）',
-                detailDesc: '南海電鐵直達難波站加步行約 56 分（若持 JR PASS 搭 JR 至今宮／難波約 68 分）',
-                fareText: buildPassFareNote(970, 'alt', '南海電鐵需自付／若改搭 JR 路線可用 PASS'),
-                fareJpy: 970,
-                jrCovered: false,
-                isManual: false
-            };
-        }
-        if (pair === '関西国際空港->新大阪' || revPair === '関西国際空港->新大阪' || pair === '関西国際空港->京都' || revPair === '関西国際空港->京都') {
-            const isKyoto = pair.includes('京都');
-            const m = isKyoto ? 92 : 64;
-            const fare = isKyoto ? 3110 : 2590;
-            return {
-                minutes: m,
-                modeBadge: `🚄 JR 特急 HARUKA 直達最快`,
-                detailDesc: `關西機場特快 HARUKA 一班車直達${isKyoto ? '京都' : '新大阪'}，含兩端步行約 ${m} 分`,
-                fareText: buildPassFareNote(fare, 'full'),
-                fareJpy: fare,
-                jrCovered: true,
-                isManual: false
-            };
-        }
-        if (pair === '新大阪->京都' || revPair === '新大阪->京都' || pair === '大阪->京都' || revPair === '大阪->京都') {
-            const m = pair.includes('新大阪') ? 44 : 49;
-            return {
-                minutes: m,
-                modeBadge: '🚄 JR 京都線新快速直達最快',
-                detailDesc: `JR 新快速直達京都站，含兩端步行約 ${m} 分（比私鐵更省時）`,
-                fareText: buildPassFareNote(580, 'full'),
-                fareJpy: 580,
-                jrCovered: true,
-                isManual: false
-            };
-        }
-
-        if (railKm < 2.5) {
-            const m = Math.max(12, Math.round(railKm * 13));
-            return {
-                minutes: m,
-                modeBadge: '🚶 步行移動最順路',
-                detailDesc: `距離僅約 ${railKm.toFixed(1)} km，步行約 ${m} 分即可抵達`,
-                fareText: '免費步行（¥0）',
-                fareJpy: 0,
-                jrCovered: true,
-                isManual: false
-            };
-        }
-        if (railKm <= 18) {
-            const rideMins = Math.round((railKm / 28) * 60 + 5);
-            const totalMins = Math.max(20, rideMins + doorBufferMins);
-            const fare = Math.max(210, Math.round(railKm * 22 / 10) * 10);
-            const lineHint = s2.line ? `（${s2.line.split('・')[0]}）` : '';
-            return {
-                minutes: totalMins,
-                modeBadge: passActive ? `🚃 JR 在來線直達${lineHint}` : `🚇 地鐵／私鐵直達最快${lineHint}`,
-                detailDesc: `乘車加兩端車站步行轉乘約 ${totalMins} 分（約 ${railKm.toFixed(1)} km）`,
-                fareText: buildPassFareNote(fare, passActive ? 'full' : 'alt', '地鐵私鐵需自付／搭 JR 路線可用 PASS'),
-                fareJpy: fare,
-                jrCovered: passActive,
-                isManual: false
-            };
-        }
-        const speed = railKm > 120 ? 175 : 95;
-        const mins = Math.max(28, Math.round((railKm / speed) * 60 + 10 + doorBufferMins));
-        const fare = Math.max(580, Math.round(railKm * 24 / 10) * 10);
-        return {
-            minutes: mins,
-            modeBadge: `🚄 JR 特急／新快速直達最快`,
-            detailDesc: `JR 幹線快速移動約 ${Math.round(railKm)} km，含兩端步行約 ${mins} 分`,
-            fareText: buildPassFareNote(fare, 'full'),
-            fareJpy: fare,
-            jrCovered: true,
-            isManual: false
-        };
     }
 
+    const finalMins = Number(appState.manualTransitMinutes[manualKey] || calcMins);
+    const info = buildSmartFareAndRouteInfo(fromPlace, toPlace, railKm, finalMins, passActive, isDrive);
     return {
-        minutes: appState.drivingMode ? 35 : 38,
-        modeBadge: appState.drivingMode ? '🚗 自駕導航移動' : (passActive ? '🚆 JR／地鐵轉乘最快' : '🚇 地鐵／巴士轉乘最快'),
-        detailDesc: '含車站進出步行與轉乘等待約 38 分',
-        fareText: buildPassFareNote(320, passActive ? 'full' : 'alt'),
-        fareJpy: 320,
-        jrCovered: passActive,
-        isManual: false
+        minutes: finalMins,
+        modeBadge: info.modeBadge,
+        detailText: info.detailText,
+        fareText: info.fareText
     };
 }
 
@@ -1074,11 +959,10 @@ async function computeSmartGoogleRoute(apiKey, fromPlace, toPlace, isDrive) {
     const dd = String(tomorrow.getUTCDate()).padStart(2, '0');
     const daytimeDeparture = `${yyyy}-${mm}-${dd}T01:00:00Z`;
 
-    const primaryMode = isDrive ? 'DRIVE' : 'TRANSIT';
     const bodyPayload = {
         origin: { location: originLoc },
         destination: { location: destLoc },
-        travelMode: primaryMode,
+        travelMode: isDrive ? 'DRIVE' : 'TRANSIT',
         languageCode: 'zh-TW'
     };
     if (!isDrive) bodyPayload.departureTime = daytimeDeparture;
@@ -1097,26 +981,6 @@ async function computeSmartGoogleRoute(apiKey, fromPlace, toPlace, isDrive) {
     if (data?.routes?.[0]?.duration) return { route: data.routes[0], fallbackFromDrive: false };
 
     if (!isDrive) {
-        const walkResp = await fetch('https://routes.googleapis.com/directions/v2:computeRoutes', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-Goog-Api-Key': apiKey,
-                'X-Goog-FieldMask': 'routes.duration,routes.distanceMeters'
-            },
-            body: JSON.stringify({
-                origin: { location: originLoc },
-                destination: { location: destLoc },
-                travelMode: 'WALK',
-                languageCode: 'zh-TW'
-            })
-        });
-        const walkData = await walkResp.json();
-        const walkDist = Number(walkData?.routes?.[0]?.distanceMeters || 99999);
-        if (walkData?.routes?.[0]?.duration && walkDist <= 1800) {
-            return { route: walkData.routes[0], fallbackFromDrive: false, isWalkOnly: true };
-        }
-
         const driveResp = await fetch('https://routes.googleapis.com/directions/v2:computeRoutes', {
             method: 'POST',
             headers: {
@@ -1132,85 +996,62 @@ async function computeSmartGoogleRoute(apiKey, fromPlace, toPlace, isDrive) {
             })
         });
         const driveData = await driveResp.json();
-        if (driveData?.routes?.[0]?.duration) {
-            return { route: driveData.routes[0], fallbackFromDrive: true };
-        }
+        if (driveData?.routes?.[0]?.duration) return { route: driveData.routes[0], fallbackFromDrive: true };
     }
     return null;
 }
 
 async function fetchGoogleRouteEstimate(fromPlace, toPlace, cacheKey) {
     try {
-        const isDrive = appState.drivingMode;
+        const isDrive = Boolean(appState.drivingMode);
+        const passActive = isPassActiveOnDay(appState.activeDay || 1);
         const result = await computeSmartGoogleRoute(userConfig.gmapsKey, fromPlace, toPlace, isDrive);
         if (!result || !result.route?.duration) return;
 
         let mins = Math.max(4, Math.round(parseInt(result.route.duration, 10) / 60));
         const distMeters = Number(result.route.distanceMeters || 0);
+        const railKm = distMeters > 0 ? distMeters / 1000 : 12;
         if (result.fallbackFromDrive) mins = Math.max(15, Math.round(mins * 1.15 + 14));
-        const km = distMeters ? `（${(distMeters / 1000).toFixed(1)} km）` : '';
+
+        const baseInfo = buildSmartFareAndRouteInfo(fromPlace, toPlace, railKm, mins, passActive, isDrive);
         const steps = result.route.legs?.[0]?.steps || [];
-        const transitDetailsList = [];
-        let walkMinsTotal = 0;
+        const lines = [];
+        let hasJr = false;
+        let hasSubwayOrPrivate = false;
 
         steps.forEach(s => {
-            if (s.travelMode === 'WALK' && s.staticDuration) {
-                walkMinsTotal += Math.round(parseInt(s.staticDuration, 10) / 60);
-            }
             const td = s.transitDetails;
             if (td) {
                 const lineName = td.transitLine?.nameShort || td.transitLine?.name || '';
-                const headsign = td.headsign ? `（往${td.headsign}）` : '';
-                const stopExit = td.arrivalStop?.name ? `至 ${td.arrivalStop.name}` : '';
-                if (lineName) transitDetailsList.push(`${lineName}${headsign}${stopExit}`);
+                const agency = td.transitLine?.agencies?.[0]?.name || '';
+                if (/JR|ＪＲ/.test(`${lineName} ${agency}`)) hasJr = true;
+                else if (lineName) hasSubwayOrPrivate = true;
+                if (lineName) lines.push(lineName);
             }
         });
 
-        let lineText = '';
-        let detailDesc = '';
-        let jrEligible = 'full';
-        let jrAltText = '';
-        const estimatedFareJpy = Math.max(200, Math.round((distMeters / 1000) * 23 / 10) * 10);
+        let modeBadge = baseInfo.modeBadge;
+        let detailText = baseInfo.detailText;
+        let fareText = baseInfo.fareText;
 
-        if (isDrive) {
-            lineText = `🚗 Google Maps 自駕導航最快${km}`;
-            detailDesc = `自駕行車時間約 ${mins} 分`;
-            jrEligible = 'none';
-        } else if (result.isWalkOnly || (steps.length > 0 && transitDetailsList.length === 0 && distMeters <= 1600)) {
-            lineText = `🚶 步行前往最順路${km}`;
-            detailDesc = `短距離步行約 ${mins} 分即可直達`;
-            jrEligible = 'full';
-        } else if (transitDetailsList.length > 0) {
-            const uniqueLines = Array.from(new Set(transitDetailsList));
-            const hasJr = uniqueLines.some(l => /JR|新快速|はるか|HARUKA|新幹線/i.test(l));
-            const hasSubwayOrPrivate = uniqueLines.some(l => /線|メトロ|地鐵|南海|阪急|阪神|京阪|近鐵|私鐵/i.test(l) && !/JR/i.test(l));
-            const walkNote = walkMinsTotal > 0 ? `，含兩端步行約 ${walkMinsTotal} 分` : '';
-            lineText = `${hasJr ? '🚄' : '🚇'} 搭乘 ${uniqueLines[0]} 最快`;
-            detailDesc = `${uniqueLines.join(' ➔ ')}${walkNote}，約 ${mins} 分`;
-            if (hasJr && !hasSubwayOrPrivate) {
-                jrEligible = 'full';
-            } else if (!hasJr && hasSubwayOrPrivate) {
-                jrEligible = 'alt';
-                jrAltText = '私鐵／地鐵需自付（若改搭 JR 路線可用 PASS）';
+        if (!isDrive && lines.length > 0) {
+            const uniqueLines = Array.from(new Set(lines)).join(' ➔ ');
+            modeBadge = `${hasJr ? '🚄' : '🚇'} 搭乘 ${uniqueLines} 最快`;
+            detailText = `Google Maps 實測轉乘加兩端步行約 ${mins} 分（距離 ${railKm.toFixed(1)} km）`;
+            const estFare = Math.max(210, Math.round((190 + railKm * 15) / 10) * 10);
+            if (passActive && hasJr && !hasSubwayOrPrivate) {
+                fareText = `原價車資約 ¥${estFare.toLocaleString()}（持 JR PASS 可全額折抵）`;
+            } else if (passActive && hasJr && hasSubwayOrPrivate) {
+                fareText = `原價車資約 ¥${estFare.toLocaleString()}（JR 段可用 PASS／地鐵私鐵段需自付）`;
+            } else if (passActive && !hasJr) {
+                fareText = `原價車資約 ¥${estFare.toLocaleString()}（地鐵／私鐵需自付／若改搭 JR 轉乘可用 PASS）`;
             } else {
-                jrEligible = 'alt';
-                jrAltText = 'JR 區段可用 PASS／私鐵地鐵區段需自付';
+                fareText = `原價車資約 ¥${estFare.toLocaleString()}（IC 卡／單買車票）`;
             }
-        } else {
-            lineText = `🚃 電車／巴士轉乘最快${km}`;
-            detailDesc = `大眾運輸含步行轉乘約 ${mins} 分`;
-            jrEligible = 'alt';
         }
 
         appState.routeCache = appState.routeCache || {};
-        appState.routeCache[cacheKey] = {
-            minutes: mins,
-            modeBadge: lineText,
-            detailDesc,
-            fareJpy: (result.isWalkOnly || distMeters <= 1600) ? 0 : estimatedFareJpy,
-            jrEligible,
-            jrAltText
-        };
+        appState.routeCache[cacheKey] = { minutes: mins, modeBadge, detailText, fareText };
         saveState();
         renderTimeline();
     } catch (e) {}
@@ -1301,13 +1142,13 @@ function buildDaySegments(dayNum) {
 }
 
 // =========================================================
-// 單日智慧順排
+// 智慧順排
 // =========================================================
 function scoreSlotFit(item, arrivalMins) {
     const text = `${item.title || ''} ${item.tag || ''} ${item.note || ''}`;
     const isNight = /(點燈|燈飾|夜景|展望台|花燈|光雕|光之|聖誕樹|星光|屋台)/.test(text);
     const isFood = /(美食|拉麵|牛排|海鮮|燒肉|市場|壽司|烏龍麵|章魚燒|晚餐|午餐)/.test(text);
-    const isDayOnly = /(寺|神社|城|美術館|博物館|動物園|水族館|兼六園|栗林公園)/.test(text) && !isNight;
+    const isDayOnly = /(寺|神社|城|美術館|博物館|動物園|水族館|兼六園|栗林公園|香草園)/.test(text) && !isNight;
 
     let penalty = 0;
     if (isNight && arrivalMins < 17 * 60) penalty += (17 * 60 - arrivalMins) * 1.4;
@@ -1394,7 +1235,7 @@ function undoLastRouteOptimization() {
 }
 
 // =========================================================
-// 單日時間軸、全行程總覽看板與回收桶渲染
+// 時間軸渲染（大尺寸實景圖卡片 ＋ 三層詳細交通車資卡片）
 // =========================================================
 function setTimelineViewMode(mode) {
     appState.timelineViewMode = mode;
@@ -1522,26 +1363,24 @@ function renderTimeline() {
 
     container.innerHTML = segments.map((seg, segIdx) => {
         const transitHtml = seg.transit ? `
-            <div class="ml-8 sm:ml-11 my-2 bg-washi/95 border border-stone-200/90 rounded-2xl p-3.5 sm:p-4 space-y-2 shadow-2xs">
+            <div class="ml-8 sm:ml-11 my-2.5 bg-washi/95 border border-stone-200/90 rounded-2xl p-3.5 space-y-2 shadow-2xs">
                 <div class="flex flex-wrap items-center justify-between gap-2">
-                    <div class="flex flex-wrap items-center gap-2">
-                        <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-bold ${seg.transit.jrCovered ? 'bg-emerald-100/90 text-emerald-950' : 'bg-sky-100/90 text-indigoJp'}">
-                            ${seg.transit.modeBadge}
-                        </span>
-                        <span class="text-xs sm:text-sm font-bold text-sumi">${seg.transit.from} ➔ ${seg.transit.to}</span>
+                    <div class="flex items-center gap-2 flex-wrap">
+                        <span class="inline-flex items-center gap-1 text-xs font-bold px-2.5 py-1 rounded-lg bg-emerald-100/90 text-emerald-950 border border-emerald-200/80">${seg.transit.modeBadge}</span>
+                        <span class="text-xs sm:text-sm font-bold text-sumi">${seg.transit.from} <span class="text-stone-400">➔</span> ${seg.transit.to}</span>
                     </div>
-                    <a href="https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(seg.transit.from)}&destination=${encodeURIComponent(seg.transit.to)}&travelmode=${appState.drivingMode ? 'driving' : 'transit'}" target="_blank" rel="noopener" class="shrink-0 px-3 py-1 rounded-xl bg-white hover:bg-indigoJp text-indigoJp hover:text-white border border-stone-300 text-xs font-bold transition-colors">Google Maps ↗</a>
+                    <a href="https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(seg.transit.from)}&destination=${encodeURIComponent(seg.transit.to)}&travelmode=${appState.drivingMode ? 'driving' : 'transit'}" target="_blank" rel="noopener" class="shrink-0 bg-white hover:bg-indigoJp text-indigoJp hover:text-white border border-stone-300 text-xs font-bold px-3 py-1 rounded-xl transition-colors">Google Maps ↗</a>
                 </div>
-                <p class="text-xs text-stone-600">${seg.transit.detailDesc}</p>
-                <div class="flex flex-wrap items-center justify-between gap-2 pt-1 text-xs">
-                    <div class="inline-flex items-center gap-1.5 text-stone-700 font-medium">
+                <p class="text-xs text-stone-600 leading-relaxed">${seg.transit.detailText}</p>
+                <div class="pt-1.5 border-t border-stone-200/70 flex flex-wrap items-center justify-between gap-2 text-xs">
+                    <div class="inline-flex items-center gap-1.5 text-stone-600">
                         <span>約</span>
                         <input type="number" min="1" max="600" value="${seg.transit.minutes}"
                             onchange="updateManualTransit(${d}, '${seg.transit.from.replace(/'/g, "\\'")}', '${seg.transit.to.replace(/'/g, "\\'")}', this.value)"
-                            class="w-16 bg-white border border-stone-300 rounded-lg px-2 py-1 text-center font-mono font-bold text-indigoJp">
+                            class="w-16 bg-white border border-stone-300 rounded-lg px-2 py-0.5 text-center font-mono font-bold text-indigoJp">
                         <span>分鐘</span>
                     </div>
-                    <span class="font-bold ${seg.transit.jrCovered ? 'text-matcha' : 'text-indigoJp'}">${seg.transit.fareText}</span>
+                    <span class="font-bold text-indigoJp">${seg.transit.fareText}</span>
                 </div>
             </div>
         ` : '';
@@ -1549,15 +1388,15 @@ function renderTimeline() {
         if (seg.type === 'anchor' || seg.type === 'luggage') {
             const anchorBgId = `tl-anchor-bg-${d}-${segIdx}`;
             const qName = seg.placeQuery || seg.title.replace(/^[^：]+：/, '').replace(/（.*$/, '').trim();
-            const realAnchorBg = photoCache[qName] || '';
+            const anchorBg = photoCache[qName] || '';
             if (userConfig.gmapsKey && photoCache[qName] === undefined) {
                 fetchPlacePhotoForCard(qName, anchorBgId);
             }
             return `
                 ${transitHtml}
-                <div class="relative z-10 flex items-center gap-3.5 bg-slate-50 border border-slate-200 rounded-2xl px-4 sm:px-5 ${realAnchorBg ? 'min-h-[104px] py-5' : 'min-h-[64px] py-3.5'} overflow-hidden">
-                    <div class="${realAnchorBg ? '' : 'hidden'} pointer-events-none absolute inset-0 rounded-2xl overflow-hidden z-0">
-                        <div id="${anchorBgId}" class="absolute inset-y-0 right-0 w-[62%] bg-cover bg-center opacity-90 transition-opacity duration-500" style="${realAnchorBg ? `background-image:url('${realAnchorBg}');` : ''} -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.45) 32%, black 100%); mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.45) 32%, black 100%);"></div>
+                <div class="relative z-10 flex items-center gap-3 bg-slate-50 border border-slate-200 rounded-2xl ${anchorBg ? 'min-h-[104px] px-5 py-4' : 'min-h-[68px] px-4 py-3'} overflow-hidden">
+                    <div class="${anchorBg ? '' : 'hidden'} pointer-events-none absolute inset-0 rounded-2xl overflow-hidden z-0">
+                        <div id="${anchorBgId}" class="absolute inset-y-0 right-0 w-[64%] bg-cover bg-center opacity-85 transition-opacity duration-500" style="${anchorBg ? `background-image:url('${anchorBg}');` : ''} -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.45) 35%, black 100%); mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.45) 35%, black 100%);"></div>
                         <div class="absolute inset-0 bg-gradient-to-r from-slate-50 via-slate-50/75 to-transparent"></div>
                     </div>
                     <span class="relative z-10 font-mono font-bold text-xs text-indigoJp bg-white/95 border border-slate-200 px-3 py-1.5 rounded-lg shrink-0 shadow-2xs">${seg.arriveTime}</span>
@@ -1572,7 +1411,6 @@ function renderTimeline() {
         if (userConfig.gmapsKey && photoCache[seg.title] === undefined) {
             fetchPlacePhotoForCard(seg.title, tlBgId);
         }
-        const isJustInserted = lastInsertedActId && seg.id === lastInsertedActId;
 
         return `
             ${transitHtml}
@@ -1605,7 +1443,6 @@ function renderTimeline() {
             </div>
         `;
     }).join('');
-    lastInsertedActId = null;
 }
 
 function addRecommendedFromCard(idx) {
@@ -1627,149 +1464,165 @@ function addRecommendedFromCard(idx) {
             duration: item.duration || 90,
             note: item.note || ''
         });
+        appState.activeDay = targetDay;
         saveState();
         renderAll();
-    }, 340);
+    }, 380);
 }
 
+// =========================================================
+// 全行程總覽看板：FLIP 無抖動平滑擠開讓位拖曳系統
+// =========================================================
 let draggedPuzzleInfo = null;
-let dragCurrentSlot = null;
+let previewDropTarget = null;
+let lastFlipMoveTs = 0;
 
 function handlePuzzleDragStart(e, dayNum, idx) {
-    const list = appState.activitiesByDay[dayNum] || [];
-    const item = list[idx];
-    if (!item) return;
-
-    draggedPuzzleInfo = {
-        dayNum,
-        idx,
-        item: { ...item }
-    };
-    dragCurrentSlot = { day: dayNum, idx };
+    const item = (appState.activitiesByDay[dayNum] || [])[idx];
+    draggedPuzzleInfo = { dayNum, idx, id: item?.id || `drag-${dayNum}-${idx}`, item };
+    previewDropTarget = { targetDay: dayNum, targetIdx: idx };
+    lastFlipMoveTs = 0;
 
     if (e && e.dataTransfer) {
         e.dataTransfer.effectAllowed = 'move';
-        try { e.dataTransfer.setData('text/plain', item.id || `${dayNum}:${idx}`); } catch (_) {}
+        try { e.dataTransfer.setData('text/plain', draggedPuzzleInfo.id); } catch (_) {}
     }
 
-    const cardEl = e.currentTarget;
     requestAnimationFrame(() => {
-        if (cardEl) cardEl.classList.add('opacity-30', 'scale-[0.97]', 'border-dashed', 'border-vermilion');
-    });
-}
-
-function handlePuzzleDragEnd(e) {
-    if (e && e.currentTarget) {
-        e.currentTarget.classList.remove('opacity-30', 'scale-[0.97]', 'border-dashed', 'border-vermilion');
-    }
-    draggedPuzzleInfo = null;
-    dragCurrentSlot = null;
-    renderOverviewPuzzleBoard();
-}
-
-function moveDraggedItemWithFlip(targetDay, targetIdx) {
-    if (!draggedPuzzleInfo || !dragCurrentSlot) return;
-    if (dragCurrentSlot.day === targetDay && dragCurrentSlot.idx === targetIdx) return;
-
-    // 1. FLIP - First: 記錄所有現有卡片位置
-    const beforeRects = new Map();
-    document.querySelectorAll('[data-overview-act-id]').forEach(el => {
-        beforeRects.set(el.dataset.overviewActId, el.getBoundingClientRect());
-    });
-
-    // 2. 更新實際資料順序（直接讓目標天數卡片平滑讓出真實位置，消除插拔佔位框抖動）
-    const fromList = appState.activitiesByDay[dragCurrentSlot.day] || [];
-    const [movingItem] = fromList.splice(dragCurrentSlot.idx, 1);
-    if (!movingItem) return;
-
-    if (!appState.activitiesByDay[targetDay]) appState.activitiesByDay[targetDay] = [];
-    const destList = appState.activitiesByDay[targetDay];
-    const clampedIdx = Math.max(0, Math.min(destList.length, targetIdx));
-    destList.splice(clampedIdx, 0, movingItem);
-    dragCurrentSlot = { day: targetDay, idx: clampedIdx };
-
-    // 3. FLIP - Last: 重新繪製總覽看板
-    renderOverviewPuzzleBoard();
-
-    // 4. FLIP - Invert & Play: 用 transform 補間讓被擠開的卡片絲滑滑動
-    document.querySelectorAll('[data-overview-act-id]').forEach(el => {
-        const id = el.dataset.overviewActId;
-        const prev = beforeRects.get(id);
-        if (!prev) return;
-        const curr = el.getBoundingClientRect();
-        const dx = prev.left - curr.left;
-        const dy = prev.top - curr.top;
-        if (Math.abs(dx) > 0.5 || Math.abs(dy) > 0.5) {
-            el.style.transition = 'none';
-            el.style.transform = `translate(${dx}px, ${dy}px)`;
-            requestAnimationFrame(() => {
-                el.style.transition = 'transform 260ms cubic-bezier(0.22, 1, 0.36, 1)';
-                el.style.transform = '';
-            });
+        const draggingEl = document.querySelector(`[data-overview-id="${draggedPuzzleInfo.id}"]`);
+        if (draggingEl) {
+            draggingEl.style.opacity = '0.35';
+            draggingEl.style.borderStyle = 'dashed';
         }
     });
 }
 
-function handleOverviewCardDragOver(e, targetDay, cardIdx) {
-    e.preventDefault();
-    e.stopPropagation();
-    if (!draggedPuzzleInfo || !dragCurrentSlot) return;
-
-    const cardEl = e.currentTarget;
-    if (draggedPuzzleInfo.item && cardEl.dataset.overviewActId === String(draggedPuzzleInfo.item.id)) return;
-
-    // 加入遲滯緩衝帶（上 38% 才往上插、下 38% 才往下插），徹底防止邊界微抖動
-    const rect = cardEl.getBoundingClientRect();
-    const relY = (e.clientY - rect.top) / (rect.height || 1);
-    if (relY > 0.38 && relY < 0.62) return;
-
-    let desiredIdx = relY >= 0.62 ? cardIdx + 1 : cardIdx;
-    if (dragCurrentSlot.day === targetDay && dragCurrentSlot.idx < desiredIdx) {
-        desiredIdx = Math.max(0, desiredIdx - 1);
-    }
-    moveDraggedItemWithFlip(targetDay, desiredIdx);
+function handlePuzzleDragEnd() {
+    draggedPuzzleInfo = null;
+    previewDropTarget = null;
+    renderOverviewPuzzleBoard();
 }
 
-function handlePuzzleDragOver(e, targetDay = null) {
+function handlePuzzleDragOver(e) {
     e.preventDefault();
-    if (!draggedPuzzleInfo || !dragCurrentSlot || targetDay === null) return;
-    if (e.target && e.target.closest && e.target.closest('[data-overview-card]')) return;
-
-    const acts = appState.activitiesByDay[targetDay] || [];
-    const desiredIdx = dragCurrentSlot.day === targetDay ? Math.max(0, acts.length - 1) : acts.length;
-    moveDraggedItemWithFlip(targetDay, desiredIdx);
+    if (e.dataTransfer) e.dataTransfer.dropEffect = 'move';
 }
 
 function handlePuzzleDragLeave(e) {}
 
-function handlePuzzleDropToDay(e, targetDay) {
+function applyFlipReorder(nextDay, nextIdx) {
+    if (!draggedPuzzleInfo) return;
+    if (previewDropTarget && previewDropTarget.targetDay === nextDay && previewDropTarget.targetIdx === nextIdx) return;
+
+    const now = performance.now();
+    if (now - lastFlipMoveTs < 95) return;
+    lastFlipMoveTs = now;
+
+    const oldRects = new Map();
+    document.querySelectorAll('[data-overview-id]').forEach(el => {
+        oldRects.set(el.getAttribute('data-overview-id'), el.getBoundingClientRect());
+    });
+
+    previewDropTarget = { targetDay: nextDay, targetIdx: nextIdx };
+    renderOverviewPuzzleBoard();
+
+    requestAnimationFrame(() => {
+        document.querySelectorAll('[data-overview-id]').forEach(el => {
+            const id = el.getAttribute('data-overview-id');
+            const prev = oldRects.get(id);
+            if (!prev) return;
+            const curr = el.getBoundingClientRect();
+            const dy = prev.top - curr.top;
+            const dx = prev.left - curr.left;
+            if (Math.abs(dy) > 1 || Math.abs(dx) > 1) {
+                el.style.transition = 'none';
+                el.style.transform = `translate(${dx}px, ${dy}px)`;
+                requestAnimationFrame(() => {
+                    el.style.transition = 'transform 220ms cubic-bezier(0.22, 1, 0.36, 1)';
+                    el.style.transform = '';
+                });
+            }
+        });
+    });
+}
+
+function handleOverviewCardDragOver(e, targetDay, slotIdx) {
+    e.preventDefault();
+    e.stopPropagation();
+    if (!draggedPuzzleInfo) return;
+    const rect = e.currentTarget.getBoundingClientRect();
+    const relY = (e.clientY - rect.top) / (rect.height || 1);
+
+    if (relY > 0.36 && relY < 0.64) return;
+    const insertIdx = relY >= 0.5 ? slotIdx + 1 : slotIdx;
+    applyFlipReorder(targetDay, insertIdx);
+}
+
+function handleOverviewColumnDragOver(e, targetDay, listLen) {
+    e.preventDefault();
+    if (!draggedPuzzleInfo) return;
+    applyFlipReorder(targetDay, listLen);
+}
+
+function handlePuzzleDropToDay(e, fallbackDay) {
     e.preventDefault();
     e.stopPropagation();
     if (!draggedPuzzleInfo) return;
 
+    const { dayNum, idx } = draggedPuzzleInfo;
+    const destDay = previewDropTarget ? previewDropTarget.targetDay : fallbackDay;
+    const destIdx = previewDropTarget ? previewDropTarget.targetIdx : null;
+
     draggedPuzzleInfo = null;
-    dragCurrentSlot = null;
-    saveState();
-    renderAll();
+    previewDropTarget = null;
+
+    const srcList = appState.activitiesByDay[dayNum] || [];
+    const [item] = srcList.splice(idx, 1);
+    if (item) {
+        if (!appState.activitiesByDay[destDay]) appState.activitiesByDay[destDay] = [];
+        if (typeof destIdx === 'number' && destIdx >= 0) {
+            const boundedIdx = Math.min(appState.activitiesByDay[destDay].length, destIdx);
+            appState.activitiesByDay[destDay].splice(boundedIdx, 0, item);
+        } else {
+            appState.activitiesByDay[destDay].push(item);
+        }
+        saveState();
+        renderAll();
+    }
 }
 
 function handlePuzzleDropToDelete(e) {
     e.preventDefault();
-    if (!draggedPuzzleInfo || !dragCurrentSlot) return;
-    const { day, idx } = dragCurrentSlot;
+    if (!draggedPuzzleInfo) return;
+    const { dayNum, idx } = draggedPuzzleInfo;
     draggedPuzzleInfo = null;
-    dragCurrentSlot = null;
-    removeActivityToTrash(day, idx);
+    previewDropTarget = null;
+    removeActivityToTrash(dayNum, idx);
 }
 
 function renderOverviewPuzzleBoard() {
     const grid = document.getElementById('overview-puzzle-grid');
     if (!grid) return;
     const totalDays = getTotalDays();
-    const draggingId = draggedPuzzleInfo?.item?.id ? String(draggedPuzzleInfo.item.id) : '';
 
     grid.innerHTML = Array.from({ length: totalDays }, (_, i) => i + 1).map(d => {
-        const acts = appState.activitiesByDay[d] || [];
+        const rawActs = appState.activitiesByDay[d] || [];
+        let displayActs = rawActs.map((a, origIdx) => ({ ...a, origIdx, isPreviewSlot: false }));
+
+        if (draggedPuzzleInfo && previewDropTarget) {
+            if (draggedPuzzleInfo.dayNum === d) {
+                displayActs = displayActs.filter(x => x.origIdx !== draggedPuzzleInfo.idx);
+            }
+            if (previewDropTarget.targetDay === d && draggedPuzzleInfo.item) {
+                const insertPos = Math.min(displayActs.length, Math.max(0, previewDropTarget.targetIdx));
+                displayActs.splice(insertPos, 0, {
+                    ...draggedPuzzleInfo.item,
+                    origIdx: draggedPuzzleInfo.idx,
+                    isPreviewSlot: true
+                });
+            }
+        }
+
         const startAnchor = d === 1
             ? `🛬 抵達出發：${appState.outboundFlight?.airport || '關西國際機場 (KIX)'}`
             : `🏨 飯店出發：${appState.dayHotels[d - 1] || appState.dayHotels[1] || '住宿飯店'}`;
@@ -1778,9 +1631,9 @@ function renderOverviewPuzzleBoard() {
             : `🏨 今晚住宿：${appState.dayHotels[d] || appState.dayHotels[1] || '住宿飯店'}`;
 
         return `
-            <div ondragover="handlePuzzleDragOver(event, ${d})"
+            <div ondragover="handleOverviewColumnDragOver(event, ${d}, ${displayActs.length})"
                  ondrop="handlePuzzleDropToDay(event, ${d})"
-                 class="bg-washi border border-stone-200 rounded-2xl p-3 space-y-2 min-h-[220px] flex flex-col justify-between transition-colors">
+                 class="bg-washi border border-stone-200 rounded-2xl p-3 space-y-2 min-h-[230px] flex flex-col justify-between">
                 <div class="space-y-1.5">
                     <div class="flex items-center justify-between border-b border-stone-200 pb-1.5">
                         <span class="text-xs font-bold text-indigoJp">Day ${d}・${getDateLabelForDay(d)}</span>
@@ -1789,28 +1642,40 @@ function renderOverviewPuzzleBoard() {
                     <div class="bg-slate-100/90 border border-slate-200 rounded-xl px-2.5 py-1.5 text-[11px] font-bold text-slate-700 truncate" title="${startAnchor}">
                         ${startAnchor}
                     </div>
-                    <div id="overview-day-list-${d}" class="space-y-1.5 min-h-[52px]">
-                        ${acts.map((a, idx) => {
-                            const isDraggingThis = draggingId && String(a.id) === draggingId;
+                    <div class="space-y-1.5">
+                        ${displayActs.map((a, slotIdx) => {
+                            if (a.isPreviewSlot) {
+                                return `
+                                    <div data-overview-id="${a.id}"
+                                         ondragover="handlePuzzleDragOver(event)"
+                                         ondrop="handlePuzzleDropToDay(event, ${d})"
+                                         class="rounded-xl border-2 border-dashed border-vermilion bg-vermilion/10 p-2.5 text-xs flex items-center justify-between gap-2 shadow-inner">
+                                        <div class="min-w-0 flex-1">
+                                            <div class="font-bold text-vermilion truncate">🧩 ${a.title}</div>
+                                            <div class="text-[10px] text-vermilion/80 mt-0.5">放開左鍵即嵌入此位置</div>
+                                        </div>
+                                        <span class="shrink-0 text-[10px] font-bold px-2 py-0.5 rounded-full bg-vermilion text-white">預留空位</span>
+                                    </div>
+                                `;
+                            }
                             return `
-                            <div data-overview-card="1"
-                                 data-overview-act-id="${a.id}"
-                                 draggable="true"
-                                 ondragstart="handlePuzzleDragStart(event, ${d}, ${idx})"
-                                 ondragend="handlePuzzleDragEnd(event)"
-                                 ondragover="handleOverviewCardDragOver(event, ${d}, ${idx})"
-                                 ondrop="handlePuzzleDropToDay(event, ${d})"
-                                 class="${isDraggingThis ? 'bg-vermilion/8 border-2 border-dashed border-vermilion text-vermilion shadow-inner' : 'bg-white border border-stone-200 hover:border-vermilion/60 shadow-2xs'} rounded-xl p-2.5 text-xs cursor-grab active:cursor-grabbing flex items-center justify-between gap-1.5 select-none">
-                                <div class="min-w-0 flex-1">
-                                    <div class="font-bold ${isDraggingThis ? 'text-vermilion' : 'text-indigoJp'} leading-snug">${isDraggingThis ? '🧩 ' + a.title : a.title}</div>
-                                    <div class="text-[10px] ${isDraggingThis ? 'text-vermilion/80' : 'text-stone-400'} mt-0.5">${isDraggingThis ? '放開滑鼠左鍵即可嵌入此位置' : `${a.tag || '景點'}・${a.duration || 90} 分`}</div>
+                                <div data-overview-id="${a.id}"
+                                     draggable="true"
+                                     ondragstart="handlePuzzleDragStart(event, ${d}, ${a.origIdx})"
+                                     ondragend="handlePuzzleDragEnd()"
+                                     ondragover="handleOverviewCardDragOver(event, ${d}, ${slotIdx})"
+                                     ondrop="handlePuzzleDropToDay(event, ${d})"
+                                     class="bg-white border border-stone-200 hover:border-vermilion/60 rounded-xl p-2.5 text-xs shadow-2xs cursor-grab active:cursor-grabbing flex items-center justify-between gap-1.5 select-none">
+                                    <div class="min-w-0 flex-1">
+                                        <div class="font-bold text-indigoJp leading-snug">${a.title}</div>
+                                        <div class="text-[10px] text-stone-400 mt-0.5">${a.tag || '景點'}・${a.duration || 90} 分</div>
+                                    </div>
+                                    <div class="flex flex-col gap-0.5 shrink-0">
+                                        <button type="button" onclick="event.stopPropagation(); moveActivityOrder(${d}, ${a.origIdx}, -1)" ${a.origIdx === 0 ? 'disabled' : ''} title="上移順序" class="px-1.5 py-0.5 rounded bg-washi hover:bg-stone-200 disabled:opacity-30 text-[10px] font-bold text-stone-600 cursor-pointer">↑</button>
+                                        <button type="button" onclick="event.stopPropagation(); moveActivityOrder(${d}, ${a.origIdx}, 1)" ${a.origIdx === rawActs.length - 1 ? 'disabled' : ''} title="下移順序" class="px-1.5 py-0.5 rounded bg-washi hover:bg-stone-200 disabled:opacity-30 text-[10px] font-bold text-stone-600 cursor-pointer">↓</button>
+                                    </div>
                                 </div>
-                                <div class="flex flex-col gap-0.5 shrink-0 ${isDraggingThis ? 'opacity-0 pointer-events-none' : ''}">
-                                    <button type="button" onclick="event.stopPropagation(); moveActivityOrder(${d}, ${idx}, -1)" ${idx === 0 ? 'disabled' : ''} title="上移順序" class="px-1.5 py-0.5 rounded bg-washi hover:bg-stone-200 disabled:opacity-30 text-[10px] font-bold text-stone-600 cursor-pointer">↑</button>
-                                    <button type="button" onclick="event.stopPropagation(); moveActivityOrder(${d}, ${idx}, 1)" ${idx === acts.length - 1 ? 'disabled' : ''} title="下移順序" class="px-1.5 py-0.5 rounded bg-washi hover:bg-stone-200 disabled:opacity-30 text-[10px] font-bold text-stone-600 cursor-pointer">↓</button>
-                                </div>
-                            </div>
-                        `;
+                            `;
                         }).join('') || '<div class="text-[11px] text-stone-400 text-center py-4 border border-dashed border-stone-200 rounded-xl">可拖曳拼圖至此天</div>'}
                     </div>
                 </div>
@@ -1859,38 +1724,8 @@ function renderTrashBinUI() {
 }
 
 // =========================================================
-// 區塊三：立體拼圖推薦卡片渲染（直接讀取 db.json 的 events 與 Wikimedia imageUrl）
+// 區塊三：推薦拼圖庫（直連 db.json 與 Google Places）
 // =========================================================
-const FALLBACK_SCENE_PHOTOS = {
-    event: [
-        'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?auto=format&fit=crop&w=640&q=80',
-        'https://images.unsplash.com/photo-1590559899731-a382839e5549?auto=format&fit=crop&w=640&q=80',
-        'https://images.unsplash.com/photo-1542051841857-5f90071e7989?auto=format&fit=crop&w=640&q=80'
-    ],
-    food: [
-        'https://images.unsplash.com/photo-1553621042-f6e147245754?auto=format&fit=crop&w=640&q=80',
-        'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=640&q=80'
-    ],
-    spot: [
-        'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=640&q=80',
-        'https://images.unsplash.com/photo-1528360983277-13d401cdc186?auto=format&fit=crop&w=640&q=80',
-        'https://images.unsplash.com/photo-1478436127897-769e1b3f0f36?auto=format&fit=crop&w=640&q=80'
-    ]
-};
-
-function getGuaranteedFallbackPhoto(item, idx) {
-    if (item.photoUrl) return item.photoUrl;
-    const text = `${item.title || ''} ${item.tag || ''}`;
-    let pool = FALLBACK_SCENE_PHOTOS.spot;
-    if (item.type === 'event' || /(點燈|燈飾|花火|祭|光雕|夜景|聖誕)/.test(text)) {
-        pool = FALLBACK_SCENE_PHOTOS.event;
-    } else if (/(美食|拉麵|市場|海鮮|燒肉|牛排|逛街)/.test(text)) {
-        pool = FALLBACK_SCENE_PHOTOS.food;
-    }
-    const hash = Math.abs(Array.from(item.title || '').reduce((acc, ch) => acc + ch.charCodeAt(0), idx));
-    return pool[hash % pool.length];
-}
-
 function setRecFilter(filter) {
     appState.recFilter = filter;
     ['all', 'event', 'spot'].forEach(f => {
@@ -1920,14 +1755,12 @@ async function fetchPlacePhotoForCard(queryTitle, domId) {
         const data = await resp.json();
         const photoName = data?.places?.[0]?.photos?.[0]?.name;
         if (photoName) {
-            const photoUrl = `https://places.googleapis.com/v1/${photoName}/media?maxWidthPx=800&key=${userConfig.gmapsKey}`;
+            const photoUrl = `https://places.googleapis.com/v1/${photoName}/media?maxWidthPx=600&key=${userConfig.gmapsKey}`;
             photoCache[queryTitle] = photoUrl;
             const el = document.getElementById(domId);
             if (el) {
                 el.style.backgroundImage = `url('${photoUrl}')`;
-                if (el.parentElement) el.parentElement.classList.remove('hidden');
-                const card = el.parentElement?.parentElement;
-                if (card) card.classList.add('min-h-[108px]');
+                el.parentElement?.classList.remove('hidden');
             }
         }
     } catch (e) {}
@@ -1951,9 +1784,7 @@ function loadBuiltinRecommendations() {
 
     const googleFetchedItems = [];
     targetRegs.forEach(regId => {
-        if (Array.isArray(googleTopSpotsCache[regId])) {
-            googleFetchedItems.push(...googleTopSpotsCache[regId]);
-        }
+        if (Array.isArray(googleTopSpotsCache[regId])) googleFetchedItems.push(...googleTopSpotsCache[regId]);
     });
 
     const allItems = [
@@ -1988,7 +1819,7 @@ function loadBuiltinRecommendations() {
     });
 
     if (filtered.length === 0) {
-        grid.innerHTML = `<div class="col-span-full text-center py-8 text-xs text-stone-500 bg-washi rounded-2xl border border-dashed border-stone-300">目前此區域正在等待 db.json 載入，或可使用上方搜尋列加入想去的日本景點！</div>`;
+        grid.innerHTML = `<div class="col-span-full text-center py-8 text-xs text-stone-400 bg-washi rounded-2xl border border-dashed border-stone-200">目前此篩選條件下的景點已全數加入行程，或正在載入 db.json 資料...</div>`;
         window._currentRecItems = [];
         return;
     }
@@ -1999,19 +1830,16 @@ function loadBuiltinRecommendations() {
     grid.innerHTML = filtered.map((item, idx) => {
         const isSeasonal = (item.months || []).includes(tripMonth) && (item.months || []).length < 12;
         const regName = REGIONS_META.find(r => r.id === item.region)?.name || '精選推薦';
-        const periodLabel = item.periodText || '全年皆宜';
+        const periodLabel = item.periodText || (Array.isArray(item.months) && item.months.length < 12 ? `${item.months.join('・')}月限定` : '四季皆宜');
         const locText = item.location || `${regName}・建議停留 ${item.duration || 90} 分鐘`;
         const ratingBadge = item.rating
             ? `<span class="inline-flex items-center gap-0.5 font-mono font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-900">⭐ ${Number(item.rating).toFixed(1)}${item.userRatingCount ? ` (${item.userRatingCount.toLocaleString()})` : ''}</span>`
             : '';
-        const indoorBadge = item.isIndoor
-            ? `<span class="font-bold px-2 py-0.5 rounded-full bg-sky-100 text-sky-800">☔ 雨天備案</span>`
-            : '';
         const cardId = `rec-puzzle-card-${idx}`;
         const bgImgId = `rec-puzzle-bg-${idx}`;
-        const initialBg = photoCache[item.title] || getGuaranteedFallbackPhoto(item, idx);
+        const initialBg = photoCache[item.title] || item.photoUrl || '';
 
-        if (userConfig.gmapsKey && !item.photoUrl && photoCache[item.title] === undefined) {
+        if (userConfig.gmapsKey && photoCache[item.title] === undefined) {
             fetchPlacePhotoForCard(item.title, bgImgId);
         }
 
@@ -2020,8 +1848,8 @@ function loadBuiltinRecommendations() {
                 <span aria-hidden="true" class="pointer-events-none absolute -top-3 left-1/2 -translate-x-1/2 w-6 h-6 rounded-full bg-white border-2 ${isSeasonal ? 'border-[#E8B84B]' : 'border-stone-200'} z-20"></span>
                 <span aria-hidden="true" class="pointer-events-none absolute top-1/2 -right-3 -translate-y-1/2 w-6 h-6 rounded-full bg-[#FAF8F5] border-l-2 ${isSeasonal ? 'border-[#E8B84B]' : 'border-stone-200'} z-20"></span>
 
-                <div class="pointer-events-none absolute inset-0 rounded-2xl overflow-hidden z-0">
-                    <div id="${bgImgId}" class="absolute inset-y-0 right-0 w-[72%] bg-cover bg-center opacity-80 transition-opacity duration-500" style="background-image:url('${initialBg}'); -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.45) 38%, black 100%); mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.45) 38%, black 100%);"></div>
+                <div class="${initialBg ? '' : 'hidden'} pointer-events-none absolute inset-0 rounded-2xl overflow-hidden z-0">
+                    <div id="${bgImgId}" class="absolute inset-y-0 right-0 w-[72%] bg-cover bg-center opacity-80 transition-opacity duration-500" style="${initialBg ? `background-image:url('${initialBg}');` : ''} -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.45) 38%, black 100%); mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.45) 38%, black 100%);"></div>
                     <div class="absolute inset-0 bg-gradient-to-r from-white via-white/75 to-transparent"></div>
                 </div>
 
@@ -2029,7 +1857,6 @@ function loadBuiltinRecommendations() {
                     <div class="flex items-center gap-1.5 flex-wrap text-[11px]">
                         ${isSeasonal ? `<span class="inline-flex items-center gap-1 font-bold px-2.5 py-0.5 rounded-full bg-[#E69D1E] text-white shadow-2xs">🔥 當季限定</span>` : `<span class="inline-flex items-center font-bold px-2.5 py-0.5 rounded-full bg-indigoJp/10 text-indigoJp">${regName}</span>`}
                         <span class="font-bold px-2.5 py-0.5 rounded-full bg-[#FBEAE8] text-[#B84A39]">${item.tag || '經典景點'}</span>
-                        ${indoorBadge}
                         ${ratingBadge}
                         <span class="font-medium text-stone-600">${periodLabel}</span>
                     </div>
@@ -2086,12 +1913,7 @@ async function fetchGoogleTopRatedSpots(forceRefresh = false, targetRegionId = n
                     'X-Goog-Api-Key': userConfig.gmapsKey,
                     'X-Goog-FieldMask': 'places.displayName,places.formattedAddress,places.rating,places.userRatingCount,places.photos,places.editorialSummary'
                 },
-                body: JSON.stringify({
-                    textQuery: queries[qi],
-                    minRating: 4.0,
-                    languageCode: 'zh-TW',
-                    maxResultCount: 8
-                })
+                body: JSON.stringify({ textQuery: queries[qi], minRating: 4.0, languageCode: 'zh-TW', maxResultCount: 8 })
             });
             const data = await resp.json();
             const places = Array.isArray(data?.places) ? data.places : [];
@@ -2100,9 +1922,7 @@ async function fetchGoogleTopRatedSpots(forceRefresh = false, targetRegionId = n
                 const title = p.displayName?.text || '';
                 if (!title || rating < 4.0) return;
                 const photoName = p.photos?.[0]?.name;
-                const photoUrl = photoName
-                    ? `https://places.googleapis.com/v1/${photoName}/media?maxWidthPx=600&key=${userConfig.gmapsKey}`
-                    : '';
+                const photoUrl = photoName ? `https://places.googleapis.com/v1/${photoName}/media?maxWidthPx=600&key=${userConfig.gmapsKey}` : '';
                 if (photoUrl) photoCache[title] = photoUrl;
                 collected.push({
                     id: `gmaps-${regId}-${qi}-${idx}-${title}`,
@@ -2131,7 +1951,7 @@ async function fetchGoogleTopRatedSpots(forceRefresh = false, targetRegionId = n
 }
 
 // =========================================================
-// 旅遊記帳本邏輯
+// 記帳本、搜尋、彈窗與雲端同步
 // =========================================================
 function addFixedExpenseRecord() {
     const type = document.getElementById('fixed-expense-type')?.value || '機票費用';
@@ -2169,8 +1989,7 @@ function addExpenseRecord() {
 }
 
 function handleExpenseDaySelectChange(val) {
-    const day = Math.max(1, Number(val) || 1);
-    appState.expenseSelectedDay = day;
+    appState.expenseSelectedDay = Math.max(1, Number(val) || 1);
     saveState();
     renderExpenseSummary();
 }
@@ -2240,7 +2059,7 @@ function renderExpenseSummary() {
         (arr || []).forEach(r => { allDaysJpy += Number(r.amountJpy || 0); });
     });
 
-    const passes = cloudData.jrPasses || MINIMAL_FALLBACK_PASSES;
+    const passes = cloudData.jrPasses || DEFAULT_JR_PASSES;
     const p1 = passes.find(p => p.id === appState.jrPassId);
     const p2 = appState.useSecondJrPass ? passes.find(p => p.id === appState.jrPassId2) : null;
     const transportJpy = appState.drivingMode
@@ -2266,9 +2085,6 @@ function renderExpenseSummary() {
     if (ppEl) ppEl.textContent = `每人均攤約 NT$${Math.round(grandTwd / travelers).toLocaleString()}`;
 }
 
-// =========================================================
-// 自訂搜尋、彈窗與跨裝置 GitHub 同步
-// =========================================================
 async function searchCustomPlaceOrQuickAdd() {
     const input = document.getElementById('spot-search-input');
     const val = (input?.value || '').trim();
@@ -2332,7 +2148,7 @@ function closeCustomPieceModal() { document.getElementById('custom-piece-modal')
 function submitCustomPiece() {
     const title = (document.getElementById('custom-piece-title')?.value || '').trim();
     if (!title) return;
-    const tag = document.getElementById('custom-piece-tag')?.value || '景點';
+    const tag = document.getElementById('custom-piece-tag')?.value || '經典景點';
     const duration = Math.max(15, Number(document.getElementById('custom-piece-duration')?.value || 90));
     const note = (document.getElementById('custom-piece-note')?.value || '').trim();
     const d = appState.activeDay || 1;
@@ -2364,10 +2180,7 @@ function openExportModal() {
 function closeExportModal() { document.getElementById('export-modal')?.classList.add('hidden'); }
 function copyExportText() {
     const area = document.getElementById('export-text-area');
-    if (area) {
-        area.select();
-        document.execCommand('copy');
-    }
+    if (area) { area.select(); navigator.clipboard?.writeText(area.value); }
 }
 
 function openApiKeyModal() {
@@ -2388,6 +2201,7 @@ function openApiKeyModal() {
     document.getElementById('gemini-test-result')?.classList.add('hidden');
     document.getElementById('api-key-modal')?.classList.remove('hidden');
 }
+function closeApiKeyModal() { document.getElementById('api-key-modal')?.classList.add('hidden'); }
 
 async function testGoogleMapsApiKey() {
     const key = (document.getElementById('modal-gmaps-key')?.value || '').trim();
@@ -2408,39 +2222,19 @@ async function testGoogleMapsApiKey() {
         if (!result || !result.route?.duration) throw new Error('查無路線資料，請確認金鑰權限');
         let mins = Math.round(parseInt(result.route.duration, 10) / 60);
         if (result.fallbackFromDrive) mins = Math.round(mins * 1.15 + 14);
-
         userConfig.gmapsKey = key;
         appState.routeCache = {};
         saveConfig();
         saveState();
         renderTimeline();
         resEl.className = 'text-[11px] font-bold px-2.5 py-1 rounded-lg bg-emerald-100 text-emerald-900';
-        resEl.textContent = `✅ Google Maps 連線成功（難波西 ➔ 新大阪東口 實測約 ${mins} 分鐘）！已自動重算時間軸。`;
+        resEl.textContent = `✅ Google Maps 連線成功（實測約 ${mins} 分鐘）！已自動重算時間軸。`;
     } catch (err) {
         resEl.className = 'text-[11px] font-bold px-2.5 py-1 rounded-lg bg-red-100 text-red-800';
         resEl.textContent = `❌ ${err.message}`;
     } finally {
         if (btn) btn.textContent = '🧪 測試連線';
     }
-}
-
-async function callGeminiWithAutoModel(apiKey, promptText) {
-    const candidateModels = ['gemini-3.8-flash', 'gemini-3-flash-preview', 'gemini-2.5-flash'];
-    let lastErr = '無法連線 Gemini';
-    for (const model of candidateModels) {
-        const resp = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${encodeURIComponent(apiKey)}`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ contents: [{ parts: [{ text: promptText }] }] })
-        });
-        const data = await resp.json();
-        if (resp.ok && data?.candidates?.[0]?.content?.parts?.[0]?.text) {
-            return { model, text: data.candidates[0].content.parts[0].text };
-        }
-        lastErr = data?.error?.message || `HTTP ${resp.status}`;
-        if (resp.status === 400 || resp.status === 401 || resp.status === 403) break;
-    }
-    throw new Error(lastErr);
 }
 
 async function testGeminiApiKey() {
@@ -2456,13 +2250,27 @@ async function testGeminiApiKey() {
     }
     if (btn) btn.textContent = '⏳ 測試中...';
     resEl.className = 'text-[11px] font-bold px-2.5 py-1 rounded-lg bg-slate-100 text-slate-700';
-    resEl.textContent = '正在連線測試 Gemini 模型...';
+    resEl.textContent = '正在連線測試 Gemini API...';
     try {
-        const { model } = await callGeminiWithAutoModel(key, '請只回覆 OK 兩個字');
+        const candidateModels = ['gemini-3.8-flash', 'gemini-3-flash-preview', 'gemini-2.5-flash'];
+        let okModel = '';
+        let lastErr = '無法連線 Gemini';
+        for (const model of candidateModels) {
+            const resp = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${encodeURIComponent(key)}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ contents: [{ parts: [{ text: '請只回覆 OK 兩個字' }] }] })
+            });
+            const data = await resp.json();
+            if (resp.ok && data?.candidates?.[0]?.content?.parts?.[0]?.text) { okModel = model; break; }
+            lastErr = data?.error?.message || `HTTP ${resp.status}`;
+            if (resp.status === 400 || resp.status === 401 || resp.status === 403) break;
+        }
+        if (!okModel) throw new Error(lastErr);
         userConfig.geminiKey = key;
         saveConfig();
         resEl.className = 'text-[11px] font-bold px-2.5 py-1 rounded-lg bg-emerald-100 text-emerald-900';
-        resEl.textContent = `✅ Gemini API 連線成功（使用模型：${model}）！已自動儲存。`;
+        resEl.textContent = `✅ Gemini API 連線成功（${okModel}）！已自動儲存。`;
     } catch (err) {
         resEl.className = 'text-[11px] font-bold px-2.5 py-1 rounded-lg bg-red-100 text-red-800';
         resEl.textContent = `❌ Gemini 測試失敗：${err.message}`;
@@ -2471,7 +2279,6 @@ async function testGeminiApiKey() {
     }
 }
 
-function closeApiKeyModal() { document.getElementById('api-key-modal')?.classList.add('hidden'); }
 function updateCloudUrlPreview() {
     const u = (document.getElementById('modal-github-user')?.value || '').trim();
     const r = (document.getElementById('modal-github-repo')?.value || '').trim();
@@ -2479,11 +2286,8 @@ function updateCloudUrlPreview() {
     if (u && r && urlInput) urlInput.value = `https://raw.githubusercontent.com/${u}/${r}/main/db.json`;
 }
 function copySyncCodeText() {
-    const codeEl = document.getElementById('modal-sync-code-input');
-    if (codeEl && codeEl.value.trim()) {
-        codeEl.select();
-        document.execCommand('copy');
-    }
+    const code = (document.getElementById('modal-sync-code-input')?.value || '').trim().toUpperCase();
+    if (code) navigator.clipboard?.writeText(code);
 }
 function applySyncCodeFromModal() {
     const code = (document.getElementById('modal-sync-code-input')?.value || '').trim().toUpperCase();
@@ -2512,31 +2316,20 @@ async function pushTripToGitHub() {
     try {
         let sha = undefined;
         const getResp = await fetch(apiUrl, { headers: { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github+json' } });
-        if (getResp.ok) {
-            const existing = await getResp.json();
-            sha = existing.sha;
-        }
+        if (getResp.ok) { const existing = await getResp.json(); sha = existing.sha; }
         const payloadObj = { updatedAt: new Date().toISOString(), syncCode: code, appState };
         const base64Content = btoa(unescape(encodeURIComponent(JSON.stringify(payloadObj, null, 2))));
         const putResp = await fetch(apiUrl, {
             method: 'PUT',
-            headers: {
-                Authorization: `Bearer ${token}`,
-                Accept: 'application/vnd.github+json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                message: `Sync travel puzzle trip ${code}`,
-                content: base64Content,
-                ...(sha ? { sha } : {})
-            })
+            headers: { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github+json', 'Content-Type': 'application/json' },
+            body: JSON.stringify({ message: `Sync travel puzzle trip ${code}`, content: base64Content, ...(sha ? { sha } : {}) })
         });
         if (!putResp.ok) throw new Error(`HTTP ${putResp.status}`);
-        if (statusLine) statusLine.textContent = `✅ 已成功上傳至 GitHub (${code})！手機輸入同代碼即可讀取`;
+        if (statusLine) statusLine.textContent = `✅ 已成功上傳至 GitHub (${code})！`;
         const hdrBadge = document.getElementById('cloud-sync-header-badge');
         if (hdrBadge) hdrBadge.textContent = `・☁️ ${code} 已同步`;
     } catch (err) {
-        if (statusLine) statusLine.textContent = `❌ 上傳失敗：請確認 Token 具備 repo 寫入權限 (${err.message})`;
+        if (statusLine) statusLine.textContent = `❌ 上傳失敗：${err.message}`;
     }
 }
 
@@ -2546,18 +2339,16 @@ async function pullTripFromGitHub() {
     const owner = (userConfig.githubUser || 'JHANSIANGJYUN').trim();
     const repo = (userConfig.githubRepo || 'travel-puzzle').trim();
     const code = (userConfig.syncCode || 'JP-GPVMP6').trim().toUpperCase();
-    if (statusLine) statusLine.textContent = `⏳ 正在從 GitHub 搜尋並讀取 ${code}...`;
+    if (statusLine) statusLine.textContent = `⏳ 正在從 GitHub 讀取 ${code}...`;
 
     const candidatePaths = [`trips/${code}.json`, `sync/${code}.json`, `data/${code}.json`, `${code}.json`];
-
     async function tryFetchPath(filePath) {
         if (userConfig.githubToken) {
             const apiUrl = `https://api.github.com/repos/${owner}/${repo}/contents/${filePath}`;
             const resp = await fetch(apiUrl, { headers: { Authorization: `Bearer ${userConfig.githubToken}`, Accept: 'application/vnd.github+json' } });
             if (resp.ok) {
                 const fileMeta = await resp.json();
-                const decodedStr = decodeURIComponent(escape(atob(fileMeta.content.replace(/\n/g, ''))));
-                return JSON.parse(decodedStr);
+                return JSON.parse(decodeURIComponent(escape(atob(fileMeta.content.replace(/\n/g, '')))));
             }
         }
         for (const branch of ['main', 'master']) {
@@ -2574,15 +2365,10 @@ async function pullTripFromGitHub() {
             data = await tryFetchPath(p);
             if (data) break;
         }
-        if (!data || typeof data !== 'object') throw new Error(`在 ${owner}/${repo} 找不到代碼 ${code} 的雲端行程檔`);
+        if (!data || typeof data !== 'object') throw new Error(`找不到代碼 ${code} 的雲端行程檔`);
         const loadedState = data.appState || data.state || data.trip || (data.activitiesByDay ? data : null);
         if (!loadedState) throw new Error('雲端檔案格式無法辨識');
-
         mergeAppStateSafely(loadedState);
-        if (data.config && typeof data.config === 'object') {
-            Object.assign(userConfig, data.config);
-            saveConfig();
-        }
         saveState();
         renderAll();
         if (statusLine) statusLine.textContent = `✅ 已成功載入雲端行程 (${code})！`;
@@ -2602,11 +2388,7 @@ function saveApiAndCloudSettings(shouldClose = true) {
     userConfig.cloudDbUrl = (document.getElementById('modal-cloud-db-url')?.value || '').trim();
     applySyncCodeFromModal();
     saveConfig();
-    if (shouldClose) {
-        closeApiKeyModal();
-        syncCloudDatabase();
-        renderAll();
-    }
+    if (shouldClose) { closeApiKeyModal(); syncCloudDatabase(); }
 }
 
 function copyShareSetupLink() {
@@ -2620,32 +2402,19 @@ function copyShareSetupLink() {
     };
     const encoded = btoa(encodeURIComponent(JSON.stringify(compactPayload)));
     const shareUrl = `${window.location.origin}${window.location.pathname}#setup=${encoded}`;
-    const tempInput = document.createElement('input');
-    tempInput.value = shareUrl;
-    document.body.appendChild(tempInput);
-    tempInput.select();
-    document.execCommand('copy');
-    document.body.removeChild(tempInput);
+    navigator.clipboard?.writeText(shareUrl);
     const statusLine = document.getElementById('github-sync-status-line');
     if (statusLine) statusLine.textContent = '🔗 已複製一鍵自動設定連結！貼到手機打開即可免重打金鑰';
 }
 
 function openResetConfirmModal() { document.getElementById('reset-confirm-modal')?.classList.remove('hidden'); }
 function closeResetConfirmModal() { document.getElementById('reset-confirm-modal')?.classList.add('hidden'); }
-function confirmResetTrip() {
-    localStorage.removeItem(STORAGE_KEY);
-    window.location.reload();
-}
+function confirmResetTrip() { localStorage.removeItem(STORAGE_KEY); window.location.reload(); }
 
 // =========================================================
-// 統一渲染管線 renderAll()
+// 統一渲染管線 renderAll() 與雙保險啟動器
 // =========================================================
 function renderAll() {
-    if (!Array.isArray(REGIONS_META) || REGIONS_META.length === 0) {
-        showHealthWarning('⚠️ app.js 分區設定異常，請檢查最近修改的括號或逗號。');
-        return;
-    }
-
     const verBadge = document.getElementById('app-version-badge');
     if (verBadge) verBadge.textContent = APP_VERSION;
 
@@ -2680,7 +2449,7 @@ function renderAll() {
     loadBuiltinRecommendations();
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+function bootTravelPuzzleApp() {
     loadSavedData();
     if (appState.routeCache) {
         Object.keys(appState.routeCache).forEach(k => {
@@ -2692,4 +2461,10 @@ document.addEventListener('DOMContentLoaded', () => {
     renderAll();
     tryLoadExternalJapanSvg();
     syncCloudDatabase();
-});
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', bootTravelPuzzleApp);
+} else {
+    bootTravelPuzzleApp();
+}
