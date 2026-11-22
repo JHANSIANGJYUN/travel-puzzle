@@ -1,0 +1,67 @@
+/* 旅遊拼圖 Travel Puzzle 自訂樣式與動畫 */
+body {
+background-color: #FAF8F5;
+color: #2B2B2B;
+background-image: radial-gradient(#E5E0D8 1px, transparent 1px);
+background-size: 20px 20px;
+}
+
+.timeline-connector {
+position: relative;
+}
+
+.timeline-connector::before {
+content: '';
+position: absolute;
+top: 24px;
+bottom: 24px;
+left: 27px;
+width: 2px;
+background: repeating-linear-gradient(to bottom, #CBD5E1 0, #CBD5E1 6px, transparent 6px, transparent 12px);
+z-index: 0;
+}
+
+.puzzle-card {
+transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.puzzle-card:hover {
+transform: translateY(-1px);
+}
+
+.jigsaw-tile {
+position: relative;
+transition: transform 0.22s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.22s ease, opacity 0.22s ease;
+}
+
+.jigsaw-tile:hover {
+transform: translateY(-2px);
+box-shadow: 0 10px 22px -10px rgba(30, 58, 95, 0.22);
+}
+
+.jp-map-part:hover path,
+.jp-map-part:hover circle {
+opacity: 0.9;
+transform: translateY(-1px);
+}
+
+@keyframes puzzleSnapOut {
+0% { opacity: 1; transform: scale(1) translateY(0); }
+45% { opacity: 0.85; transform: scale(1.03) translateY(-6px); }
+100% { opacity: 0; transform: scale(0.75) translateY(-18px); }
+}
+
+@keyframes puzzlePopIn {
+0% { opacity: 0; transform: scale(0.82) translateY(14px); }
+65% { opacity: 1; transform: scale(1.02) translateY(-2px); }
+100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.puzzle-leaving {
+animation: puzzleSnapOut 0.45s cubic-bezier(0.32, 0, 0.67, 0) forwards;
+pointer-events: none;
+}
+
+.puzzle-entering {
+animation: puzzlePopIn 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}s
