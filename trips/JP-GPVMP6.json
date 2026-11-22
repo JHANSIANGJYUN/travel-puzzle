@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-22T10:24:42.397Z",
+  "updatedAt": "2026-11-22T14:15:04.411Z",
   "syncCode": "JP-GPVMP6",
   "appState": {
     "tripCode": "JP-GPVMP6",
@@ -64,8 +64,8 @@
       "21": "09:30"
     },
     "dayHotels": {
-      "1": "東橫INN 大阪難波西",
-      "2": "東橫INN 新大阪東口",
+      "1": "遠東悅樂大阪難波南酒店",
+      "2": "Urban Kyoto Eki Nishi",
       "3": "東橫INN 新大阪東口"
     },
     "dropLuggageFirst": {
@@ -90,6 +90,17 @@
         }
       ],
       "2": [
+        {
+          "id": "act-1795237470927-fn76",
+          "title": "京都車站大樓冬季點燈・大階段光之階梯",
+          "type": "經典景點",
+          "duration": 60,
+          "isIndoor": false,
+          "note": "京都市下京區（JR京都車站中央口大階段）",
+          "imageUrl": ""
+        }
+      ],
+      "3": [
         {
           "id": "act-init-2",
           "title": "神戶布引香草園",
@@ -128,17 +139,6 @@
           "tag": "景點",
           "duration": 90,
           "note": ""
-        }
-      ],
-      "3": [
-        {
-          "id": "act-1795237470927-fn76",
-          "title": "京都車站大樓冬季點燈・大階段光之階梯",
-          "type": "經典景點",
-          "duration": 60,
-          "isIndoor": false,
-          "note": "京都市下京區（JR京都車站中央口大階段）",
-          "imageUrl": ""
         }
       ],
       "4": [
@@ -222,6 +222,153 @@
         "detailText": "地鐵一班車直達加兩端步行約 21 分（若改搭 JR 轉乘約需 29 分）",
         "fareText": "原價車資 ¥290（ICOCA / 地鐵單程票）",
         "ts": 1795343072443
+      },
+      "TRANSIT|Kinton Kōbe|遊びトレジャー本店": {
+        "minutes": 4,
+        "modeBadge": "🚶 步行散策直達最快",
+        "detailText": "沿途步行前往約 4 分（距離約 0.1 km）",
+        "fareText": "步行免費 ¥0",
+        "ts": 1795351726485
+      },
+      "TRANSIT|遊びトレジャー本店|Blue Bottle Coffee - Kobe Cafe": {
+        "minutes": 8,
+        "modeBadge": "🚶 步行散策直達最快",
+        "detailText": "沿途步行前往約 8 分（距離約 0.6 km）",
+        "fareText": "步行免費 ¥0",
+        "ts": 1795351726554
+      },
+      "TRANSIT|Blue Bottle Coffee - Kobe Cafe|神戶港塔＆美利堅公園海濱夜景": {
+        "minutes": 13,
+        "modeBadge": "🚶 步行散策直達最快",
+        "detailText": "沿途步行前往約 13 分（距離約 0.9 km）",
+        "fareText": "步行免費 ¥0",
+        "ts": 1795351726557
+      },
+      "TRANSIT|東橫INN 新大阪東口|神戶布引香草園": {
+        "minutes": 74,
+        "modeBadge": "🚄 JR 神戶線新快速直達",
+        "detailText": "JR 新快速直達神戶三宮/元町，含兩端步行約 74 分",
+        "fareText": "原價車資 ¥420（持 JR PASS 可全額折抵）",
+        "ts": 1795351726559
+      },
+      "TRANSIT|神戶布引香草園|Kinton Kōbe": {
+        "minutes": 24,
+        "modeBadge": "🚶 步行散策直達最快",
+        "detailText": "沿途步行前往約 24 分（距離約 1.8 km）",
+        "fareText": "步行免費 ¥0",
+        "ts": 1795351726562
+      },
+      "TRANSIT|東橫INN 大阪難波西|東橫INN 新大阪東口": {
+        "minutes": 37,
+        "modeBadge": "🚇 地鐵御堂筋線直達最快（亦可搭 JR 轉乘）",
+        "detailText": "地鐵一班車直達加兩端步行約 37 分（若改搭 JR 轉乘約需 45 分）",
+        "fareText": "原價車資 ¥290（地鐵需自付／若改搭 JR 轉乘可用 PASS）",
+        "ts": 1795351726601
+      },
+      "TRANSIT|神戶港塔＆美利堅公園海濱夜景|東橫INN 新大阪東口": {
+        "minutes": 68,
+        "modeBadge": "🚄 JR 神戶線新快速直達",
+        "detailText": "JR 新快速直達神戶三宮/元町，含兩端步行約 68 分",
+        "fareText": "原價車資 ¥420（持 JR PASS 可全額折抵）",
+        "ts": 1795351726617
+      },
+      "TRANSIT|東橫INN 新大阪東口|京都車站大樓冬季點燈・大階段光之階梯": {
+        "minutes": 76,
+        "modeBadge": "🚄 JR 京都線新快速直達最快",
+        "detailText": "JR 新快速直達京都車站（轉乘奈良線/嵯峨野線），含兩端步行約 76 分",
+        "fareText": "原價車資 ¥580（持 JR PASS 可全額折抵）",
+        "ts": 1795351726802
+      },
+      "TRANSIT|京都車站大樓冬季點燈・大階段光之階梯|東橫INN 新大阪東口": {
+        "minutes": 75,
+        "modeBadge": "🚄 JR 京都線新快速直達最快",
+        "detailText": "JR 新快速直達京都車站（轉乘奈良線/嵯峨野線），含兩端步行約 75 分",
+        "fareText": "原價車資 ¥580（持 JR PASS 可全額折抵）",
+        "ts": 1795351726814
+      },
+      "TRANSIT|關西國際機場 (KIX)|遠東悅樂大阪難波南": {
+        "minutes": 73,
+        "modeBadge": "🚆 南海電鐵特急 Rapi:t / 空港急行直達最快",
+        "detailText": "南海空港線一班車直達難波加兩端步行約 73 分（若改搭 JR 需在天王寺/新今宮轉乘約 85 分）",
+        "fareText": "原價車資 ¥970（南海空港急行／特急 Rapi:t ¥1,490）",
+        "ts": 1795351801027
+      },
+      "TRANSIT|道頓堀＆心齋橋晚餐逛街（固力果跑跑人）|遠東悅樂大阪難波南": {
+        "minutes": 19,
+        "modeBadge": "🚇 地鐵御堂筋線直達最快（亦可搭 JR 轉乘）",
+        "detailText": "地鐵一班車直達加兩端步行約 19 分（若改搭 JR 轉乘約需 27 分）",
+        "fareText": "原價車資 ¥290（ICOCA / 地鐵單程票）",
+        "ts": 1795351801055
+      },
+      "TRANSIT|遠東悅樂大阪難波南|道頓堀一蘭拉麵": {
+        "minutes": 19,
+        "modeBadge": "🚇 地鐵御堂筋線直達最快（亦可搭 JR 轉乘）",
+        "detailText": "地鐵一班車直達加兩端步行約 19 分（若改搭 JR 轉乘約需 27 分）",
+        "fareText": "原價車資 ¥290（ICOCA / 地鐵單程票）",
+        "ts": 1795351801138
+      },
+      "TRANSIT|遠東悅樂大阪難波南酒店|道頓堀一蘭拉麵": {
+        "minutes": 19,
+        "modeBadge": "🚇 地鐵御堂筋線直達最快（亦可搭 JR 轉乘）",
+        "detailText": "地鐵一班車直達加兩端步行約 19 分（若改搭 JR 轉乘約需 27 分）",
+        "fareText": "原價車資 ¥290（ICOCA / 地鐵單程票）",
+        "ts": 1795351809532
+      },
+      "TRANSIT|道頓堀＆心齋橋晚餐逛街（固力果跑跑人）|遠東悅樂大阪難波南酒店": {
+        "minutes": 19,
+        "modeBadge": "🚇 地鐵御堂筋線直達最快（亦可搭 JR 轉乘）",
+        "detailText": "地鐵一班車直達加兩端步行約 19 分（若改搭 JR 轉乘約需 27 分）",
+        "fareText": "原價車資 ¥290（ICOCA / 地鐵單程票）",
+        "ts": 1795351809535
+      },
+      "TRANSIT|關西國際機場 (KIX)|遠東悅樂大阪難波南酒店": {
+        "minutes": 73,
+        "modeBadge": "🚆 南海電鐵特急 Rapi:t / 空港急行直達最快",
+        "detailText": "南海空港線一班車直達難波加兩端步行約 73 分（若改搭 JR 需在天王寺/新今宮轉乘約 85 分）",
+        "fareText": "原價車資 ¥970（南海空港急行／特急 Rapi:t ¥1,490）",
+        "ts": 1795351809600
+      },
+      "TRANSIT|遠東悅樂大阪難波南酒店|東橫INN 新大阪東口": {
+        "minutes": 40,
+        "modeBadge": "🚇 地鐵御堂筋線直達最快（亦可搭 JR 轉乘）",
+        "detailText": "地鐵一班車直達加兩端步行約 40 分（若改搭 JR 轉乘約需 48 分）",
+        "fareText": "原價車資 ¥290（地鐵需自付／若改搭 JR 轉乘可用 PASS）",
+        "ts": 1795351810440
+      },
+      "TRANSIT|遠東悅樂大阪難波南酒店|Urban Kyoto Eki Nishi": {
+        "minutes": 76,
+        "modeBadge": "🚇 地鐵御堂筋線直達最快（亦可搭 JR 轉乘）",
+        "detailText": "地鐵一班車直達加兩端步行約 76 分（若改搭 JR 轉乘約需 84 分）",
+        "fareText": "原價車資 ¥290（地鐵需自付／若改搭 JR 轉乘可用 PASS）",
+        "ts": 1795356545251
+      },
+      "TRANSIT|神戶港塔＆美利堅公園海濱夜景|Urban Kyoto Eki Nishi": {
+        "minutes": 91,
+        "modeBadge": "🚄 JR 新快速／特急直達（約 71 km）",
+        "detailText": "搭乘 JR 幹線列車含兩端步行轉乘約 91 分",
+        "fareText": "原價車資 ¥1,410（持 JR PASS 可全額折抵）",
+        "ts": 1795356545281
+      },
+      "TRANSIT|Urban Kyoto Eki Nishi|神戶布引香草園": {
+        "minutes": 98,
+        "modeBadge": "🚄 JR 新快速／特急直達（約 72 km）",
+        "detailText": "搭乘 JR 幹線列車含兩端步行轉乘約 98 分",
+        "fareText": "原價車資 ¥1,420（持 JR PASS 可全額折抵）",
+        "ts": 1795356545301
+      },
+      "TRANSIT|Urban Kyoto Eki Nishi|京都車站大樓冬季點燈・大階段光之階梯": {
+        "minutes": 20,
+        "modeBadge": "🚶 步行散策直達最快",
+        "detailText": "沿途步行前往約 20 分（距離約 1.0 km）",
+        "fareText": "步行免費 ¥0",
+        "ts": 1795356548860
+      },
+      "TRANSIT|京都車站大樓冬季點燈・大階段光之階梯|Urban Kyoto Eki Nishi": {
+        "minutes": 20,
+        "modeBadge": "🚶 步行散策直達最快",
+        "detailText": "沿途步行前往約 20 分（距離約 0.8 km）",
+        "fareText": "步行免費 ¥0",
+        "ts": 1795356556431
       }
     },
     "trashBin": [],
@@ -229,29 +376,43 @@
     "jpyRate": 0.215,
     "fixedExpenses": [
       {
-        "id": "fexp-1795239095007",
-        "type": "機票費用",
-        "item": "機票",
+        "id": "fx-1795351831019",
+        "type": "住宿費用",
+        "item": "day1",
         "currency": "TWD",
-        "amount": 5000
+        "amount": 485
       },
       {
-        "id": "fexp-1795239106566",
+        "id": "fx-1795351864715",
         "type": "住宿費用",
-        "item": "東橫",
-        "currency": "JPY",
-        "amount": 25000
+        "item": "day3",
+        "currency": "TWD",
+        "amount": 297
+      },
+      {
+        "id": "fx-1795356569748",
+        "type": "住宿費用",
+        "item": "day2",
+        "currency": "TWD",
+        "amount": 880
+      },
+      {
+        "id": "fx-1795356811923",
+        "type": "機票費用",
+        "item": "機票1",
+        "currency": "TWD",
+        "amount": 4942
+      },
+      {
+        "id": "fx-1795356825221",
+        "type": "機票費用",
+        "item": "機票2",
+        "currency": "TWD",
+        "amount": 2575
       }
     ],
     "expensesByDay": {
-      "1": [
-        {
-          "id": "ex-1",
-          "category": "🍜 美食餐飲",
-          "item": "道頓堀章魚燒＆拉麵",
-          "amountJpy": 3200
-        }
-      ]
+      "1": []
     },
     "recFilter": "all",
     "customRecItems": [],
