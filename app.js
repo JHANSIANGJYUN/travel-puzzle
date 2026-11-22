@@ -1,7 +1,7 @@
 // 旅遊拼圖 Travel Puzzle 主程式 (v1.45)
 // 直接讀取倉庫內 db.json（無需額外 data.js）與 japan.svg
 
-const APP_VERSION = 'v1.45';
+const APP_VERSION = 'v1.47';
 const STORAGE_KEY = 'travel_puzzle_jp_state_v1';
 const CONFIG_KEY = 'travel_puzzle_jp_config_v1';
 const LEGACY_CONFIG_KEYS = ['travel_puzzle_config', 'jp_travel_config_v1', 'travelPuzzleConfig', 'travel_puzzle_api_keys', 'travel_puzzle_settings', 'tp_config_v1'];
@@ -1576,7 +1576,7 @@ function renderTimeline() {
 
         return `
             ${transitHtml}
-            <div data-act-id="${seg.id}" class="puzzle-card ${isJustInserted ? 'puzzle-entering ring-2 ring-vermilion/50' : ''} relative z-10 bg-white border-2 border-indigoJp/20 hover:border-vermilion/60 rounded-2xl ${initialBg ? 'min-h-[116px] p-5' : 'min-h-[84px] p-4'} shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-3 overflow-hidden">
+            <div data-act-id="${seg.id}" class="puzzle-card relative z-10 bg-white border-2 border-indigoJp/20 hover:border-vermilion/60 rounded-2xl ${initialBg ? 'min-h-[116px] p-5' : 'min-h-[84px] p-4'} shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-3 overflow-hidden">
                 <div class="${initialBg ? '' : 'hidden'} pointer-events-none absolute inset-0 rounded-2xl overflow-hidden z-0">
                     <div id="${tlBgId}" class="absolute inset-y-0 right-0 w-[68%] sm:w-[64%] bg-cover bg-center opacity-90 transition-opacity duration-500" style="${initialBg ? `background-image:url('${initialBg}');` : ''} -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.45) 32%, black 100%); mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.45) 32%, black 100%);"></div>
                     <div class="absolute inset-0 bg-gradient-to-r from-white via-white/75 to-transparent"></div>
@@ -1605,12 +1605,7 @@ function renderTimeline() {
             </div>
         `;
     }).join('');
-
-    if (lastInsertedActId) {
-        const insertedEl = container.querySelector(`[data-act-id="${lastInsertedActId}"]`);
-        if (insertedEl) insertedEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        lastInsertedActId = null;
-    }
+    lastInsertedActId = null;
 }
 
 function addRecommendedFromCard(idx) {
@@ -1619,32 +1614,27 @@ function addRecommendedFromCard(idx) {
     const item = (window._currentRecItems || [])[idx];
     if (!item) return;
 
-    const cardEl = document.getElementById(`rec-puzzle-card-${idx}`);
-    if (cardEl) cardEl.classList.add('puzzle-leaving');
-
-    setTimeout(() => {
-        if (!appState.activitiesByDay[targetDay]) appState.activitiesByDay[targetDay] = [];
-        const newId = 'act-' + Date.now();
-        appState.activitiesByDay[targetDay].push({
-            id: newId,
-            title: item.title,
-            tag: item.tag || '經典景點',
-            duration: item.duration || 90,
-            note: item.note || ''
-        });
-        lastInsertedActId = newId;
-        appState.activeDay = targetDay;
-        saveState();
-        renderAll();
-    }, 320);
+    if (!appState.activitiesByDay[targetDay]) appState.activitiesByDay[targetDay] = [];
+    const newId = 'act-' + Date.now();
+    appState.activitiesByDay[targetDay].push({
+        id: newId,
+        title: item.title,
+        tag: item.tag || '經典景點',
+        duration: item.duration || 90,
+        note: item.note || ''
+    });
+    appState.activeDay = targetDay;
+    saveState();
+    renderAll();
 }
 
 let draggedPuzzleInfo = null;
 function handlePuzzleDragStart(dayNum, idx) { draggedPuzzleInfo = { dayNum, idx }; }
 function handlePuzzleDragOver(e) { e.preventDefault(); }
 function handlePuzzleDragLeave(e) {}
-function handlePuzzleDropToDay(e, targetDay) {
+function handlePuzzleDropToDay(e, targetDay, targetIdx = null) {
     e.preventDefault();
+    e.stopPropagation();
     if (!draggedPuzzleInfo) return;
     const { dayNum, idx } = draggedPuzzleInfo;
     draggedPuzzleInfo = null;
@@ -1652,7 +1642,12 @@ function handlePuzzleDropToDay(e, targetDay) {
     const [item] = srcList.splice(idx, 1);
     if (item) {
         if (!appState.activitiesByDay[targetDay]) appState.activitiesByDay[targetDay] = [];
-        appState.activitiesByDay[targetDay].push(item);
+        if (typeof targetIdx === 'number' && targetIdx >= 0) {
+            const adjustedIdx = (dayNum === targetDay && idx < targetIdx) ? Math.max(0, targetIdx - 1) : targetIdx;
+            appState.activitiesByDay[targetDay].splice(adjustedIdx, 0, item);
+        } else {
+            appState.activitiesByDay[targetDay].push(item);
+        }
         saveState();
         renderAll();
     }
@@ -1671,19 +1666,44 @@ function renderOverviewPuzzleBoard() {
     const totalDays = getTotalDays();
     grid.innerHTML = Array.from({ length: totalDays }, (_, i) => i + 1).map(d => {
         const acts = appState.activitiesByDay[d] || [];
+        const startAnchor = d === 1
+            ? `🛬 抵達出發：${appState.outboundFlight?.airport || '關西國際機場 (KIX)'}`
+            : `🏨 飯店出發：${appState.dayHotels[d - 1] || appState.dayHotels[1] || '住宿飯店'}`;
+        const endAnchor = d === totalDays
+            ? `🛫 離境起飛：${appState.inboundFlight?.airport || '關西國際機場 (KIX)'}`
+            : `🏨 今晚住宿：${appState.dayHotels[d] || appState.dayHotels[1] || '住宿飯店'}`;
+
         return `
-            <div ondragover="handlePuzzleDragOver(event)" ondrop="handlePuzzleDropToDay(event, ${d})" class="bg-washi border border-stone-200 rounded-2xl p-3 space-y-2 min-h-[180px]">
-                <div class="flex items-center justify-between border-b border-stone-200 pb-1.5">
-                    <span class="text-xs font-bold text-indigoJp">Day ${d}・${getDateLabelForDay(d)}</span>
-                    <button type="button" onclick="switchActiveDay(${d}); setTimelineViewMode('single');" class="text-[11px] font-bold text-vermilion underline cursor-pointer">詳情</button>
-                </div>
+            <div ondragover="handlePuzzleDragOver(event)" ondrop="handlePuzzleDropToDay(event, ${d})" class="bg-washi border border-stone-200 rounded-2xl p-3 space-y-2 min-h-[220px] flex flex-col justify-between">
                 <div class="space-y-1.5">
-                    ${acts.map((a, idx) => `
-                        <div draggable="true" ondragstart="handlePuzzleDragStart(${d}, ${idx})" class="bg-white border border-stone-200 rounded-xl p-2.5 text-xs shadow-2xs cursor-grab active:cursor-grabbing">
-                            <div class="font-bold text-indigoJp">${a.title}</div>
-                            <div class="text-[10px] text-stone-400 mt-0.5">${a.tag || '景點'}・${a.duration || 90} 分</div>
-                        </div>
-                    `).join('') || '<div class="text-[11px] text-stone-400 text-center py-6">可拖曳拼圖至此天</div>'}
+                    <div class="flex items-center justify-between border-b border-stone-200 pb-1.5">
+                        <span class="text-xs font-bold text-indigoJp">Day ${d}・${getDateLabelForDay(d)}</span>
+                        <button type="button" onclick="switchActiveDay(${d}); setTimelineViewMode('single');" class="text-[11px] font-bold text-vermilion underline cursor-pointer">詳情</button>
+                    </div>
+                    <div class="bg-slate-100/90 border border-slate-200 rounded-xl px-2.5 py-1.5 text-[11px] font-bold text-slate-700 truncate" title="${startAnchor}">
+                        ${startAnchor}
+                    </div>
+                    <div class="space-y-1.5">
+                        ${acts.map((a, idx) => `
+                            <div draggable="true"
+                                 ondragstart="handlePuzzleDragStart(${d}, ${idx})"
+                                 ondragover="handlePuzzleDragOver(event)"
+                                 ondrop="handlePuzzleDropToDay(event, ${d}, ${idx})"
+                                 class="bg-white border border-stone-200 hover:border-vermilion/60 rounded-xl p-2.5 text-xs shadow-2xs cursor-grab active:cursor-grabbing flex items-center justify-between gap-1.5">
+                                <div class="min-w-0 flex-1">
+                                    <div class="font-bold text-indigoJp leading-snug">${a.title}</div>
+                                    <div class="text-[10px] text-stone-400 mt-0.5">${a.tag || '景點'}・${a.duration || 90} 分</div>
+                                </div>
+                                <div class="flex flex-col gap-0.5 shrink-0">
+                                    <button type="button" onclick="event.stopPropagation(); moveActivityOrder(${d}, ${idx}, -1)" ${idx === 0 ? 'disabled' : ''} title="上移順序" class="px-1.5 py-0.5 rounded bg-washi hover:bg-stone-200 disabled:opacity-30 text-[10px] font-bold text-stone-600 cursor-pointer">↑</button>
+                                    <button type="button" onclick="event.stopPropagation(); moveActivityOrder(${d}, ${idx}, 1)" ${idx === acts.length - 1 ? 'disabled' : ''} title="下移順序" class="px-1.5 py-0.5 rounded bg-washi hover:bg-stone-200 disabled:opacity-30 text-[10px] font-bold text-stone-600 cursor-pointer">↓</button>
+                                </div>
+                            </div>
+                        `).join('') || '<div class="text-[11px] text-stone-400 text-center py-4 border border-dashed border-stone-200 rounded-xl">可拖曳拼圖至此天</div>'}
+                    </div>
+                </div>
+                <div class="bg-slate-100/90 border border-slate-200 rounded-xl px-2.5 py-1.5 text-[11px] font-bold text-slate-700 truncate mt-1.5" title="${endAnchor}">
+                    ${endAnchor}
                 </div>
             </div>
         `;
@@ -1830,9 +1850,17 @@ function loadBuiltinRecommendations() {
         ...googleFetchedItems
     ];
 
+    const addedTitles = new Set();
+    Object.values(appState.activitiesByDay || {}).forEach(dayList => {
+        (dayList || []).forEach(act => {
+            if (act && act.title) addedTitles.add(String(act.title).trim());
+        });
+    });
+
     const seen = new Set();
     const filtered = [];
     for (const item of allItems) {
+        if (addedTitles.has(String(item.title || '').trim())) continue;
         if (!targetRegs.has(item.region) && item.region !== 'custom') continue;
         if (appState.recFilter !== 'all' && item.type !== appState.recFilter) continue;
         const key = `${item.region}::${item.title}`;
