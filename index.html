@@ -659,6 +659,10 @@
                         <button type="button" id="btn-test-gmaps" onclick="testGoogleMapsApiKey()" class="shrink-0 px-2.5 py-1 rounded-lg bg-indigoJp/10 hover:bg-indigoJp text-indigoJp hover:text-white font-bold text-[11px] transition-colors cursor-pointer">🧪 測試連線</button>
                     </div>
                     <input type="password" id="modal-gmaps-key" placeholder="AIzaSy..." class="w-full bg-white border border-stone-300 rounded-xl px-3 py-1.5 font-mono">
+                    <div class="flex items-center justify-between text-[11px] text-stone-500 pt-0.5">
+                        <span id="gmaps-cache-stats-text">已快取 0 座標・0 照片・0 路線（30 天內免重打 API）</span>
+                        <button type="button" onclick="clearGmapsLocalCache()" class="text-vermilion hover:underline font-bold cursor-pointer">清除本機快取</button>
+                    </div>
                     <div id="gmaps-test-result" class="hidden text-[11px] font-bold px-2.5 py-1 rounded-lg"></div>
                 </div>
                 <div class="space-y-1.5">
