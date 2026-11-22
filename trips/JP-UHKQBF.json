@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-22T12:49:40.683Z",
+  "updatedAt": "2026-11-22T14:19:35.526Z",
   "syncCode": "JP-UHKQBF",
   "appState": {
     "tripCode": "JP-UHKQBF",
@@ -48,13 +48,17 @@
     },
     "dayHotels": {
       "1": "皇冠山飯店 金澤",
-      "2": "金澤Sky全日空假日酒店",
-      "3": "金澤Sky全日空假日酒店"
+      "2": "皇冠山飯店 金澤",
+      "3": "皇冠山飯店 金澤",
+      "4": "SMART PLACE INN Kyoto Nijojo-mae Station",
+      "5": "東橫INN 新大阪東口",
+      "6": "東橫INN 新大阪東口"
     },
     "dropLuggageFirst": {
       "1": false,
       "2": false,
-      "3": false
+      "3": false,
+      "4": true
     },
     "activitiesByDay": {
       "1": [
@@ -179,6 +183,41 @@
         "detailText": "沿途步行前往約 20 分（距離約 1.3 km）",
         "fareText": "步行免費 ¥0",
         "ts": 1795351736403
+      },
+      "TRANSIT|兼六園|皇冠山飯店 金澤": {
+        "minutes": 20,
+        "modeBadge": "🚶 步行散策直達最快",
+        "detailText": "沿途步行前往約 20 分（距離約 1.2 km）",
+        "fareText": "步行免費 ¥0",
+        "ts": 1795357010956
+      },
+      "TRANSIT|皇冠山飯店 金澤|金澤Sky全日空假日酒店": {
+        "minutes": 20,
+        "modeBadge": "🚶 步行散策直達最快",
+        "detailText": "沿途步行前往約 20 分（距離約 1.4 km）",
+        "fareText": "步行免費 ¥0",
+        "ts": 1795357011570
+      },
+      "TRANSIT|皇冠山飯店 金澤|京都二條城": {
+        "minutes": 259,
+        "modeBadge": "🚄 JR 新快速／特急直達（約 263 km）",
+        "detailText": "搭乘 JR 幹線列車含兩端步行轉乘約 259 分",
+        "fareText": "原價車資 ¥4,580（持 JR PASS 可全額折抵）",
+        "ts": 1795357030813
+      },
+      "TRANSIT|皇冠山飯店 金澤|SMART PLACE INN Kyoto Nijojo-mae Station": {
+        "minutes": 258,
+        "modeBadge": "🚄 JR 新快速／特急直達（約 262 km）",
+        "detailText": "搭乘 JR 幹線列車含兩端步行轉乘約 258 分",
+        "fareText": "原價車資 ¥4,570（持 JR PASS 可全額折抵）",
+        "ts": 1795357146217
+      },
+      "TRANSIT|SMART PLACE INN Kyoto Nijojo-mae Station|東橫INN 新大阪東口": {
+        "minutes": 80,
+        "modeBadge": "🚄 JR 新快速／特急直達（約 49 km）",
+        "detailText": "搭乘 JR 幹線列車含兩端步行轉乘約 80 分",
+        "fareText": "原價車資 ¥1,040（持 JR PASS 可全額折抵）",
+        "ts": 1795357158000
       }
     },
     "trashBin": [],
