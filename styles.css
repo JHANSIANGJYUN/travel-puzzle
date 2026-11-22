@@ -1,9 +1,9 @@
-/* 旅遊拼圖 Travel Puzzle 自訂樣式與動畫 */
+/* 旅遊拼圖 Travel Puzzle 自訂樣式與拍立得手札動畫 (v2.00) */
 body {
-background-color: #FAF8F5;
+background-color: #F4EFE6;
 color: #2B2B2B;
-background-image: radial-gradient(#E5E0D8 1px, transparent 1px);
-background-size: 20px 20px;
+background-image: radial-gradient(#DDD4C5 1px, transparent 1px);
+background-size: 22px 22px;
 }
 
 .timeline-connector {
@@ -17,7 +17,7 @@ top: 24px;
 bottom: 24px;
 left: 27px;
 width: 2px;
-background: repeating-linear-gradient(to bottom, #CBD5E1 0, #CBD5E1 6px, transparent 6px, transparent 12px);
+background: repeating-linear-gradient(to bottom, #C7BFA9 0, #C7BFA9 6px, transparent 6px, transparent 12px);
 z-index: 0;
 }
 
@@ -39,10 +39,39 @@ transform: translateY(-2px);
 box-shadow: 0 10px 22px -10px rgba(30, 58, 95, 0.22);
 }
 
-.jp-map-part:hover path,
-.jp-map-part:hover circle {
-opacity: 0.9;
-transform: translateY(-1px);
+/* 拍立得與郵票齒孔邊框卡片 */
+.journal-polaroid {
+background-color: #FCF9F2;
+border: 1px solid #E5DEC9;
+box-shadow: 0 10px 25px -10px rgba(68, 56, 38, 0.18), 0 2px 6px rgba(68, 56, 38, 0.06);
+transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.28s ease;
+}
+
+.journal-polaroid:hover {
+transform: translateY(-6px) rotate(0deg) !important;
+box-shadow: 0 18px 34px -12px rgba(68, 56, 38, 0.26);
+}
+
+.stamp-photo-frame {
+position: relative;
+padding: 6px;
+background: #FFFDF8;
+border: 2px dashed #D8CEBC;
+border-radius: 14px;
+}
+
+.washi-tape {
+position: absolute;
+top: -11px;
+right: 22px;
+width: 58px;
+height: 20px;
+border-radius: 3px;
+opacity: 0.78;
+transform: rotate(6deg);
+box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+pointer-events: none;
+z-index: 15;
 }
 
 @keyframes puzzleSnapOut {
@@ -64,4 +93,4 @@ pointer-events: none;
 
 .puzzle-entering {
 animation: puzzlePopIn 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-}s
+}
