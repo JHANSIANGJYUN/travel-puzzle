@@ -1,7 +1,7 @@
 // 旅遊拼圖 Travel Puzzle 主程式 (v1.45)
 // 直接讀取倉庫內 db.json（無需額外 data.js）與 japan.svg
 
-const APP_VERSION = 'v1.47';
+const APP_VERSION = 'v1.48';
 const STORAGE_KEY = 'travel_puzzle_jp_state_v1';
 const CONFIG_KEY = 'travel_puzzle_jp_config_v1';
 const LEGACY_CONFIG_KEYS = ['travel_puzzle_config', 'jp_travel_config_v1', 'travelPuzzleConfig', 'travel_puzzle_api_keys', 'travel_puzzle_settings', 'tp_config_v1'];
@@ -1614,36 +1614,131 @@ function addRecommendedFromCard(idx) {
     const item = (window._currentRecItems || [])[idx];
     if (!item) return;
 
-    if (!appState.activitiesByDay[targetDay]) appState.activitiesByDay[targetDay] = [];
-    const newId = 'act-' + Date.now();
-    appState.activitiesByDay[targetDay].push({
-        id: newId,
-        title: item.title,
-        tag: item.tag || '經典景點',
-        duration: item.duration || 90,
-        note: item.note || ''
-    });
-    appState.activeDay = targetDay;
-    saveState();
-    renderAll();
+    const cardEl = document.getElementById(`rec-puzzle-card-${idx}`);
+    if (cardEl) cardEl.classList.add('puzzle-leaving');
+
+    setTimeout(() => {
+        if (!appState.activitiesByDay[targetDay]) appState.activitiesByDay[targetDay] = [];
+        const newId = 'act-' + Date.now();
+        appState.activitiesByDay[targetDay].push({
+            id: newId,
+            title: item.title,
+            tag: item.tag || '經典景點',
+            duration: item.duration || 90,
+            note: item.note || ''
+        });
+        saveState();
+        renderAll();
+    }, 340);
 }
 
 let draggedPuzzleInfo = null;
-function handlePuzzleDragStart(dayNum, idx) { draggedPuzzleInfo = { dayNum, idx }; }
-function handlePuzzleDragOver(e) { e.preventDefault(); }
-function handlePuzzleDragLeave(e) {}
-function handlePuzzleDropToDay(e, targetDay, targetIdx = null) {
+let dragHoverTarget = null;
+
+function handlePuzzleDragStart(e, dayNum, idx) {
+    draggedPuzzleInfo = { dayNum, idx };
+    if (e && e.dataTransfer) {
+        e.dataTransfer.effectAllowed = 'move';
+        try { e.dataTransfer.setData('text/plain', `${dayNum}:${idx}`); } catch (_) {}
+    }
+    requestAnimationFrame(() => {
+        if (e && e.target) e.target.classList.add('opacity-40', 'scale-95');
+    });
+}
+
+function handlePuzzleDragEnd(e) {
+    if (e && e.target) e.target.classList.remove('opacity-40', 'scale-95');
+    draggedPuzzleInfo = null;
+    dragHoverTarget = null;
+    clearOverviewDropPlaceholder();
+}
+
+function clearOverviewDropPlaceholder() {
+    document.querySelectorAll('.overview-drop-slot-preview').forEach(el => el.remove());
+    document.querySelectorAll('[data-overview-card]').forEach(el => {
+        el.style.transform = '';
+    });
+}
+
+function showOverviewDropPlaceholder(targetDay, insertIdx, itemTitle) {
+    const listContainer = document.getElementById(`overview-day-list-${targetDay}`);
+    if (!listContainer) return;
+
+    const existing = listContainer.querySelector('.overview-drop-slot-preview');
+    if (existing && Number(existing.dataset.insertIdx) === insertIdx) return;
+
+    clearOverviewDropPlaceholder();
+
+    const slot = document.createElement('div');
+    slot.className = 'overview-drop-slot-preview rounded-xl border-2 border-dashed border-vermilion bg-vermilion/10 px-3 py-2.5 text-xs font-bold text-vermilion flex items-center justify-between gap-2 transition-all duration-200';
+    slot.dataset.insertIdx = String(insertIdx);
+    slot.innerHTML = `<span class="truncate">🧩 放開滑鼠嵌入：${itemTitle || '此行程'}</span><span class="text-[10px] shrink-0 bg-vermilion text-white px-1.5 py-0.5 rounded">插入此處</span>`;
+
+    const cards = Array.from(listContainer.querySelectorAll('[data-overview-card]'));
+    if (insertIdx < cards.length) {
+        listContainer.insertBefore(slot, cards[insertIdx]);
+    } else {
+        listContainer.appendChild(slot);
+    }
+}
+
+function handleOverviewCardDragOver(e, targetDay, cardIdx) {
     e.preventDefault();
     e.stopPropagation();
     if (!draggedPuzzleInfo) return;
+
+    const rect = e.currentTarget.getBoundingClientRect();
+    const isBottomHalf = (e.clientY - rect.top) > rect.height / 2;
+    const insertIdx = isBottomHalf ? cardIdx + 1 : cardIdx;
+
+    if (dragHoverTarget && dragHoverTarget.day === targetDay && dragHoverTarget.insertIdx === insertIdx) return;
+    dragHoverTarget = { day: targetDay, insertIdx };
+
+    const srcItem = (appState.activitiesByDay[draggedPuzzleInfo.dayNum] || [])[draggedPuzzleInfo.idx];
+    showOverviewDropPlaceholder(targetDay, insertIdx, srcItem?.title);
+}
+
+function handlePuzzleDragOver(e, targetDay = null) {
+    e.preventDefault();
+    if (!draggedPuzzleInfo || targetDay === null) return;
+    if (e.target && e.target.closest && e.target.closest('[data-overview-card]')) return;
+
+    const acts = appState.activitiesByDay[targetDay] || [];
+    const insertIdx = acts.length;
+    if (dragHoverTarget && dragHoverTarget.day === targetDay && dragHoverTarget.insertIdx === insertIdx) return;
+    dragHoverTarget = { day: targetDay, insertIdx };
+
+    const srcItem = (appState.activitiesByDay[draggedPuzzleInfo.dayNum] || [])[draggedPuzzleInfo.idx];
+    showOverviewDropPlaceholder(targetDay, insertIdx, srcItem?.title);
+}
+
+function handlePuzzleDragLeave(e) {
+    if (e && e.currentTarget && !e.currentTarget.contains(e.relatedTarget)) {
+        dragHoverTarget = null;
+        clearOverviewDropPlaceholder();
+    }
+}
+
+function handlePuzzleDropToDay(e, targetDay, fallbackIdx = null) {
+    e.preventDefault();
+    e.stopPropagation();
+    if (!draggedPuzzleInfo) return;
+
     const { dayNum, idx } = draggedPuzzleInfo;
+    const resolvedIdx = (dragHoverTarget && dragHoverTarget.day === targetDay)
+        ? dragHoverTarget.insertIdx
+        : fallbackIdx;
+
     draggedPuzzleInfo = null;
+    dragHoverTarget = null;
+    clearOverviewDropPlaceholder();
+
     const srcList = appState.activitiesByDay[dayNum] || [];
     const [item] = srcList.splice(idx, 1);
     if (item) {
         if (!appState.activitiesByDay[targetDay]) appState.activitiesByDay[targetDay] = [];
-        if (typeof targetIdx === 'number' && targetIdx >= 0) {
-            const adjustedIdx = (dayNum === targetDay && idx < targetIdx) ? Math.max(0, targetIdx - 1) : targetIdx;
+        if (typeof resolvedIdx === 'number' && resolvedIdx >= 0) {
+            const adjustedIdx = (dayNum === targetDay && idx < resolvedIdx) ? Math.max(0, resolvedIdx - 1) : resolvedIdx;
             appState.activitiesByDay[targetDay].splice(adjustedIdx, 0, item);
         } else {
             appState.activitiesByDay[targetDay].push(item);
@@ -1652,11 +1747,14 @@ function handlePuzzleDropToDay(e, targetDay, targetIdx = null) {
         renderAll();
     }
 }
+
 function handlePuzzleDropToDelete(e) {
     e.preventDefault();
     if (!draggedPuzzleInfo) return;
     const { dayNum, idx } = draggedPuzzleInfo;
     draggedPuzzleInfo = null;
+    dragHoverTarget = null;
+    clearOverviewDropPlaceholder();
     removeActivityToTrash(dayNum, idx);
 }
 
@@ -1674,7 +1772,10 @@ function renderOverviewPuzzleBoard() {
             : `🏨 今晚住宿：${appState.dayHotels[d] || appState.dayHotels[1] || '住宿飯店'}`;
 
         return `
-            <div ondragover="handlePuzzleDragOver(event)" ondrop="handlePuzzleDropToDay(event, ${d})" class="bg-washi border border-stone-200 rounded-2xl p-3 space-y-2 min-h-[220px] flex flex-col justify-between">
+            <div ondragover="handlePuzzleDragOver(event, ${d})"
+                 ondragleave="handlePuzzleDragLeave(event)"
+                 ondrop="handlePuzzleDropToDay(event, ${d})"
+                 class="bg-washi border border-stone-200 rounded-2xl p-3 space-y-2 min-h-[220px] flex flex-col justify-between transition-colors">
                 <div class="space-y-1.5">
                     <div class="flex items-center justify-between border-b border-stone-200 pb-1.5">
                         <span class="text-xs font-bold text-indigoJp">Day ${d}・${getDateLabelForDay(d)}</span>
@@ -1683,13 +1784,15 @@ function renderOverviewPuzzleBoard() {
                     <div class="bg-slate-100/90 border border-slate-200 rounded-xl px-2.5 py-1.5 text-[11px] font-bold text-slate-700 truncate" title="${startAnchor}">
                         ${startAnchor}
                     </div>
-                    <div class="space-y-1.5">
+                    <div id="overview-day-list-${d}" class="space-y-1.5 min-h-[52px]">
                         ${acts.map((a, idx) => `
-                            <div draggable="true"
-                                 ondragstart="handlePuzzleDragStart(${d}, ${idx})"
-                                 ondragover="handlePuzzleDragOver(event)"
-                                 ondrop="handlePuzzleDropToDay(event, ${d}, ${idx})"
-                                 class="bg-white border border-stone-200 hover:border-vermilion/60 rounded-xl p-2.5 text-xs shadow-2xs cursor-grab active:cursor-grabbing flex items-center justify-between gap-1.5">
+                            <div data-overview-card="1"
+                                 draggable="true"
+                                 ondragstart="handlePuzzleDragStart(event, ${d}, ${idx})"
+                                 ondragend="handlePuzzleDragEnd(event)"
+                                 ondragover="handleOverviewCardDragOver(event, ${d}, ${idx})"
+                                 ondrop="handlePuzzleDropToDay(event, ${d})"
+                                 class="bg-white border border-stone-200 hover:border-vermilion/60 rounded-xl p-2.5 text-xs shadow-2xs cursor-grab active:cursor-grabbing flex items-center justify-between gap-1.5 transition-all duration-200">
                                 <div class="min-w-0 flex-1">
                                     <div class="font-bold text-indigoJp leading-snug">${a.title}</div>
                                     <div class="text-[10px] text-stone-400 mt-0.5">${a.tag || '景點'}・${a.duration || 90} 分</div>
