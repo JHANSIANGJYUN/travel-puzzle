@@ -1,7 +1,11 @@
 {
-  "updatedAt": "2026-11-21T12:07:30.410Z",
+  "updatedAt": "2026-11-22T10:14:45.366Z",
   "syncCode": "JP-GPVMP6",
   "appState": {
+    "tripCode": "JP-GPVMP6",
+    "tripTitle": "京阪冬季光影四日遊",
+    "tripAuthor": "旅人手札",
+    "coverUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/64/Fushimiinari-taisha%2C_gehaiden-1.jpg/960px-Fushimiinari-taisha%2C_gehaiden-1.jpg",
     "startDate": "2026-12-18",
     "endDate": "2026-12-21",
     "travelers": 2,
@@ -35,7 +39,7 @@
     "jrPassId2": "jr-kansai-wide-5",
     "jrPassStartDay2": 4,
     "activeDay": 1,
-    "timelineViewMode": "single",
+    "timelineViewMode": "overview",
     "dayStartTimes": {
       "1": "20:15",
       "2": "09:00",
@@ -74,9 +78,7 @@
         {
           "id": "act-1795166785907-y6nb",
           "title": "道頓堀一蘭拉麵",
-          "type": "季節美食",
           "duration": 60,
-          "isIndoor": true,
           "note": ""
         },
         {
@@ -193,171 +195,116 @@
     },
     "manualTransitMinutes": {},
     "routeCache": {
-      "TRANSIT|遊びトレジャー本店|Blue Bottle Coffee - Kobe Cafe": {
-        "minutes": 8,
-        "modeBadge": "🚶 步行前往最順路（0.6 km）",
-        "detailDesc": "短距離步行約 8 分即可直達",
-        "fareJpy": 0,
-        "jrEligible": "full",
-        "jrAltText": ""
+      "TRANSIT|神戶布引香草園|Kinton Kōbe": {
+        "minutes": 24,
+        "modeBadge": "🚶 步行散策直達最快",
+        "detailText": "沿途步行前往約 24 分（距離約 1.7 km）",
+        "fareText": "步行免費 ¥0"
       },
       "TRANSIT|Kinton Kōbe|遊びトレジャー本店": {
         "minutes": 4,
-        "modeBadge": "🚶 步行前往最順路（0.1 km）",
-        "detailDesc": "短距離步行約 4 分即可直達",
-        "fareJpy": 0,
-        "jrEligible": "full",
-        "jrAltText": ""
-      },
-      "TRANSIT|神戶布引香草園|Kinton Kōbe": {
-        "minutes": 24,
-        "modeBadge": "🚃 電車／巴士轉乘最快（1.7 km）",
-        "detailDesc": "大眾運輸含步行轉乘約 24 分",
-        "fareJpy": 200,
-        "jrEligible": "alt",
-        "jrAltText": ""
-      },
-      "TRANSIT|東橫INN 新大阪東口|神戶布引香草園": {
-        "minutes": 74,
-        "modeBadge": "🚃 電車／巴士轉乘最快（36.0 km）",
-        "detailDesc": "大眾運輸含步行轉乘約 74 分",
-        "fareJpy": 830,
-        "jrEligible": "alt",
-        "jrAltText": ""
-      },
-      "TRANSIT|神戶港|東橫INN 新大阪東口": {
-        "minutes": 70,
-        "modeBadge": "🚃 電車／巴士轉乘最快（44.7 km）",
-        "detailDesc": "大眾運輸含步行轉乘約 70 分",
-        "fareJpy": 1030,
-        "jrEligible": "alt",
-        "jrAltText": ""
-      },
-      "TRANSIT|Blue Bottle Coffee - Kobe Cafe|神戶港": {
-        "minutes": 28,
-        "modeBadge": "🚃 電車／巴士轉乘最快（5.1 km）",
-        "detailDesc": "大眾運輸含步行轉乘約 28 分",
-        "fareJpy": 200,
-        "jrEligible": "alt",
-        "jrAltText": ""
+        "modeBadge": "🚶 步行散策直達最快",
+        "detailText": "沿途步行前往約 4 分（距離約 0.1 km）",
+        "fareText": "步行免費 ¥0"
       },
       "TRANSIT|東橫INN 大阪難波西|東橫INN 新大阪東口": {
         "minutes": 37,
-        "modeBadge": "🚃 電車／巴士轉乘最快（10.6 km）",
-        "detailDesc": "大眾運輸含步行轉乘約 37 分",
-        "fareJpy": 240,
-        "jrEligible": "alt",
-        "jrAltText": ""
-      },
-      "TRANSIT|道頓堀＆心齋橋筋商店街|東橫INN 大阪難波西": {
-        "minutes": 21,
-        "modeBadge": "🚶 步行前往最順路（1.4 km）",
-        "detailDesc": "短距離步行約 21 分即可直達",
-        "fareJpy": 0,
-        "jrEligible": "full",
-        "jrAltText": ""
-      },
-      "TRANSIT|道頓堀一蘭拉麵|道頓堀＆心齋橋筋商店街": {
-        "minutes": 8,
-        "modeBadge": "🚶 步行前往最順路（0.6 km）",
-        "detailDesc": "短距離步行約 8 分即可直達",
-        "fareJpy": 0,
-        "jrEligible": "full",
-        "jrAltText": ""
-      },
-      "TRANSIT|東橫INN 大阪難波西|道頓堀一蘭拉麵": {
-        "minutes": 17,
-        "modeBadge": "🚶 步行前往最順路（1.1 km）",
-        "detailDesc": "短距離步行約 17 分即可直達",
-        "fareJpy": 0,
-        "jrEligible": "full",
-        "jrAltText": ""
-      },
-      "TRANSIT|關西國際機場 (KIX)|東橫INN 大阪難波西": {
-        "minutes": 73,
-        "modeBadge": "🚃 電車／巴士轉乘最快（49.1 km）",
-        "detailDesc": "大眾運輸含步行轉乘門到門約 73 分",
-        "fareJpy": 1130,
-        "jrEligible": "alt",
-        "jrAltText": ""
-      },
-      "TRANSIT|神戶港|神戶港塔＆美利堅公園海濱夜景": {
-        "minutes": 29,
-        "modeBadge": "🚃 電車／巴士轉乘最快（5.9 km）",
-        "detailDesc": "大眾運輸含步行轉乘門到門約 29 分",
-        "fareJpy": 200,
-        "jrEligible": "alt",
-        "jrAltText": ""
-      },
-      "TRANSIT|神戶港塔＆美利堅公園海濱夜景|東橫INN 新大阪東口": {
-        "minutes": 68,
-        "modeBadge": "🚃 電車／巴士轉乘最快（36.4 km）",
-        "detailDesc": "大眾運輸含步行轉乘門到門約 68 分",
-        "fareJpy": 840,
-        "jrEligible": "alt",
-        "jrAltText": ""
+        "modeBadge": "🚇 地鐵御堂筋線直達最快（亦可搭 JR 轉乘）",
+        "detailText": "地鐵一班車直達加兩端步行約 37 分（若改搭 JR 轉乘約需 45 分）",
+        "fareText": "原價車資 ¥290（地鐵需自付／若改搭 JR 轉乘可用 PASS）"
       },
       "TRANSIT|Blue Bottle Coffee - Kobe Cafe|神戶港塔＆美利堅公園海濱夜景": {
         "minutes": 13,
-        "modeBadge": "🚶 步行前往最順路（0.9 km）",
-        "detailDesc": "短距離步行約 13 分即可直達",
-        "fareJpy": 0,
-        "jrEligible": "full",
-        "jrAltText": ""
+        "modeBadge": "🚶 步行散策直達最快",
+        "detailText": "沿途步行前往約 13 分（距離約 0.9 km）",
+        "fareText": "步行免費 ¥0"
       },
-      "TRANSIT|道頓堀＆心齋橋晚餐逛街（固力果跑跑人）|東橫INN 大阪難波西": {
-        "minutes": 16,
-        "modeBadge": "🚶 步行前往最順路（1.1 km）",
-        "detailDesc": "短距離步行約 16 分即可直達",
-        "fareJpy": 0,
-        "jrEligible": "full",
-        "jrAltText": ""
+      "TRANSIT|遊びトレジャー本店|Blue Bottle Coffee - Kobe Cafe": {
+        "minutes": 8,
+        "modeBadge": "🚶 步行散策直達最快",
+        "detailText": "沿途步行前往約 8 分（距離約 0.6 km）",
+        "fareText": "步行免費 ¥0"
       },
-      "TRANSIT|道頓堀＆心齋橋筋商店街|道頓堀＆心齋橋晚餐逛街（固力果跑跑人）": {
-        "minutes": 6,
-        "modeBadge": "🚶 步行前往最順路（0.4 km）",
-        "detailDesc": "短距離步行約 6 分即可直達",
-        "fareJpy": 0,
-        "jrEligible": "full",
-        "jrAltText": ""
+      "TRANSIT|神戶港塔＆美利堅公園海濱夜景|東橫INN 新大阪東口": {
+        "minutes": 68,
+        "modeBadge": "🚄 JR 神戶線新快速直達",
+        "detailText": "JR 新快速直達神戶三宮/元町，含兩端步行約 68 分",
+        "fareText": "原價車資 ¥420（持 JR PASS 可全額折抵）"
+      },
+      "TRANSIT|東橫INN 新大阪東口|神戶布引香草園": {
+        "minutes": 74,
+        "modeBadge": "🚄 JR 神戶線新快速直達",
+        "detailText": "JR 新快速直達神戶三宮/元町，含兩端步行約 74 分",
+        "fareText": "原價車資 ¥420（持 JR PASS 可全額折抵）"
       },
       "TRANSIT|道頓堀一蘭拉麵|道頓堀＆心齋橋晚餐逛街（固力果跑跑人）": {
+        "minutes": 8,
+        "modeBadge": "🚶 步行散策直達最快",
+        "detailText": "沿途步行前往約 8 分（距離約 0.6 km）",
+        "fareText": "步行免費 ¥0"
+      },
+      "TRANSIT|東橫INN 大阪難波西|道頓堀一蘭拉麵": {
+        "minutes": 17,
+        "modeBadge": "🚇 地鐵御堂筋線直達最快（亦可搭 JR 轉乘）",
+        "detailText": "地鐵一班車直達加兩端步行約 17 分（若改搭 JR 轉乘約需 25 分）",
+        "fareText": "原價車資 ¥290（ICOCA / 地鐵單程票）"
+      },
+      "TRANSIT|道頓堀＆心齋橋晚餐逛街（固力果跑跑人）|東橫INN 大阪難波西": {
+        "minutes": 21,
+        "modeBadge": "🚇 地鐵御堂筋線直達最快（亦可搭 JR 轉乘）",
+        "detailText": "地鐵一班車直達加兩端步行約 21 分（若改搭 JR 轉乘約需 29 分）",
+        "fareText": "原價車資 ¥290（ICOCA / 地鐵單程票）"
+      },
+      "TRANSIT|關西國際機場 (KIX)|東橫INN 大阪難波西": {
+        "minutes": 73,
+        "modeBadge": "🚆 南海電鐵特急 Rapi:t / 空港急行直達最快",
+        "detailText": "南海空港線一班車直達難波加兩端步行約 73 分（若改搭 JR 需在天王寺/新今宮轉乘約 85 分）",
+        "fareText": "原價車資 ¥970（南海空港急行／特急 Rapi:t ¥1,490）"
+      },
+      "TRANSIT|東橫INN 新大阪東口|京都車站大樓冬季點燈・大階段光之階梯": {
+        "minutes": 76,
+        "modeBadge": "🚄 JR 京都線新快速直達最快",
+        "detailText": "JR 新快速直達京都車站（轉乘奈良線/嵯峨野線），含兩端步行約 76 分",
+        "fareText": "原價車資 ¥580（持 JR PASS 可全額折抵）"
+      },
+      "TRANSIT|京都車站大樓冬季點燈・大階段光之階梯|東橫INN 新大阪東口": {
+        "minutes": 75,
+        "modeBadge": "🚄 JR 京都線新快速直達最快",
+        "detailText": "JR 新快速直達京都車站（轉乘奈良線/嵯峨野線），含兩端步行約 75 分",
+        "fareText": "原價車資 ¥580（持 JR PASS 可全額折抵）"
+      },
+      "TRANSIT|Harukas300展望台|關西國際機場 (KIX)": {
+        "minutes": 65,
+        "modeBadge": "🚄 JR 新快速／特急直達（約 50 km）",
+        "detailText": "搭乘 JR 幹線列車含兩端步行轉乘約 65 分",
+        "fareText": "原價車資 ¥1,070（持 JR PASS 可全額折抵）"
+      },
+      "TRANSIT|天王寺MIO|Harukas300展望台": {
         "minutes": 4,
-        "modeBadge": "🚶 步行前往最順路（0.2 km）",
-        "detailDesc": "短距離步行約 4 分即可直達",
-        "fareJpy": 0,
-        "jrEligible": "full",
-        "jrAltText": ""
+        "modeBadge": "🚶 步行散策直達最快",
+        "detailText": "沿途步行前往約 4 分（距離約 0.2 km）",
+        "fareText": "步行免費 ¥0"
+      },
+      "TRANSIT|通天閣|阿倍野 Q's Mall": {
+        "minutes": 20,
+        "modeBadge": "🚶 步行散策直達最快",
+        "detailText": "沿途步行前往約 20 分（距離約 1.4 km）",
+        "fareText": "步行免費 ¥0"
+      },
+      "TRANSIT|東橫INN 新大阪東口|通天閣": {
+        "minutes": 38,
+        "modeBadge": "🚃 JR 在來線／地鐵轉乘",
+        "detailText": "市區電車轉乘含兩端進出站步行約 38 分（約 11.0 km）",
+        "fareText": "原價車資 ¥340（JR 路段可用 PASS 折抵／私鐵地鐵需自付）"
+      },
+      "TRANSIT|阿倍野 Q's Mall|天王寺MIO": {
+        "minutes": 6,
+        "modeBadge": "🚶 步行散策直達最快",
+        "detailText": "沿途步行前往約 6 分（距離約 0.4 km）",
+        "fareText": "步行免費 ¥0"
       }
     },
-    "trashBin": [
-      {
-        "id": "act-init-1",
-        "title": "道頓堀＆心齋橋筋商店街",
-        "type": "購物散策",
-        "duration": 120,
-        "isIndoor": false,
-        "note": "跑跑人看板拍照＋章魚燒大阪燒晚餐",
-        "originalDay": 1
-      },
-      {
-        "id": "act-1795228269800-dk7e",
-        "title": "神戶港",
-        "type": "經典景點",
-        "duration": 90,
-        "isIndoor": false,
-        "note": "",
-        "originalDay": 2
-      },
-      {
-        "id": "act-1795261304267",
-        "title": "大阪城天守閣＆西之丸庭園",
-        "tag": "景點",
-        "duration": 120,
-        "note": "",
-        "originalDay": 1
-      }
-    ],
+    "trashBin": [],
     "trashDrawerOpen": true,
     "jpyRate": 0.215,
     "fixedExpenses": [
