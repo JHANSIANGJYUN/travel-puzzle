@@ -1,7 +1,7 @@
 // 旅遊拼圖 Travel Puzzle 主程式 (v1.50)
 // 直接讀取倉庫內 db.json（無需額外 data.js）與 japan.svg
 
-const APP_VERSION = 'v1.50';
+const APP_VERSION = 'v1.51';
 const STORAGE_KEY = 'travel_puzzle_jp_state_v1';
 const CONFIG_KEY = 'travel_puzzle_jp_config_v1';
 const LEGACY_CONFIG_KEYS = ['travel_puzzle_config', 'jp_travel_config_v1', 'travelPuzzleConfig', 'travel_puzzle_api_keys', 'travel_puzzle_settings', 'tp_config_v1'];
@@ -224,6 +224,7 @@ async function tryLoadExternalJapanSvg() {
             const vb = (origVb && origVb.width > 0) ? origVb : { x: 0, y: 0, width: 1000, height: 1000 };
             const shapes = Array.from(extSvg.querySelectorAll('path, polygon'));
             const okinawaShapes = [];
+            const mainlandGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
 
             shapes.forEach((shape, idx) => {
                 const parentReg = shape.closest('[data-map-region]');
@@ -234,24 +235,44 @@ async function tryLoadExternalJapanSvg() {
                 shape.style.cursor = 'pointer';
                 shape.style.transition = 'fill 0.2s ease, filter 0.2s ease';
                 shape.setAttribute('stroke', '#FFFFFF');
-                shape.setAttribute('stroke-width', String(Math.max(0.6, vb.width / 850)));
                 shape.addEventListener('click', () => selectRegion(regId));
-                if (regId === 'okinawa') okinawaShapes.push(shape);
+                if (regId === 'okinawa') {
+                    okinawaShapes.push(shape);
+                } else {
+                    mainlandGroup.appendChild(shape);
+                }
             });
 
-            const cropX = vb.x + vb.width * 0.14;
-            const cropY = vb.y + vb.height * 0.01;
-            const cropW = vb.width * 0.85;
-            const cropH = vb.height * 0.77;
+            extSvg.innerHTML = '';
+            extSvg.appendChild(mainlandGroup);
+
+            // 精準量測北海道到九州的實際邊界並滿版放大
+            let mBox = { x: 0, y: 0, width: 1000, height: 1000 };
+            try {
+                const b = mainlandGroup.getBBox();
+                if (b.width > 0 && b.height > 0) mBox = b;
+            } catch (e) {}
+
+            const padX = mBox.width * 0.04;
+            const padY = mBox.height * 0.04;
+            const cropX = mBox.x - padX;
+            const cropY = mBox.y - padY;
+            const cropW = mBox.width + padX * 2;
+            const cropH = mBox.height + padY * 2;
             extSvg.setAttribute('viewBox', `${cropX} ${cropY} ${cropW} ${cropH}`);
+            extSvg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+
+            mainlandGroup.querySelectorAll('path, polygon').forEach(s => {
+                s.setAttribute('stroke-width', String(Math.max(0.4, cropW / 550)));
+            });
 
             if (okinawaShapes.length > 0) {
                 const ns = 'http://www.w3.org/2000/svg';
                 const insetGroup = document.createElementNS(ns, 'g');
-                const boxX = cropX + cropW * 0.03;
-                const boxY = cropY + cropH * 0.04;
-                const boxW = cropW * 0.27;
-                const boxH = cropH * 0.24;
+                const boxX = cropX + cropW * 0.02;
+                const boxY = cropY + cropH * 0.03;
+                const boxW = cropW * 0.25;
+                const boxH = cropH * 0.22;
 
                 const frameRect = document.createElementNS(ns, 'rect');
                 frameRect.setAttribute('x', boxX);
@@ -259,25 +280,28 @@ async function tryLoadExternalJapanSvg() {
                 frameRect.setAttribute('width', boxW);
                 frameRect.setAttribute('height', boxH);
                 frameRect.setAttribute('rx', String(cropW * 0.018));
-                frameRect.setAttribute('fill', 'rgba(255,255,255,0.88)');
+                frameRect.setAttribute('fill', 'rgba(255,255,255,0.92)');
                 frameRect.setAttribute('stroke', '#94A3B8');
-                frameRect.setAttribute('stroke-width', String(cropW * 0.002));
-                frameRect.setAttribute('stroke-dasharray', `${cropW * 0.006} ${cropW * 0.006}`);
+                frameRect.setAttribute('stroke-width', String(cropW * 0.0022));
+                frameRect.setAttribute('stroke-dasharray', `${cropW * 0.007} ${cropW * 0.007}`);
                 frameRect.style.cursor = 'pointer';
                 frameRect.addEventListener('click', () => selectRegion('okinawa'));
                 insetGroup.appendChild(frameRect);
 
                 const okiWrapper = document.createElementNS(ns, 'g');
-                okinawaShapes.forEach(s => okiWrapper.appendChild(s));
+                okinawaShapes.forEach(s => {
+                    s.setAttribute('stroke-width', String(Math.max(0.3, cropW / 700)));
+                    okiWrapper.appendChild(s);
+                });
                 insetGroup.appendChild(okiWrapper);
                 extSvg.appendChild(insetGroup);
 
                 try {
                     const okiBox = okiWrapper.getBBox();
                     if (okiBox.width > 0 && okiBox.height > 0) {
-                        const scale = Math.min((boxW * 0.82) / okiBox.width, (boxH * 0.68) / okiBox.height);
+                        const scale = Math.min((boxW * 0.80) / okiBox.width, (boxH * 0.64) / okiBox.height);
                         const targetCx = boxX + boxW * 0.5;
-                        const targetCy = boxY + boxH * 0.43;
+                        const targetCy = boxY + boxH * 0.42;
                         const srcCx = okiBox.x + okiBox.width * 0.5;
                         const srcCy = okiBox.y + okiBox.height * 0.5;
                         okiWrapper.setAttribute('transform', `translate(${targetCx - srcCx * scale}, ${targetCy - srcCy * scale}) scale(${scale})`);
@@ -286,9 +310,9 @@ async function tryLoadExternalJapanSvg() {
 
                 const labelTxt = document.createElementNS(ns, 'text');
                 labelTxt.setAttribute('x', boxX + boxW * 0.5);
-                labelTxt.setAttribute('y', boxY + boxH * 0.90);
+                labelTxt.setAttribute('y', boxY + boxH * 0.89);
                 labelTxt.setAttribute('text-anchor', 'middle');
-                labelTxt.setAttribute('font-size', String(cropW * 0.022));
+                labelTxt.setAttribute('font-size', String(cropW * 0.025));
                 labelTxt.setAttribute('font-weight', '700');
                 labelTxt.setAttribute('fill', '#1E293B');
                 labelTxt.style.cursor = 'pointer';
@@ -1553,7 +1577,8 @@ function handleOverviewCardDragOver(e, targetDay, slotIdx) {
     const rect = e.currentTarget.getBoundingClientRect();
     const relY = (e.clientY - rect.top) / (rect.height || 1);
 
-    if (relY > 0.36 && relY < 0.64) return;
+    // 加寬上下 28% 才切換的遲滯帶，避免卡片高度變化時在邊界反覆觸發
+    if (relY > 0.28 && relY < 0.72) return;
     const insertIdx = relY >= 0.5 ? slotIdx + 1 : slotIdx;
     applyFlipReorder(targetDay, insertIdx);
 }
@@ -1561,6 +1586,15 @@ function handleOverviewCardDragOver(e, targetDay, slotIdx) {
 function handleOverviewColumnDragOver(e, targetDay, listLen) {
     e.preventDefault();
     if (!draggedPuzzleInfo) return;
+    // 若游標仍在某張卡片或預留框範圍內，交由卡片處理，絕不因經過縫隙而跳到最底端
+    const listWrap = e.currentTarget.querySelector('[data-overview-list]');
+    if (listWrap) {
+        const cards = listWrap.querySelectorAll('[data-overview-id]');
+        if (cards.length > 0) {
+            const lastRect = cards[cards.length - 1].getBoundingClientRect();
+            if (e.clientY <= lastRect.bottom + 4) return;
+        }
+    }
     applyFlipReorder(targetDay, listLen);
 }
 
@@ -1642,14 +1676,12 @@ function renderOverviewPuzzleBoard() {
                     <div class="bg-slate-100/90 border border-slate-200 rounded-xl px-2.5 py-1.5 text-[11px] font-bold text-slate-700 truncate" title="${startAnchor}">
                         ${startAnchor}
                     </div>
-                    <div class="space-y-1.5">
+                    <div data-overview-list="${d}" class="space-y-1.5">
                         ${displayActs.map((a, slotIdx) => {
                             if (a.isPreviewSlot) {
                                 return `
                                     <div data-overview-id="${a.id}"
-                                         ondragover="handlePuzzleDragOver(event)"
-                                         ondrop="handlePuzzleDropToDay(event, ${d})"
-                                         class="rounded-xl border-2 border-dashed border-vermilion bg-vermilion/10 p-2.5 text-xs flex items-center justify-between gap-2 shadow-inner">
+                                         class="pointer-events-none rounded-xl border-2 border-dashed border-vermilion bg-vermilion/10 p-2.5 text-xs flex items-center justify-between gap-2 shadow-inner">
                                         <div class="min-w-0 flex-1">
                                             <div class="font-bold text-vermilion truncate">🧩 ${a.title}</div>
                                             <div class="text-[10px] text-vermilion/80 mt-0.5">放開左鍵即嵌入此位置</div>
