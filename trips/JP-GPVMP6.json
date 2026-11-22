@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-22T14:15:04.411Z",
+  "updatedAt": "2026-11-22T14:16:39.959Z",
   "syncCode": "JP-GPVMP6",
   "appState": {
     "tripCode": "JP-GPVMP6",
@@ -38,7 +38,7 @@
     "useSecondJrPass": false,
     "jrPassId2": "jr-kansai-wide-5",
     "jrPassStartDay2": 4,
-    "activeDay": 1,
+    "activeDay": 2,
     "timelineViewMode": "overview",
     "dayStartTimes": {
       "1": "20:15",
@@ -66,12 +66,12 @@
     "dayHotels": {
       "1": "遠東悅樂大阪難波南酒店",
       "2": "Urban Kyoto Eki Nishi",
-      "3": "東橫INN 新大阪東口"
+      "3": "新大阪微笑飯店"
     },
     "dropLuggageFirst": {
       "1": true,
       "2": true,
-      "3": false
+      "3": true
     },
     "activitiesByDay": {
       "1": [
@@ -369,6 +369,62 @@
         "detailText": "沿途步行前往約 20 分（距離約 0.8 km）",
         "fareText": "步行免費 ¥0",
         "ts": 1795356556431
+      },
+      "TRANSIT|神戶港塔＆美利堅公園海濱夜景|新大阪微笑飯店": {
+        "minutes": 66,
+        "modeBadge": "🚄 JR 神戶線新快速直達",
+        "detailText": "JR 新快速直達神戶三宮/元町，含兩端步行約 66 分",
+        "fareText": "原價車資 ¥420（持 JR PASS 可全額折抵）",
+        "ts": 1795356932249
+      },
+      "TRANSIT|新大阪微笑飯店|神戶布引香草園": {
+        "minutes": 72,
+        "modeBadge": "🚄 JR 神戶線新快速直達",
+        "detailText": "JR 新快速直達神戶三宮/元町，含兩端步行約 72 分",
+        "fareText": "原價車資 ¥420（持 JR PASS 可全額折抵）",
+        "ts": 1795356939878
+      },
+      "TRANSIT|Urban Kyoto Eki Nishi|新大阪微笑飯店": {
+        "minutes": 69,
+        "modeBadge": "🚄 JR 新快速／特急直達（約 46 km）",
+        "detailText": "搭乘 JR 幹線列車含兩端步行轉乘約 69 分",
+        "fareText": "原價車資 ¥1,000（持 JR PASS 可全額折抵）",
+        "ts": 1795356939891
+      },
+      "TRANSIT|Harukas300展望台|關西國際機場 (KIX)": {
+        "minutes": 65,
+        "modeBadge": "🚄 JR 新快速／特急直達（約 50 km）",
+        "detailText": "搭乘 JR 幹線列車含兩端步行轉乘約 65 分",
+        "fareText": "原價車資 ¥1,070（持 JR PASS 可全額折抵）",
+        "ts": 1795356979464
+      },
+      "TRANSIT|天王寺MIO|Harukas300展望台": {
+        "minutes": 4,
+        "modeBadge": "🚶 步行散策直達最快",
+        "detailText": "沿途步行前往約 4 分（距離約 0.2 km）",
+        "fareText": "步行免費 ¥0",
+        "ts": 1795356979588
+      },
+      "TRANSIT|通天閣|阿倍野 Q's Mall": {
+        "minutes": 20,
+        "modeBadge": "🚶 步行散策直達最快",
+        "detailText": "沿途步行前往約 20 分（距離約 1.4 km）",
+        "fareText": "步行免費 ¥0",
+        "ts": 1795356979645
+      },
+      "TRANSIT|新大阪微笑飯店|通天閣": {
+        "minutes": 37,
+        "modeBadge": "🚃 JR 在來線／地鐵轉乘",
+        "detailText": "市區電車轉乘含兩端進出站步行約 37 分（約 9.7 km）",
+        "fareText": "原價車資 ¥330（JR 路段可用 PASS 折抵／私鐵地鐵需自付）",
+        "ts": 1795356979668
+      },
+      "TRANSIT|阿倍野 Q's Mall|天王寺MIO": {
+        "minutes": 6,
+        "modeBadge": "🚶 步行散策直達最快",
+        "detailText": "沿途步行前往約 6 分（距離約 0.4 km）",
+        "fareText": "步行免費 ¥0",
+        "ts": 1795356979701
       }
     },
     "trashBin": [],
