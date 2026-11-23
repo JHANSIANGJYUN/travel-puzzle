@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-23T11:58:46.078Z",
+  "updatedAt": "2026-11-23T12:05:43.533Z",
   "syncCode": "JP-UHKQBF",
   "appState": {
     "tripCode": "JP-UHKQBF",
@@ -67,6 +67,13 @@
           "title": "AEON 新高岡",
           "tag": "美食逛街",
           "duration": 90,
+          "note": ""
+        },
+        {
+          "id": "act-1795435257716",
+          "title": "麵屋大河",
+          "tag": "美食逛街",
+          "duration": 60,
           "note": ""
         }
       ],
@@ -218,6 +225,20 @@
         "detailText": "搭乘 JR 幹線列車含兩端步行轉乘約 80 分",
         "fareText": "原價車資 ¥1,040（持 JR PASS 可全額折抵）",
         "ts": 1795357158000
+      },
+      "TRANSIT|麵屋大河|皇冠山飯店 金澤": {
+        "minutes": 27,
+        "modeBadge": "🚃 JR 在來線／地鐵轉乘",
+        "detailText": "市區電車轉乘含兩端進出站步行約 27 分（約 2.8 km）",
+        "fareText": "原價車資 ¥230（JR 路段可用 PASS 折抵／私鐵地鐵需自付）",
+        "ts": 1795435258094
+      },
+      "TRANSIT|AEON 新高岡|麵屋大河": {
+        "minutes": 66,
+        "modeBadge": "🚄 JR 新快速／特急直達（約 46 km）",
+        "detailText": "搭乘 JR 幹線列車含兩端步行轉乘約 66 分",
+        "fareText": "原價車資 ¥1,000（持 JR PASS 可全額折抵）",
+        "ts": 1795435258103
       }
     },
     "trashBin": [],
