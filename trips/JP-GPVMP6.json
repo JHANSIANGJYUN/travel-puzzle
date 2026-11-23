@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-22T14:16:42.431Z",
+  "updatedAt": "2026-11-23T09:20:43.293Z",
   "syncCode": "JP-GPVMP6",
   "appState": {
     "tripCode": "JP-GPVMP6",
@@ -468,7 +468,14 @@
       }
     ],
     "expensesByDay": {
-      "1": []
+      "1": [
+        {
+          "id": "ex-1795425627136",
+          "category": "🚇 交通IC卡/計程車",
+          "item": "Rapit",
+          "amountJpy": 2800
+        }
+      ]
     },
     "recFilter": "all",
     "customRecItems": [],
