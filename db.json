@@ -511,11 +511,11 @@
     },
     "IT252": {
       "airline": "台灣虎航 Tigerair",
-      "airport": "關西國際機場 (KIX)",
-      "terminal": "T1",
-      "time": "14:55",
+      "airport": "小松機場 (KMQ)",
+      "terminal": "國際線",
+      "time": "15:35",
       "aircraft": "A320neo",
-      "region": "kansai"
+      "region": "hokuriku"
     },
     "IT253": {
       "airline": "台灣虎航 Tigerair",
