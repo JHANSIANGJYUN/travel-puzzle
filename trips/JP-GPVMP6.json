@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-23T09:20:50.659Z",
+  "updatedAt": "2026-11-23T13:01:27.390Z",
   "syncCode": "JP-GPVMP6",
   "appState": {
     "tripCode": "JP-GPVMP6",
@@ -42,7 +42,7 @@
     "timelineViewMode": "overview",
     "dayStartTimes": {
       "1": "20:15",
-      "2": "09:00",
+      "2": "08:30",
       "3": "09:00",
       "4": "09:30",
       "5": "09:30",
@@ -90,6 +90,13 @@
         }
       ],
       "2": [
+        {
+          "id": "act-1795435778662",
+          "title": "嵐山",
+          "tag": "4★+ 搜尋",
+          "duration": 90,
+          "note": "有猴群棲息的優美景點，坐擁竹林和水景。"
+        },
         {
           "id": "act-1795237470927-fn76",
           "title": "京都車站大樓冬季點燈・大階段光之階梯",
@@ -425,6 +432,34 @@
         "detailText": "沿途步行前往約 6 分（距離約 0.4 km）",
         "fareText": "步行免費 ¥0",
         "ts": 1795356979701
+      },
+      "TRANSIT|京都車站大樓冬季點燈・大階段光之階梯|嵐山": {
+        "minutes": 47,
+        "modeBadge": "🚃 JR 在來線／地鐵轉乘",
+        "detailText": "市區電車轉乘含兩端進出站步行約 47 分（約 10.1 km）",
+        "fareText": "原價車資 ¥330（JR 路段可用 PASS 折抵／私鐵地鐵需自付）",
+        "ts": 1795435778935
+      },
+      "TRANSIT|嵐山|Urban Kyoto Eki Nishi": {
+        "minutes": 45,
+        "modeBadge": "🚃 JR 在來線／地鐵轉乘",
+        "detailText": "市區電車轉乘含兩端進出站步行約 45 分（約 9.3 km）",
+        "fareText": "原價車資 ¥320（JR 路段可用 PASS 折抵／私鐵地鐵需自付）",
+        "ts": 1795435778984
+      },
+      "TRANSIT|Urban Kyoto Eki Nishi|嵐山": {
+        "minutes": 44,
+        "modeBadge": "🚃 JR 在來線／地鐵轉乘",
+        "detailText": "市區電車轉乘含兩端進出站步行約 44 分（約 9.6 km）",
+        "fareText": "原價車資 ¥320（JR 路段可用 PASS 折抵／私鐵地鐵需自付）",
+        "ts": 1795435786467
+      },
+      "TRANSIT|嵐山|京都車站大樓冬季點燈・大階段光之階梯": {
+        "minutes": 47,
+        "modeBadge": "🚃 JR 在來線／地鐵轉乘",
+        "detailText": "市區電車轉乘含兩端進出站步行約 47 分（約 10.1 km）",
+        "fareText": "原價車資 ¥330（JR 路段可用 PASS 折抵／私鐵地鐵需自付）",
+        "ts": 1795435786490
       }
     },
     "trashBin": [],
@@ -478,7 +513,36 @@
       ]
     },
     "recFilter": "all",
-    "customRecItems": [],
+    "customRecItems": [
+      {
+        "id": "custom-rec-1795435773464",
+        "region": "kansai",
+        "type": "spot",
+        "months": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12
+        ],
+        "tag": "4★+ 搜尋",
+        "periodText": "即時加入",
+        "rating": 4.5,
+        "userRatingCount": 7807,
+        "location": "〒616-0007 京都府京都市右京區 Arashiyama Genrokuzancho",
+        "title": "嵐山",
+        "duration": 90,
+        "note": "有猴群棲息的優美景點，坐擁竹林和水景。",
+        "photoUrl": "https://places.googleapis.com/v1/places/ChIJ49PvUVQHAWARTAF7WU_Wqqs/photos/AV-0GLcOs_8m7Th8aDK068TGo5CZdthxRmhWk5RrvwnJR4EWaJpLre3ppm1vKAXikPSDG5DlbAXDqp5pGXGNMutVHEzcqlRo9xFI4q-0ii6TR4IP0Tblahif5Kw-InnS_tgg7tb5Ef0npd88oLPei_fW-g8MkAX9oycqvtouXLhPPBtcE4FmzvnkFTNCxSGSs6v8M4OYrkgouZ2CmSWrrSXdEFVQEhFsJLT_MdTdpP_oN4fDGBOC_sbaZrTWSYo3BImPuOhWkUZUf1Yg9mtsjv6YQA_IyerKCJrWSH1SWfvQVORdQVlqWg2mrEv1g2C-vUie5Cn9oqnh5YMckLWDBdHfmrmP5BHQmL3i_P5OJZHuiBFdtezp5_hhq_gm3kipkZObLmYTi-3XZ4NzfwMA9fgqyE_6pSk502k/media?maxWidthPx=600&key=AIzaSyByB_1EwCQhqq2TY-8uK0Qy6wiF-b1goL0"
+      }
+    ],
     "expenseSelectedDay": 1,
     "travelerCount": 2,
     "regionId": "kansai",
