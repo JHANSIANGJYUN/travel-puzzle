@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-22T08:37:47+09:00",
+  "updatedAt": "2026-11-23T08:56:48+09:00",
   "jrPasses": [
     {
       "id": "jr-kansai-mini-3",
@@ -302,10 +302,10 @@
       "region": "kansai"
     },
     "IT210": {
-      "airline": "台灣虎航 Tigerair",
+      "airline": "台灣虎航 Tigerair Taiwan",
       "airport": "關西國際機場 (KIX)",
       "terminal": "T1",
-      "time": "10:05",
+      "time": "06:40",
       "aircraft": "A320neo",
       "region": "kansai"
     },
@@ -353,8 +353,8 @@
       "airline": "星宇航空 STARLUX",
       "airport": "關西國際機場 (KIX)",
       "terminal": "T1",
-      "time": "11:10",
-      "aircraft": "A330-900neo",
+      "time": "08:10",
+      "aircraft": "A330neo",
       "region": "kansai"
     },
     "JX821": {
@@ -415,11 +415,11 @@
     },
     "JX800": {
       "airline": "星宇航空 STARLUX",
-      "airport": "新千歲機場 (CTS)",
-      "terminal": "Intl",
-      "time": "15:00",
-      "aircraft": "A330neo",
-      "region": "hokkaido"
+      "airport": "成田國際機場 (NRT)",
+      "terminal": "T2",
+      "time": "08:30",
+      "aircraft": "A350-900",
+      "region": "kanto"
     },
     "JX801": {
       "airline": "星宇航空 STARLUX",
@@ -433,7 +433,7 @@
       "airline": "長榮航空 EVA Air",
       "airport": "成田國際機場 (NRT)",
       "terminal": "T1",
-      "time": "12:55",
+      "time": "08:50",
       "aircraft": "B787-10",
       "region": "kanto"
     },
@@ -478,12 +478,12 @@
       "region": "kyushu"
     },
     "IT230": {
-      "airline": "台灣虎航 Tigerair",
+      "airline": "台灣虎航 Tigerair Taiwan",
       "airport": "那霸機場 (OKA)",
-      "terminal": "國際線",
-      "time": "09:20",
-      "aircraft": "A320neo",
-      "region": "kyushu"
+      "terminal": "國際航廈",
+      "time": "06:50",
+      "aircraft": "A320",
+      "region": "okinawa"
     },
     "IT231": {
       "airline": "台灣虎航 Tigerair",
@@ -494,10 +494,10 @@
       "region": "kyushu"
     },
     "D7378": {
-      "airline": "AirAsia X 亞航長程",
+      "airline": "亞洲航空 AirAsia X",
       "airport": "關西國際機場 (KIX)",
       "terminal": "T1",
-      "time": "22:05",
+      "time": "15:50",
       "aircraft": "A330-300",
       "region": "kansai"
     },
@@ -654,11 +654,11 @@
       "region": "kanto"
     },
     "BR192": {
-      "airline": "長榮航空 EVA Air (松山出發)",
-      "airport": "東京羽田機場 (HND)",
+      "airline": "長榮航空 EVA Air",
+      "airport": "羽田機場 (HND)",
       "terminal": "T3",
-      "time": "11:15",
-      "aircraft": "B787-10",
+      "time": "07:30",
+      "aircraft": "A330-300",
       "region": "kanto"
     },
     "BR191": {
@@ -673,8 +673,8 @@
       "airline": "中華航空 China Airlines",
       "airport": "成田國際機場 (NRT)",
       "terminal": "T2",
-      "time": "13:15",
-      "aircraft": "B777-300ER",
+      "time": "09:30",
+      "aircraft": "A350-900",
       "region": "kanto"
     },
     "CI101": {
@@ -686,10 +686,10 @@
       "region": "kanto"
     },
     "CI220": {
-      "airline": "中華航空 China Airlines (松山出發)",
-      "airport": "東京羽田機場 (HND)",
+      "airline": "中華航空 China Airlines",
+      "airport": "羽田機場 (HND)",
       "terminal": "T3",
-      "time": "12:55",
+      "time": "09:00",
       "aircraft": "A330-300",
       "region": "kanto"
     },
@@ -736,9 +736,9 @@
     "BR116": {
       "airline": "長榮航空 EVA Air",
       "airport": "新千歲機場 (CTS)",
-      "terminal": "國際線",
-      "time": "14:05",
-      "aircraft": "B787-10",
+      "terminal": "國際航廈",
+      "time": "09:30",
+      "aircraft": "B777-300ER",
       "region": "hokkaido"
     },
     "BR115": {
@@ -784,8 +784,8 @@
     "JX840": {
       "airline": "星宇航空 STARLUX",
       "airport": "福岡機場 (FUK)",
-      "terminal": "國際線",
-      "time": "13:45",
+      "terminal": "國際航廈",
+      "time": "10:30",
       "aircraft": "A321neo",
       "region": "kyushu"
     },
@@ -1100,6 +1100,14 @@
       "time": "15:40",
       "aircraft": "A350-900",
       "region": "chubu"
+    },
+    "MM022": {
+      "airline": "樂桃航空 Peach Aviation",
+      "airport": "關西國際機場 (KIX)",
+      "terminal": "T2",
+      "time": "09:15",
+      "aircraft": "A320neo",
+      "region": "kansai"
     }
   },
   "events": [
@@ -1388,7 +1396,7 @@
       "duration": 120,
       "isIndoor": false,
       "desc": "東京最古老寺院雷門大燈籠打卡，順遊隅田川遠眺晴空塔。",
-      "imageUrl": ""
+      "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8d/Asakusa_Senso-ji_2021-12_ac_%282%29.jpg/330px-Asakusa_Senso-ji_2021-12_ac_%282%29.jpg?utm_source=ja.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
     },
     {
       "id": "base-t-2",
@@ -1415,7 +1423,7 @@
       "duration": 150,
       "isIndoor": true,
       "desc": "登上450公尺天望回廊俯瞰東京灣，雨天也能逛晴空街道商場。",
-      "imageUrl": ""
+      "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/84/Tokyo_Skytree_2014_%E2%85%A2.jpg/330px-Tokyo_Skytree_2014_%E2%85%A2.jpg?utm_source=ja.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
     },
     {
       "id": "base-t-3",
@@ -1434,7 +1442,7 @@
       "duration": 90,
       "isIndoor": false,
       "desc": "逾百萬顆香檳金LED點亮石板街道，順拍復古紅磚東京車站。",
-      "imageUrl": ""
+      "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/1d/Tokyo-STA_Marunouchi-Entrance_2023.jpg/330px-Tokyo-STA_Marunouchi-Entrance_2023.jpg?utm_source=ja.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
     },
     {
       "id": "base-t-4",
@@ -1461,7 +1469,7 @@
       "duration": 240,
       "isIndoor": false,
       "desc": "搭乘江之電穿梭海岸線與平交道，傍晚登上江之島遠眺富士山。",
-      "imageUrl": ""
+      "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5d/Kamakura_Budda_Daibutsu_front_1885.jpg/330px-Kamakura_Budda_Daibutsu_front_1885.jpg?utm_source=ja.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
     },
     {
       "id": "base-t-5",
@@ -1488,7 +1496,7 @@
       "duration": 180,
       "isIndoor": false,
       "desc": "搭乘都市空中纜車橫越港灣，逛紅磚倉庫市集與中華街。",
-      "imageUrl": ""
+      "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a1/Minato_Mirai_In_Blue.jpg/330px-Minato_Mirai_In_Blue.jpg?utm_source=ja.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
     },
     {
       "id": "base-t-6",
@@ -1515,7 +1523,7 @@
       "duration": 240,
       "isIndoor": false,
       "desc": "搭特急富士回遊直達河口湖，無遮蔽拍攝逆富士與季節花海。",
-      "imageUrl": ""
+      "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/18/KawaguchiKo.jpg/330px-KawaguchiKo.jpg?utm_source=ja.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
     },
     {
       "id": "base-h-1",
@@ -1535,7 +1543,7 @@
       "duration": 90,
       "isIndoor": false,
       "desc": "銀白雪地與巨型光雕聖誕樹交映，2月更盛大舉辦札幌雪祭。",
-      "imageUrl": ""
+      "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/11/Sapporo_television_tower_at_night_IMG_2982.jpg/330px-Sapporo_television_tower_at_night_IMG_2982.jpg?utm_source=ja.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
     },
     {
       "id": "base-h-2",
@@ -1562,7 +1570,7 @@
       "duration": 180,
       "isIndoor": false,
       "desc": "紅磚倉庫倒映運河水面，品嚐六花亭、北菓樓與鮮甜海鮮丼。",
-      "imageUrl": ""
+      "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fd/Otaru_Hokkaido_Japan.jpg/330px-Otaru_Hokkaido_Japan.jpg?utm_source=ja.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
     },
     {
       "id": "base-h-3",
@@ -1589,7 +1597,7 @@
       "duration": 150,
       "isIndoor": false,
       "desc": "搭纜車登頂俯瞰雙海灣沙漏形璀璨燈海，傍晚藍調時刻最夢幻。",
-      "imageUrl": ""
+      "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c1/Wide_view_of_Mount_Hakodate_from_Mashu-Maru.jpg/330px-Wide_view_of_Mount_Hakodate_from_Mashu-Maru.jpg?utm_source=ja.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
     },
     {
       "id": "base-h-4",
@@ -1616,7 +1624,7 @@
       "duration": 120,
       "isIndoor": true,
       "desc": "早晨大啖帝王蟹海膽丼，晚餐享用炭火現烤北海道小羔羊。",
-      "imageUrl": ""
+      "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/34/Spectaculars_of_Susukino-Sapporo.jpg/330px-Spectaculars_of_Susukino-Sapporo.jpg?utm_source=ja.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
     },
     {
       "id": "base-q-1",
@@ -2132,12 +2140,16 @@
       "category": "光影花火",
       "title": "豪斯登堡光之王國",
       "wikiJa": "ハウステンボス",
-      "location": "長崎豪斯登堡、豪斯登堡站",
+      "location": "JR「豪斯登堡站」直結",
       "dateLabel": "冬季點燈",
-      "duration": 300,
+      "duration": 240,
       "isIndoor": false,
       "desc": "1300萬盞燈飾打造世界最大規模燈節，3D投影與白銀世界極致華麗。",
-      "imageUrl": ""
+      "imageUrl": "",
+      "type": "event",
+      "tag": "光影花火",
+      "periodText": "11-12月冬季限定",
+      "note": "世界最大規模點燈，建議入住園區飯店享受完整夜景。"
     },
     {
       "id": "ev-chubu-1",
@@ -2253,12 +2265,16 @@
       "category": "賞花紅葉",
       "title": "宮島紅葉谷公園",
       "wikiJa": "紅葉谷公園",
-      "location": "廣島縣宮島、宮島口轉渡輪",
+      "location": "JR「宮島口站」搭乘渡輪",
       "dateLabel": "11月中下旬",
       "duration": 180,
       "isIndoor": false,
       "desc": "嚴島神社後方的紅葉勝地，可順道品嚐楓葉饅頭與現烤牡蠣。",
-      "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c1/Himeji_castle_in_may_2015.jpg/960px-Himeji_castle_in_may_2015.jpg?utm_source=ja.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+      "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c1/Himeji_castle_in_may_2015.jpg/960px-Himeji_castle_in_may_2015.jpg?utm_source=ja.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "type": "event",
+      "tag": "楓紅銀杏",
+      "periodText": "11月秋季限定",
+      "note": "約700株楓樹交織，建議順遊嚴島神社，注意潮汐時間。"
     },
     {
       "id": "ev-sanyo-2",
@@ -2291,6 +2307,267 @@
       "isIndoor": false,
       "desc": "在古色古香的白壁街道裝點和風燈飾，河川映照出靜謐的江戶情懷。",
       "imageUrl": ""
+    },
+    {
+      "id": "auto-kansai-0-24680",
+      "region": "kansai",
+      "type": "event",
+      "months": [
+        7
+      ],
+      "tag": "夏日祭典",
+      "periodText": "7月夏季限定",
+      "location": "京都市區（八坂神社周邊）",
+      "title": "祇園祭",
+      "duration": 180,
+      "note": "日本三大祭之首，建議穿著浴衣前往，宵山期間人潮眾多。"
+    },
+    {
+      "id": "auto-kansai-1-2590",
+      "region": "kansai",
+      "type": "event",
+      "months": [
+        11
+      ],
+      "tag": "楓紅銀杏",
+      "periodText": "11月秋季限定",
+      "location": "京都市巴士「清水道」站步行",
+      "title": "清水寺夜間特別參拜",
+      "duration": 120,
+      "note": "夜楓點燈極為壯觀，建議傍晚前抵達以避開排隊人潮。"
+    },
+    {
+      "id": "auto-kanto-2-86242",
+      "region": "kanto",
+      "type": "event",
+      "months": [
+        7
+      ],
+      "tag": "光影花火",
+      "periodText": "7月夏季限定",
+      "location": "東武伊勢崎線「淺草站」步行",
+      "title": "隅田川花火大會",
+      "duration": 90,
+      "note": "東京最具代表性花火，建議提早數小時至隅田公園卡位。"
+    },
+    {
+      "id": "auto-kanto-3-81034",
+      "region": "kanto",
+      "type": "event",
+      "months": [
+        11,
+        12
+      ],
+      "tag": "楓紅銀杏",
+      "periodText": "11-12月限定",
+      "location": "JR「信濃町站」步行5分鐘",
+      "title": "明治神宮外苑銀杏並木",
+      "duration": 60,
+      "note": "146棵銀杏構成的黃金隧道，11月底為最佳觀賞期。"
+    },
+    {
+      "id": "auto-hokkaido-4-34015",
+      "region": "hokkaido",
+      "type": "event",
+      "months": [
+        6,
+        7
+      ],
+      "tag": "自然景觀",
+      "periodText": "6-7月夏季限定",
+      "location": "JR「中富良野站」步行20分鐘",
+      "title": "富田農場薰衣草季",
+      "duration": 150,
+      "note": "7月中旬為盛開期，建議搭乘季節限定的Norokko號火車。"
+    },
+    {
+      "id": "auto-hokkaido-5-22849",
+      "region": "hokkaido",
+      "type": "event",
+      "months": [
+        11,
+        12
+      ],
+      "tag": "光影花火",
+      "periodText": "11-12月冬季限定",
+      "location": "地下鐵「大通站」直結",
+      "title": "札幌白色燈樹節",
+      "duration": 90,
+      "note": "大通公園變身夢幻燈海，與慕尼黑聖誕市集同步舉行。"
+    },
+    {
+      "id": "auto-kyushu-6-13163",
+      "region": "kyushu",
+      "type": "event",
+      "months": [
+        7
+      ],
+      "tag": "夏日祭典",
+      "periodText": "7月夏季限定",
+      "location": "JR「博多站」周邊",
+      "title": "博多祇園山笠",
+      "duration": 120,
+      "note": "最後一天的「追山笠」在清晨舉行，氣勢磅礴值得一看。"
+    },
+    {
+      "id": "auto-okinawa-8-50689",
+      "region": "okinawa",
+      "type": "event",
+      "months": [
+        7
+      ],
+      "tag": "光影花火",
+      "periodText": "7月夏季限定",
+      "location": "海洋博公園（美麗海水族館旁）",
+      "title": "海洋博公園夏季節",
+      "duration": 180,
+      "note": "沖繩最大規模花火，交通接駁較擁擠，建議提早規劃。"
+    },
+    {
+      "id": "auto-okinawa-9-53842",
+      "region": "okinawa",
+      "type": "spot",
+      "months": [
+        11,
+        12
+      ],
+      "tag": "自然景觀",
+      "periodText": "冬季避暑推薦",
+      "location": "那霸機場搭乘接駁巴士",
+      "title": "瀨長島Umikaji Terrace",
+      "duration": 120,
+      "note": "冬季氣候涼爽，適合在白色建築群看夕陽、飛機起降。"
+    },
+    {
+      "id": "auto-chubu-10-95084",
+      "region": "chubu",
+      "type": "event",
+      "months": [
+        11,
+        12
+      ],
+      "tag": "光影花火",
+      "periodText": "11-12月冬季限定",
+      "location": "近鐵「桑名站」搭乘巴士",
+      "title": "名花之里點燈",
+      "duration": 150,
+      "note": "日本最大級光之隧道，週末人潮眾多，建議平日前往。"
+    },
+    {
+      "id": "auto-chubu-11-94969",
+      "region": "chubu",
+      "type": "spot",
+      "months": [
+        6,
+        7
+      ],
+      "tag": "自然景觀",
+      "periodText": "6-7月避暑推薦",
+      "location": "松本站搭乘直行巴士",
+      "title": "上高地大正池",
+      "duration": 180,
+      "note": "夏季避暑聖地，清晨霧氣繚繞如仙境，建議穿著健行鞋。"
+    },
+    {
+      "id": "auto-tohoku-12-7831",
+      "region": "tohoku",
+      "type": "event",
+      "months": [
+        6,
+        7
+      ],
+      "tag": "自然景觀",
+      "periodText": "6-7月夏季限定",
+      "location": "JR「一之關站」搭乘巴士",
+      "title": "陸奧紫陽花園",
+      "duration": 120,
+      "note": "森林中的紫陽花海，規模為日本第一，建議穿防蚊裝備。"
+    },
+    {
+      "id": "auto-tohoku-13-26693",
+      "region": "tohoku",
+      "type": "spot",
+      "months": [
+        11
+      ],
+      "tag": "楓紅銀杏",
+      "periodText": "11月秋季限定",
+      "location": "JR「鳴子溫泉站」搭乘巴士",
+      "title": "鳴子峽紅葉",
+      "duration": 90,
+      "note": "拍攝火車穿過紅葉隧道的經典位址，需注意巴士班次。"
+    },
+    {
+      "id": "auto-sanyo-14-87810",
+      "region": "sanyo",
+      "type": "event",
+      "months": [
+        11,
+        12
+      ],
+      "tag": "光影花火",
+      "periodText": "11-12月冬季限定",
+      "location": "廣島市中心（和平大通）",
+      "title": "廣島夢幻點燈",
+      "duration": 60,
+      "note": "市中心大型點燈，適合晚餐後散步，交通非常便利。"
+    },
+    {
+      "id": "auto-sanin-16-96394",
+      "region": "sanin",
+      "type": "event",
+      "months": [
+        11
+      ],
+      "tag": "夏日祭典",
+      "periodText": "11月秋季限定",
+      "location": "JR「出雲市站」搭乘巴士",
+      "title": "出雲大社神在祭",
+      "duration": 120,
+      "note": "全日本神明聚集之時，氛圍莊嚴，限定御守非常受歡迎。"
+    },
+    {
+      "id": "auto-sanin-17-3113",
+      "region": "sanin",
+      "type": "event",
+      "months": [
+        12
+      ],
+      "tag": "光影花火",
+      "periodText": "12月冬季限定",
+      "location": "JR「鳥取站」搭乘巴士",
+      "title": "鳥取沙丘幻光物語",
+      "duration": 90,
+      "note": "在壯闊沙丘上的燈光秀，海風強勁，請務必做好防寒。"
+    },
+    {
+      "id": "auto-shikoku-18-39291",
+      "region": "shikoku",
+      "type": "event",
+      "months": [
+        11
+      ],
+      "tag": "楓紅銀杏",
+      "periodText": "11月秋季限定",
+      "location": "JR「高松站」搭乘巴士",
+      "title": "栗林公園秋季點燈",
+      "duration": 90,
+      "note": "米其林三星景點，夜楓倒映在湖面極美，建議搭乘南湖周遊船。"
+    },
+    {
+      "id": "auto-shikoku-19-38828",
+      "region": "shikoku",
+      "type": "spot",
+      "months": [
+        6,
+        7
+      ],
+      "tag": "自然景觀",
+      "periodText": "6-7月夏季推薦",
+      "location": "JR「鳴門站」搭乘巴士",
+      "title": "鳴門漩渦",
+      "duration": 60,
+      "note": "夏季大潮期間漩渦最為壯觀，建議先查閱潮汐表預報。"
     }
   ],
   "stations": [
