@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-22T14:19:35.526Z",
+  "updatedAt": "2026-11-23T11:58:46.078Z",
   "syncCode": "JP-UHKQBF",
   "appState": {
     "tripCode": "JP-UHKQBF",
@@ -223,7 +223,57 @@
     "trashBin": [],
     "trashDrawerOpen": false,
     "jpyRate": 0.215,
-    "fixedExpenses": [],
+    "fixedExpenses": [
+      {
+        "id": "fx-1795434931008",
+        "type": "住宿費用",
+        "item": "Day1",
+        "currency": "TWD",
+        "amount": 1171
+      },
+      {
+        "id": "fx-1795434938744",
+        "type": "住宿費用",
+        "item": "Day2",
+        "currency": "TWD",
+        "amount": 1296
+      },
+      {
+        "id": "fx-1795434951663",
+        "type": "住宿費用",
+        "item": "Day3",
+        "currency": "TWD",
+        "amount": 1920
+      },
+      {
+        "id": "fx-1795434972763",
+        "type": "住宿費用",
+        "item": "Day4",
+        "currency": "TWD",
+        "amount": 843
+      },
+      {
+        "id": "fx-1795435016703",
+        "type": "機票費用",
+        "item": "回",
+        "currency": "JPY",
+        "amount": 70350
+      },
+      {
+        "id": "fx-1795435032090",
+        "type": "機票費用",
+        "item": "去",
+        "currency": "TWD",
+        "amount": 15487
+      },
+      {
+        "id": "fx-1795435094358",
+        "type": "住宿費用",
+        "item": "Day4-5",
+        "currency": "JPY",
+        "amount": 23864
+      }
+    ],
     "expensesByDay": {},
     "recFilter": "all",
     "customRecItems": [
