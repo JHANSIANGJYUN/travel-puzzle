@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-25T11:50:54+09:00",
+  "updatedAt": "2026-11-26T10:59:00+09:00",
   "jrPasses": [
     {
       "id": "jr-kansai-mini-3",
@@ -353,7 +353,7 @@
       "airline": "星宇航空 STARLUX",
       "airport": "關西國際機場 (KIX)",
       "terminal": "T1",
-      "time": "11:10",
+      "time": "09:15",
       "aircraft": "A330neo",
       "region": "kansai"
     },
@@ -385,8 +385,8 @@
       "airline": "中華航空 China Airlines",
       "airport": "關西國際機場 (KIX)",
       "terminal": "T1",
-      "time": "11:40",
-      "aircraft": "A350-900",
+      "time": "08:10",
+      "aircraft": "A330-300",
       "region": "kansai"
     },
     "CI157": {
@@ -480,9 +480,9 @@
     "IT230": {
       "airline": "台灣虎航 Tigerair Taiwan",
       "airport": "那霸機場 (OKA)",
-      "terminal": "國際航廈",
-      "time": "06:50",
-      "aircraft": "A320",
+      "terminal": "T1",
+      "time": "06:35",
+      "aircraft": "A320neo",
       "region": "okinawa"
     },
     "IT231": {
@@ -658,7 +658,7 @@
       "airport": "羽田機場 (HND)",
       "terminal": "T3",
       "time": "07:30",
-      "aircraft": "A330-300",
+      "aircraft": "B787-10",
       "region": "kanto"
     },
     "BR191": {
@@ -673,7 +673,7 @@
       "airline": "中華航空 China Airlines",
       "airport": "成田國際機場 (NRT)",
       "terminal": "T2",
-      "time": "09:30",
+      "time": "08:50",
       "aircraft": "A350-900",
       "region": "kanto"
     },
@@ -736,7 +736,7 @@
     "BR116": {
       "airline": "長榮航空 EVA Air",
       "airport": "新千歲機場 (CTS)",
-      "terminal": "國際航廈",
+      "terminal": "T1",
       "time": "09:30",
       "aircraft": "B777-300ER",
       "region": "hokkaido"
@@ -832,7 +832,7 @@
     "CI110": {
       "airline": "中華航空 China Airlines",
       "airport": "福岡機場 (FUK)",
-      "terminal": "國際航廈",
+      "terminal": "T1",
       "time": "06:50",
       "aircraft": "A321neo",
       "region": "kyushu"
@@ -1120,9 +1120,9 @@
     "MM622": {
       "airline": "樂桃航空 Peach Aviation",
       "airport": "成田國際機場 (NRT)",
-      "terminal": "T3",
+      "terminal": "T1",
       "time": "09:30",
-      "aircraft": "A320neo",
+      "aircraft": "A320",
       "region": "kanto"
     },
     "MM922": {
@@ -1132,6 +1132,14 @@
       "time": "09:35",
       "aircraft": "A320neo",
       "region": "okinawa"
+    },
+    "MM722": {
+      "airline": "樂桃航空 Peach Aviation",
+      "airport": "關西國際機場 (KIX)",
+      "terminal": "T2",
+      "time": "09:15",
+      "aircraft": "A320",
+      "region": "kansai"
     }
   },
   "events": [
@@ -2130,12 +2138,16 @@
       "category": "光影花火",
       "title": "佐賀國際熱氣球節",
       "wikiJa": "佐賀インターナショナルバルーンフェスタ",
-      "location": "嘉瀨川河川敷、JR巴倫佐賀臨時站",
+      "location": "JR佐賀站搭乘接駁電車",
       "dateLabel": "11月上旬",
       "duration": 180,
       "isIndoor": false,
       "desc": "亞洲最大熱氣球賽事，清晨升空與夜間繫留表演極其壯觀。",
-      "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/53/La_Montgorlfier_Nocturne.JPG/330px-La_Montgorlfier_Nocturne.JPG?utm_source=ja.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
+      "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/53/La_Montgorlfier_Nocturne.JPG/330px-La_Montgorlfier_Nocturne.JPG?utm_source=ja.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "type": "event",
+      "tag": "國際盛事",
+      "periodText": "11月上旬",
+      "note": "亞洲最大規模熱氣球大賽，清晨升空景觀最為壯觀，需注意天候影響。"
     },
     {
       "id": "ev-kyushu-2",
@@ -2235,7 +2247,7 @@
       "duration": 200,
       "isIndoor": false,
       "desc": "東海地區最強紅葉名所，4000棵楓樹倒映巴川，夜間點燈極美。",
-      "imageUrl": ""
+      "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/39/K%C5%8Drankei.jpg/330px-K%C5%8Drankei.jpg?utm_source=ja.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
     },
     {
       "id": "ev-tohoku-1",
@@ -2268,7 +2280,7 @@
       "duration": 120,
       "isIndoor": false,
       "desc": "在雪屋內祭祀水神，體驗當地小朋友提供的甘酒與烤年糕，溫馨感十足。",
-      "imageUrl": ""
+      "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b3/Kamakura-yuki.jpg/330px-Kamakura-yuki.jpg?utm_source=ja.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
     },
     {
       "id": "ev-tohoku-3",
@@ -2284,7 +2296,7 @@
       "duration": 60,
       "isIndoor": false,
       "desc": "定禪寺通櫸木林掛滿金黃燈飾，充滿都會洗練感的北國冬季慶典。",
-      "imageUrl": "",
+      "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e1/Sendai_Pageant_of_Starlight_2025b.jpg/330px-Sendai_Pageant_of_Starlight_2025b.jpg?utm_source=ja.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
       "type": "event",
       "tag": "冬季點燈",
       "periodText": "12月中下旬",
@@ -2324,7 +2336,7 @@
       "duration": 120,
       "isIndoor": false,
       "desc": "日本三大奇祭之一，數千名裸身男子爭奪寶木，震撼力十足。",
-      "imageUrl": ""
+      "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3e/Hadaka_Matsuri_%28-Naked_Festival-%29_festivities_in_Saidaiji%2C_Japan.jpg/330px-Hadaka_Matsuri_%28-Naked_Festival-%29_festivities_in_Saidaiji%2C_Japan.jpg?utm_source=ja.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
     },
     {
       "id": "ev-sanyo-3",
@@ -2354,7 +2366,8 @@
       "location": "京都市區（八坂神社周邊）",
       "title": "祇園祭",
       "duration": 180,
-      "note": "日本三大祭之首，建議穿著浴衣前往，宵山期間人潮眾多。"
+      "note": "日本三大祭之首，建議穿著浴衣前往，宵山期間人潮眾多。",
+      "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5d/Gion_Matsuri_2017-5.jpg/330px-Gion_Matsuri_2017-5.jpg?utm_source=ja.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
     },
     {
       "id": "auto-kansai-1-2590",
@@ -2422,12 +2435,12 @@
         11,
         12
       ],
-      "tag": "冬季點燈",
-      "periodText": "11月下旬至12月底",
-      "location": "地下鐵大通站直結",
+      "tag": "冬季祭典",
+      "periodText": "11月下旬至12月下旬",
+      "location": "地鐵大通站直結",
       "title": "札幌白色燈樹節",
       "duration": 90,
-      "note": "大通公園主會場規模宏大，可順遊旁邊的慕尼黑聖誕市集。"
+      "note": "日本最早的燈樹節，結合慕尼黑聖誕市集，感受濃厚北國冬日氣氛。"
     },
     {
       "id": "auto-kyushu-6-13163",
@@ -2626,12 +2639,12 @@
         11,
         12
       ],
-      "tag": "楓紅點燈",
-      "periodText": "11月下旬至12月初",
-      "location": "京都市巴士 清水寺站步行10分",
+      "tag": "紅葉點燈",
+      "periodText": "11月中旬至下旬",
+      "location": "京都市巴士清水道站步行10分",
       "title": "清水寺秋季夜間特別參拜",
       "duration": 120,
-      "note": "必看清水舞台與楓紅交織，建議傍晚前抵達避開最擁擠時段。"
+      "note": "夜楓與清水舞台交織的絕景，人潮眾多建議傍晚提早排隊入場。"
     },
     {
       "id": "auto-kanto-3-26256",
@@ -2713,11 +2726,11 @@
         11
       ],
       "tag": "紅葉名所",
-      "periodText": "11月整個月",
+      "periodText": "11月中旬至下旬",
       "location": "名鐵豐田市站轉乘巴士",
       "title": "香嵐溪紅葉祭",
       "duration": 150,
-      "note": "4000株楓樹染紅山谷，夜間點燈後的倒影美不勝收。"
+      "note": "四千株楓樹倒映在巴川水面，夜間點燈後的黃金楓林美不勝收。"
     },
     {
       "id": "auto-chubu-11-55133",
@@ -2755,12 +2768,12 @@
       "months": [
         12
       ],
-      "tag": "冬日點燈",
+      "tag": "光影花火",
       "periodText": "12月中旬至下旬",
-      "location": "JR仙台站徒步20分或搭乘地鐵",
+      "location": "JR仙台站步行10分",
       "title": "SENDAI 光之樂章",
       "duration": 60,
-      "note": "定禪寺通的櫸樹被數十萬顆燈泡點亮，氛圍極其浪漫。"
+      "note": "定禪寺通兩側櫸木裝飾數十萬顆燈泡，是東北地區最具代表性的冬祭。"
     },
     {
       "id": "auto-sanyo-14-72967",
@@ -2828,12 +2841,12 @@
       "months": [
         11
       ],
-      "tag": "庭園點燈",
+      "tag": "庭園紅葉",
       "periodText": "11月下旬",
-      "location": "JR高松站搭乘巴士",
+      "location": "JR栗林公園北口站步行",
       "title": "栗林公園秋季夜間點燈",
       "duration": 120,
-      "note": "米其林三星景點，搭乘南湖周遊船觀賞楓紅點燈最為推薦。"
+      "note": "米其林三星景點，夜間燈光映照在湖面與奇岩松樹上，如詩如畫。"
     },
     {
       "id": "auto-kansai-1-46480",
@@ -2951,6 +2964,207 @@
       "title": "道後溫泉本館",
       "duration": 120,
       "note": "日本最古老溫泉，整修後重新開放，秋冬泡湯暖身最是享受。"
+    },
+    {
+      "id": "auto-kansai-0-61358",
+      "region": "kansai",
+      "type": "event",
+      "months": [
+        4
+      ],
+      "tag": "櫻花百選",
+      "periodText": "4月上旬至中旬",
+      "location": "近鐵吉野站轉乘巴士",
+      "title": "奈良吉野山一目千本櫻",
+      "duration": 240,
+      "note": "三萬株櫻花由山腳開至山頂，建議穿著舒適健行鞋並預留整日行程。"
+    },
+    {
+      "id": "auto-kanto-2-29614",
+      "region": "kanto",
+      "type": "event",
+      "months": [
+        4,
+        5
+      ],
+      "tag": "夢幻花海",
+      "periodText": "4月中旬至5月中旬",
+      "location": "JR兩毛線足利花卉公園站",
+      "title": "足利花卉公園大藤節",
+      "duration": 150,
+      "note": "世界最美大藤棚與白藤隧道，夜間點燈後更具魔幻感，攝影愛好者必訪。"
+    },
+    {
+      "id": "auto-kanto-3-32525",
+      "region": "kanto",
+      "type": "event",
+      "months": [
+        11,
+        12
+      ],
+      "tag": "光影花火",
+      "periodText": "11月至12月冬季限定",
+      "location": "JR東京站丸之內出口直結",
+      "title": "丸之內 Illumination 點燈",
+      "duration": 60,
+      "note": "香檳金色的街道燈飾極具都會浪漫感，適合晚餐後散步體驗。"
+    },
+    {
+      "id": "auto-hokkaido-4-4380",
+      "region": "hokkaido",
+      "type": "event",
+      "months": [
+        5
+      ],
+      "tag": "櫻花名所",
+      "periodText": "5月上旬限定",
+      "location": "函館路面電車五稜郭公園前站",
+      "title": "五稜郭公園星型櫻花林",
+      "duration": 120,
+      "note": "登上五稜郭塔俯瞰粉紅星型護城河，是北海道最具代表性的春景。"
+    },
+    {
+      "id": "auto-kyushu-6-18083",
+      "region": "kyushu",
+      "type": "event",
+      "months": [
+        4,
+        5
+      ],
+      "tag": "夢幻花海",
+      "periodText": "4月下旬至5月上旬",
+      "location": "JR八幡站搭乘接駁巴士",
+      "title": "河內藤園紫藤隧道",
+      "duration": 90,
+      "note": "需提前預約入園券，22種藤花交織的隧道被譽為世界十大美景。"
+    },
+    {
+      "id": "auto-okinawa-8-94873",
+      "region": "okinawa",
+      "type": "event",
+      "months": [
+        4
+      ],
+      "tag": "光影花火",
+      "periodText": "4月中旬",
+      "location": "宜野灣海濱公園",
+      "title": "琉球海炎祭",
+      "duration": 120,
+      "note": "日本最早的夏日煙火，結合沖繩音樂與文化，建議提早購買門票。"
+    },
+    {
+      "id": "auto-okinawa-9-34056",
+      "region": "okinawa",
+      "type": "event",
+      "months": [
+        12
+      ],
+      "tag": "冬季點燈",
+      "periodText": "12月冬季限定",
+      "location": "沖繩市東南植物樂園",
+      "title": "沖繩之光冬季點燈",
+      "duration": 120,
+      "note": "連續多年獲獎的燈光秀，利用熱帶植物營造出不同於本土的點燈風格。"
+    },
+    {
+      "id": "auto-chubu-10-90694",
+      "region": "chubu",
+      "type": "event",
+      "months": [
+        4,
+        5
+      ],
+      "tag": "雪國絕景",
+      "periodText": "4月中旬至5月下旬",
+      "location": "立山黑部阿爾卑斯路線室堂站",
+      "title": "立山黑部雪之大谷",
+      "duration": 180,
+      "note": "漫步在十幾公尺高的巨型雪牆間，氣溫極低請務必做好防寒與防曬。"
+    },
+    {
+      "id": "auto-tohoku-12-82342",
+      "region": "tohoku",
+      "type": "event",
+      "months": [
+        4
+      ],
+      "tag": "櫻花百選",
+      "periodText": "4月下旬",
+      "location": "JR弘前站轉乘巴士",
+      "title": "弘前公園櫻花祭",
+      "duration": 180,
+      "note": "著名的「櫻花地毯」絕景，護城河鋪滿花瓣的景象令人屏息。"
+    },
+    {
+      "id": "auto-sanyo-14-93039",
+      "region": "sanyo",
+      "type": "spot",
+      "months": [
+        4
+      ],
+      "tag": "世界遺產",
+      "periodText": "4月櫻花季",
+      "location": "JR宮島口站轉乘渡輪",
+      "title": "宮島嚴島神社櫻花",
+      "duration": 180,
+      "note": "大鳥居與櫻花同框的經典畫面，建議查好潮汐表以同時觀賞水中鳥居。"
+    },
+    {
+      "id": "auto-sanyo-15-13517",
+      "region": "sanyo",
+      "type": "event",
+      "months": [
+        11
+      ],
+      "tag": "庭園紅葉",
+      "periodText": "11月中旬至下旬",
+      "location": "JR岡山站步行或搭路面電車",
+      "title": "岡山後樂園秋之幻想庭園",
+      "duration": 90,
+      "note": "日本三大名園之一，秋季夜間特別點燈，展現優雅的日式庭園美學。"
+    },
+    {
+      "id": "auto-sanin-16-60490",
+      "region": "sanin",
+      "type": "event",
+      "months": [
+        4
+      ],
+      "tag": "國寶城櫻",
+      "periodText": "4月上旬",
+      "location": "JR松江站轉乘巴士",
+      "title": "松江城山公園櫻花祭",
+      "duration": 120,
+      "note": "國寶松江城與櫻花交織，推薦搭乘堀川遊覽船從水上賞櫻。"
+    },
+    {
+      "id": "auto-sanin-17-25079",
+      "region": "sanin",
+      "type": "event",
+      "months": [
+        12
+      ],
+      "tag": "冬季點燈",
+      "periodText": "12月冬季限定",
+      "location": "JR鳥取站轉乘巴士",
+      "title": "鳥取沙丘 Illusion",
+      "duration": 90,
+      "note": "在壯闊的沙丘上佈置大規模燈飾，是山陰地區獨有的冬日奇幻景觀。"
+    },
+    {
+      "id": "auto-shikoku-19-19658",
+      "region": "shikoku",
+      "type": "spot",
+      "months": [
+        4,
+        5
+      ],
+      "tag": "經典名勝",
+      "periodText": "4月至5月春季",
+      "location": "JR琴平站步行15分至參道",
+      "title": "金刀比羅宮春季參拜",
+      "duration": 180,
+      "note": "挑戰1368階石階，春季沿途櫻花盛開，登頂可遠眺讚岐平原美景。"
     }
   ],
   "stations": [
