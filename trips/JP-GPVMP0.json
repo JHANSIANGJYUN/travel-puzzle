@@ -1,0 +1,1150 @@
+{
+  "updatedAt": "2026-11-26T06:42:53.283Z",
+  "syncCode": "JP-GPVMP0",
+  "appState": {
+    "tripCode": "JP-GPVMP0",
+    "tripTitle": "京阪冬季光影四日遊",
+    "tripAuthor": "旅人手札",
+    "coverUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/64/Fushimiinari-taisha%2C_gehaiden-1.jpg/960px-Fushimiinari-taisha%2C_gehaiden-1.jpg",
+    "startDate": "2026-12-18",
+    "endDate": "2026-12-21",
+    "travelers": 2,
+    "region": "kansai",
+    "extraRegions": [],
+    "outboundFlight": {
+      "code": "AK176",
+      "airline": "AirAsia 亞洲航空",
+      "airport": "關西國際機場 (KIX)",
+      "terminal": "T1",
+      "time": "19:30",
+      "aircraft": "A321neo",
+      "region": "kansai"
+    },
+    "inboundFlight": {
+      "code": "AK177",
+      "airline": "AirAsia 亞洲航空",
+      "airport": "關西國際機場 (KIX)",
+      "terminal": "T1",
+      "time": "20:45",
+      "aircraft": "A321neo",
+      "region": "kansai"
+    },
+    "drivingMode": false,
+    "rentalCost": 32000,
+    "tollFuelCost": 8500,
+    "useJrPass": true,
+    "jrPassId": "jr-kansai-mini-3",
+    "jrPassStartDay": 2,
+    "useSecondJrPass": false,
+    "jrPassId2": "jr-kansai-wide-5",
+    "jrPassStartDay2": 4,
+    "activeDay": 4,
+    "timelineViewMode": "overview",
+    "dayStartTimes": {
+      "1": "20:15",
+      "2": "08:30",
+      "3": "09:00",
+      "4": "09:00",
+      "5": "09:30",
+      "6": "09:30",
+      "7": "09:30",
+      "8": "09:30",
+      "9": "09:30",
+      "10": "09:30",
+      "11": "09:30",
+      "12": "09:30",
+      "13": "09:30",
+      "14": "09:30",
+      "15": "09:30",
+      "16": "09:30",
+      "17": "09:30",
+      "18": "09:30",
+      "19": "09:30",
+      "20": "09:30",
+      "21": "09:30"
+    },
+    "dayHotels": {
+      "1": "遠東悅樂大阪難波南酒店",
+      "2": "Urban Kyoto Eki Nishi",
+      "3": "新大阪微笑飯店"
+    },
+    "dropLuggageFirst": {
+      "1": true,
+      "2": true,
+      "3": true
+    },
+    "activitiesByDay": {
+      "1": [
+        {
+          "id": "act-1795166785907-y6nb",
+          "title": "道頓堀一蘭拉麵",
+          "duration": 60,
+          "note": ""
+        },
+        {
+          "id": "act-1795262834618",
+          "title": "道頓堀＆心齋橋晚餐逛街（固力果跑跑人）",
+          "tag": "美食逛街",
+          "duration": 120,
+          "note": "章魚燒、大阪燒、串炸與藥妝採買集中地，越夜越熱鬧。"
+        }
+      ],
+      "2": [
+        {
+          "id": "act-1795442346157",
+          "title": "% ARABICA 京都嵐山店",
+          "tag": "美食逛街",
+          "duration": 15,
+          "note": ""
+        },
+        {
+          "id": "act-1795435778662",
+          "title": "嵐山",
+          "tag": "4★+ 搜尋",
+          "duration": 90,
+          "note": "有猴群棲息的優美景點，坐擁竹林和水景。"
+        },
+        {
+          "id": "act-1795442381094",
+          "title": "清修庵 嵐山店",
+          "tag": "美食逛街",
+          "duration": 45,
+          "note": ""
+        },
+        {
+          "id": "act-1795446452403",
+          "title": "Takara Sushi",
+          "tag": "美食逛街",
+          "duration": 45,
+          "note": ""
+        },
+        {
+          "id": "act-1795446408590",
+          "title": "立誠ひろば",
+          "tag": "美食逛街",
+          "duration": 45,
+          "note": ""
+        },
+        {
+          "id": "act-1795446346791",
+          "title": "Grill Capital 東洋亭 JR京都伊勢丹店",
+          "tag": "美食逛街",
+          "duration": 45,
+          "note": ""
+        },
+        {
+          "id": "act-1795237470927-fn76",
+          "title": "京都車站大樓冬季點燈・大階段光之階梯",
+          "type": "經典景點",
+          "duration": 30,
+          "isIndoor": false,
+          "note": "京都市下京區（JR京都車站中央口大階段）",
+          "imageUrl": ""
+        }
+      ],
+      "3": [
+        {
+          "id": "act-init-2",
+          "title": "神戶布引香草園",
+          "type": "經典景點",
+          "duration": 180,
+          "isIndoor": false,
+          "note": "搭乘空中纜車俯瞰神戶港景與溫室花房"
+        },
+        {
+          "id": "act-1795233992814-ra0v",
+          "title": "Kinton Kōbe",
+          "type": "季節美食",
+          "duration": 60,
+          "isIndoor": false,
+          "note": ""
+        },
+        {
+          "id": "act-1795231455992-12om",
+          "title": "遊びトレジャー本店",
+          "type": "經典景點",
+          "duration": 45,
+          "isIndoor": false,
+          "note": ""
+        },
+        {
+          "id": "act-1795229839376-i54o",
+          "title": "Blue Bottle Coffee - Kobe Cafe",
+          "type": "季節美食",
+          "duration": 45,
+          "isIndoor": false,
+          "note": ""
+        },
+        {
+          "id": "act-1795262805916",
+          "title": "神戶港塔＆美利堅公園海濱夜景",
+          "tag": "景點",
+          "duration": 90,
+          "note": ""
+        }
+      ],
+      "4": [
+        {
+          "id": "act-1795095428598-8j0o",
+          "title": "通天閣",
+          "type": "經典景點",
+          "duration": 60,
+          "isIndoor": false,
+          "note": ""
+        },
+        {
+          "id": "act-1795094560212-k57r",
+          "title": "阿倍野 Q's Mall",
+          "type": "購物散策",
+          "duration": 180,
+          "isIndoor": true,
+          "note": ""
+        },
+        {
+          "id": "act-1795446538178",
+          "title": "Aburiya Abeno LUCIAS",
+          "tag": "美食逛街",
+          "duration": 45,
+          "note": ""
+        },
+        {
+          "id": "act-1795095463998-2cik",
+          "title": "天王寺MIO",
+          "type": "購物散策",
+          "duration": 60,
+          "isIndoor": false,
+          "note": ""
+        },
+        {
+          "id": "act-1795095375473-xybj",
+          "title": "Harukas300展望台",
+          "type": "經典景點",
+          "duration": 60,
+          "isIndoor": false,
+          "note": ""
+        },
+        {
+          "id": "act-1795440812039",
+          "title": "大鳥大社",
+          "tag": "4★+ 搜尋",
+          "duration": 90,
+          "note": "坐落在靜謐森林裡的宏偉神道教神社，內有大型木造鳥居和銅像。"
+        }
+      ],
+      "5": [],
+      "6": [],
+      "7": [],
+      "8": [],
+      "9": [],
+      "10": [],
+      "11": [],
+      "12": [],
+      "13": [],
+      "14": [],
+      "15": [],
+      "16": [],
+      "17": [],
+      "18": [],
+      "19": [],
+      "20": [],
+      "21": []
+    },
+    "manualTransitMinutes": {},
+    "routeCache": {
+      "TRANSIT|道頓堀一蘭拉麵|道頓堀＆心齋橋晚餐逛街（固力果跑跑人）": {
+        "minutes": 8,
+        "modeBadge": "🚶 步行散策直達最快",
+        "detailText": "沿途步行前往約 8 分（距離約 0.6 km）",
+        "fareText": "步行免費 ¥0",
+        "ts": 1795343072392
+      },
+      "TRANSIT|關西國際機場 (KIX)|東橫INN 大阪難波西": {
+        "minutes": 73,
+        "modeBadge": "🚆 南海電鐵特急 Rapi:t / 空港急行直達最快",
+        "detailText": "南海空港線一班車直達難波加兩端步行約 73 分（若改搭 JR 需在天王寺/新今宮轉乘約 85 分）",
+        "fareText": "原價車資 ¥970（南海空港急行／特急 Rapi:t ¥1,490）",
+        "ts": 1795343072427
+      },
+      "TRANSIT|東橫INN 大阪難波西|道頓堀一蘭拉麵": {
+        "minutes": 17,
+        "modeBadge": "🚇 地鐵御堂筋線直達最快（亦可搭 JR 轉乘）",
+        "detailText": "地鐵一班車直達加兩端步行約 17 分（若改搭 JR 轉乘約需 25 分）",
+        "fareText": "原價車資 ¥290（ICOCA / 地鐵單程票）",
+        "ts": 1795343072436
+      },
+      "TRANSIT|道頓堀＆心齋橋晚餐逛街（固力果跑跑人）|東橫INN 大阪難波西": {
+        "minutes": 21,
+        "modeBadge": "🚇 地鐵御堂筋線直達最快（亦可搭 JR 轉乘）",
+        "detailText": "地鐵一班車直達加兩端步行約 21 分（若改搭 JR 轉乘約需 29 分）",
+        "fareText": "原價車資 ¥290（ICOCA / 地鐵單程票）",
+        "ts": 1795343072443
+      },
+      "TRANSIT|Kinton Kōbe|遊びトレジャー本店": {
+        "minutes": 4,
+        "modeBadge": "🚶 步行散策直達最快",
+        "detailText": "沿途步行前往約 4 分（距離約 0.1 km）",
+        "fareText": "步行免費 ¥0",
+        "ts": 1795351726485
+      },
+      "TRANSIT|遊びトレジャー本店|Blue Bottle Coffee - Kobe Cafe": {
+        "minutes": 8,
+        "modeBadge": "🚶 步行散策直達最快",
+        "detailText": "沿途步行前往約 8 分（距離約 0.6 km）",
+        "fareText": "步行免費 ¥0",
+        "ts": 1795351726554
+      },
+      "TRANSIT|Blue Bottle Coffee - Kobe Cafe|神戶港塔＆美利堅公園海濱夜景": {
+        "minutes": 13,
+        "modeBadge": "🚶 步行散策直達最快",
+        "detailText": "沿途步行前往約 13 分（距離約 0.9 km）",
+        "fareText": "步行免費 ¥0",
+        "ts": 1795351726557
+      },
+      "TRANSIT|東橫INN 新大阪東口|神戶布引香草園": {
+        "minutes": 74,
+        "modeBadge": "🚄 JR 神戶線新快速直達",
+        "detailText": "JR 新快速直達神戶三宮/元町，含兩端步行約 74 分",
+        "fareText": "原價車資 ¥420（持 JR PASS 可全額折抵）",
+        "ts": 1795351726559
+      },
+      "TRANSIT|神戶布引香草園|Kinton Kōbe": {
+        "minutes": 24,
+        "modeBadge": "🚶 步行散策直達最快",
+        "detailText": "沿途步行前往約 24 分（距離約 1.8 km）",
+        "fareText": "步行免費 ¥0",
+        "ts": 1795351726562
+      },
+      "TRANSIT|東橫INN 大阪難波西|東橫INN 新大阪東口": {
+        "minutes": 37,
+        "modeBadge": "🚇 地鐵御堂筋線直達最快（亦可搭 JR 轉乘）",
+        "detailText": "地鐵一班車直達加兩端步行約 37 分（若改搭 JR 轉乘約需 45 分）",
+        "fareText": "原價車資 ¥290（地鐵需自付／若改搭 JR 轉乘可用 PASS）",
+        "ts": 1795351726601
+      },
+      "TRANSIT|神戶港塔＆美利堅公園海濱夜景|東橫INN 新大阪東口": {
+        "minutes": 68,
+        "modeBadge": "🚄 JR 神戶線新快速直達",
+        "detailText": "JR 新快速直達神戶三宮/元町，含兩端步行約 68 分",
+        "fareText": "原價車資 ¥420（持 JR PASS 可全額折抵）",
+        "ts": 1795351726617
+      },
+      "TRANSIT|東橫INN 新大阪東口|京都車站大樓冬季點燈・大階段光之階梯": {
+        "minutes": 76,
+        "modeBadge": "🚄 JR 京都線新快速直達最快",
+        "detailText": "JR 新快速直達京都車站（轉乘奈良線/嵯峨野線），含兩端步行約 76 分",
+        "fareText": "原價車資 ¥580（持 JR PASS 可全額折抵）",
+        "ts": 1795351726802
+      },
+      "TRANSIT|京都車站大樓冬季點燈・大階段光之階梯|東橫INN 新大阪東口": {
+        "minutes": 75,
+        "modeBadge": "🚄 JR 京都線新快速直達最快",
+        "detailText": "JR 新快速直達京都車站（轉乘奈良線/嵯峨野線），含兩端步行約 75 分",
+        "fareText": "原價車資 ¥580（持 JR PASS 可全額折抵）",
+        "ts": 1795351726814
+      },
+      "TRANSIT|關西國際機場 (KIX)|遠東悅樂大阪難波南": {
+        "minutes": 73,
+        "modeBadge": "🚆 南海電鐵特急 Rapi:t / 空港急行直達最快",
+        "detailText": "南海空港線一班車直達難波加兩端步行約 73 分（若改搭 JR 需在天王寺/新今宮轉乘約 85 分）",
+        "fareText": "原價車資 ¥970（南海空港急行／特急 Rapi:t ¥1,490）",
+        "ts": 1795351801027
+      },
+      "TRANSIT|道頓堀＆心齋橋晚餐逛街（固力果跑跑人）|遠東悅樂大阪難波南": {
+        "minutes": 19,
+        "modeBadge": "🚇 地鐵御堂筋線直達最快（亦可搭 JR 轉乘）",
+        "detailText": "地鐵一班車直達加兩端步行約 19 分（若改搭 JR 轉乘約需 27 分）",
+        "fareText": "原價車資 ¥290（ICOCA / 地鐵單程票）",
+        "ts": 1795351801055
+      },
+      "TRANSIT|遠東悅樂大阪難波南|道頓堀一蘭拉麵": {
+        "minutes": 19,
+        "modeBadge": "🚇 地鐵御堂筋線直達最快（亦可搭 JR 轉乘）",
+        "detailText": "地鐵一班車直達加兩端步行約 19 分（若改搭 JR 轉乘約需 27 分）",
+        "fareText": "原價車資 ¥290（ICOCA / 地鐵單程票）",
+        "ts": 1795351801138
+      },
+      "TRANSIT|遠東悅樂大阪難波南酒店|道頓堀一蘭拉麵": {
+        "minutes": 19,
+        "modeBadge": "🚇 地鐵御堂筋線直達最快（亦可搭 JR 轉乘）",
+        "detailText": "地鐵一班車直達加兩端步行約 19 分（若改搭 JR 轉乘約需 27 分）",
+        "fareText": "原價車資 ¥290（ICOCA / 地鐵單程票）",
+        "ts": 1795351809532
+      },
+      "TRANSIT|道頓堀＆心齋橋晚餐逛街（固力果跑跑人）|遠東悅樂大阪難波南酒店": {
+        "minutes": 19,
+        "modeBadge": "🚇 地鐵御堂筋線直達最快（亦可搭 JR 轉乘）",
+        "detailText": "地鐵一班車直達加兩端步行約 19 分（若改搭 JR 轉乘約需 27 分）",
+        "fareText": "原價車資 ¥290（ICOCA / 地鐵單程票）",
+        "ts": 1795351809535
+      },
+      "TRANSIT|關西國際機場 (KIX)|遠東悅樂大阪難波南酒店": {
+        "minutes": 73,
+        "modeBadge": "🚆 南海電鐵特急 Rapi:t / 空港急行直達最快",
+        "detailText": "南海空港線一班車直達難波加兩端步行約 73 分（若改搭 JR 需在天王寺/新今宮轉乘約 85 分）",
+        "fareText": "原價車資 ¥970（南海空港急行／特急 Rapi:t ¥1,490）",
+        "ts": 1795351809600
+      },
+      "TRANSIT|遠東悅樂大阪難波南酒店|東橫INN 新大阪東口": {
+        "minutes": 40,
+        "modeBadge": "🚇 地鐵御堂筋線直達最快（亦可搭 JR 轉乘）",
+        "detailText": "地鐵一班車直達加兩端步行約 40 分（若改搭 JR 轉乘約需 48 分）",
+        "fareText": "原價車資 ¥290（地鐵需自付／若改搭 JR 轉乘可用 PASS）",
+        "ts": 1795351810440
+      },
+      "TRANSIT|遠東悅樂大阪難波南酒店|Urban Kyoto Eki Nishi": {
+        "minutes": 76,
+        "modeBadge": "🚇 地鐵御堂筋線直達最快（亦可搭 JR 轉乘）",
+        "detailText": "地鐵一班車直達加兩端步行約 76 分（若改搭 JR 轉乘約需 84 分）",
+        "fareText": "原價車資 ¥290（地鐵需自付／若改搭 JR 轉乘可用 PASS）",
+        "ts": 1795356545251
+      },
+      "TRANSIT|神戶港塔＆美利堅公園海濱夜景|Urban Kyoto Eki Nishi": {
+        "minutes": 91,
+        "modeBadge": "🚄 JR 新快速／特急直達（約 71 km）",
+        "detailText": "搭乘 JR 幹線列車含兩端步行轉乘約 91 分",
+        "fareText": "原價車資 ¥1,410（持 JR PASS 可全額折抵）",
+        "ts": 1795356545281
+      },
+      "TRANSIT|Urban Kyoto Eki Nishi|神戶布引香草園": {
+        "minutes": 98,
+        "modeBadge": "🚄 JR 新快速／特急直達（約 72 km）",
+        "detailText": "搭乘 JR 幹線列車含兩端步行轉乘約 98 分",
+        "fareText": "原價車資 ¥1,420（持 JR PASS 可全額折抵）",
+        "ts": 1795356545301
+      },
+      "TRANSIT|Urban Kyoto Eki Nishi|京都車站大樓冬季點燈・大階段光之階梯": {
+        "minutes": 20,
+        "modeBadge": "🚶 步行散策直達最快",
+        "detailText": "沿途步行前往約 20 分（距離約 1.0 km）",
+        "fareText": "步行免費 ¥0",
+        "ts": 1795356548860
+      },
+      "TRANSIT|京都車站大樓冬季點燈・大階段光之階梯|Urban Kyoto Eki Nishi": {
+        "minutes": 20,
+        "modeBadge": "🚶 步行散策直達最快",
+        "detailText": "沿途步行前往約 20 分（距離約 0.8 km）",
+        "fareText": "步行免費 ¥0",
+        "ts": 1795356556431
+      },
+      "TRANSIT|神戶港塔＆美利堅公園海濱夜景|新大阪微笑飯店": {
+        "minutes": 66,
+        "modeBadge": "🚄 JR 神戶線新快速直達",
+        "detailText": "JR 新快速直達神戶三宮/元町，含兩端步行約 66 分",
+        "fareText": "原價車資 ¥420（持 JR PASS 可全額折抵）",
+        "ts": 1795356932249
+      },
+      "TRANSIT|新大阪微笑飯店|神戶布引香草園": {
+        "minutes": 72,
+        "modeBadge": "🚄 JR 神戶線新快速直達",
+        "detailText": "JR 新快速直達神戶三宮/元町，含兩端步行約 72 分",
+        "fareText": "原價車資 ¥420（持 JR PASS 可全額折抵）",
+        "ts": 1795356939878
+      },
+      "TRANSIT|Urban Kyoto Eki Nishi|新大阪微笑飯店": {
+        "minutes": 69,
+        "modeBadge": "🚄 JR 新快速／特急直達（約 46 km）",
+        "detailText": "搭乘 JR 幹線列車含兩端步行轉乘約 69 分",
+        "fareText": "原價車資 ¥1,000（持 JR PASS 可全額折抵）",
+        "ts": 1795356939891
+      },
+      "TRANSIT|Harukas300展望台|關西國際機場 (KIX)": {
+        "minutes": 65,
+        "modeBadge": "🚄 JR 新快速／特急直達（約 50 km）",
+        "detailText": "搭乘 JR 幹線列車含兩端步行轉乘約 65 分",
+        "fareText": "原價車資 ¥1,070（持 JR PASS 可全額折抵）",
+        "ts": 1795356979464
+      },
+      "TRANSIT|天王寺MIO|Harukas300展望台": {
+        "minutes": 4,
+        "modeBadge": "🚶 步行散策直達最快",
+        "detailText": "沿途步行前往約 4 分（距離約 0.2 km）",
+        "fareText": "步行免費 ¥0",
+        "ts": 1795356979588
+      },
+      "TRANSIT|通天閣|阿倍野 Q's Mall": {
+        "minutes": 20,
+        "modeBadge": "🚶 步行散策直達最快",
+        "detailText": "沿途步行前往約 20 分（距離約 1.4 km）",
+        "fareText": "步行免費 ¥0",
+        "ts": 1795356979645
+      },
+      "TRANSIT|新大阪微笑飯店|通天閣": {
+        "minutes": 37,
+        "modeBadge": "🚃 JR 在來線／地鐵轉乘",
+        "detailText": "市區電車轉乘含兩端進出站步行約 37 分（約 9.7 km）",
+        "fareText": "原價車資 ¥330（JR 路段可用 PASS 折抵／私鐵地鐵需自付）",
+        "ts": 1795356979668
+      },
+      "TRANSIT|阿倍野 Q's Mall|天王寺MIO": {
+        "minutes": 6,
+        "modeBadge": "🚶 步行散策直達最快",
+        "detailText": "沿途步行前往約 6 分（距離約 0.4 km）",
+        "fareText": "步行免費 ¥0",
+        "ts": 1795356979701
+      },
+      "TRANSIT|京都車站大樓冬季點燈・大階段光之階梯|嵐山": {
+        "minutes": 47,
+        "modeBadge": "🚃 JR 在來線／地鐵轉乘",
+        "detailText": "市區電車轉乘含兩端進出站步行約 47 分（約 10.1 km）",
+        "fareText": "原價車資 ¥330（JR 路段可用 PASS 折抵／私鐵地鐵需自付）",
+        "ts": 1795435778935
+      },
+      "TRANSIT|嵐山|Urban Kyoto Eki Nishi": {
+        "minutes": 45,
+        "modeBadge": "🚃 JR 在來線／地鐵轉乘",
+        "detailText": "市區電車轉乘含兩端進出站步行約 45 分（約 9.3 km）",
+        "fareText": "原價車資 ¥320（JR 路段可用 PASS 折抵／私鐵地鐵需自付）",
+        "ts": 1795435778984
+      },
+      "TRANSIT|Urban Kyoto Eki Nishi|嵐山": {
+        "minutes": 44,
+        "modeBadge": "🚃 JR 在來線／地鐵轉乘",
+        "detailText": "市區電車轉乘含兩端進出站步行約 44 分（約 9.6 km）",
+        "fareText": "原價車資 ¥320（JR 路段可用 PASS 折抵／私鐵地鐵需自付）",
+        "ts": 1795435786467
+      },
+      "TRANSIT|嵐山|京都車站大樓冬季點燈・大階段光之階梯": {
+        "minutes": 47,
+        "modeBadge": "🚃 JR 在來線／地鐵轉乘",
+        "detailText": "市區電車轉乘含兩端進出站步行約 47 分（約 10.1 km）",
+        "fareText": "原價車資 ¥330（JR 路段可用 PASS 折抵／私鐵地鐵需自付）",
+        "ts": 1795435786490
+      },
+      "TRANSIT|大鳥大社|關西國際機場 (KIX)": {
+        "minutes": 52,
+        "modeBadge": "🚄 JR 新快速／特急直達（約 31 km）",
+        "detailText": "搭乘 JR 幹線列車含兩端步行轉乘約 52 分",
+        "fareText": "原價車資 ¥740（持 JR PASS 可全額折抵）",
+        "ts": 1795440812361
+      },
+      "TRANSIT|Harukas300展望台|大鳥大社": {
+        "minutes": 42,
+        "modeBadge": "🚄 JR 新快速／特急直達（約 21 km）",
+        "detailText": "搭乘 JR 幹線列車含兩端步行轉乘約 42 分",
+        "fareText": "原價車資 ¥590（持 JR PASS 可全額折抵）",
+        "ts": 1795440812390
+      },
+      "TRANSIT|木屋町聖誕節|Urban Kyoto Eki Nishi": {
+        "minutes": 31,
+        "modeBadge": "🚃 JR 在來線／地鐵轉乘",
+        "detailText": "市區電車轉乘含兩端進出站步行約 31 分（約 4.1 km）",
+        "fareText": "原價車資 ¥250（JR 路段可用 PASS 折抵／私鐵地鐵需自付）",
+        "ts": 1795441212156
+      },
+      "TRANSIT|京都車站大樓冬季點燈・大階段光之階梯|木屋町聖誕節": {
+        "minutes": 32,
+        "modeBadge": "🚃 JR 在來線／地鐵轉乘",
+        "detailText": "市區電車轉乘含兩端進出站步行約 32 分（約 4.1 km）",
+        "fareText": "原價車資 ¥250（JR 路段可用 PASS 折抵／私鐵地鐵需自付）",
+        "ts": 1795441212183
+      },
+      "TRANSIT|嵐山|木屋町聖誕節": {
+        "minutes": 53,
+        "modeBadge": "🚃 JR 在來線／地鐵轉乘",
+        "detailText": "市區電車轉乘含兩端進出站步行約 53 分（約 9.8 km）",
+        "fareText": "原價車資 ¥330（JR 路段可用 PASS 折抵／私鐵地鐵需自付）",
+        "ts": 1795441213246
+      },
+      "TRANSIT|木屋町聖誕節|京都車站大樓冬季點燈・大階段光之階梯": {
+        "minutes": 30,
+        "modeBadge": "🚃 JR 在來線／地鐵轉乘",
+        "detailText": "市區電車轉乘含兩端進出站步行約 30 分（約 3.4 km）",
+        "fareText": "原價車資 ¥240（JR 路段可用 PASS 折抵／私鐵地鐵需自付）",
+        "ts": 1795441213286
+      },
+      "TRANSIT|京都車站大樓冬季點燈・大階段光之階梯|木屋町聖誕市集": {
+        "minutes": 407,
+        "modeBadge": "🚄 JR 新快速／特急直達（約 457 km）",
+        "detailText": "搭乘 JR 幹線列車含兩端步行轉乘約 407 分",
+        "fareText": "原價車資 ¥7,780（持 JR PASS 可全額折抵）",
+        "ts": 1795442297413
+      },
+      "TRANSIT|木屋町聖誕市集|Urban Kyoto Eki Nishi": {
+        "minutes": 405,
+        "modeBadge": "🚄 JR 新快速／特急直達（約 457 km）",
+        "detailText": "搭乘 JR 幹線列車含兩端步行轉乘約 405 分",
+        "fareText": "原價車資 ¥7,780（持 JR PASS 可全額折抵）",
+        "ts": 1795442297477
+      },
+      "TRANSIT|木屋町聖誕節|木屋町聖誕市集": {
+        "minutes": 404,
+        "modeBadge": "🚄 JR 新快速／特急直達（約 451 km）",
+        "detailText": "搭乘 JR 幹線列車含兩端步行轉乘約 404 分",
+        "fareText": "原價車資 ¥7,680（持 JR PASS 可全額折抵）",
+        "ts": 1795442300336
+      },
+      "TRANSIT|木屋町聖誕市集|京都車站大樓冬季點燈・大階段光之階梯": {
+        "minutes": 408,
+        "modeBadge": "🚄 JR 新快速／特急直達（約 457 km）",
+        "detailText": "搭乘 JR 幹線列車含兩端步行轉乘約 408 分",
+        "fareText": "原價車資 ¥7,780（持 JR PASS 可全額折抵）",
+        "ts": 1795442300374
+      },
+      "TRANSIT|嵐山|木屋町聖誕市集": {
+        "minutes": 425,
+        "modeBadge": "🚄 JR 新快速／特急直達（約 464 km）",
+        "detailText": "搭乘 JR 幹線列車含兩端步行轉乘約 425 分",
+        "fareText": "原價車資 ¥7,900（持 JR PASS 可全額折抵）",
+        "ts": 1795442302881
+      },
+      "TRANSIT|京都車站大樓冬季點燈・大階段光之階梯|% ARABICA 京都嵐山店": {
+        "minutes": 46,
+        "modeBadge": "🚃 JR 在來線／地鐵轉乘",
+        "detailText": "市區電車轉乘含兩端進出站步行約 46 分（約 9.8 km）",
+        "fareText": "原價車資 ¥330（JR 路段可用 PASS 折抵／私鐵地鐵需自付）",
+        "ts": 1795442346545
+      },
+      "TRANSIT|% ARABICA 京都嵐山店|Urban Kyoto Eki Nishi": {
+        "minutes": 43,
+        "modeBadge": "🚃 JR 在來線／地鐵轉乘",
+        "detailText": "市區電車轉乘含兩端進出站步行約 43 分（約 9.1 km）",
+        "fareText": "原價車資 ¥320（JR 路段可用 PASS 折抵／私鐵地鐵需自付）",
+        "ts": 1795442346557
+      },
+      "TRANSIT|% ARABICA 京都嵐山店|京都車站大樓冬季點燈・大階段光之階梯": {
+        "minutes": 46,
+        "modeBadge": "🚃 JR 在來線／地鐵轉乘",
+        "detailText": "市區電車轉乘含兩端進出站步行約 46 分（約 9.8 km）",
+        "fareText": "原價車資 ¥330（JR 路段可用 PASS 折抵／私鐵地鐵需自付）",
+        "ts": 1795442348129
+      },
+      "TRANSIT|木屋町聖誕市集|% ARABICA 京都嵐山店": {
+        "minutes": 425,
+        "modeBadge": "🚄 JR 新快速／特急直達（約 464 km）",
+        "detailText": "搭乘 JR 幹線列車含兩端步行轉乘約 425 分",
+        "fareText": "原價車資 ¥7,900（持 JR PASS 可全額折抵）",
+        "ts": 1795442348233
+      },
+      "TRANSIT|嵐山|% ARABICA 京都嵐山店": {
+        "minutes": 19,
+        "modeBadge": "🚶 步行散策直達最快",
+        "detailText": "沿途步行前往約 19 分（距離約 0.3 km）",
+        "fareText": "步行免費 ¥0",
+        "ts": 1795442350502
+      },
+      "TRANSIT|% ARABICA 京都嵐山店|木屋町聖誕市集": {
+        "minutes": 423,
+        "modeBadge": "🚄 JR 新快速／特急直達（約 464 km）",
+        "detailText": "搭乘 JR 幹線列車含兩端步行轉乘約 423 分",
+        "fareText": "原價車資 ¥7,890（持 JR PASS 可全額折抵）",
+        "ts": 1795442350560
+      },
+      "TRANSIT|% ARABICA 京都嵐山店|嵐山": {
+        "minutes": 19,
+        "modeBadge": "🚶 步行散策直達最快",
+        "detailText": "沿途步行前往約 19 分（距離約 0.3 km）",
+        "fareText": "步行免費 ¥0",
+        "ts": 1795442353400
+      },
+      "TRANSIT|Urban Kyoto Eki Nishi|% ARABICA 京都嵐山店": {
+        "minutes": 43,
+        "modeBadge": "🚃 JR 在來線／地鐵轉乘",
+        "detailText": "市區電車轉乘含兩端進出站步行約 43 分（約 9.4 km）",
+        "fareText": "原價車資 ¥320（JR 路段可用 PASS 折抵／私鐵地鐵需自付）",
+        "ts": 1795442353447
+      },
+      "TRANSIT|京都車站大樓冬季點燈・大階段光之階梯|清修庵 嵐山店": {
+        "minutes": 45,
+        "modeBadge": "🚃 JR 在來線／地鐵轉乘",
+        "detailText": "市區電車轉乘含兩端進出站步行約 45 分（約 9.6 km）",
+        "fareText": "原價車資 ¥320（JR 路段可用 PASS 折抵／私鐵地鐵需自付）",
+        "ts": 1795442381379
+      },
+      "TRANSIT|清修庵 嵐山店|Urban Kyoto Eki Nishi": {
+        "minutes": 42,
+        "modeBadge": "🚃 JR 在來線／地鐵轉乘",
+        "detailText": "市區電車轉乘含兩端進出站步行約 42 分（約 8.9 km）",
+        "fareText": "原價車資 ¥310（JR 路段可用 PASS 折抵／私鐵地鐵需自付）",
+        "ts": 1795442381388
+      },
+      "TRANSIT|嵐山|清修庵 嵐山店": {
+        "minutes": 19,
+        "modeBadge": "🚶 步行散策直達最快",
+        "detailText": "沿途步行前往約 19 分（距離約 0.5 km）",
+        "fareText": "步行免費 ¥0",
+        "ts": 1795442392093
+      },
+      "TRANSIT|清修庵 嵐山店|木屋町聖誕市集": {
+        "minutes": 422,
+        "modeBadge": "🚄 JR 新快速／特急直達（約 464 km）",
+        "detailText": "搭乘 JR 幹線列車含兩端步行轉乘約 422 分",
+        "fareText": "原價車資 ¥7,890（持 JR PASS 可全額折抵）",
+        "ts": 1795442392163
+      },
+      "TRANSIT|京都車站大樓冬季點燈・大階段光之階梯|たから寿司": {
+        "minutes": 77,
+        "modeBadge": "🚄 JR 新快速／特急直達（約 54 km）",
+        "detailText": "搭乘 JR 幹線列車含兩端步行轉乘約 77 分",
+        "fareText": "原價車資 ¥1,130（持 JR PASS 可全額折抵）",
+        "ts": 1795445470625
+      },
+      "TRANSIT|たから寿司|Urban Kyoto Eki Nishi": {
+        "minutes": 78,
+        "modeBadge": "🚄 JR 新快速／特急直達（約 53 km）",
+        "detailText": "搭乘 JR 幹線列車含兩端步行轉乘約 78 分",
+        "fareText": "原價車資 ¥1,120（持 JR PASS 可全額折抵）",
+        "ts": 1795445470630
+      },
+      "TRANSIT|たから寿司|京都車站大樓冬季點燈・大階段光之階梯": {
+        "minutes": 80,
+        "modeBadge": "🚄 JR 新快速／特急直達（約 54 km）",
+        "detailText": "搭乘 JR 幹線列車含兩端步行轉乘約 80 分",
+        "fareText": "原價車資 ¥1,130（持 JR PASS 可全額折抵）",
+        "ts": 1795445472406
+      },
+      "TRANSIT|木屋町聖誕市集|たから寿司": {
+        "minutes": 438,
+        "modeBadge": "🚄 JR 新快速／特急直達（約 496 km）",
+        "detailText": "搭乘 JR 幹線列車含兩端步行轉乘約 438 分",
+        "fareText": "原價車資 ¥8,420（持 JR PASS 可全額折抵）",
+        "ts": 1795445472497
+      },
+      "TRANSIT|清修庵 嵐山店|たから寿司": {
+        "minutes": 96,
+        "modeBadge": "🚄 JR 新快速／特急直達（約 64 km）",
+        "detailText": "搭乘 JR 幹線列車含兩端步行轉乘約 96 分",
+        "fareText": "原價車資 ¥1,300（持 JR PASS 可全額折抵）",
+        "ts": 1795445476694
+      },
+      "TRANSIT|たから寿司|木屋町聖誕市集": {
+        "minutes": 441,
+        "modeBadge": "🚄 JR 新快速／特急直達（約 496 km）",
+        "detailText": "搭乘 JR 幹線列車含兩端步行轉乘約 441 分",
+        "fareText": "原價車資 ¥8,420（持 JR PASS 可全額折抵）",
+        "ts": 1795445476726
+      },
+      "TRANSIT|京都車站大樓冬季點燈・大階段光之階梯|Grill Capital 東洋亭 JR京都伊勢丹店": {
+        "minutes": 19,
+        "modeBadge": "🚶 步行散策直達最快",
+        "detailText": "沿途步行前往約 19 分（距離約 0.0 km）",
+        "fareText": "步行免費 ¥0",
+        "ts": 1795446347205
+      },
+      "TRANSIT|Grill Capital 東洋亭 JR京都伊勢丹店|Urban Kyoto Eki Nishi": {
+        "minutes": 20,
+        "modeBadge": "🚶 步行散策直達最快",
+        "detailText": "沿途步行前往約 20 分（距離約 0.7 km）",
+        "fareText": "步行免費 ¥0",
+        "ts": 1795446347232
+      },
+      "TRANSIT|Grill Capital 東洋亭 JR京都伊勢丹店|京都車站大樓冬季點燈・大階段光之階梯": {
+        "minutes": 19,
+        "modeBadge": "🚶 步行散策直達最快",
+        "detailText": "沿途步行前往約 19 分（距離約 0.0 km）",
+        "fareText": "步行免費 ¥0",
+        "ts": 1795446348903
+      },
+      "TRANSIT|木屋町聖誕市集|Grill Capital 東洋亭 JR京都伊勢丹店": {
+        "minutes": 408,
+        "modeBadge": "🚄 JR 新快速／特急直達（約 457 km）",
+        "detailText": "搭乘 JR 幹線列車含兩端步行轉乘約 408 分",
+        "fareText": "原價車資 ¥7,780（持 JR PASS 可全額折抵）",
+        "ts": 1795446348990
+      },
+      "TRANSIT|たから寿司|Grill Capital 東洋亭 JR京都伊勢丹店": {
+        "minutes": 80,
+        "modeBadge": "🚄 JR 新快速／特急直達（約 54 km）",
+        "detailText": "搭乘 JR 幹線列車含兩端步行轉乘約 80 分",
+        "fareText": "原價車資 ¥1,130（持 JR PASS 可全額折抵）",
+        "ts": 1795446364534
+      },
+      "TRANSIT|京都車站大樓冬季點燈・大階段光之階梯|立誠ひろば": {
+        "minutes": 32,
+        "modeBadge": "🚃 JR 在來線／地鐵轉乘",
+        "detailText": "市區電車轉乘含兩端進出站步行約 32 分（約 4.1 km）",
+        "fareText": "原價車資 ¥250（JR 路段可用 PASS 折抵／私鐵地鐵需自付）",
+        "ts": 1795446408944
+      },
+      "TRANSIT|立誠ひろば|Urban Kyoto Eki Nishi": {
+        "minutes": 31,
+        "modeBadge": "🚃 JR 在來線／地鐵轉乘",
+        "detailText": "市區電車轉乘含兩端進出站步行約 31 分（約 4.1 km）",
+        "fareText": "原價車資 ¥250（JR 路段可用 PASS 折抵／私鐵地鐵需自付）",
+        "ts": 1795446408967
+      },
+      "TRANSIT|Grill Capital 東洋亭 JR京都伊勢丹店|立誠ひろば": {
+        "minutes": 34,
+        "modeBadge": "🚃 JR 在來線／地鐵轉乘",
+        "detailText": "市區電車轉乘含兩端進出站步行約 34 分（約 4.2 km）",
+        "fareText": "原價車資 ¥250（JR 路段可用 PASS 折抵／私鐵地鐵需自付）",
+        "ts": 1795446410144
+      },
+      "TRANSIT|立誠ひろば|京都車站大樓冬季點燈・大階段光之階梯": {
+        "minutes": 29,
+        "modeBadge": "🚃 JR 在來線／地鐵轉乘",
+        "detailText": "市區電車轉乘含兩端進出站步行約 29 分（約 3.4 km）",
+        "fareText": "原價車資 ¥240（JR 路段可用 PASS 折抵／私鐵地鐵需自付）",
+        "ts": 1795446410176
+      },
+      "TRANSIT|立誠ひろば|Grill Capital 東洋亭 JR京都伊勢丹店": {
+        "minutes": 29,
+        "modeBadge": "🚃 JR 在來線／地鐵轉乘",
+        "detailText": "市區電車轉乘含兩端進出站步行約 29 分（約 3.4 km）",
+        "fareText": "原價車資 ¥240（JR 路段可用 PASS 折抵／私鐵地鐵需自付）",
+        "ts": 1795446412028
+      },
+      "TRANSIT|たから寿司|立誠ひろば": {
+        "minutes": 89,
+        "modeBadge": "🚄 JR 新快速／特急直達（約 58 km）",
+        "detailText": "搭乘 JR 幹線列車含兩端步行轉乘約 89 分",
+        "fareText": "原價車資 ¥1,190（持 JR PASS 可全額折抵）",
+        "ts": 1795446412049
+      },
+      "TRANSIT|清修庵 嵐山店|立誠ひろば": {
+        "minutes": 51,
+        "modeBadge": "🚃 JR 在來線／地鐵轉乘",
+        "detailText": "市區電車轉乘含兩端進出站步行約 51 分（約 9.3 km）",
+        "fareText": "原價車資 ¥320（JR 路段可用 PASS 折抵／私鐵地鐵需自付）",
+        "ts": 1795446448867
+      },
+      "TRANSIT|京都車站大樓冬季點燈・大階段光之階梯|Takara Sushi": {
+        "minutes": 77,
+        "modeBadge": "🚄 JR 新快速／特急直達（約 54 km）",
+        "detailText": "搭乘 JR 幹線列車含兩端步行轉乘約 77 分",
+        "fareText": "原價車資 ¥1,130（持 JR PASS 可全額折抵）",
+        "ts": 1795446452653
+      },
+      "TRANSIT|Takara Sushi|Urban Kyoto Eki Nishi": {
+        "minutes": 78,
+        "modeBadge": "🚄 JR 新快速／特急直達（約 53 km）",
+        "detailText": "搭乘 JR 幹線列車含兩端步行轉乘約 78 分",
+        "fareText": "原價車資 ¥1,120（持 JR PASS 可全額折抵）",
+        "ts": 1795446452679
+      },
+      "TRANSIT|Takara Sushi|京都車站大樓冬季點燈・大階段光之階梯": {
+        "minutes": 80,
+        "modeBadge": "🚄 JR 新快速／特急直達（約 54 km）",
+        "detailText": "搭乘 JR 幹線列車含兩端步行轉乘約 80 分",
+        "fareText": "原價車資 ¥1,130（持 JR PASS 可全額折抵）",
+        "ts": 1795446463676
+      },
+      "TRANSIT|Grill Capital 東洋亭 JR京都伊勢丹店|Takara Sushi": {
+        "minutes": 76,
+        "modeBadge": "🚄 JR 新快速／特急直達（約 54 km）",
+        "detailText": "搭乘 JR 幹線列車含兩端步行轉乘約 76 分",
+        "fareText": "原價車資 ¥1,130（持 JR PASS 可全額折抵）",
+        "ts": 1795446463698
+      },
+      "TRANSIT|立誠ひろば|Takara Sushi": {
+        "minutes": 82,
+        "modeBadge": "🚄 JR 新快速／特急直達（約 56 km）",
+        "detailText": "搭乘 JR 幹線列車含兩端步行轉乘約 82 分",
+        "fareText": "原價車資 ¥1,170（持 JR PASS 可全額折抵）",
+        "ts": 1795446466382
+      },
+      "TRANSIT|Takara Sushi|Grill Capital 東洋亭 JR京都伊勢丹店": {
+        "minutes": 80,
+        "modeBadge": "🚄 JR 新快速／特急直達（約 54 km）",
+        "detailText": "搭乘 JR 幹線列車含兩端步行轉乘約 80 分",
+        "fareText": "原價車資 ¥1,130（持 JR PASS 可全額折抵）",
+        "ts": 1795446466403
+      },
+      "TRANSIT|Takara Sushi|立誠ひろば": {
+        "minutes": 89,
+        "modeBadge": "🚄 JR 新快速／特急直達（約 58 km）",
+        "detailText": "搭乘 JR 幹線列車含兩端步行轉乘約 89 分",
+        "fareText": "原價車資 ¥1,190（持 JR PASS 可全額折抵）",
+        "ts": 1795446467475
+      },
+      "TRANSIT|清修庵 嵐山店|Takara Sushi": {
+        "minutes": 96,
+        "modeBadge": "🚄 JR 新快速／特急直達（約 64 km）",
+        "detailText": "搭乘 JR 幹線列車含兩端步行轉乘約 96 分",
+        "fareText": "原價車資 ¥1,300（持 JR PASS 可全額折抵）",
+        "ts": 1795446467500
+      },
+      "TRANSIT|大鳥大社|Aburiya Abeno LUCIAS": {
+        "minutes": 49,
+        "modeBadge": "🚄 JR 新快速／特急直達（約 18 km）",
+        "detailText": "搭乘 JR 幹線列車含兩端步行轉乘約 49 分",
+        "fareText": "原價車資 ¥530（持 JR PASS 可全額折抵）",
+        "ts": 1795446538500
+      },
+      "TRANSIT|Aburiya Abeno LUCIAS|關西國際機場 (KIX)": {
+        "minutes": 63,
+        "modeBadge": "🚄 JR 新快速／特急直達（約 50 km）",
+        "detailText": "搭乘 JR 幹線列車含兩端步行轉乘約 63 分",
+        "fareText": "原價車資 ¥1,060（持 JR PASS 可全額折抵）",
+        "ts": 1795446538531
+      },
+      "TRANSIT|Aburiya Abeno LUCIAS|大鳥大社": {
+        "minutes": 42,
+        "modeBadge": "🚄 JR 新快速／特急直達（約 21 km）",
+        "detailText": "搭乘 JR 幹線列車含兩端步行轉乘約 42 分",
+        "fareText": "原價車資 ¥590（持 JR PASS 可全額折抵）",
+        "ts": 1795446539722
+      },
+      "TRANSIT|Harukas300展望台|Aburiya Abeno LUCIAS": {
+        "minutes": 6,
+        "modeBadge": "🚶 步行散策直達最快",
+        "detailText": "沿途步行前往約 6 分（距離約 0.4 km）",
+        "fareText": "步行免費 ¥0",
+        "ts": 1795446539789
+      },
+      "TRANSIT|Aburiya Abeno LUCIAS|Harukas300展望台": {
+        "minutes": 6,
+        "modeBadge": "🚶 步行散策直達最快",
+        "detailText": "沿途步行前往約 6 分（距離約 0.4 km）",
+        "fareText": "步行免費 ¥0",
+        "ts": 1795446540935
+      },
+      "TRANSIT|天王寺MIO|Aburiya Abeno LUCIAS": {
+        "minutes": 7,
+        "modeBadge": "🚶 步行散策直達最快",
+        "detailText": "沿途步行前往約 7 分（距離約 0.4 km）",
+        "fareText": "步行免費 ¥0",
+        "ts": 1795446540952
+      },
+      "TRANSIT|通天閣|Aburiya Abeno LUCIAS": {
+        "minutes": 16,
+        "modeBadge": "🚶 步行散策直達最快",
+        "detailText": "沿途步行前往約 16 分（距離約 1.1 km）",
+        "fareText": "步行免費 ¥0",
+        "ts": 1795446549519
+      },
+      "TRANSIT|Aburiya Abeno LUCIAS|阿倍野 Q's Mall": {
+        "minutes": 5,
+        "modeBadge": "🚶 步行散策直達最快",
+        "detailText": "沿途步行前往約 5 分（距離約 0.3 km）",
+        "fareText": "步行免費 ¥0",
+        "ts": 1795446549551
+      },
+      "TRANSIT|Aburiya Abeno LUCIAS|天王寺MIO": {
+        "minutes": 7,
+        "modeBadge": "🚶 步行散策直達最快",
+        "detailText": "沿途步行前往約 7 分（距離約 0.4 km）",
+        "fareText": "步行免費 ¥0",
+        "ts": 1795446554132
+      },
+      "TRANSIT|阿倍野 Q's Mall|Aburiya Abeno LUCIAS": {
+        "minutes": 5,
+        "modeBadge": "🚶 步行散策直達最快",
+        "detailText": "沿途步行前往約 5 分（距離約 0.3 km）",
+        "fareText": "步行免費 ¥0",
+        "ts": 1795446554149
+      }
+    },
+    "trashBin": [
+      {
+        "id": "act-1795445470194",
+        "title": "たから寿司",
+        "tag": "美食逛街",
+        "duration": 45,
+        "note": "",
+        "originalDay": 2
+      },
+      {
+        "id": "act-1795442296930",
+        "title": "木屋町聖誕市集",
+        "tag": "美食逛街",
+        "duration": 60,
+        "note": "立誠ひろば",
+        "originalDay": 2
+      },
+      {
+        "id": "act-1795441211771",
+        "title": "木屋町聖誕節",
+        "tag": "光影花火",
+        "duration": 60,
+        "note": "",
+        "originalDay": 2
+      }
+    ],
+    "trashDrawerOpen": true,
+    "jpyRate": 0.215,
+    "fixedExpenses": [
+      {
+        "id": "fx-1795351831019",
+        "type": "住宿費用",
+        "item": "day1",
+        "currency": "TWD",
+        "amount": 485
+      },
+      {
+        "id": "fx-1795351864715",
+        "type": "住宿費用",
+        "item": "day3",
+        "currency": "TWD",
+        "amount": 297
+      },
+      {
+        "id": "fx-1795356569748",
+        "type": "住宿費用",
+        "item": "day2",
+        "currency": "TWD",
+        "amount": 880
+      },
+      {
+        "id": "fx-1795356811923",
+        "type": "機票費用",
+        "item": "機票1",
+        "currency": "TWD",
+        "amount": 4942
+      },
+      {
+        "id": "fx-1795356825221",
+        "type": "機票費用",
+        "item": "機票2",
+        "currency": "TWD",
+        "amount": 2575
+      }
+    ],
+    "expensesByDay": {
+      "1": [
+        {
+          "id": "ex-1795425627136",
+          "category": "🚇 交通IC卡/計程車",
+          "item": "Rapit",
+          "amountJpy": 2800
+        }
+      ]
+    },
+    "recFilter": "all",
+    "customRecItems": [
+      {
+        "id": "custom-rec-1795440809038",
+        "region": "kansai",
+        "type": "spot",
+        "months": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12
+        ],
+        "tag": "4★+ 搜尋",
+        "periodText": "即時加入",
+        "rating": 4.4,
+        "userRatingCount": 1815,
+        "location": "1-chōme-1-2 Ōtorikitamachi, Nishi Ward, Sakai, Osaka 593-8328日本",
+        "title": "大鳥大社",
+        "duration": 90,
+        "note": "坐落在靜謐森林裡的宏偉神道教神社，內有大型木造鳥居和銅像。",
+        "photoUrl": "https://places.googleapis.com/v1/places/ChIJTZC2jjnbAGAR8mU6R4C1Ziw/photos/AV-0GLcBKWzCB6FC-Jiw5dDirxlg0HwGgIHscfHHbIu9HQt_mOhnbXKtkZkWWPQ4ZMSCfBN3846pnCZmkTD1iMtjIKLSs8A70TcZXr0bc1x1Yk8PfuJFcX-LNQofzqfP_m9KpF67c4ANENzTrKdUF_sllgkh_Y9TNdaqS0T2pLJhJjJ33pUvwBjKlbKSiSTIWf4wJDKNIEeAyOj3umKCYr-1F7EztSqj9XblZBUiI-vebK1km9UfWAGVp1TqK-UPpGL2D2MHB_BTh9ulKyQyvwyPmfPctDJ6M0GDh9eaoaF1ISEk-z03Z2i7Fg7QBAndyZM9E5K-QIqFAn6TPgs5Oim8dy2P5lmUcVqaU758h_u0W1CZz8j3FGOAN6mXra6Xmudo2od6K-x3T3UrSzjT38FBHYeXpyZwxeRvW6nq3i_bASocPw/media?maxWidthPx=600&key=AIzaSyByB_1EwCQhqq2TY-8uK0Qy6wiF-b1goL0"
+      },
+      {
+        "id": "custom-rec-1795435773464",
+        "region": "kansai",
+        "type": "spot",
+        "months": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12
+        ],
+        "tag": "4★+ 搜尋",
+        "periodText": "即時加入",
+        "rating": 4.5,
+        "userRatingCount": 7807,
+        "location": "〒616-0007 京都府京都市右京區 Arashiyama Genrokuzancho",
+        "title": "嵐山",
+        "duration": 90,
+        "note": "有猴群棲息的優美景點，坐擁竹林和水景。",
+        "photoUrl": "https://places.googleapis.com/v1/places/ChIJ49PvUVQHAWARTAF7WU_Wqqs/photos/AV-0GLcOs_8m7Th8aDK068TGo5CZdthxRmhWk5RrvwnJR4EWaJpLre3ppm1vKAXikPSDG5DlbAXDqp5pGXGNMutVHEzcqlRo9xFI4q-0ii6TR4IP0Tblahif5Kw-InnS_tgg7tb5Ef0npd88oLPei_fW-g8MkAX9oycqvtouXLhPPBtcE4FmzvnkFTNCxSGSs6v8M4OYrkgouZ2CmSWrrSXdEFVQEhFsJLT_MdTdpP_oN4fDGBOC_sbaZrTWSYo3BImPuOhWkUZUf1Yg9mtsjv6YQA_IyerKCJrWSH1SWfvQVORdQVlqWg2mrEv1g2C-vUie5Cn9oqnh5YMckLWDBdHfmrmP5BHQmL3i_P5OJZHuiBFdtezp5_hhq_gm3kipkZObLmYTi-3XZ4NzfwMA9fgqyE_6pSk502k/media?maxWidthPx=600&key=AIzaSyByB_1EwCQhqq2TY-8uK0Qy6wiF-b1goL0"
+      }
+    ],
+    "expenseSelectedDay": 1,
+    "travelerCount": 2,
+    "regionId": "kansai",
+    "rentalCarCostJpy": 32000,
+    "rentalTollFuelJpy": 8500,
+    "deletedPuzzleBin": [
+      {
+        "trashId": "trash-1795238154028-szjb",
+        "originalDay": 2,
+        "deletedAt": "13:15",
+        "piece": {
+          "id": "act-init-3",
+          "title": "神戶 Luminarie 光之雕刻盛典",
+          "type": "光影花火",
+          "duration": 90,
+          "isIndoor": false,
+          "note": "傍晚點燈浪漫散步"
+        }
+      },
+      {
+        "trashId": "trash-1795237467526-pws9",
+        "originalDay": 3,
+        "deletedAt": "13:04",
+        "piece": {
+          "id": "act-1795235482057-hakt",
+          "title": "京都車站",
+          "type": "經典景點",
+          "duration": 60,
+          "isIndoor": false,
+          "note": ""
+        }
+      },
+      {
+        "trashId": "trash-1795235513641-5fcr",
+        "originalDay": 3,
+        "deletedAt": "12:31",
+        "piece": {
+          "id": "act-1795235510184-upc6",
+          "title": "京都清水寺＆二年坂三年坂",
+          "type": "傳統祭典",
+          "duration": 150,
+          "isIndoor": false,
+          "note": "京都市東山區（祇園四條站步行15分）",
+          "imageUrl": ""
+        }
+      },
+      {
+        "trashId": "trash-1795235489605-dk28",
+        "originalDay": 3,
+        "deletedAt": "12:31",
+        "piece": {
+          "id": "act-init-5",
+          "title": "宇治平等院鳳凰堂＆抹茶表參道",
+          "type": "周邊順遊",
+          "duration": 150,
+          "isIndoor": false,
+          "note": "JR 奈良線順遊宇治抹茶聖代"
+        }
+      },
+      {
+        "trashId": "trash-1795228244843-epjo",
+        "originalDay": 2,
+        "deletedAt": "10:30",
+        "piece": {
+          "id": "act-init-4",
+          "title": "京都嵐山渡月橋＆竹林小徑",
+          "type": "經典景點",
+          "duration": 180,
+          "isIndoor": false,
+          "note": "持 JR PASS 搭 JR 嵯峨野線直達"
+        }
+      },
+      {
+        "trashId": "trash-1795228026914-ur3c",
+        "originalDay": 1,
+        "deletedAt": "10:27",
+        "piece": {
+          "id": "act-1795092571758-7nmc",
+          "title": "大阪光之文藝復興",
+          "type": "經典景點",
+          "duration": 60,
+          "isIndoor": false,
+          "note": "大阪市役所至中之島公園 (淀屋橋站)"
+        }
+      }
+    ],
+    "customTransitMinutes": {},
+    "expenses": []
+  }
+}
