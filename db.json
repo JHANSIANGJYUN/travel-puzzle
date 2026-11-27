@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-26T10:59:00+09:00",
+  "updatedAt": "2026-11-27T10:59:20+09:00",
   "jrPasses": [
     {
       "id": "jr-kansai-mini-3",
@@ -306,7 +306,7 @@
       "airport": "關西國際機場 (KIX)",
       "terminal": "T1",
       "time": "06:40",
-      "aircraft": "A320",
+      "aircraft": "A320neo",
       "region": "kansai"
     },
     "IT211": {
@@ -353,7 +353,7 @@
       "airline": "星宇航空 STARLUX",
       "airport": "關西國際機場 (KIX)",
       "terminal": "T1",
-      "time": "09:15",
+      "time": "11:10",
       "aircraft": "A330neo",
       "region": "kansai"
     },
@@ -366,11 +366,11 @@
       "region": "kansai"
     },
     "BR132": {
-      "airline": "長榮航空 EVA AIR",
+      "airline": "長榮航空 EVA Air",
       "airport": "關西國際機場 (KIX)",
       "terminal": "T1",
-      "time": "12:10",
-      "aircraft": "B787-10",
+      "time": "08:30",
+      "aircraft": "787-10",
       "region": "kansai"
     },
     "BR131": {
@@ -480,9 +480,9 @@
     "IT230": {
       "airline": "台灣虎航 Tigerair Taiwan",
       "airport": "那霸機場 (OKA)",
-      "terminal": "T1",
-      "time": "06:35",
-      "aircraft": "A320neo",
+      "terminal": "Int'l",
+      "time": "06:50",
+      "aircraft": "A320",
       "region": "okinawa"
     },
     "IT231": {
@@ -658,7 +658,7 @@
       "airport": "羽田機場 (HND)",
       "terminal": "T3",
       "time": "07:30",
-      "aircraft": "B787-10",
+      "aircraft": "787-10",
       "region": "kanto"
     },
     "BR191": {
@@ -673,7 +673,7 @@
       "airline": "中華航空 China Airlines",
       "airport": "成田國際機場 (NRT)",
       "terminal": "T2",
-      "time": "08:50",
+      "time": "09:30",
       "aircraft": "A350-900",
       "region": "kanto"
     },
@@ -736,9 +736,9 @@
     "BR116": {
       "airline": "長榮航空 EVA Air",
       "airport": "新千歲機場 (CTS)",
-      "terminal": "T1",
+      "terminal": "Int'l",
       "time": "09:30",
-      "aircraft": "B777-300ER",
+      "aircraft": "777-300ER",
       "region": "hokkaido"
     },
     "BR115": {
@@ -832,7 +832,7 @@
     "CI110": {
       "airline": "中華航空 China Airlines",
       "airport": "福岡機場 (FUK)",
-      "terminal": "T1",
+      "terminal": "Int'l",
       "time": "06:50",
       "aircraft": "A321neo",
       "region": "kyushu"
@@ -1121,16 +1121,16 @@
       "airline": "樂桃航空 Peach Aviation",
       "airport": "成田國際機場 (NRT)",
       "terminal": "T1",
-      "time": "09:30",
-      "aircraft": "A320",
+      "time": "09:35",
+      "aircraft": "A320neo",
       "region": "kanto"
     },
     "MM922": {
       "airline": "樂桃航空 Peach Aviation",
       "airport": "那霸機場 (OKA)",
-      "terminal": "國際航廈",
+      "terminal": "Int'l",
       "time": "09:35",
-      "aircraft": "A320neo",
+      "aircraft": "A320",
       "region": "okinawa"
     },
     "MM722": {
@@ -1140,6 +1140,14 @@
       "time": "09:15",
       "aircraft": "A320",
       "region": "kansai"
+    },
+    "Z2124": {
+      "airline": "菲律賓亞航 AirAsia",
+      "airport": "成田國際機場 (NRT)",
+      "terminal": "T2",
+      "time": "01:35",
+      "aircraft": "A320",
+      "region": "kanto"
     }
   },
   "events": [
@@ -2395,7 +2403,8 @@
       "location": "東武伊勢崎線「淺草站」步行",
       "title": "隅田川花火大會",
       "duration": 90,
-      "note": "東京最具代表性花火，建議提早數小時至隅田公園卡位。"
+      "note": "東京最具代表性花火，建議提早數小時至隅田公園卡位。",
+      "imageUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2e/2012%E5%B9%B4%E9%9A%85%E7%94%B0%E5%B7%9D%E8%8A%B1%E7%81%AB%E5%A4%A7%E4%BC%9A.jpg/330px-2012%E5%B9%B4%E9%9A%85%E7%94%B0%E5%B7%9D%E8%8A%B1%E7%81%AB%E5%A4%A7%E4%BC%9A.jpg?utm_source=zh.wikipedia.org&utm_campaign=api&utm_content=thumbnail"
     },
     {
       "id": "auto-kanto-3-81034",
