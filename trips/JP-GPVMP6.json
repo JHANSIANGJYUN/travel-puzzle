@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-26T06:42:44.953Z",
+  "updatedAt": "2026-11-27T13:13:51.075Z",
   "syncCode": "JP-GPVMP6",
   "appState": {
     "tripCode": "JP-GPVMP6",
@@ -954,27 +954,6 @@
     "jpyRate": 0.215,
     "fixedExpenses": [
       {
-        "id": "fx-1795351831019",
-        "type": "住宿費用",
-        "item": "day1",
-        "currency": "TWD",
-        "amount": 485
-      },
-      {
-        "id": "fx-1795351864715",
-        "type": "住宿費用",
-        "item": "day3",
-        "currency": "TWD",
-        "amount": 297
-      },
-      {
-        "id": "fx-1795356569748",
-        "type": "住宿費用",
-        "item": "day2",
-        "currency": "TWD",
-        "amount": 880
-      },
-      {
         "id": "fx-1795356811923",
         "type": "機票費用",
         "item": "機票1",
@@ -987,6 +966,20 @@
         "item": "機票2",
         "currency": "TWD",
         "amount": 2575
+      },
+      {
+        "id": "fx-1795785126631",
+        "type": "住宿費用",
+        "item": "day 1",
+        "currency": "JPY",
+        "amount": 7600
+      },
+      {
+        "id": "fx-1795785153505",
+        "type": "住宿費用",
+        "item": "DAY3",
+        "currency": "JPY",
+        "amount": 7372
       }
     ],
     "expensesByDay": {
